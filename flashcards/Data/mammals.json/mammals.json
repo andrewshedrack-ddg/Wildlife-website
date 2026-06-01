@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "African Lion",
+    "scientific_name": "Panthera leo",
+    "image": "assets/images/lion.jpg",
+    "description": "Large carnivorous feline native to Africa.",
+    "status": "Vulnerable"
+  },
+  {
+    "id": 2,
+    "name": "African Elephant",
+    "scientific_name": "Loxodonta africana",
+    "image": "assets/images/elephant.jpg",
+    "description": "Largest land animal, herbivorous and social.",
+    "status": "Endangered"
+  }
+]

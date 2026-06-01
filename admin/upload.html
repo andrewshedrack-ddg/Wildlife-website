@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Species | Wildlife Explorer</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="../js/main.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">Wildlife Explorer</div>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../library/mammals.html">Library</a></li>
+        <li><a href="../scan.html">Scan</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-banner">
+      <span class="eyebrow">Admin</span>
+      <h1>Upload a new species.</h1>
+      <p class="lede">Add new wildlife entries with the same visual and editorial standards used everywhere else in the project.</p>
+    </section>
+
+    <section class="form-shell">
+      <div class="content">
+        <h2>Upload species</h2>
+        <form class="admin-form" action="#" method="post">
+          <div class="split">
+            <div>
+              <label for="species-name">Name</label>
+              <input id="species-name" type="text" required>
+            </div>
+            <div>
+              <label for="scientific-name">Scientific Name</label>
+              <input id="scientific-name" type="text" required>
+            </div>
+          </div>
+          <div>
+            <label for="image-upload">Image</label>
+            <input id="image-upload" type="file" accept="image/*">
+          </div>
+          <button type="submit" class="btn">Upload</button>
+        </form>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

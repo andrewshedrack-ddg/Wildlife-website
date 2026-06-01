@@ -1,0 +1,11 @@
+function createFlashcard(data) {
+  const card = document.createElement('div');
+  card.className = 'flashcard';
+  card.innerHTML = `
+    <img src="${data.image}" alt="${data.name}">
+    <h3>${data.name}</h3>
+    <p>${data.description}</p>
+    <span>Status: ${data.status}</span>
+  `;
+  document.body.appendChild(card);
+}

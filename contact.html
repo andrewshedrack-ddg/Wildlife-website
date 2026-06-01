@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Wildlife Explorer</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/main.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">Wildlife Explorer</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="library/mammals.html">Library</a></li>
+        <li><a href="scan.html">Scan</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-banner">
+      <span class="eyebrow">Contact</span>
+      <h1>Get in touch with the field team.</h1>
+      <p class="lede">If you want to collaborate, report a content issue, or extend the site with more species and habitats, send a note here.</p>
+    </section>
+
+    <section class="contact-grid">
+      <div class="contact-panel">
+        <div class="content">
+          <span class="section-kicker">Reach us</span>
+          <h2>Talk wildlife, design, or data.</h2>
+          <p>The site is structured for ongoing expansion. That means more organisms, more stories, and a stronger live experience whenever you are ready.</p>
+
+          <div class="panel-item">
+            <strong>Email</strong>
+            <p>info@wildlifeexplorer.org</p>
+          </div>
+          <div class="panel-item">
+            <strong>Phone</strong>
+            <p>+254 700 123 456</p>
+          </div>
+          <div class="panel-item">
+            <strong>Location</strong>
+            <p>Nairobi, Kenya</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-shell">
+        <div class="content">
+          <h2>Send a message</h2>
+          <p>Use the form to draft a collaboration note or a site update request.</p>
+          <form class="contact-form" action="#" method="post">
+            <div class="split">
+              <div>
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+              </div>
+              <div>
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+              </div>
+            </div>
+
+            <div>
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="6" required></textarea>
+            </div>
+
+            <button type="submit" class="btn">Send message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; <span data-current-year></span> Wildlife Explorer | Connecting nature and technology</p>
+  </footer>
+</body>
+</html>

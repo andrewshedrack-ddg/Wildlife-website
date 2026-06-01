@@ -1,0 +1,795 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: light;
+  --bg: #f4efe6;
+  --bg-alt: #e8dcc8;
+  --surface: rgba(255, 252, 246, 0.92);
+  --surface-strong: #fff8ee;
+  --text: #102019;
+  --muted: #5d6f64;
+  --line: rgba(16, 32, 25, 0.12);
+  --forest: #173b2b;
+  --forest-2: #244f39;
+  --gold: #c79a31;
+  --gold-soft: #f2d58a;
+  --sand: #f6ead5;
+  --shadow: 0 24px 60px rgba(14, 28, 22, 0.14);
+  --radius-xl: 30px;
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(199, 154, 49, 0.14), transparent 28%),
+    radial-gradient(circle at 85% 18%, rgba(23, 59, 43, 0.1), transparent 24%),
+    linear-gradient(180deg, #fffaf0 0%, var(--bg) 48%, #efe4d2 100%);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(16, 32, 25, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 32, 25, 0.015) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.38), transparent 72%);
+  opacity: 0.4;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem clamp(1rem, 3vw, 2.5rem);
+  background: rgba(255, 250, 240, 0.84);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(16, 32, 25, 0.08);
+}
+
+.navbar .logo,
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--forest);
+}
+
+.navbar .logo::before,
+.brand::before {
+  content: '';
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 35%, #ffe9a8 0%, var(--gold) 62%, #8b6213 100%);
+  box-shadow: 0 0 0 5px rgba(199, 154, 49, 0.15);
+}
+
+.navbar nav ul {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+}
+
+.navbar nav a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-radius: 999px;
+  color: var(--muted);
+  font-weight: 700;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.navbar nav a:hover,
+.navbar nav a.active {
+  background: rgba(23, 59, 43, 0.08);
+  color: var(--forest);
+  transform: translateY(-1px);
+}
+
+main,
+section {
+  position: relative;
+}
+
+main {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding-bottom: 4rem;
+}
+
+section {
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+}
+
+.hero,
+.page-banner,
+.conservation-banner,
+.spotlight,
+.scan-layout,
+.about-grid,
+.contact-grid {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 1.25rem auto 0;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+  align-items: stretch;
+  padding: clamp(1rem, 3vw, 1.75rem);
+}
+
+.hero-copy,
+.hero-media,
+.page-banner,
+.feature-card,
+.species-card,
+.stat-card,
+.info-card,
+.contact-panel,
+.scan-panel,
+.scan-media,
+.table-shell,
+.form-shell,
+.conservation-banner,
+.spotlight-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+}
+
+.hero-copy {
+  grid-column: span 7;
+  padding: clamp(1.35rem, 3vw, 2.5rem);
+  background:
+    linear-gradient(145deg, rgba(23, 59, 43, 0.96), rgba(36, 79, 57, 0.92)),
+    url('https://upload.wikimedia.org/wikipedia/commons/9/9e/Lion_%28Panthera_leo%29_male_6y.jpg') center/cover;
+  color: #fff9ee;
+  overflow: hidden;
+  position: relative;
+  min-height: 520px;
+}
+
+.hero-copy::after {
+  content: '';
+  position: absolute;
+  inset: auto -8% -18% auto;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(242, 213, 138, 0.34), transparent 68%);
+  filter: blur(4px);
+}
+
+.hero-copy > * {
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow,
+.section-kicker,
+.page-banner .eyebrow,
+.scan-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 248, 238, 0.1);
+  color: var(--gold-soft);
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero h1,
+.page-banner h1,
+.section-title,
+.spotlight h2,
+.scan-panel h2,
+.feature-card h3,
+.species-card h3,
+.conservation-banner h2,
+.info-card h3,
+.contact-panel h2,
+.table-shell h2,
+.form-shell h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 7vw, 5.75rem);
+  max-width: 10ch;
+  margin-top: 1rem;
+}
+
+.hero p,
+.page-banner p,
+.spotlight p,
+.scan-panel p,
+.feature-card p,
+.species-card p,
+.conservation-banner p,
+.info-card p,
+.contact-panel p {
+  color: inherit;
+  font-size: 1.02rem;
+}
+
+.hero-copy .lede {
+  max-width: 60ch;
+  margin: 1rem 0 0;
+  color: rgba(255, 249, 238, 0.88);
+  font-size: 1.05rem;
+}
+
+.page-banner .lede {
+  max-width: 70ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.hero-actions,
+.banner-actions,
+.scan-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 48px;
+  padding: 0.9rem 1.3rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--gold), #8f671e);
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  box-shadow: 0 12px 28px rgba(143, 103, 30, 0.25);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(143, 103, 30, 0.3);
+}
+
+.btn.secondary {
+  background: rgba(255, 252, 246, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #fff8ef;
+}
+
+.btn.ghost {
+  background: rgba(23, 59, 43, 0.08);
+  color: var(--forest);
+}
+
+.hero-panel {
+  grid-column: span 5;
+  display: grid;
+  gap: 1.2rem;
+}
+
+.hero-media {
+  overflow: hidden;
+  min-height: 300px;
+  background: linear-gradient(180deg, rgba(18, 38, 29, 0.3), rgba(18, 38, 29, 0.7)), url('https://upload.wikimedia.org/wikipedia/commons/3/37/African_Bush_Elephant.jpg') center/cover;
+}
+
+.hero-media .overlay-card {
+  margin: auto 1rem 1rem;
+  max-width: 300px;
+  padding: 1rem;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 250, 240, 0.88);
+  color: var(--text);
+  box-shadow: 0 12px 34px rgba(8, 18, 14, 0.24);
+}
+
+.hero-media .overlay-card strong {
+  display: block;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+}
+
+.stats-row,
+.feature-grid,
+.species-grid,
+.detail-grid,
+.contact-grid,
+.media-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.stats-row {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.stat-card {
+  padding: 1.2rem;
+  background: rgba(255, 250, 240, 0.94);
+}
+
+.stat-card strong {
+  display: block;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 2rem;
+  color: var(--forest);
+}
+
+.stat-card span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.section-shell {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding-top: 1rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-header p {
+  max-width: 56ch;
+  color: var(--muted);
+  margin: 0;
+}
+
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.feature-grid,
+.species-grid,
+.media-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.feature-card,
+.species-card,
+.info-card,
+.contact-panel,
+.scan-panel,
+.form-shell,
+.table-shell,
+.spotlight-panel {
+  overflow: hidden;
+}
+
+.feature-card img,
+.species-card img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+}
+
+.feature-card .content,
+.species-card .content,
+.info-card .content,
+.scan-panel .content,
+.table-shell .content,
+.form-shell .content,
+.spotlight-panel .content,
+.contact-panel .content {
+  padding: 1.2rem;
+}
+
+.feature-card h3,
+.species-card h3,
+.info-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.label-row,
+.meta-row,
+.facts,
+.tags,
+.inline-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.label-row span,
+.meta-row span,
+.tags span,
+.facts li,
+.inline-list li {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.34rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(23, 59, 43, 0.08);
+  color: var(--forest);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.facts,
+.inline-list {
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.facts li,
+.inline-list li {
+  background: rgba(199, 154, 49, 0.13);
+}
+
+.spotlight {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.spotlight-video {
+  grid-column: span 7;
+  padding: 0;
+  overflow: hidden;
+  min-height: 420px;
+  background: #0f2119;
+}
+
+.spotlight-video video {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  object-fit: cover;
+}
+
+.spotlight-panel {
+  grid-column: span 5;
+  padding: 1rem;
+}
+
+.spotlight-panel .panel-item,
+.scan-panel .panel-item,
+.contact-panel .panel-item {
+  padding: 0.9rem 0;
+  border-top: 1px solid rgba(16, 32, 25, 0.08);
+}
+
+.spotlight-panel .panel-item:first-child,
+.scan-panel .panel-item:first-child,
+.contact-panel .panel-item:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.conservation-banner,
+.page-banner,
+.form-shell,
+.table-shell,
+.scan-panel,
+.contact-panel {
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.page-banner {
+  display: grid;
+  gap: 0.9rem;
+  background:
+    linear-gradient(145deg, rgba(255, 250, 240, 0.95), rgba(242, 213, 138, 0.28)),
+    radial-gradient(circle at top right, rgba(23, 59, 43, 0.08), transparent 36%);
+}
+
+.page-banner h1 {
+  font-size: clamp(2.6rem, 6vw, 4.5rem);
+  color: var(--forest);
+  max-width: 12ch;
+}
+
+.page-banner p,
+.section-shell p,
+.contact-panel p,
+.scan-panel p,
+.table-shell p,
+.form-shell p {
+  color: var(--muted);
+}
+
+.detail-grid {
+  grid-template-columns: 1.2fr 0.8fr;
+}
+
+.info-card {
+  min-height: 100%;
+}
+
+.contact-grid,
+.scan-layout,
+.about-grid {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.contact-panel,
+.scan-panel {
+  grid-column: span 5;
+}
+
+.form-shell,
+.table-shell,
+.scan-media {
+  grid-column: span 7;
+}
+
+form.contact-form,
+form.admin-form,
+.form-stack {
+  display: grid;
+  gap: 0.9rem;
+}
+
+label {
+  font-weight: 700;
+  color: var(--forest);
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 0.92rem 1rem;
+  border: 1px solid rgba(16, 32, 25, 0.12);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--text);
+  font: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: rgba(199, 154, 49, 0.7);
+  box-shadow: 0 0 0 4px rgba(199, 154, 49, 0.18);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 150px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(16, 32, 25, 0.08);
+  text-align: left;
+}
+
+th {
+  color: var(--forest);
+  font-weight: 800;
+  background: rgba(23, 59, 43, 0.05);
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+footer {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 2rem auto 0;
+  padding: 1.5rem 0 2.5rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.site-note,
+.form-note,
+.scan-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(23, 59, 43, 0.08);
+  color: var(--forest);
+  font-weight: 700;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(23, 59, 43, 0.08);
+  overflow: hidden;
+  margin-top: 0.75rem;
+}
+
+.progress-bar span {
+  display: block;
+  width: 60%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--gold), #f0c66a);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.timeline {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline li {
+  padding: 0.9rem 1rem;
+  background: rgba(255, 255, 255, 0.66);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(16, 32, 25, 0.08);
+}
+
+.timeline strong {
+  display: block;
+  color: var(--forest);
+  margin-bottom: 0.3rem;
+}
+
+@media (max-width: 1080px) {
+  .hero,
+  .spotlight,
+  .scan-layout,
+  .contact-grid,
+  .about-grid,
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy,
+  .hero-panel,
+  .spotlight-video,
+  .spotlight-panel,
+  .scan-panel,
+  .scan-media,
+  .contact-panel,
+  .form-shell,
+  .table-shell {
+    grid-column: auto;
+  }
+
+  .feature-grid,
+  .species-grid,
+  .media-grid,
+  .stats-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .navbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .navbar nav ul {
+    gap: 0.25rem;
+  }
+
+  .navbar nav a {
+    padding: 0.65rem 0.85rem;
+  }
+
+  main,
+  .hero,
+  .page-banner,
+  .conservation-banner,
+  .spotlight,
+  .scan-layout,
+  .contact-grid,
+  .about-grid {
+    width: min(100% - 1rem, 1200px);
+  }
+
+  .feature-grid,
+  .species-grid,
+  .media-grid,
+  .stats-row,
+  .split {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy,
+  .page-banner,
+  .form-shell,
+  .table-shell,
+  .scan-panel,
+  .contact-panel,
+  .spotlight-panel,
+  .feature-card,
+  .species-card,
+  .info-card {
+    border-radius: 22px;
+  }
+}

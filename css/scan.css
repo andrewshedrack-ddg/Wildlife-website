@@ -1,0 +1,6 @@
+.scan-dashboard { text-align: center; padding: 2rem; background: #f0fff0; }
+.scan-status { font-size: 1.2rem; color: #006400; }
+.scan-results { margin-top: 1rem; }
+.scan-results table { width: 100%; border-collapse: collapse; }     
+.scan-results th, .scan-results td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+.scan-results th { background: #e6ffe6; }   
