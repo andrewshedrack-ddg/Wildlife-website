@@ -72,25 +72,25 @@
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
         const data = await resp.json();
         const grid = document.getElementById('wildlife-grid');
-        grid.innerHTML = data.map(item => 
+        grid.innerHTML = data.map(item => `
           <div class='glass-card'>
-            <img src='' alt='' class='wildlife-img'>
-            <h3></h3>
-            <p><strong>Habitat:</strong> </p>
-            <p><strong>Fact:</strong> </p>
+            <img src='${item.img}' alt='${item.name}' class='wildlife-img'>
+            <h3>${item.name}</h3>
+            <p><strong>Habitat:</strong> ${item.habitat}</p>
+            <p><strong>Fact:</strong> ${item.fact}</p>
           </div>
-        ).join('');
+        `).join('');
       } catch (e) {
         console.warn('Using mock wildlife data:', e);
         const grid = document.getElementById('wildlife-grid');
-        grid.innerHTML = mockWildlife.map(item => 
+        grid.innerHTML = mockWildlife.map(item => `
           <div class='glass-card'>
-            <img src='' alt='' class='wildlife-img'>
-            <h3></h3>
-            <p><strong>Habitat:</strong> </p>
-            <p><strong>Fact:</strong> </p>
+            <img src='${item.img}' alt='${item.name}' class='wildlife-img'>
+            <h3>${item.name}</h3>
+            <p><strong>Habitat:</strong> ${item.habitat}</p>
+            <p><strong>Fact:</strong> ${item.fact}</p>
           </div>
-        ).join('');
+        `).join('');
       }
     }
 
@@ -100,25 +100,25 @@
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
         const data = await resp.json();
         const grid = document.getElementById('team-grid');
-        grid.innerHTML = data.map(member => 
+        grid.innerHTML = data.map(member => `
           <div class='glass-card'>
-            <img src='' alt='' class='wildlife-img'>
-            <h3></h3>
-            <p></p>
-            <p></p>
+            <img src='${member.img}' alt='${member.name}' class='wildlife-img'>
+            <h3>${member.name}</h3>
+            <p>${member.role}</p>
+            <p>${member.bio}</p>
           </div>
-        ).join('');
+        `).join('');
       } catch (e) {
         console.warn('Using mock team data:', e);
         const grid = document.getElementById('team-grid');
-        grid.innerHTML = mockTeam.map(member => 
+        grid.innerHTML = mockTeam.map(member => `
           <div class='glass-card'>
-            <img src='' alt='' class='wildlife-img'>
-            <h3></h3>
-            <p></p>
-            <p></p>
+            <img src='${member.img}' alt='${member.name}' class='wildlife-img'>
+            <h3>${member.name}</h3>
+            <p>${member.role}</p>
+            <p>${member.bio}</p>
           </div>
-        ).join('');
+        `).join('');
       }
     }
 
@@ -129,4 +129,3 @@
   </script>
 </body>
 </html>
-
