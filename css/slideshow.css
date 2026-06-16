@@ -91,6 +91,42 @@ header, main {
   z-index: 2;
 }
 
+/* Layout: container flex to push hero to right */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 1rem;
+}
+
+/* Hero: right-aligned, square */
+.hero {
+  margin-left: auto;
+  width: 260px;
+  height: 260px;
+  text-align: right;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.hero-copy {
+  text-align: right;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero-actions {
+  margin-top: 1rem;
+}
+
+/* Ensure sections take full width when needed */
+.section {
+  width: 100%;
+}
+
 /* Keep existing slide/fade classes if needed elsewhere (optional) */
 .slide { display: none; }
 .fade { animation: fadeEffect 2s; }
@@ -122,33 +158,4 @@ header, main {
 @keyframes fadeEffect {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
-}/* Layout: container flex to push hero to right */
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 1rem;
-}
-
-/* Hero: right-aligned, minimized */
-.hero {
-  margin-left: auto;
-  max-width: 350px;
-  text-align: right;
-}
-.hero-copy {
-  text-align: right;
-}
-.hero-actions {
-  justify-content: flex-end;
-  display: flex;
-  gap: 0.8rem;
-  margin-top: 1rem;
-}
-
-/* Ensure sections take full width when needed */
-.section {
-  width: 100%;
 }
