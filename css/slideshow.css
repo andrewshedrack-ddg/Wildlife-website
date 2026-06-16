@@ -91,4 +91,27 @@ footer {
 footer p {
   margin: 0;
   font-size: 0.9rem;
+}.glass-card {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+.glass-card:hover {
+  transform: translateY(-4px);
+}
+.glass-section {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.footer-details {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
 }
