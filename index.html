@@ -50,7 +50,7 @@
   </main>
 
   <footer>
-    <p>&copy; <span data-current-year></span> WildGuard Explorer | Inspired by KWS and National Geographic</p>
+    <p>&copy; <span data-current-year></span> WildGuard Explorer | WildGuard_Society and Tanzania Wildlife</p>
     <p class='footer-details'>Our mission: protect wildlife through AI-powered monitoring, real‑time alerts, and community engagement. Learn more about our technology and conservation impact.</p>
     <p class='footer-small'>WildGuard_Society • Founder, Organizers & Moderators • 🐾 Nature exploration 🌱 Nature coexistence ♻️ Environmental restoration</p>
   </footer>
@@ -72,25 +72,25 @@
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
         const data = await resp.json();
         const grid = document.getElementById('wildlife-grid');
-        grid.innerHTML = data.map(item => `
+        grid.innerHTML = data.map(item => 
           <div class='glass-card'>
-            <img src='${item.img}' alt='${item.name}' class='wildlife-img'>
-            <h3>${item.name}</h3>
-            <p><strong>Habitat:</strong> ${item.habitat}</p>
-            <p><strong>Fact:</strong> ${item.fact}</p>
+            <img src='' alt='' class='wildlife-img'>
+            <h3></h3>
+            <p><strong>Habitat:</strong> </p>
+            <p><strong>Fact:</strong> </p>
           </div>
-        `).join('');
+        ).join('');
       } catch (e) {
         console.warn('Using mock wildlife data:', e);
         const grid = document.getElementById('wildlife-grid');
-        grid.innerHTML = mockWildlife.map(item => `
+        grid.innerHTML = mockWildlife.map(item => 
           <div class='glass-card'>
-            <img src='${item.img}' alt='${item.name}' class='wildlife-img'>
-            <h3>${item.name}</h3>
-            <p><strong>Habitat:</strong> ${item.habitat}</p>
-            <p><strong>Fact:</strong> ${item.fact}</p>
+            <img src='' alt='' class='wildlife-img'>
+            <h3></h3>
+            <p><strong>Habitat:</strong> </p>
+            <p><strong>Fact:</strong> </p>
           </div>
-        `).join('');
+        ).join('');
       }
     }
 
@@ -100,25 +100,25 @@
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
         const data = await resp.json();
         const grid = document.getElementById('team-grid');
-        grid.innerHTML = data.map(member => `
+        grid.innerHTML = data.map(member => 
           <div class='glass-card'>
-            <img src='${member.img}' alt='${member.name}' class='wildlife-img'>
-            <h3>${member.name}</h3>
-            <p>${member.role}</p>
-            <p>${member.bio}</p>
+            <img src='' alt='' class='wildlife-img'>
+            <h3></h3>
+            <p></p>
+            <p></p>
           </div>
-        `).join('');
+        ).join('');
       } catch (e) {
         console.warn('Using mock team data:', e);
         const grid = document.getElementById('team-grid');
-        grid.innerHTML = mockTeam.map(member => `
+        grid.innerHTML = mockTeam.map(member => 
           <div class='glass-card'>
-            <img src='${member.img}' alt='${member.name}' class='wildlife-img'>
-            <h3>${member.name}</h3>
-            <p>${member.role}</p>
-            <p>${member.bio}</p>
+            <img src='' alt='' class='wildlife-img'>
+            <h3></h3>
+            <p></p>
+            <p></p>
           </div>
-        `).join('');
+        ).join('');
       }
     }
 
@@ -129,3 +129,4 @@
   </script>
 </body>
 </html>
+
