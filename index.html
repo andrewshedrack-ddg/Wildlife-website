@@ -6,7 +6,6 @@
   <title>WildGuard Explorer | Home</title>
   <link rel='stylesheet' href='css/style.css'>
   <link rel='stylesheet' href='css/slideshow.css'>
-  <script defer src='js/slideshow.js'></script>
   <script defer src='js/main.js'></script>
 </head>
 <body>
@@ -43,10 +42,10 @@
       <div id='wildlife-grid' class='glass-section'></div>
     </section>
 
-    <!-- Recommendations -->
+    <!-- Conservation -->
     <section class='section'>
-      <h2 class='section-title'>Recommendations</h2>
-      <div id='recommendations-grid' class='glass-section'></div>
+      <h2 class='section-title'>Conservation</h2>
+      <div id='conservation-grid' class='glass-section'></div>
     </section>
 
     <!-- Team -->
@@ -54,31 +53,47 @@
       <h2 class='section-title'>Team</h2>
       <div id='team-grid' class='glass-section'></div>
     </section>
+
+    <!-- Latest Updates -->
+    <section class='section'>
+      <h2 class='section-title'>Latest Updates</h2>
+      <div id='updates-grid' class='glass-section'></div>
+    </section>
   </main>
 
   <footer>
     <p>&copy; <span data-current-year></span> WildGuard Explorer | Inspired by KWS and National Geographic</p>
     <p class='footer-details'>Our mission: protect wildlife through AI-powered monitoring, real‑time alerts, and community engagement. Learn more about our technology and conservation impact.</p>
-    <p class='footer-small'>WildGuard_Society • A youth movement turning conservation into action. 🐾 Nature exploration 🌱 Nature coexistence ♻️ Environmental restoration</p>
+    <p class='footer-small'>WildGuard_Society • Founder, Organizers & Moderators • 🐾 Nature exploration 🌱 Nature coexistence ♻️ Environmental restoration</p>
   </footer>
 
   <script>
     // Mock data for fallback
     const mockWildlife = [
-      {name: 'African Lion', habitat: 'Savannah', fact: 'Lions are the only cats that live in groups called prides.'},
-      {name: 'African Elephant', habitat: 'Savanna & Forest', fact: 'Elephants have the longest pregnancy of any land animal—about 22 months.'},
-      {name: 'Cheetah', habitat: 'Grasslands', fact: 'Cheetahs can accelerate from 0 to 60 mph in just a few seconds.'}
+      {name: 'African Lion', habitat: 'Savannah', fact: 'Lions are the only cats that live in groups called prides.', img: 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Lion_%28Panthera_leo%29_male_6y.jpg'},
+      {name: 'African Elephant', habitat: 'Savanna & Forest', fact: 'Elephants have the longest pregnancy of any land animal—about 22 months.', img: 'https://upload.wikimedia.org/wikipedia/commons/3/37/African_Bush_Elephant.jpg'},
+      {name: 'Cheetah', habitat: 'Grasslands', fact: 'Cheetahs can accelerate from 0 to 60 mph in just a few seconds.', img: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Cheetah_%28Acinonyx_jubatus%29_female_2.jpg'},
+      {name: 'Giraffe', habitat: 'Savannah', fact: 'A giraffe\\'s neck is too short to reach the ground; it must splay its legs to drink.', img: 'https://upload.wikimedia.org/wikipedia/commons/f/f4/Giraffe_-_Male_-_Kruger_National_Park.jpg'},
+      {name: 'Hippopotamus', habitat: 'Rivers & Lakes', fact: 'Despite their appearance, hippos can run faster than a human on land.', img: 'https://upload.wikimedia.org/wikipedia/commons/0/00/Hippopotamus_amphibius_-_Kruger_National_Park_-_South_Africa.jpg'},
+      {name: 'African Fish Eagle', habitat: 'Wetlands', fact: 'Their distinctive call is known as the \\'voice of Africa\\'.', img: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Haliaeetus_vocifer_-Lake_Mburo_National_Park%2C_Uganda.jpg'},
+      {name: 'Nile Crocodile', habitat: 'Freshwater', fact: 'Nile crocodiles can hold their breath underwater for up to two hours.', img: 'https://upload.wikimedia.org/wikipedia/commons/5/59/Nile_crocodile_%28Crocodylus_niloticus%29.jpg'},
+      {name: 'Leopard', habitat: 'Various', fact: 'Leopards are excellent climbers and often haul prey into trees.', img: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Leopard_%28Panthera_pardus%29.jpg'},
+      {name: 'Black Rhinoceros', habitat: 'Savanna & Shrubland', fact: 'Black rhinos have a pointed upper lip for grasping leaves and twigs.', img: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Black_rhinoceros_%28Diceros_bicornis%29.jpg'}
     ];
-    const mockRecommendations = [
-      {title: 'Support Conservation NGOs', description: 'Donate to or volunteer with reputable wildlife protection organizations.'},
-      {title: 'Reduce Plastic Use', description: 'Plastic pollution harms marine and terrestrial wildlife; opt for reusable alternatives.'},
-      {title: 'Advocate for Protected Areas', description: 'Encourage governments to expand and maintain national parks and reserves.'}
+    const mockConservation = [
+      {title: 'Support Conservation NGOs', description: 'Donate to or volunteer with reputable wildlife protection organizations.', img: 'https://upload.wikimedia.org/wikipedia/commons/0/04/Blue_Wildebeest_in_Kruger_National_Park.jpg'},
+      {title: 'Reduce Plastic Use', description: 'Plastic pollution harms marine and terrestrial wildlife; opt for reusable alternatives.', img: 'https://upload.wikimedia.org/wikipedia/commons/5/56/Spotted_Hyena_%28Crocuta_crocuta%29.jpg'},
+      {title: 'Advocate for Protected Areas', description: 'Encourage governments to expand and maintain national parks and reserves.', img: 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Meerkat_%28Suricata_suricatta%29.jpg'},
+      {title: 'Educate Others', description: 'Share knowledge about wildlife importance and threats to foster community action.', img: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Struthio_camelus.jpg'},
+      {title: 'Choose Sustainable Products', description: 'Buy products certified as wildlife-friendly, like shade-grown coffee or FSC-certified wood.', img: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Secretarybird_%28Sagittarius serpentarius%29.jpg'}
     ];
     const mockTeam = [
-      {name: 'Alex Morgan', role: 'Founder & Lead Developer', bio: 'Passionate about merging technology with conservation to create real‑time impact.'},
-      {name: 'Dr. Samira Patel', role: 'Wildlife Biologist', bio: 'Expert in African megafauna, focusing on habitat restoration and community engagement.'},
-      {name: 'James Liu', role: 'UX Designer', bio: 'Creates intuitive interfaces that make conservation data accessible to all.'},
-      {name: 'WildGuard_Society', role: 'Community Outreach', bio: 'A youth movement turning conservation into action.'}
+      {name: 'WildGuard_Society', role: 'Founder, Organizers & Moderators', bio: 'A youth movement turning conservation into action, leading the WildGuard Explorer project.', img: 'https://upload.wikimedia.org/wikipedia/commons/0/04/Blue_Wildebeest_in_Kruger_National_Park.jpg'}
+    ];
+    const mockUpdates = [
+      {title: 'New Scan Feature Launched', description: 'Real‑time wildlife detection now available in the Scan page.', img: 'https://upload.wikimedia.org/wikipedia/commons/3/37/African_Bush_Elephant.jpg'},
+      {title: 'Community Clean‑Up Event', description: 'Join our local cleanup to protect habitats.', img: 'https://upload.wikimedia.org/wikipedia/commons/5/56/Spotted_Hyena_%28Crocuta_crocuta%29.jpg'},
+      {title: 'Educational Webinar', description: 'Learn about wildlife tracking technologies.', img: 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Meerkat_%28Suricata_suricatta%29.jpg'}
     ];
 
     async function loadWildlife() {
@@ -89,6 +104,7 @@
         const grid = document.getElementById('wildlife-grid');
         grid.innerHTML = data.map(item => `
           <div class='glass-card'>
+            <img src='${item.img}' alt='${item.name}' class='wildlife-img'>
             <h3>${item.name}</h3>
             <p><strong>Habitat:</strong> ${item.habitat}</p>
             <p><strong>Fact:</strong> ${item.fact}</p>
@@ -99,6 +115,7 @@
         const grid = document.getElementById('wildlife-grid');
         grid.innerHTML = mockWildlife.map(item => `
           <div class='glass-card'>
+            <img src='${item.img}' alt='${item.name}' class='wildlife-img'>
             <h3>${item.name}</h3>
             <p><strong>Habitat:</strong> ${item.habitat}</p>
             <p><strong>Fact:</strong> ${item.fact}</p>
@@ -107,23 +124,25 @@
       }
     }
 
-    async function loadRecommendations() {
+    async function loadConservation() {
       try {
         const resp = await fetch('/api/recommendations');
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
         const data = await resp.json();
-        const grid = document.getElementById('recommendations-grid');
+        const grid = document.getElementById('conservation-grid');
         grid.innerHTML = data.map(item => `
           <div class='glass-card'>
+            <img src='${item.img}' alt='${item.title}' class='wildlife-img'>
             <h3>${item.title}</h3>
             <p>${item.description}</p>
           </div>
         `).join('');
       } catch (e) {
-        console.warn('Using mock recommendations:', e);
-        const grid = document.getElementById('recommendations-grid');
-        grid.innerHTML = mockRecommendations.map(item => `
+        console.warn('Using mock conservation data:', e);
+        const grid = document.getElementById('conservation-grid');
+        grid.innerHTML = mockConservation.map(item => `
           <div class='glass-card'>
+            <img src='${item.img}' alt='${item.title}' class='wildlife-img'>
             <h3>${item.title}</h3>
             <p>${item.description}</p>
           </div>
@@ -139,16 +158,18 @@
         const grid = document.getElementById('team-grid');
         grid.innerHTML = data.map(member => `
           <div class='glass-card'>
+            <img src='${member.img}' alt='${member.name}' class='wildlife-img'>
             <h3>${member.name}</h3>
             <p>${member.role}</p>
             <p>${member.bio}</p>
           </div>
         `).join('');
       } catch (e) {
-        console.warn('Using mock team:', e);
+        console.warn('Using mock team data:', e);
         const grid = document.getElementById('team-grid');
         grid.innerHTML = mockTeam.map(member => `
           <div class='glass-card'>
+            <img src='${member.img}' alt='${member.name}' class='wildlife-img'>
             <h3>${member.name}</h3>
             <p>${member.role}</p>
             <p>${member.bio}</p>
@@ -157,10 +178,37 @@
       }
     }
 
+    async function loadUpdates() {
+      try {
+        const resp = await fetch('/api/updates');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const data = await resp.json();
+        const grid = document.getElementById('updates-grid');
+        grid.innerHTML = data.map(item => `
+          <div class='glass-card'>
+            <img src='${item.img}' alt='${item.title}' class='wildlife-img'>
+            <h3>${item.title}</h3>
+            <p>${item.description}</p>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.warn('Using mock updates data:', e);
+        const grid = document.getElementById('updates-grid');
+        grid.innerHTML = mockUpdates.map(item => `
+          <div class='glass-card'>
+            <img src='${item.img}' alt='${item.title}' class='wildlife-img'>
+            <h3>${item.title}</h3>
+            <p>${item.description}</p>
+          </div>
+        `).join('');
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       loadWildlife();
-      loadRecommendations();
+      loadConservation();
       loadTeam();
+      loadUpdates();
     });
   </script>
 </body>
