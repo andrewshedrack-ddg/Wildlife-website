@@ -1,7 +1,7 @@
 let slideIndex = 0;
 
 function showSlides() {
-  const slides = document.querySelectorAll('.slide');
+  const slides = document.querySelectorAll('.bg-slide');
   if (!slides.length) {
     return;
   }
