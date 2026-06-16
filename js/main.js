@@ -46,4 +46,53 @@ document.addEventListener('DOMContentLoaded', () => {
       observer.observe(target);
     });
   }
+
+  // Background slideshow with Ken Burns effect
+  const backgroundImages = [
+    'https://upload.wikimedia.org/wikipedia/commons/9/9e/Lion_%28Panthera_leo%29_male_6y.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/3/37/African_Bush_Elephant.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/3/36/Cheetah_%28Acinonyx_jubatus%29_female_2.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/0/0b/Leopard_in_Serengeti_National_Park.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/7/7b/Waterbuck_%28Kobus_ellipsiprymnus%29_male.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/f/fe/Giraffa_camelopardalis.jpg'
+  ];
+
+  let currentIndex = 0;
+  let isZoomingIn = true;
+  let zoomLevel = 1;
+  const zoomSpeed = 0.0005; // Very slow zoom
+  const maxZoom = 1.2;
+  const minZoom = 1.0;
+
+  function updateBackground() {
+    // Apply Ken Burns effect (slow zoom)
+    zoomLevel = isZoomingIn 
+      ? Math.min(zoomLevel + zoomSpeed, maxZoom) 
+      : Math.max(zoomLevel - zoomSpeed, minZoom);
+    
+    // Reverse direction at limits
+    if (zoomLevel >= maxZoom) isZoomingIn = false;
+    if (zoomLevel <= minZoom) isZoomingIn = true;
+    
+    // Apply background image with transform
+    document.body.style.backgroundImage = `url('${backgroundImages[currentIndex]}')`;
+    document.body.style.backgroundSize = `${zoomLevel * 100}%`;
+    document.body.style.backgroundPosition = 'center';
+  }
+
+  function changeBackground() {
+    currentIndex = (currentIndex + 1) % backgroundImages.length;
+    // Reset zoom when changing image
+    zoomLevel = minZoom;
+    isZoomingIn = true;
+  }
+
+  // Change background every 5 seconds
+  setInterval(changeBackground, 5000);
+  
+  // Update Ken Burns effect every 50ms for smooth animation
+  setInterval(updateBackground, 50);
+  
+  // Set initial background
+  updateBackground();
 });
