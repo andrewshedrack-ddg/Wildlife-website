@@ -114,21 +114,21 @@ header, main {
   flex-direction: column;
 }
 .hero-copy {
-   flex: 1 1 auto;
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: flex-start;
-   padding: 2rem;
-   /* Glass-morphism jungle green fade */
-   background: rgba(23, 59, 43, 0.25); /* jungle green with opacity */
-   backdrop-filter: blur(12px) saturate(180%);
-   border: 1px solid rgba(23, 59, 43, 0.3);
-   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-   color: #f0fff4; /* almost white with green tint */
-   margin: 1rem;
-   position: relative;
-   overflow: hidden;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem;
+    /* Glass-morphism jungle green fade */
+    background: rgba(23, 59, 43, 0.15); /* jungle green with opacity */
+    backdrop-filter: blur(18px) saturate(200%);
+    border: 1px solid rgba(23, 59, 43, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    color: #f0fff4; /* almost white with green tint */
+    margin: 1rem;
+    position: relative;
+    overflow: hidden;
 }
 .hero-copy::before {
    content: '';
