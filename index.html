@@ -3,151 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WildGuard Explorer | Discover Tanzania's Wildlife</title>
+    <title>WildGuard Explorer | Tanzania Wildlife Conservation</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">WildGuard Explorer</a>
-            <div class="nav-links">
-                <a href="index.html" class="active">Home</a>
-                <a href="library/mammals.html">Library</a>
-                <a href="scan.html">Scan</a>
-                <a href="about.html">About</a>
-                <a href="contact.html">Contact</a>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <h1>WildGuard Explorer</h1>
+                <p>Protecting Tanzania's Wildlife Heritage</p>
             </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#wildlife" class="active">Our Wildlife</a></li>
+                    <li><a href="#parks">National Parks</a></li>
+                    <li><a href="#conservation">Conservation</a></li>
+                    <li><a href="#get-involved">Get Involved</a></li>
+                </ul>
+            </nav>
         </div>
-    </nav>
+    </header>
 
-    <!-- Hero Section with Slideshow -->
+    <!-- Hero Image -->
     <section class="hero">
-        <div class="hero-slideshow">
-            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?w=1920&fit=crop&q=80');"></div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1557050543-4d1f5e5c5b95?w=1920&fit=crop&q=80');"></div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1546182990-94ce0f5432bd?w=1920&fit=crop&q=80');"></div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1516426122078-c23e763198e7?w=1920&fit=crop&q=80');"></div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1920&fit=crop&q=80');"></div>
-        </div>
-        <div class="hero-content">
-            <span class="hero-tag">Discover the Wild</span>
-            <h1 class="hero-title">Explore Tanzania's<br>Magnificent Wildlife</h1>
-            <p class="hero-subtitle">
-                Journey through Africa's most spectacular ecosystems, 
-                where ancient wilderness meets modern conservation.
-            </p>
-            <div class="hero-actions">
-                <a href="scan.html" class="btn btn-primary">
-                    <span>📍</span> Start Live Scan
-                </a>
-                <a href="library/mammals.html" class="btn btn-secondary">
-                    <span>📖</span> Explore Library
-                </a>
-            </div>
-        </div>
-        <div class="hero-scroll">
-            <span>Scroll to explore</span>
-            <div class="scroll-line"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-text">
+            <h2>Where Technology Meets Conservation</h2>
+            <p>Using AI-powered monitoring to protect Tanzania's iconic wildlife and ecosystems</p>
         </div>
     </section>
 
     <!-- Wildlife Section -->
-    <section class="section" id="wildlife">
+    <section id="wildlife" class="wildlife-section">
         <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Our Animals</span>
-                <h2 class="section-title">The Big Five & Beyond</h2>
-                <p class="section-desc">
-                    Discover Tanzania's most iconic wildlife species, 
-                    from the mighty lion to the elusive leopard.
-                </p>
-            </div>
-
-            <div class="card-grid">
-                <!-- Lion -->
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1cad8?w=600&fit=crop&q=80" alt="African Lion" loading="lazy">
-                        <div class="card-tag">Big Five</div>
+            <h2 class="section-title">Tanzania's Magnificent Wildlife</h2>
+            <p class="section-subtitle">Home to some of Africa's most incredible species</p>
+            
+            <div class="wildlife-grid">
+                <!-- African Lion -->
+                <div class="wildlife-card">
+                    <div class="wildlife-image">
+                        <img src="https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fExpb258ZW58MHx8fHwxNjcwNjQwMDU2&ixlib=rb-4.0.3&q=80&w=400" alt="African Lion in Serengeti">
                     </div>
-                    <div class="card-body">
-                        <h3 class="card-title">African Lion</h3>
-                        <p class="card-meta">📍 Savannah | 🔰 Vulnerable</p>
-                        <p class="card-text">
-                            The king of the savannah, lions are the only cats 
-                            that live in prides, with complex social structures 
-                            and powerful hunting skills.
-                        </p>
+                    <div class="wildlife-info">
+                        <h3>African Lion</h3>
+                        <p><strong>Habitat:</strong> Savannah grasslands</p>
+                        <p><strong>Status:</strong> Vulnerable</p>
+                        <p>The only cats that live in groups called prides, with complex social structures and cooperative hunting.</p>
                     </div>
                 </div>
-
-                <!-- Elephant -->
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1557050543-4d1f5e5c5b95?w=600&fit=crop&q=80" alt="African Elephant" loading="lazy">
-                        <div class="card-tag">Big Five</div>
+                
+                <!-- African Elephant -->
+                <div class="wildlife-card">
+                    <div class="wildlife-image">
+                        <img src="https://images.unsplash.com/photo-1557050543-4d1f5e5c5b95?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VsaWZhbnR8ZW58MHx8fHwxNjcwNjQwMDU2&ixlib=rb-4.0.3&q=80&w=400" alt="African Elephant">
                     </div>
-                    <div class="card-body">
-                        <h3 class="card-title">African Elephant</h3>
-                        <p class="card-meta">📍 Forest & Savannah | 🔰 Endangered</p>
-                        <p class="card-text">
-                            Earth's largest land mammal, elephants are known 
-                            for their incredible memory, complex emotions, 
-                            and vital role as ecosystem engineers.
-                        </p>
+                    <div class="wildlife-info">
+                        <h3>African Elephant</h3>
+                        <p><strong>Habitat:</strong> Forests & savannahs</p>
+                        <p><strong>Status:</strong> Endangered</p>
+                        <p>Earth's largest land mammal, known for incredible memory, strong family bonds, and vital role as ecosystem engineers.</p>
                     </div>
                 </div>
-
+                
                 <!-- Leopard -->
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1546182990-94ce0f5432bd?w=600&fit=crop&q=80" alt="Leopard" loading="lazy">
-                        <div class="card-tag">Big Five</div>
+                <div class="wildlife-card">
+                    <div class="wildlife-image">
+                        <img src="https://images.unsplash.com/photo-1546182990-94ce0f5432bd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VsdG9ufGVufDB8fHx8MTY3MDY0MDU2&ixlib=rb-4.0.3&q=80&w=400" alt="Leopard in tree">
                     </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Leopard</h3>
-                        <p class="card-meta">📍 Savannah & Forest | 🔰 Vulnerable</p>
-                        <p class="card-text">
-                            The most elusive of the Big Five, leopards are 
-                            master climbers that can haul prey twice their 
-                            weight high into trees.
-                        </p>
+                    <div class="wildlife-info">
+                        <h3>Leopard</h3>
+                        <p><strong>Habitat:</strong> Various habitats</p>
+                        <p><strong>Status:</strong> Vulnerable</p>
+                        <p>The most elusive of the big cats, exceptional climbers that can carry prey twice their weight up into trees.</p>
                     </div>
                 </div>
-
-                <!-- Buffalo -->
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1552053831-7-55f2012b80d3?w=600&fit=crop&q=80" alt="African Buffalo" loading="lazy">
-                        <div class="card-tag">Big Five</div>
+                
+                <!-- African Buffalo -->
+                <div class="wildlife-card">
+                    <div class="wildlife-image">
+                        <img src="https://images.unsplash.com/photo-1552053831-7-55f2012b80d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VsdG9uYmx1fGVufDB8fHx8MTY3MDY0MDU2&ixlib=rb-4.0.3&q=80&w=400" alt="African Buffalo">
                     </div>
-                    <div class="card-body">
-                        <h3 class="card-title">African Buffalo</h3>
-                        <p class="card-meta">📍 Floodplains & Savannah | 🔰 Near Threatened</p>
-                        <p class="card-text">
-                            Known for their unpredictable nature and considered 
-                            one of the most dangerous animals in Africa, 
-                            African buffaloes are formidable defenders of their herd.
-                        </p>
+                    <div class="wildlife-info">
+                        <h3>African Buffalo</h3>
+                        <p><strong>Habitat:</strong> Floodplains & savannahs</p>
+                        <p><strong>Status:</strong> Near Threatened</p>
+                        <p>Known for their unpredictable nature and considered one of Africa's most dangerous animals, yet vital to ecosystem balance.</p>
                     </div>
                 </div>
-
-                <!-- Rhino -->
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1556000906-0-9d0b24de49d5?w=600&fit=crop&q=80" alt="Black Rhinoceros" loading="lazy">
-                        <div class="card-tag">Big Five</div>
+                
+                <!-- Black Rhinoceros -->
+                <div class="wildlife-card">
+                    <div class="wildlife-image">
+                        <img src="https://images.unsplash.com/photo-1556000906-0-9d0b24de49d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2Vzcmhpb258ZW58MHx8fHwxNjcwNjQwMDU2&ixlib=rb-4.0.3&q=80&w=400" alt="Black Rhinoceros">
                     </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Black Rhinoceros</h3>
-                        <p class="card-meta">📍 Grasslands & Savannah | 🔰 Critically Endangered</p>
-                        <p class="card-text">
-                            Black rhinos have a hooked upper lip, unlike the square lip 
-                            of white rhinos, and are critically endangered due to 
-                            poaching for their horns.
-                        </p>
+                    <div class="wildlife-info">
+                        <h3>Black Rhinoceros</h3>
+                        <p><strong>Habitat:</strong> Grasslands & savannahs</p>
+                        <p><strong>Status:</strong> Critically Endangered</p>
+                        <p>Distinguished by their hooked upper lip, black rhinos are critically endangered due to poaching for their horns.</p>
+                    </div>
+                </div>
+                
+                <!-- Cheetah -->
+                <div class="wildlife-card">
+                    <div class="wildlife-image">
+                        <img src="https://images.unsplash.com/photo-1551632811-561032d1e760?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VldGFo8ZW58MHx8fHwxNjcwNjQwMDU2&ixlib=rb-4.0.3&q=80&w=400" alt="Cheetah running">
+                    </div>
+                    <div class="wildlife-info">
+                        <h3>Cheetah</h3>
+                        <p><strong>Habitat:</strong> Open grasslands</p>
+                        <p><strong>Status:</strong> Vulnerable</p>
+                        <p>The fastest land animal, capable of reaching speeds up to 70 mph in short bursts covering distances up to 500m.</p>
                     </div>
                 </div>
             </div>
@@ -155,219 +123,171 @@
     </section>
 
     <!-- National Parks Section -->
-    <section class="section parks-section">
+    <section id="parks" class="parks-section">
         <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Protected Sanctuaries</span>
-                <h2 class="section-title">Legendary National Parks</h2>
-                <p class="section-desc">
-                    Explore Tanzania's world-renowned conservation areas, 
-                    home to the greatest wildlife spectacle on Earth.
-                </p>
-            </div>
-
-            <div class="card-grid parks-grid">
-                <!-- Serengeti -->
-                <div class="card park-card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1516426122078-c23e763198e7?w=600&fit=crop&q=80" alt="Serengeti National Park" loading="lazy">
-                        <div class="card-overlay">
-                            <h4>Serengeti National Park</h4>
-                            <p>14,763 km² | Established 1951</p>
-                        </div>
+            <h2 class="section-title">Tanzania's Protected Sanctuaries</h2>
+            <p class="section-subtitle">World-renowned national parks and conservation areas</p>
+            
+            <div class="parks-grid">
+                <!-- Serengeti National Park -->
+                <div class="park-card">
+                    <div class="park-image">
+                        <img src="https://images.unsplash.com/photo-1516426122078-c23e763198e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmVnZXRpX25hdGlvbmFsX3BhcmsxfGVufDB8fHx8MTY3MDY0MDU2&ixlib=rb-4.0.3&q=80&w=400" alt="Serengeti National Park">
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            Witness the Great Migration of 1.5 million wildebeest 
-                            and 200,000 zebras. A UNESCO World Heritage Site and 
-                            icon of African wildlife.
-                        </p>
+                    <div class="park-info">
+                        <h3>Serengeti National Park</h3>
+                        <p><strong>Size:</strong> 14,763 km²</p>
+                        <p><strong>Established:</strong> 1951</p>
+                        <p>Home to the Great Migration of over 1.5 million wildebeest, 200,000 zebras, and countless predators following the rains.</p>
                     </div>
                 </div>
-
-                <!-- Ngorongoro -->
-                <div class="card park-card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&fit=crop&q=80" alt="Ngorongoro Crater" loading="lazy">
-                        <div class="card-overlay">
-                            <h4>Ngorongoro Conservation Area</h4>
-                            <p>8,292 km² | Established 1959</p>
-                        </div>
+                
+                <!-- Ngorongoro Conservation Area -->
+                <div class="park-card">
+                    <div class="park-image">
+                        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmVnZXRvbmdyb25nby1jb25zZXJ2YXRpb258ZW58MHx8fHwxNjcwNjQwMDU2&ixlib=rb-4.0.3&q=80&w=400" alt="Ngorongoro Crater">
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            The world's largest inactive volcanic caldera, hosting 
-                            the densest population of lions in Africa along with 
-                            the critically endangered black rhino.
-                        </p>
+                    <div class="park-info">
+                        <h3>Ngorongoro Conservation Area</h3>
+                        <p><strong>Size:</strong> 8,292 km²</p>
+                        <p><strong>Established:</strong> 1959</p>
+                        <p>Features the world's largest inactive volcanic caldera, creating a natural enclosure for incredible wildlife density including the Big Five.</p>
                     </div>
                 </div>
-
-                <!-- Tarangire -->
-                <div class="card park-card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1534331849379-4eb1abfdadd5?w=600&fit=crop&q=80" alt="Tarangire National Park" loading="lazy">
-                        <div class="card-overlay">
-                            <h4>Tarangire National Park</h4>
-                            <p>2,850 km² | Established 1970</p>
-                        </div>
+                
+                <!-- Tarangire National Park -->
+                <div class="park-card">
+                    <div class="park-image">
+                        <img src="https://images.unsplash.com/photo-1534331849379-4eb1abfdadd5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2V0YW5nZXJpcmUtbmF0aW9uYWxfcGFyazx8ZW58MHx8fHwxNjcwNjQwMDU2&ixlib=rb-4.0.3&q=80&w=400" alt="Tarangire National Park">
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            Famous for its ancient baobab trees and massive 
-                            elephant herds that converge along the Tarangire 
-                            River during the dry season.
-                        </p>
+                    <div class="park-info">
+                        <h3>Tarangire National Park</h3>
+                        <p><strong>Size:</strong> 2,850 km²</p>
+                        <p><strong>Established:</strong> 1970</p>
+                        <p>Famous for its high concentration of elephants and ancient baobab trees, especially during the dry season when wildlife gathers along the Tarangire River.</p>
                     </div>
                 </div>
-
-                <!-- Selous -->
-                <div class="card park-card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1504173010709-5f719ebf126a?w=600&fit=crop&q=80" alt="Selous Game Reserve" loading="lazy">
-                        <div class="card-overlay">
-                            <h4>Selous Game Reserve</h4>
-                            <p>50,000 km² | Established 1922</p>
-                        </div>
+                
+                <!-- Selous Game Reserve -->
+                <div class="park-card">
+                    <div class="park-image">
+                        <img src="https://images.unsplash.com/photo-1504173010709-5f719ebf126a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VzZWxvdXMtZ2FtZS1yZXNlcnZlfGVufDB8fHx8MTY3MDY0MDU2&ixlib=rb-4.0.3&q=80&w=400" alt="Selous Game Reserve">
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            One of the largest faunal reserves in the world, 
-                            featuring diverse habitats from miombo woodlands 
-                            to vast wetlands and grasslands.
-                        </p>
+                    <div class="park-info">
+                        <h3>Selous Game Reserve</h3>
+                        <p><strong>Size:</strong> 50,000 km²</p>
+                        <p><strong>Established:</strong> 1922</p>
+                        <p>One of the largest faunal reserves in the world, featuring diverse habitats from miombo woodlands to open grasslands and supporting incredible biodiversity.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Conservation Impact Section -->
-    <section class="section impact-section">
+    <!-- Conservation Section -->
+    <section id="conservation" class="conservation-section">
         <div class="container">
-            <div class="impact-grid">
-                <div class="impact-item">
-                    <div class="impact-icon">🐾</div>
-                    <div class="impact-number">12,000+</div>
-                    <div class="impact-label">Animals Monitored Daily</div>
+            <h2 class="section-title">Our Conservation Work</h2>
+            <p class="section-subtitle">Protecting wildlife through technology and community action</p>
+            
+            <div class="conservation-grid">
+                <!-- Monitoring Technology -->
+                <div class="conservation-item">
+                    <div class="conservation-icon">🔍</div>
+                    <h3>AI-Powered Monitoring</h3>
+                    <p>Using camera traps and acoustic sensors to track wildlife movements, detect poaching threats, and gather vital data for conservation planning.</p>
                 </div>
-                <div class="impact-item">
-                    <div class="impact-icon">🌿</div>
-                    <div class="impact-number">47</div>
-                    <div class="impact-label">Protected Areas</div>
+                
+                <!-- Community Engagement -->
+                <div class="conservation-item">
+                    <div class="conservation-icon">🤝</div>
+                    <h3>Community Partnerships</h3>
+                    <p>Working with local communities to create sustainable livelihoods that reduce human-wildlife conflict while providing economic benefits.</p>
                 </div>
-                <div class="impact-item">
-                    <div class="impact-icon">✅</div>
-                    <div class="impact-number">89%</div>
-                    <div class="impact-label">Poaching Reduction</div>
+                
+                <!-- Anti-Poaching Units -->
+                <div class="conservation-item">
+                    <div class="conservation-icon">🛡️</div>
+                    <h3>Anti-Poaching Patrols</h3>
+                    <p>Deploying trained ranger teams equipped with modern technology to patrol protected areas and respond rapidly to threats.</p>
                 </div>
-                <div class="impact-item">
-                    <div class="impact-icon">⚡</div>
-                    <div class="impact-number">24/7</div>
-                    <div class="impact-label">Real-time Alerts System</div>
+                
+                <!-- Habitat Restoration -->
+                <div class="conservation-item">
+                    <div class="conservation-icon">🌱</div>
+                    <h3>Habitat Restoration</h3>
+                    <p>Rehabilitating degraded ecosystems through reforestation, water source protection, and invasive species management to support wildlife populations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Get Involved Section -->
+    <section id="get-involved" class="get-involved-section">
+        <div class="container">
+            <h2 class="section-title">How You Can Help</h2>
+            <p class="section-subtitle">Join us in protecting Tanzania's wildlife heritage</p>
+            
+            <div class="action-grid">
+                <!-- Donate -->
+                <div class="action-card">
+                    <div class="action-icon">💰</div>
+                    <h3>Support Our Work</h3>
+                    <p>Your donations directly fund conservation technology, ranger patrols, and community programs that protect wildlife and habitats.</p>
+                    <a href="#" class="action-button">Donate Now</a>
+                </div>
+                
+                <!-- Volunteer -->
+                <div class="action-card">
+                    <div class="action-icon">👥</div>
+                    <h3>Volunteer with Us</h3>
+                    <p>Join our field teams for wildlife monitoring, data collection, and community outreach programs across Tanzania's protected areas.</p>
+                    <a href="#" class="action-button">Learn More</a>
+                </div>
+                
+                <!-- Spread Awareness -->
+                <div class="action-card">
+                    <div class="action-icon">📢</div>
+                    <h3>Spread the Word</h3>
+                    <p>Share our mission with friends and family, follow our work on social media, and become an advocate for wildlife conservation.</p>
+                    <a href="#" class="action-button">Share</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="site-footer">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <div class="logo">WildGuard Explorer</div>
-                    <p>Protecting Tanzania's wildlife through innovation, 
-                    community engagement, and cutting-edge technology.</p>
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>WildGuard Explorer</h3>
+                    <p>Protecting Tanzania's wildlife through innovative technology, community engagement, and science-based conservation.</p>
                 </div>
                 <div class="footer-links">
-                    <h4>Explore</h4>
-                    <a href="index.html">Home</a>
-                    <a href="library/mammals.html">Library</a>
-                    <a href="scan.html">Scan</a>
-                    <a href="about.html">About</a>
+                    <h4>Quick Links</h3>
+                    <ul>
+                        <li><a href="#wildlife">Our Wildlife</a></li>
+                        <li><a href="#parks">National Parks</a></li>
+                        <li><a href="#conservation">Conservation</a></li>
+                        <li><a href="#get-involved">Get Involved</a></li>
+                    </ul>
                 </div>
-                <div class="footer-links">
-                    <h4>Get Involved</h4>
-                    <a href="contact.html">Contact</a>
-                    <a href="#" class="social-icon" title="Donate">💰</a>
-                    <a href="#" class="social-icon" title="Volunteer">🤝</a>
-                    <a href="#" class="social-icon" title="Newsletter">📰</a>
-                </div>
-                <div class="footer-links">
+                <div class="footer-social">
                     <h4>Follow Us</h4>
-                    <a href="#" class="social-icon" title="Facebook">📘</a>
-                    <a href="#" class="social-icon" title="Twitter">🐦</a>
-                    <a href="#" class="social-icon" title="Instagram">📷</a>
-                    <a href="#" class="social-icon" title="YouTube">📺</a>
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2025 WildGuard Explorer | Tanzania Wildlife Conservation Initiative</p>
-                <p>🌱 Wildlife Protection · 🌿 Habitat Restoration · 🤝 Community Empowerment</p>
+                <p>Wildlife Protection • Habitat Restoration • Community Empowerment</p>
             </div>
         </div>
     </footer>
-
-    <script>
-        // Intersection Observer for fade-in animations
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.card, .impact-item').forEach(el => {
-            el.classList.add('fade-hidden');
-            observer.observe(el);
-        });
-
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Hero Slideshow
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.hero-slideshow .slide');
-        const slideInterval = 7000; // 7 seconds
-
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-            });
-        }
-
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-        }
-
-        // Start slideshow
-        setInterval(nextSlide, slideInterval);
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
 </body>
 </html>
