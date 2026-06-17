@@ -60,7 +60,7 @@ img {
 .navbar {
     background: var(--green);
     color: var(--lighter);
-    padding: 0.2rem 0;
+    padding: 0.5rem 0;
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
@@ -121,8 +121,8 @@ img {
 
 /* Logo image styles */
 .navbar .logo-img {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
     object-fit: cover;
     border-radius: 50%; /* Makes it circular */
     border: 1px solid var(--green-light);
@@ -144,8 +144,8 @@ img {
 
 /* Logo text styles */
 .navbar .logo-text {
-    font-family: 'Fraunces', serif;
-    font-size: 0.9rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
     font-weight: 800;
     color: var(--lighter);
 }
@@ -163,13 +163,15 @@ img {
     font-size: 0.65rem;
     padding: 0.2rem 0.5rem;
     border-radius: var(--radius);
+    background: rgba(255,255,255,0.08);
     transition: var(--transition);
 }
 
 .navbar nav li a:hover,
 .navbar nav li a.active {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.3);
     color: var(--lighter);
+    transform: scale(1.05);
 }
 
 /* Hero Section */
