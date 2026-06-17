@@ -19,6 +19,10 @@
     --text-light: #f0f0f0;
     --text-muted: #8a8a8a;
     
+    /* Header specific */
+    --header-bg: #0f2a20; /* Dark jungle green for professional look */
+    --header-text: #e0e0e0; /* Light text for header */
+    
     /* Layout */
     --max-width: 1200px;
     --radius: 8px;
@@ -58,8 +62,8 @@ img {
 
 /* Header */
 .navbar {
-    background: var(--green);
-    color: var(--lighter);
+    background: var(--header-bg);
+    color: var(--header-text);
     padding: 0.5rem 0;
     box-shadow: var(--shadow);
     position: relative;
@@ -147,7 +151,7 @@ img {
     font-family: 'Playfair Display', serif;
     font-size: 1.1rem;
     font-weight: 800;
-    color: var(--lighter);
+    color: var(--header-text);
 }
 
   /* Navigation styles */
@@ -161,20 +165,46 @@ img {
 .navbar nav li a {
     font-weight: 600;
     font-size: 0.65rem;
-    padding: 0.2rem 0.5rem;
+    padding: 0.2rem 0.5rem 0.2rem 1.2rem; /* Increased left padding for the unique bar */
     border-radius: var(--radius);
     background: rgba(255,255,255,0.12);
     border: 1px solid rgba(255,255,255,0.1);
     transition: var(--transition);
+    position: relative;
 }
 
 .navbar nav li a:hover,
-.navbar nav li a.active {
-    background: rgba(255,255,255,0.25);
-    color: var(--lighter);
-    transform: scale(1.05);
-    border-color: rgba(255,255,255,0.2);
-}
+    .navbar nav li a.active {
+        background: rgba(255,255,255,0.25);
+        color: var(--lighter);
+        transform: scale(1.05);
+        border-color: rgba(255,255,255,0.2);
+    }
+
+    /* Unique left bar for each navigation item */
+    .navbar nav li a::before {
+        content: '';
+        position: absolute;
+        left: 0.5rem;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        border-radius: 2px;
+        opacity: 0.3;
+        transition: opacity 0.3s;
+    }
+
+    .navbar nav li:hover a::before,
+    .navbar nav li a.active::before {
+        opacity: 0.6;
+    }
+
+    /* Set unique colors for each item */
+    .navbar nav li:nth-child(1) a::before { background-color: var(--green); } /* Home */
+    .navbar nav li:nth-child(2) a::before { background-color: var(--savanna); } /* Library */
+    .navbar nav li:nth-child(3) a::before { background-color: var(--green-light); } /* Scan */
+    .navbar nav li:nth-child(4) a::before { background-color: var(--savanna-light); } /* About */
+    .navbar nav li:nth-child(5) a::before { background-color: var(--green); } /* Contact */
 
 /* Hero Section */
 .hero {
