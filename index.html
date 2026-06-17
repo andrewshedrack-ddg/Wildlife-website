@@ -22,8 +22,15 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with Slideshow -->
     <section class="hero">
+        <div class="hero-slideshow">
+            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?w=1920&fit=crop&q=80');"></div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1557050543-4d1f5e5c5b95?w=1920&fit=crop&q=80');"></div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1546182990-94ce0f5432bd?w=1920&fit=crop&q=80');"></div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1516426122078-c23e763198e7?w=1920&fit=crop&q=80');"></div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1920&fit=crop&q=80');"></div>
+        </div>
         <div class="hero-content">
             <span class="hero-tag">Discover the Wild</span>
             <h1 class="hero-title">Explore Tanzania's<br>Magnificent Wildlife</h1>
@@ -96,7 +103,7 @@
                 <!-- Leopard -->
                 <div class="card">
                     <div class="card-image">
-                        <img Daniahent="https://images.unsplash.com/photo-1546182990-94ce0f5432bd?w=600&fit=crop&q=80" alt="Leopard" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1546182990-94ce0f5432bd?w=600&fit=crop&q=80" alt="Leopard" loading="lazy">
                         <div class="card-tag">Big Five</div>
                     </div>
                     <div class="card-body">
@@ -106,6 +113,40 @@
                             The most elusive of the Big Five, leopards are 
                             master climbers that can haul prey twice their 
                             weight high into trees.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Buffalo -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1552053831-7-55f2012b80d3?w=600&fit=crop&q=80" alt="African Buffalo" loading="lazy">
+                        <div class="card-tag">Big Five</div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">African Buffalo</h3>
+                        <p class="card-meta">📍 Floodplains & Savannah | 🔰 Near Threatened</p>
+                        <p class="card-text">
+                            Known for their unpredictable nature and considered 
+                            one of the most dangerous animals in Africa, 
+                            African buffaloes are formidable defenders of their herd.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Rhino -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1556000906-0-9d0b24de49d5?w=600&fit=crop&q=80" alt="Black Rhinoceros" loading="lazy">
+                        <div class="card-tag">Big Five</div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Black Rhinoceros</h3>
+                        <p class="card-meta">📍 Grasslands & Savannah | 🔰 Critically Endangered</p>
+                        <p class="card-text">
+                            Black rhinos have a hooked upper lip, unlike the square lip 
+                            of white rhinos, and are critically endangered due to 
+                            poaching for their horns.
                         </p>
                     </div>
                 </div>
@@ -209,7 +250,7 @@
                     <div class="impact-icon">🐾</div>
                     <div class="impact-number">12,000+</div>
                     <div class="impact-label">Animals Monitored Daily</div>
-                </ Extral>
+                </div>
                 <div class="impact-item">
                     <div class="impact-icon">🌿</div>
                     <div class="impact-number">47</div>
@@ -223,7 +264,7 @@
                 <div class="impact-item">
                     <div class="impact-icon">⚡</div>
                     <div class="impact-number">24/7</div>
-                    <div class="impact-label">Real-time Alerts</div>
+                    <div class="impact-label">Real-time Alerts System</div>
                 </div>
             </div>
         </div>
@@ -248,9 +289,16 @@
                 <div class="footer-links">
                     <h4>Get Involved</h4>
                     <a href="contact.html">Contact</a>
-                    <a href="#">Donate</a>
-                    <a href="#">Volunteer</a>
-                    <a href="#">Newsletter</a>
+                    <a href="#" class="social-icon" title="Donate">💰</a>
+                    <a href="#" class="social-icon" title="Volunteer">🤝</a>
+                    <a href="#" class="social-icon" title="Newsletter">📰</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Follow Us</h4>
+                    <a href="#" class="social-icon" title="Facebook">📘</a>
+                    <a href="#" class="social-icon" title="Twitter">🐦</a>
+                    <a href="#" class="social-icon" title="Instagram">📷</a>
+                    <a href="#" class="social-icon" title="YouTube">📺</a>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -291,6 +339,25 @@
                 navbar.classList.remove('scrolled');
             }
         });
+
+        // Hero Slideshow
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slideshow .slide');
+        const slideInterval = 7000; // 7 seconds
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Start slideshow
+        setInterval(nextSlide, slideInterval);
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
