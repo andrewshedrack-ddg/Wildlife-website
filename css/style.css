@@ -11,7 +11,7 @@
     --darker: #1a251a;
     --light: #f8f9fa;
     --lighter: #ffffff;
-    --green: #4a7c59;
+    --green: #1b4d3e; /* Jungle Green */
     --green-light: #6b8e23;
     --savanna: #c2b280;
     --savanna-light: #d2b48c;
@@ -60,8 +60,57 @@ img {
 .navbar {
     background: var(--green);
     color: var(--lighter);
-    padding: 1.5rem 0;
+    padding: 0.8rem 0;
     box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Navbar decorative elements */
+.navbar-decor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* So they don't interfere with clicks */
+}
+
+.decor-img {
+    position: absolute;
+    opacity: 0.15;
+    filter: brightness(0) invert(1); /* Make them white to match navbar text */
+    transition: var(--transition);
+}
+
+.decor-img:hover {
+    opacity: 0.25;
+    transform: scale(1.1);
+}
+
+/* Position the decorative images */
+.decor-1 {
+    top: 10%;
+    left: 5%;
+    width: 80px;
+    height: 80px;
+    transform: rotate(-15deg);
+}
+
+.decor-2 {
+    bottom: 10%;
+    right: 5%;
+    width: 100px;
+    height: 100px;
+    transform: rotate(20deg);
+}
+
+.decor-3 {
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    transform: translate(-50%, -50%) rotate(30deg);
 }
 
 .container {
@@ -72,11 +121,11 @@ img {
 
 /* Logo image styles */
 .navbar .logo-img {
-    width: 180px;
-    height: 180px;
+    width: 100px;
+    height: 100px;
     object-fit: cover;
     border-radius: 50%; /* Makes it circular */
-    border: 3px solid var(--green-light);
+    border: 2px solid var(--green-light);
     box-shadow: var(--shadow);
     transition: var(--transition);
   }
@@ -93,26 +142,26 @@ img {
       gap: 1rem;
   }
 
-  /* Logo text styles */
-  .navbar .logo-text {
-      font-family: 'Fraunces', serif;
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--lighter);
-  }
+/* Logo text styles */
+.navbar .logo-text {
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--lighter);
+}
 
   /* Navigation styles */
 .navbar nav ul {
     display: flex;
     justify-content: center;
-    gap: 2rem;
+    gap: 1.5rem;
     list-style: none;
 }
 
 .navbar nav li a {
     font-weight: 600;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    padding: 0.3rem 0.8rem;
     border-radius: var(--radius);
     transition: var(--transition);
 }
