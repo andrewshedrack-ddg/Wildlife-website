@@ -70,13 +70,20 @@ img {
     padding: 0 2rem;
 }
 
-/* Logo styles */
-.navbar .logo {
-    font-family: 'Fraunces', serif;
-    font-size: 2.2rem;
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 0.5rem;
+/* Logo image styles */
+.navbar .logo-img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%; /* Makes it circular */
+    border: 3px solid var(--green-light);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.navbar .logo-img:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-hover);
 }
 
 /* Navigation styles */
