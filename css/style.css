@@ -79,14 +79,29 @@ img {
     border: 3px solid var(--green-light);
     box-shadow: var(--shadow);
     transition: var(--transition);
-}
+  }
 
-.navbar .logo-img:hover {
-    transform: scale(1.05);
-    box-shadow: var(--shadow-hover);
-}
+  .navbar .logo-img:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-hover);
+  }
 
-/* Navigation styles */
+  /* Logo container styles */
+  .navbar .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+  }
+
+  /* Logo text styles */
+  .navbar .logo-text {
+      font-family: 'Fraunces', serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--lighter);
+  }
+
+  /* Navigation styles */
 .navbar nav ul {
     display: flex;
     justify-content: center;
