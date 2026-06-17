@@ -21,12 +21,12 @@
     
     /* Layout */
     --max-width: 1200px;
-    --radius: 12px;
-    --radius-lg: 20px;
+    --radius: 8px;
+    --radius-lg: 12px;
     
     /* Shadows */
-    --shadow: 0 4px 12px rgba(0,0,0,0.1);
-    --shadow-hover: 0 8px 20px rgba(0,0,0,0.15);
+    --shadow: 0 2px 6px rgba(0,0,0,0.1);
+    --shadow-hover: 0 4px 10px rgba(0,0,0,0.15);
     
     /* Transitions */
     --transition: all 0.3s ease;
@@ -60,7 +60,7 @@ img {
 .navbar {
     background: var(--green);
     color: var(--lighter);
-    padding: 0.8rem 0;
+    padding: 0.2rem 0;
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
@@ -92,24 +92,24 @@ img {
 .decor-1 {
     top: 10%;
     left: 5%;
-    width: 80px;
-    height: 80px;
+    width: 25px;
+    height: 25px;
     transform: rotate(-15deg);
 }
 
 .decor-2 {
     bottom: 10%;
     right: 5%;
-    width: 100px;
-    height: 100px;
+    width: 30px;
+    height: 30px;
     transform: rotate(20deg);
 }
 
 .decor-3 {
     top: 50%;
     left: 50%;
-    width: 60px;
-    height: 60px;
+    width: 20px;
+    height: 20px;
     transform: translate(-50%, -50%) rotate(30deg);
 }
 
@@ -121,11 +121,11 @@ img {
 
 /* Logo image styles */
 .navbar .logo-img {
-    width: 100px;
-    height: 100px;
+    width: 30px;
+    height: 30px;
     object-fit: cover;
     border-radius: 50%; /* Makes it circular */
-    border: 2px solid var(--green-light);
+    border: 1px solid var(--green-light);
     box-shadow: var(--shadow);
     transition: var(--transition);
   }
@@ -145,7 +145,7 @@ img {
 /* Logo text styles */
 .navbar .logo-text {
     font-family: 'Fraunces', serif;
-    font-size: 1.6rem;
+    font-size: 0.9rem;
     font-weight: 800;
     color: var(--lighter);
 }
@@ -154,14 +154,14 @@ img {
 .navbar nav ul {
     display: flex;
     justify-content: center;
-    gap: 1.5rem;
+    gap: 0.8rem;
     list-style: none;
 }
 
 .navbar nav li a {
     font-weight: 600;
-    font-size: 0.9rem;
-    padding: 0.3rem 0.8rem;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
     border-radius: var(--radius);
     transition: var(--transition);
 }
