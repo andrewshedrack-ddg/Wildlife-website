@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>WildGuard Explorer | Home</title>
+  <link rel='stylesheet' href='css/style.css'>
+  <link rel='stylesheet' href='css/slideshow.css'>
+  <script defer src='js/slideshow.js'></script>
+  <script defer src='js/main.js'></script>
+</head>
+<body>
+<div class='slideshow-background'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/9/9e/Lion_%28Panthera_leo%29_male_6y.jpg' alt='Lion'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/3/37/African_Bush_Elephant.jpg' alt='Elephant'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/f/f4/Giraffe_-_Male_-_Kruger_National_Park.jpg' alt='Giraffe'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/5/52/Plains_Zebra_%28Equus_quagga%29.jpg' alt='Zebra'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/3/36/Cheetah_%28Acinonyx_jubatus%29_female_2.jpg' alt='Cheetah'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/0/00/Hippopotamus_amphibius_-_Kruger_National_Park_-_South_Africa.jpg' alt='Hippopotamus'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/f/f9/Haliaeetus_vocifer_-Lake_Mburo_National_Park%2C_Uganda.jpg' alt='African Fish Eagle'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/5/59/Nile_crocodile_%28Crocodylus_niloticus%29.jpg' alt='Nile Crocodile'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/d/de/Leopard_%28Panthera_pardus%29.jpg' alt='Leopard'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/f/f9/Black_rhinoceros_%28Diceros_bicornis%29.jpg' alt='Black Rhinoceros'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/0/04/Blue_Wildebeest_in_Kruger_National_Park.jpg' alt='Wildebeest'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/5/56/Spotted_Hyena_%28Crocuta_crocuta%29.jpg' alt='Hyena'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/9/9e/Meerkat_%28Suricata_suricatta%29.jpg' alt='Meerkat'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/e/e8/Struthio_camelus.jpg' alt='Ostrich'>
+  <img class='bg-slide' src='https://upload.wikimedia.org/wikipedia/commons/7/78/Secretarybird_%28Sagittarius serpentarius%29.jpg' alt='Secretary Bird'>
+  <div class='slideshow-overlay'></div>
+</div>
+
+<header class='navbar'>
+  <div class='logo'>WildGuard Explorer</div>
+  <nav>
+    <ul>
+      <li><a href='index.html'>Home</a></li>
+      <li><a href='library/mammals.html'>Library</a></li>
+      <li><a href='scan.html'>Scan</a></li>
+      <li><a href='about.html'>About</a></li>
+      <li><a href='contact.html'>Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class='hero'>
+    <div class='hero-copy'>
+      <span class='eyebrow'>WildGuard Explorer</span>
+      <h1>Discover the wild</h1>
+      <p class='lede'>A brief journey into wildlife conservation.</p>
+      <div class='hero-actions'>
+        <a href='scan.html' class='btn'>Start live scan</a>
+        <a href='library/mammals.html' class='btn secondary'>Explore library</a>
+      </div>
+    </div>
+  </main>
+
+  <section class='feature-grid glass-section'>
+    <article class='feature-card glass-card'>
+      <img src='https://upload.wikimedia.org/wikipedia/commons/9/9e/Lion_%28Panthera_leo%29_male_6y.jpg' alt='Lion'>
+      <div class='content'>
+        <div class='label-row'><span>Predator</span><span>Savannah</span></div>
+        <h3>Lion</h3>
+        <p>Apex hunter known for teamwork and territory.</p>
+      </div>
+    </article>
+    <article class='feature-card glass-card'>
+      <img src='https://upload.wikimedia.org/wikipedia/commons/3/37/African_Bush_Elephant.jpg' alt='Elephant'>
+      <div class='content'>
+        <div class='label-row'><span>Herbivore</span><span>Keystone</span></div>
+        <h3>Elephant</h3>
+        <p>Landscape engineers shaping water and habitats.</p>
+      </div>
+    </article>
+    <article class='feature-card glass-card'>
+      <img src='https://upload.wikimedia.org/wikipedia/commons/3/36/Cheetah_%28Acinonyx_jubatus%29_female_2.jpg' alt='Cheetah'>
+      <div class='content'>
+        <div class='label-row'><span>Speed</span><span>Grassland</span></div>
+        <h3>Cheetah</h3>
+        <p>Built for acceleration, one of Africa's most threatened predators.</p>
+      </div>
+    </article>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; <span data-current-year></span> WildGuard Explorer | Inspired by WILDGUARD and Tanzania Wildlife</p>
+  <p class='footer-details'>Our mission: protect wildlife through AI-powered monitoring, real‑time alerts, and community engagement. Learn more about our technology and conservation impact.</p>
+</footer>
+
+</body>
+</html>

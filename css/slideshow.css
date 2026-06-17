@@ -4,6 +4,8 @@ body {
   background-position: center;
   background-attachment: fixed;
   transition: background-image 1s ease-in-out, background-size 1s ease-in-out; /* Smooth transition */
+  margin: 0;
+  padding: 0;
 }
 
 /* Ensure content readability over background */
@@ -131,30 +133,30 @@ header, main {
     overflow: hidden;
 }
 .hero-copy::before {
-   content: '';
-   position: absolute;
-   inset: 0;
-   background: radial-gradient(circle at top left, rgba(199, 154, 49, 0.15), transparent 40%),
-               radial-gradient(circle at bottom right, rgba(23, 59, 43, 0.2), transparent 40%);
-   pointer-events: none;
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(199, 154, 49, 0.15), transparent 40%),
+                radial-gradient(circle at bottom right, rgba(23, 59, 43, 0.2), transparent 40%);
+    pointer-events: none;
 }
 .hero-copy::after {
-   content: '';
-   position: absolute;
-   inset: 0;
-   background: linear-gradient(
-     to top,
-     rgba(23, 59, 43, 0.1) 0%,
-     rgba(23, 59, 43, 0.3) 30%,
-     rgba(23, 59, 43, 0.5) 70%,
-     transparent 100%
-   );
-   pointer-events: none;
-   opacity: 0.6;
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(23, 59, 43, 0.1) 0%,
+      rgba(23, 59, 43, 0.3) 30%,
+      rgba(23, 59, 43, 0.5) 70%,
+      transparent 100%
+    );
+    pointer-events: none;
+    opacity: 0.6;
 }
 .hero-copy > * {
-   position: relative;
-   z-index: 1;
+    position: relative;
+    z-index: 1;
 }
 .hero-actions {
   margin-top: 1.5rem;
@@ -169,7 +171,7 @@ header, main {
 }
 .hero-copy .btn:hover {
   background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+  translate: translateY(-2px);
 }
 .hero-copy .btn.secondary {
   background: rgba(255, 255, 255, 0.1);
@@ -266,7 +268,7 @@ header, main {
 
 /* Make header and content stand out */
 header {
-  background: rgba(255, 250, 240, 0.85) !important;
+  background: transparent !important;
   backdrop-filter: blur(20px) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }

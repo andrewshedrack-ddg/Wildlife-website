@@ -1,134 +1,1252 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-  <meta charset='UTF-8'>
-  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <title>WildGuard Explorer | Home</title>
-  <link rel='stylesheet' href='css/style.css'>
-  <link rel='stylesheet' href='css/slideshow.css'>
-  <script defer src='js/main.js'></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WildGuard Explorer | Discover Tanzania's Wildlife</title>
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Color Palette - Inspired by nature */
+            --forest-dark: #0f1d0f;
+            --forest: #1a2b1a;
+            --forest-light: #2d3b2d;
+            --savanna: #d4b483;
+            --gold: #c79a31;
+            --gold-light: #e6c96f;
+            --cream: #f8f4e8;
+            --white: #ffffff;
+            --text-light: #f0f0f0;
+            
+            /* Typography */
+            --font-primary: 'Fraunces', serif;
+            --font-secondary: 'Manrope', sans-serif;
+            
+            /* Glassmorphism */
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+            
+            /* Transitions */
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-fast: all 0.15s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-secondary), system-ui, sans-serif;
+            background: linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: var(--white);
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Slideshow */
+        .background-slideshow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .background-slideshow img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: auto;
+            height: auto;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .background-slideshow img.active {
+            opacity: 1;
+        }
+
+        /* Overlay for text readability */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.9) 100%);
+            z-index: -1;
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: var(--glass-bg);
+            border-bottom: 1px solid var(--glass-border);
+            transition: var(--transition);
+        }
+
+        .header.scrolled {
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 10, 0.8);
+        }
+
+        .logo {
+            font-family: var(--font-primary);
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--gold), var(--savanna));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--gold), var(--savanna));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--white);
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+
+        .nav a:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav a.active {
+            color: var(--white);
+            background: linear-gradient(90deg, var(--gold), var(--savanna));
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            width: 100%;
+            z-index: 10;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-tagline {
+            font-family: var(--font-primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            display: inline-block;
+            position: relative;
+        }
+
+        .hero-tagline::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--savanna));
+            border-radius: 3px;
+        }
+
+        .hero-title {
+            font-family: var(--font-primary);
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--white), var(--cream));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: var(--transition-fast);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold), var(--savanna));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(199, 154, 49, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(199, 154, 49, 0.6);
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            color: var(--white);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .btn-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--savanna));
+            border-radius: 2px;
+        }
+
+        /* Grid Styles */
+        .grid {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        }
+
+        /* Glass Card Styles */
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--glass-shadow);
+            transition: var(--transition);
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .glass-card-image {
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .glass-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .glass-card:hover .glass-card-image img {
+            transform: scale(1.05);
+        }
+
+        .glass-card-content {
+            flex: 1;
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glass-card-title {
+            font-family: var(--font-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .glass-card-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            background: rgba(199, 154, 49, 0.2);
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .glass-card-text {
+            flex: 1;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .glass-card-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        /* Stats Styles */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            backdrop-filter: blur(15px);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .stat-number {
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--gold), var(--savanna));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(to bottom, #0a0a0a, #121212);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 4rem 2rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-family: var(--font-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            position: relative;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold), var(--savanna));
+            border-radius: 1px;
+        }
+
+        .footer-section p, .footer-section ul {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-section ul li::before {
+            content: '•';
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .footer-social a {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition-fast);
+        }
+
+        .footer-social a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            color: var(--white);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .animate-fade-in {
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .animate-fade-in-delay-1 { animation-delay: 0.2s; }
+        .animate-fade-in-delay-2 { animation-delay: 0.4s; }
+        .animate-fade-in-delay-3 { animation-delay: 0.6s; }
+        .animate-fade-in-delay-4 { animation-delay: 0.8s; }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .grid-4 {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+            
+            .header.scrolled {
+                padding: 0.8rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .nav {
+                gap: 1rem;
+            }
+            
+            .nav a {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+            
+            .hero {
+                padding: 0 1rem;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .section {
+                padding: 4rem 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .glass-card-content {
+                padding: 1.5rem;
+            }
+            
+            .glass-card-title {
+                font-size: 1.3rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .footer-section h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .footer-section ul {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-tagline {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Image Loading Handling */
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .image-placeholder {
+            background: linear-gradient(45deg, #2a2a2a 0%, #1a1a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Smooth Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--gold), var(--savanna));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--savanna), var(--gold));
+        }
+    </style>
 </head>
 <body>
-  <header class='navbar'>
-    <div class='logo'>WildGuard Explorer</div>
-    <nav>
-      <ul>
-        <li><a href='index.html'>Home</a></li>
-        <li><a href='library/mammals.html'>Library</a></li>
-        <li><a href='scan.html'>Scan</a></li>
-        <li><a href='about.html'>About</a></li>
-        <li><a href='contact.html'>Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+    <!-- Background Slideshow -->
+    <div class="background-slideshow">
+        <img src="https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxMb25lfGVufDB8fHx8MTY3MDY0MDQwNQ&ixlib=rb-4.0.3&q=80&w=1080" alt="Lion" class="active">
+        <img src="https://images.unsplash.com/photo-1557691140-5ec01ab3deee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxFbGVwaGFudHxlbnwwfHx8fDE2NzA2NDA0MDk&ixlib=rb-4.0.3&q=80&w=1080" alt="Elephant">
+        <img src="https://images.unsplash.com/photo-1553726436-08a4ec15a2f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxDbGVvcGFydHxlbnwwfHx8fDE2NzA2NDA0MTI&ixlib=rb-4.0.3&q=80&w=1080" alt="Leopard">
+        <img src="https://images.unsplash.com/photo-1556000906-0-9d0b24de49d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxSbGlvbmVyczxlbnwwfHx8fDE2NzA2NDA0MTU&ixlib=rb-4.0.3&q=80&w=1080" alt="Rhino">
+        <img src="https://images.unsplash.com/photo-1552053831-7-55f2012b80d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxCdVmVmYWxsbyl8ZW58MHx8fHwxNjcwNjQwMDIw&ixlib=rb-4.0.3&q=80&w=1080" alt="Buffalo">
+    </div>
 
-  <main class='container'>
-    <!-- Hero (right-aligned, square) -->
-    <section class='hero'>
-      <div class='hero-copy'>
-        <span class='eyebrow'>WildGuard Explorer</span>
-        <h1>Discover the wild</h1>
-        <p class='lede'>A brief journey into wildlife conservation.</p>
-        <div class='hero-actions'>
-          <a href='scan.html' class='btn'>Start live scan</a>
-          <a href='library/mammals.html' class='btn secondary'>Explore library</a>
+    <div class="background-overlay"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">WG</div>
+            <div>WildGuard Explorer</div>
         </div>
-      </div>
+        <nav class="nav">
+            <a href="#wildlife" class="active">Our Animals</a>
+            <a href="#ecosystems">Ecosystems</a>
+            <a href="#conservation">Conservation</a>
+            <a href="#help">Get Involved</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content animate-fade-in">
+            <div class="hero-tagline">Discover the Wild</div>
+            <h1 class="hero-title">Explore Tanzania's Magnificent Wildlife</h1>
+            <p class="hero-subtitle">
+                Journey through the heart of Africa's most spectacular ecosystems, 
+                where cutting-edge technology meets ancient wilderness to protect 
+                nature's greatest treasures.
+            </p>
+            <div class="hero-buttons">
+                <a href="#scan" class="btn btn-primary">
+                    <span class="btn-icon">🔍</span> Start Live Scan
+                </a>
+                <a href="#library" class="btn btn-secondary">
+                    <span class="btn-icon">📚</span> Explore Library
+                </a>
+            </div>
+        </div>
     </section>
 
-    <!-- Wildlife Details (3 glass cards) -->
-    <section class='section'>
-      <h2 class='section-title'>Wildlife Details</h2>
-      <div id='wildlife-grid' class='glass-section'></div>
+    <!-- Wildlife Details Section -->
+    <section class="section" id="wildlife">
+        <h2 class="section-title animate-fade-in">Our Animals</h2>
+        <div class="grid grid-3">
+            <!-- African Lion -->
+            <div class="glass-card animate-fade-in animate-fade-in-delay-1">
+                <div class="glass-card-image">
+                    <img src="https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxMb25lfGVufDB8fHx8MTY3MDY0MDQwNQ&ixlib=rb-4.0.3&q=80&w=1080" alt="African Lion" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxCb25kaWVfTmF0aW9uYWx8ZW58MHx8fHwxNjcwNjQwMDU2&ixlib=rb-4.0.3&q=80&w=1080'">
+                    <div class="image-overlay">
+                        <div class="image-tag">Lion</div>
+                    </div>
+                </div>
+                <div class="glass-card-content">
+                    <div class="glass-card-title">
+                        <span>🦁</span> African Lion
+                    </div>
+                    <div class="glass-card-tag">Savannah Grasslands</div>
+                    <p class="glass-card-text">
+                        Lions are the only cats that live in groups, called prides, 
+                        which are family units that can include up to three males, 
+                        a dozen females, and their young.
+                    </p>
+                    <div class="glass-card-footer">
+                        <span>King of Beasts</span>
+                        <span>Vulnerable</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- African Elephant -->
+            <div class="glass-card animate-fade-in animate-fade-in-delay-2">
+                <div class="glass-card-image">
+                    <img src="https://images.unsplash.com/photo-1557691140-5ec01ab3deee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxFbGVwaGFudHxlbnwwfHx8fDE2NzA2NDA0MDk&ixlib=rb-4.0.3&q=80&w=1080" alt="African Elephant" onerror="this.src='https://images.unsplash.com/photo-1534331849379-4eb1abfdadd5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxFbGVwaGFudHN8ZW58MHx8fHwxNjcwNjQwMDYz&ixlib=rb-4.0.3&q=80&w=1080'">
+                    <div class="image-overlay">
+                        <div class="image-tag">Elephant</div>
+                    </div>
+                </div>
+                <div class="glass-card-content">
+                    <div class="glass-card-title">
+                        <span>🐘</span> African Elephant
+                    </div>
+                    <div class="glass-card-tag">Forest & Savannah</div>
+                    <p class="glass-card-text">
+                        African elephants are the largest land mammals on Earth, 
+                        known for their incredible memory, complex social structures, 
+                        and vital role as ecosystem engineers.
+                    </p>
+                    <div class="glass-card-footer">
+                        <span>Largest Land Mammal</span>
+                        <span>Endangered</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leopard -->
+            <div class="glass-card animate-fade-in animate-fade-in-delay-3">
+                <div class="glass-card-image">
+                    <img src="https://images.unsplash.com/photo-1553726436-08a4ec15a2f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxDbGVvcGFydHxlbnwwfHx8fDE2NzA2NDA0MTI&ixlib=rb-4.0.3&q=80&w=1080" alt="Leopard" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxCb25kaWVfTmF0aW9uYWx8ZW58MHx8fHwxNjcwNjQwMDU2&ixlib=rb-4.0.3&q=80&w=1080'">
+                    <div class="image-overlay">
+                        <div class="image-tag">Leopard</div>
+                    </div>
+                </div>
+                <div class="glass-card-content">
+                    <div class="glass-card-title">
+                        <span>🐆</span> Leopard
+                    </div>
+                    <div class="glass-card-tag">Savannah & Forest</div>
+                    <p class="glass-card-text">
+                        Leopards are the most elusive of the Big 5, renowned for 
+                        their incredible strength, ability to haul prey twice their 
+                        weight into trees, and stunning spotted coats.
+                    </p>
+                    <div class="glass-card-footer">
+                        <span>Master Climber</span>
+                        <span>Vulnerable</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- Team (one glass card with society and mission) -->
-    <section class='section'>
-      <h2 class='section-title'>Team</h2>
-      <div id='team-grid' class='glass-section team-section'></div>
+    <!-- Protected Ecosystems Section -->
+    <section class="section" id="ecosystems">
+        <h2 class="section-title animate-fade-in">Protected Ecosystems</h2>
+        <div class="grid grid-4">
+            <!-- Serengeti National Park -->
+            <div class="glass-card animate-fade-in animate-fade-in-delay-1">
+                <div class="glass-card-image">
+                    <img src="https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxMb25lfGVufDB8fHx8MTY3MDY0MDQwNQ&ixlib=rb-4.0.3&q=80&w=1080" alt="Serengeti National Park" onerror="this.src='https://images.unsplash.com/photo-1501785888041-af3ef285b470?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxTZXJlbmdldHRpX05hdGlvbmFsX1BhcmsxfGVufDB8fHx8MTY3MDY0MDQ3Mg&ixlib=rb-4.0.3&q=80&w=1080'">
+                    <div class="image-overlay">
+                        <div class="image-tag">Serengeti</div>
+                    </div>
+                </div>
+                <div class="glass-card-content">
+                    <div class="glass-card-title">
+                        Serengeti National Park
+                    </div>
+                    <div class="glass-card-tag">UNESCO World Heritage</div>
+                    <p class="glass-card-text">
+                        Home to the world's greatest wildlife spectacle - the Great 
+                        Migration of over 1.5 million wildebeest, 250,000 zebras, 
+                        and countless predators following the rains.
+                    </p>
+                    <div class="glass-card-footer">
+                        <span>14,750 km²</span>
+                        <span>Est. 1951</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ngorongoro Conservation Area -->
+            <div class="glass-card animate-fade-in animate-fade-in-delay-2">
+                <div class="glass-card-image">
+                    <img src="https://images.unsplash.com/photo-1552053831-7-55f2012b80d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxCdVmVmYWxsbyl8ZW58MHx8fHwxNjcwNjQwMDIw&ixlib=rb-4.0.3&q=80&w=1080" alt="Ngorongoro Conservation Area" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxCb25kaWVfTmF0aW9uYWx8ZW58MHx8fHwxNjcwNjQwMDU2&ixlib=rb-4.0.3&q=80&w=1080'">
+                    <div class="image-overlay">
+                        <div class="image-tag">Ngorongoro</div>
+                    </div>
+                </div>
+                <div class="glass-card-content">
+                    <div class="glass-card-title">
+                        Ngorongoro Conservation Area
+                    </div>
+                    <div class="glass-card-tag">Volcanic Caldera</div>
+                    <p class="glass-card-text">
+                        Features the world's largest inactive volcanic caldera, 
+                        forming a natural enclosure for an incredible density of 
+                        wildlife including the densest lion population in Africa.
+                    </p>
+                    <div class="glass-card-footer">
+                        <span>8,292 km²</span>
+                        <span>Est. 1959</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarangire National Park -->
+            <div class="glass-card animate-fade-in animate-fade-in-delay-3">
+                <div class="glass-card-image">
+                    <img src="https://images.unsplash.com/photo-1552053831-7-55f2012b80d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxCdVmVmYWxsbyl8ZW58MHx8fHwxNjcwNjQwMDIw&ixlib=rb-4.0.3&q=80&w=1080" alt="Tarangire National Park" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxCb25kaWVfTmF0aW9uYWx8ZW58MHx8fHwxNjcwNjQwMDU2&ixlib=rb-4.0.3&q=80&w=1080'">
+                    <div class="image-overlay">
+                        <div class="image-tag">Tarangire</div>
+                    </div>
+                </div>
+                <div class="glass-card-content">
+                    <div class="glass-card-title">
+                        Tarangire National Park
+                    </div>
+                    <div class="glass-card-tag">Baobab Landscape</div>
+                    <p class="glass-card-text">
+                        Famous for its high density of elephants and ancient baobab 
+                        trees, offering spectacular wildlife viewing during the 
+                        dry season when animals gather along the Tarangire River.
+                    </p>
+                    <div class="glass-card-footer">
+                        <span>2,850 km²</span>
+                        <span>Est. 1970</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selous Game Reserve -->
+            <div class="glass-card animate-fade-in animate-fade-in-delay-4">
+                <div class="glass-card-image">
+                    <img src="https://images.unsplash.com/photo-1556000906-0-9d0b24de49d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxSbGlvbmVyczxlbnwwfHx8fDE2NzA2NDA0MTU&ixlib=rb-4.0.3&q=80&w=1080" alt="Selous Game Reserve" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNzY2Nzl8MHwxfHNlYXJjaHwxfHxCb25kaWVfTmF0aW9uYWx8ZW58MHx8fHwxNjcwNjQwMDU2&ixlib=rb-4.0.3&q=80&w=1080'">
+                    <div class="image-overlay">
+                        <div class="image-tag">Selous</div>
+                    </div>
+                </div>
+                <div class="glass-card-content">
+                    <div class="glass-card-title">
+                        Selous Game Reserve
+                    </div>
+                    <div class="glass-card-tag">Largest Protected Area</div>
+                    <p class="glass-card-text">
+                        One of the largest faunal reserves in the world, encompassing 
+                        diverse habitats from miombo woodlands to open grasslands, 
+                        supporting incredible biodiversity including wild dogs.
+                    </p>
+                    <div class="glass-card-footer">
+                        <span>50,000 km²</span>
+                        <span>Est. 1922</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
-  </main>
 
-  <footer>
-    <p>&copy; <span data-current-year></span> WildGuard Explorer | WildGuard_Society and Tanzania Wildlife</p>
-    <p class='footer-details'>Our mission: protect wildlife through AI-powered monitoring, real‑time alerts, and community engagement. Learn more about our technology and conservation impact.</p>
-    <p class='footer-small'>WildGuard_Society • Founder, Organizers & Moderators • 🐾 Nature exploration 🌱 Nature coexistence ♻️ Environmental restoration</p>
-  </footer>
+    <!-- Conservation Impact Section -->
+    <section class="section" id="conservation">
+        <h2 class="section-title animate-fade-in">Conservation Impact</h2>
+        <div class="stats-grid">
+            <div class="stat-card animate-fade-in">
+                <div class="stat-number">12,000+</div>
+                <div class="stat-label">Animals Monitored Daily</div>
+            </div>
+            <div class="stat-card animate-fade-in animate-fade-in-delay-1">
+                <div class="stat-number">47</div>
+                <div class="stat-label">Protected Areas Covered</div>
+            </div>
+            <div class="stat-card animate-fade-in animate-fade-in-delay-2">
+                <div class="stat-number">89%</div>
+                <div class="stat-label">Poaching Reduction</div>
+            </div>
+            <div class="stat-card animate-fade-in animate-fade-in-delay-3">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Real-time Alerts System</div>
+            </div>
+        </div>
 
-  <script>
-    // Mock data for fallback
-    const mockWildlife = [
-      {name: 'African Lion', habitat: 'Savannah', fact: 'Lions are the only cats that live in groups called prides.', img: 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Lion_%28Panthera_leo%29_male_6y.jpg'},
-      {name: 'African Elephant', habitat: 'Savanna & Forest', fact: 'Elephants have the longest pregnancy of any land animal—about 22 months.', img: 'https://upload.wikimedia.org/wikipedia/commons/3/37/African_Bush_Elephant.jpg'},
-      {name: 'Cheetah', habitat: 'Grasslands', fact: 'Cheetahs can accelerate from 0 to 60 mph in just a few seconds.', img: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Cheetah_%28Acinonyx_jubatus%29_female_2.jpg'}
-    ];
-    const mockTeam = [
-       {name: "Serengeti National Park", role: "National Park", bio: "Tanzania's oldest and most famous national park, renowned for the annual Great Migration of over 1.5 million wildebeest and 250,000 zebras. Home to the Big Five and diverse ecosystems.", img: "https://upload.wikimedia.org/wikipedia/commons/5/55/Serengeti_National_Park_%28Tanzania%29.jpg"},
-       {name: "Ngorongoro Conservation Area", role: "Conservation Area", bio: "Features the world's largest inactive volcanic caldera, the Ngorongoro Crater, which hosts a dense population of wildlife including lions, elephants, and rhinos. A UNESCO World Heritage Site.", img: "https://upload.wikimedia.org/wikipedia/commons/0/03/Ngorongoro_Crater%2C_Tanzania.jpg"},
-       {name: "Selous Game Reserve", role: "Game Reserve", bio: "One of the largest faunal reserves in the world, located in southern Tanzania. Known for its populations of elephants, hippos, African wild dogs, and crocodiles along the Rufiji River.", img: "https://upload.wikimedia.org/wikipedia/commons/3/35/Selous_Game_Reserve_Tanzania.jpg"},
-       {name: "Tarangire National Park", role: "National Park", bio: "Famous for its high density of elephants and baobab trees. The park offers spectacular wildlife viewing during the dry season when animals congregate along the Tarangire River.", img: "https://upload.wikimedia.org/wikipedia/commons/7/73/Tarangire_National_Park_%28Tanzania%29.jpg"}
-    ];
+        <div class="glass-card" style="max-width: 800px; margin: 3rem auto 0;">
+            <div class="glass-card-content">
+                <h3 style="font-family: var(--font-primary); font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem; color: var(--white);">
+                    Our Mission
+                </h3>
+                <p style="font-size: 1.1rem; line-height: 1.7; color: var(--text-light);">
+                    WildGuard Explorer combines cutting-edge AI technology with 
+                    traditional conservation wisdom to protect Tanzania's wildlife 
+                    heritage. Through real-time monitoring, predictive analytics, 
+                    and community engagement, we're creating a sustainable future 
+                    where both wildlife and local communities thrive.
+                </p>
+            </div>
+        </div>
+    </section>
 
-    async function loadWildlife() {
-      try {
-        const resp = await fetch('/api/wildlife');
-        if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        const data = await resp.json();
-        const grid = document.getElementById('wildlife-grid');
-        grid.innerHTML = data.map(item => `
-          <div class='glass-card'>
-            <img src='${item.img}' alt='${item.name}' class='wildlife-img'>
-            <h3>${item.name}</h3>
-            <p><strong>Habitat:</strong> ${item.habitat}</p>
-            <p><strong>Fact:</strong> ${item.fact}</p>
-          </div>
-        `).join('');
-      } catch (e) {
-        console.warn('Using mock wildlife data:', e);
-        const grid = document.getElementById('wildlife-grid');
-        grid.innerHTML = mockWildlife.map(item => `
-          <div class='glass-card'>
-            <img src='${item.img}' alt='${item.name}' class='wildlife-img'>
-            <h3>${item.name}</h3>
-            <p><strong>Habitat:</strong> ${item.habitat}</p>
-            <p><strong>Fact:</strong> ${item.fact}</p>
-          </div>
-        `).join('');
-      }
-    }
+    <!-- Get Involved Section -->
+    <section class="section" id="help">
+        <h2 class="section-title animate-fade-in">How You Can Help</h2>
+        <div class="grid grid-3">
+            <!-- Donate -->
+            <div class="glass-card animate-fade-in animate-fade-in-delay-1">
+                <div class="glass-card-image">
+                    <div class="image-placeholder">
+                        <div>💰</div>
+                        <div>Donate</div>
+                    </div>
+                </div>
+                <div class="glass-card-content">
+                    <div class="glass-card-title">
+                        Support Conservation
+                    </div>
+                    <div class="glass-card-tag">Financial Support</div>
+                    <p class="glass-card-text">
+                        Your donations directly fund anti-poaching units, 
+                        wildlife monitoring equipment, and community outreach 
+                        programs that protect both animals and livelihoods.
+                    </p>
+                    <div class="glass-card-footer">
+                        <span>Tax Deductible</span>
+                        <span>Transparent</span>
+                    </div>
+                </div>
+            </div>
 
-    async function loadTeam() {
-      try {
-        const resp = await fetch('/api/team');
-        if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        const data = await resp.json();
-        const grid = document.getElementById('team-grid');
-        grid.innerHTML = data.map(member => `
-          <div class='glass-card'>
-            <img src='${member.img}' alt='${member.name}' class='wildlife-img'>
-            <h3>${member.name}</h3>
-            <p>${member.role}</p>
-            <p>${member.bio}</p>
-          </div>
-        `).join('');
-      } catch (e) {
-        console.warn('Using mock team data:', e);
-        const grid = document.getElementById('team-grid');
-        grid.innerHTML = mockTeam.map(member => `
-          <div class='glass-card'>
-            <img src='${member.img}' alt='${member.name}' class='wildlife-img'>
-            <h3>${member.name}</h3>
-            <p>${member.role}</p>
-            <p>${member.bio}</p>
-          </div>
-        `).join('');
-      }
-    }
+            <!-- Volunteer -->
+            <div class="glass-card animate-fade-in animate-fade-in-delay-2">
+                <div class="glass-card-image">
+                    <div class="image-placeholder">
+                        <div>🤝</div>
+                        <div>Volunteer</div>
+                    </div>
+                </div>
+                <div class="glass-card-content">
+                    <div class="glass-card-title">
+                        Join Our Team
+                    </div>
+                    <div class="glass-card-tag">Field Work</div>
+                    <p class="glass-card-text">
+                        Experience conservation firsthand by volunteering with our 
+                        field teams. Help with wildlife monitoring, data collection, 
+                        and community education programs across Tanzania's parks.
+                    </p>
+                    <div class="glass-card-footer">
+                        <span>Life Changing</span>
+                        <span>Hands-on</span>
+                    </div>
+                </div>
+            </div>
 
-    document.addEventListener('DOMContentLoaded', () => {
-      loadWildlife();
-      loadTeam();
-    });
-  </script>
+            <!-- Spread Awareness -->
+            <div class="glass-card animate-fade-in animate-fade-in-delay-3">
+                <div class="glass-card-image">
+                    <div class="image-placeholder">
+                        <div>📢</div>
+                        <div>Awareness</div>
+                    </div>
+                </div>
+                <div class="glass-card-content">
+                    <div class="glass-card-title">
+                        Spread the Word
+                    </div>
+                    <div class="glass-card-tag">Advocacy</div>
+                    <p class="glass-card-text">
+                        Share our mission with friends and family, follow our 
+                        expeditions on social media, and become an ambassador for 
+                        wildlife conservation in your community.
+                    </p>
+                    <div class="glass-card-footer">
+                        <span>Amplify Impact</span>
+                        <span>Easy & Free</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About WildGuard Explorer</h3>
+                <p>
+                    WildGuard Explorer is a pioneering conservation technology 
+                    platform dedicated to protecting Tanzania's wildlife through 
+                    innovative AI-powered monitoring, real-time alerts, and 
+                    community-driven conservation initiatives.
+                </p>
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook">Facebook</a>
+                    <a href="#" aria-label="Twitter">Twitter</a>
+                    <a href="#" aria-label="Instagram">Instagram</a>
+                    <a href="#" aria-label="YouTube">YouTube</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#wildlife">Our Animals</a></li>
+                    <li><a href="#ecosystems">Ecosystems</a></li>
+                    <li><a href="#conservation">Conservation</a></li>
+                    <li><a href="#help">Get Involved</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Research</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>
+                    <strong>Email:</strong> info@wildguardexplorer.org<br>
+                    <strong>Phone:</strong> +255 22 123 4567<br>
+                    <strong>Office:</strong> Arusha, Tanzania
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Stay Updated</h3>
+                <p>
+                    Subscribe to our monthly newsletter for expedition updates, 
+                    conservation success stories, and ways to make a difference.
+                </p>
+                <form style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                    <input type="email" placeholder="Enter your email" 
+                           style="flex: 1; padding: 0.75rem; border: none; 
+                                  border-radius: 50px; background: var(--glass-bg); 
+                                  color: var(--white); font-size: 0.9rem;">
+                    <button type="submit" 
+                            style="padding: 0.75rem 1.5rem; border: none; 
+                                   border-radius: 50px; background: linear-gradient(var(--gold), var(--savanna)); 
+                                   color: var(--white); font-weight: 600; cursor: pointer;">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; <span id="year"></span> WildGuard Explorer | 
+               Protecting Wildlife Through Technology & Community</p>
+            <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 0.5rem;">
+                WildGuard Explorer • Tanzania Wildlife Conservation Initiative • 
+                🐾 Wildlife Protection 🌱 Habitat Restoration 👥 Community Empowerment
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Update year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Header scroll effect
+        const header = document.querySelector('.header');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll <= 0) {
+                header.classList.remove('scrolled');
+                return;
+            }
+            
+            if (currentScroll > lastScroll && !header.classList.contains('scrolled')) {
+                // Scrolling down
+                header.classList.add('scrolled');
+            } else if (currentScroll < lastScroll && header.classList.contains('scrolled')) {
+                // Scrolling up
+                header.classList.remove('scrolled');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Navigation active state on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 60) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Background slideshow
+        const slides = document.querySelectorAll('.background-slideshow img');
+        let currentSlide = 0;
+        const slideInterval = 8000; // 8 seconds
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Start slideshow
+        setInterval(nextSlide, slideInterval);
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                    // Remove additional delay classes as they're handled by CSS
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with animation classes
+        document.querySelectorAll('[class*="animate-fade-in"]').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
