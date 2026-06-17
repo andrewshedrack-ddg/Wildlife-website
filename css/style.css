@@ -64,10 +64,13 @@ img {
 .navbar {
     background: var(--header-bg);
     color: var(--header-text);
-    padding: 0.5rem 0;
+    padding: 0.5rem 1rem;
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 /* Navbar decorative elements */
@@ -157,29 +160,52 @@ img {
   /* Navigation styles */
 .navbar nav ul {
     display: flex;
-    justify-content: center;
     gap: 0.8rem;
     list-style: none;
 }
 
 .navbar nav li a {
     font-weight: 600;
-    font-size: 0.65rem;
-    padding: 0.2rem 0.5rem 0.2rem 1.2rem; /* Increased left padding for the unique bar */
-    border-radius: var(--radius);
-    background: rgba(255,255,255,0.12);
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem 0.4rem 1.4rem; /* top right bottom left */
+    min-width: 60px;
+    border-radius: 8px;
+    background: transparent;
     border: 1px solid rgba(255,255,255,0.1);
     transition: var(--transition);
     position: relative;
 }
 
-.navbar nav li a:hover,
-    .navbar nav li a.active {
-        background: rgba(255,255,255,0.25);
-        color: var(--lighter);
-        transform: scale(1.05);
-        border-color: rgba(255,255,255,0.2);
-    }
+.navbar nav li:nth-child(1) a:hover,
+.navbar nav li:nth-child(1) a.active {
+    background: rgba(27,77,62,0.08); /* green */
+    color: var(--green);
+    transform: scale(1.05);
+}
+.navbar nav li:nth-child(2) a:hover,
+.navbar nav li:nth-child(2) a.active {
+    background: rgba(194,178,128,0.08); /* savanna */
+    color: var(--savanna);
+    transform: scale(1.05);
+}
+.navbar nav li:nth-child(3) a:hover,
+.navbar nav li:nth-child(3) a.active {
+    background: rgba(107,142,35,0.08); /* green-light */
+    color: var(--green-light);
+    transform: scale(1.05);
+}
+.navbar nav li:nth-child(4) a:hover,
+.navbar nav li:nth-child(4) a.active {
+    background: rgba(210,180,140,0.08); /* savanna-light */
+    color: var(--savanna-light);
+    transform: scale(1.05);
+}
+.navbar nav li:nth-child(5) a:hover,
+.navbar nav li:nth-child(5) a.active {
+    background: rgba(27,77,62,0.08); /* green */
+    color: var(--green);
+    transform: scale(1.05);
+}
 
     /* Unique left bar for each navigation item */
     .navbar nav li a::before {
