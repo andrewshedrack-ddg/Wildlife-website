@@ -41,11 +41,18 @@ html {
     font-size: 16px;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 body {
     font-family: 'Manrope', system-ui, sans-serif;
-    background: var(--lighter) url('../assets/images/background.png') center/cover fixed no-repeat;
+    background: url('../assets/images/background.png') center/cover fixed no-repeat;
+    background-color: var(--lighter);
     color: var(--text-dark);
     line-height: 1.7;
+    min-height: 100vh;
 }
 
 a {
