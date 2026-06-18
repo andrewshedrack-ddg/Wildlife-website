@@ -27,9 +27,9 @@ def api_wildlife():
         {'name': 'African Lion', 'habitat': 'Savannah', 'fact': 'Lions are the only cats that live in groups called prides.'},
         {'name': 'African Elephant', 'habitat': 'Savanna & Forest', 'fact': 'Elephants have the longest pregnancy of any land animal—about 22 months.'},
         {'name': 'Cheetah', 'habitat': 'Grasslands', 'fact': 'Cheetahs can accelerate from 0 to 60 mph in just a few seconds.'},
-        {'name': 'Giraffe', 'habitat': 'Savannah', 'fact': 'A giraffe\\'s neck is too short to reach the ground; it must splay its legs to drink.'},
+        {'name': 'Giraffe', 'habitat': 'Savannah', 'fact': "A giraffe's neck is too short to reach the ground; it must splay its legs to drink."},
         {'name': 'Hippopotamus', 'habitat': 'Rivers & Lakes', 'fact': 'Despite their appearance, hippos can run faster than a human on land.'},
-        {'name': 'African Fish Eagle', 'habitat': 'Wetlands', 'fact': 'Their distinctive call is known as the \\'voice of Africa\\'.'},
+        {'name': 'African Fish Eagle', 'habitat': 'Wetlands', 'fact': "Their distinctive call is known as the 'voice of Africa'."},
         {'name': 'Nile Crocodile', 'habitat': 'Freshwater', 'fact': 'Nile crocodiles can hold their breath underwater for up to two hours.'},
         {'name': 'Leopard', 'habitat': 'Various', 'fact': 'Leopards are excellent climbers and often haul prey into trees.'},
         {'name': 'Black Rhinoceros', 'habitat': 'Savanna & Shrubland', 'fact': 'Black rhinos have a pointed upper lip for grasping leaves and twigs.'}

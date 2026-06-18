@@ -197,51 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadHelp();
   });
 
-  // Background slideshow with Ken Burns effect - optimized for performance
-  const backgroundImages = [
-    'https://via.placeholder.com/1200x800?text=Lion+Background',
-    'https://via.placeholder.com/1200x800?text=Elephant+Background',
-    'https://via.placeholder.com/1200x800?text=Leopard+Background',
-    'https://via.placeholder.com/1200x800?text=Rhino+Background',
-    'https://via.placeholder.com/1200x800?text=Buffalo+Background'
-  ];
-
-  let currentIndex = 0;
-  let isZoomingIn = true;
-  let zoomLevel = 1;
-  const zoomSpeed = 0.0003; // Reduced zoom speed for smoother performance
-  const maxZoom = 1.15;
-  const minZoom = 1.0;
-
-  function updateBackground() {
-    // Apply Ken Burns effect (slow zoom)
-    zoomLevel = isZoomingIn 
-      ? Math.min(zoomLevel + zoomSpeed, maxZoom) 
-      : Math.max(zoomLevel - zoomSpeed, minZoom);
-    
-    // Reverse direction at limits
-    if (zoomLevel >= maxZoom) isZoomingIn = false;
-    if (zoomLevel <= minZoom) isZoomingIn = true;
-    
-    // Apply background image with transform
-    document.body.style.backgroundImage = `url('${backgroundImages[currentIndex]}')`;
-    document.body.style.backgroundSize = `${zoomLevel * 100}%`;
-    document.body.style.backgroundPosition = 'center';
-  }
-
-  function changeBackground() {
-    currentIndex = (currentIndex + 1) % backgroundImages.length;
-    // Reset zoom when changing image
-    zoomLevel = minZoom;
-    isZoomingIn = true;
-  }
-
-  // Change background every 10 seconds (increased from 5s to reduce CPU load)
-  setInterval(changeBackground, 10000);
-  
-  // Update Ken Burns effect every 100ms (increased from 50ms for better performance)
-  setInterval(updateBackground, 100);
-  
-  // Set initial background
-  updateBackground();
+  // Hero slideshow functionality is handled by CSS and the hero section elements above.
+  // The body background is set in style.css using background.png and shows through the sections.
 });

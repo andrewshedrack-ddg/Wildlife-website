@@ -83,52 +83,7 @@ img {
     justify-content: space-between;
 }
 
-/* Navbar decorative elements */
-.navbar-decor {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none; /* So they don't interfere with clicks */
-}
 
-.decor-img {
-    position: absolute;
-    opacity: 0.15;
-    filter: brightness(0) invert(1); /* Make them white to match navbar text */
-    transition: var(--transition);
-}
-
-.decor-img:hover {
-    opacity: 0.25;
-    transform: scale(1.1);
-}
-
-/* Position the decorative images */
-.decor-1 {
-    top: 10%;
-    left: 5%;
-    width: 25px;
-    height: 25px;
-    transform: rotate(-15deg);
-}
-
-.decor-2 {
-    bottom: 10%;
-    right: 5%;
-    width: 30px;
-    height: 30px;
-    transform: rotate(20deg);
-}
-
-.decor-3 {
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    transform: translate(-50%, -50%) rotate(30deg);
-}
 
 .container {
     max-width: var(--max-width);
@@ -172,75 +127,23 @@ img {
     display: flex;
     gap: 0.8rem;
     list-style: none;
+    align-items: center;
 }
 
 .navbar nav li a {
     font-weight: 600;
     font-size: 0.75rem;
-    padding: 0.4rem 0.8rem 0.4rem 1.4rem; /* top right bottom left */
-    min-width: 60px;
-    border-radius: 8px;
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.2rem 0.5rem;
+    color: var(--header-text);
     transition: var(--transition);
-    position: relative;
+    text-decoration: none;
 }
 
-.navbar nav li:nth-child(1) a:hover,
-.navbar nav li:nth-child(1) a.active {
-    background: rgba(27,77,62,0.08); /* green */
+.navbar nav li a:hover,
+.navbar nav li a.active {
     color: var(--green);
-    transform: scale(1.05);
+    text-decoration: underline;
 }
-.navbar nav li:nth-child(2) a:hover,
-.navbar nav li:nth-child(2) a.active {
-    background: rgba(194,178,128,0.08); /* savanna */
-    color: var(--savanna);
-    transform: scale(1.05);
-}
-.navbar nav li:nth-child(3) a:hover,
-.navbar nav li:nth-child(3) a.active {
-    background: rgba(107,142,35,0.08); /* green-light */
-    color: var(--green-light);
-    transform: scale(1.05);
-}
-.navbar nav li:nth-child(4) a:hover,
-.navbar nav li:nth-child(4) a.active {
-    background: rgba(210,180,140,0.08); /* savanna-light */
-    color: var(--savanna-light);
-    transform: scale(1.05);
-}
-.navbar nav li:nth-child(5) a:hover,
-.navbar nav li:nth-child(5) a.active {
-    background: rgba(27,77,62,0.08); /* green */
-    color: var(--green);
-    transform: scale(1.05);
-}
-
-    /* Unique left bar for each navigation item */
-    .navbar nav li a::before {
-        content: '';
-        position: absolute;
-        left: 0.5rem;
-        top: 0;
-        bottom: 0;
-        width: 3px;
-        border-radius: 2px;
-        opacity: 0.3;
-        transition: opacity 0.3s;
-    }
-
-    .navbar nav li:hover a::before,
-    .navbar nav li a.active::before {
-        opacity: 0.6;
-    }
-
-    /* Set unique colors for each item */
-    .navbar nav li:nth-child(1) a::before { background-color: var(--green); } /* Home */
-    .navbar nav li:nth-child(2) a::before { background-color: var(--savanna); } /* Library */
-    .navbar nav li:nth-child(3) a::before { background-color: var(--green-light); } /* Scan */
-    .navbar nav li:nth-child(4) a::before { background-color: var(--savanna-light); } /* About */
-    .navbar nav li:nth-child(5) a::before { background-color: var(--green); } /* Contact */
 
 /* Hero Section */
 .hero {
@@ -259,7 +162,7 @@ img {
 
 .hero-slideshow,
 .hero-slide {
-    background: transparent !important;
+
 }
 
 .hero-slideshow {
@@ -648,6 +551,7 @@ section {
 
 .footer-links ul {
     list-style: none;
+    align-items: center;
     padding: 0;
 }
 
