@@ -352,7 +352,8 @@ section {
 
 /* Wildlife Section */
 .wildlife-section {
-    background: rgba(255,255,255,0.75);
+    background: var(--lighter);
+    margin-bottom: 3rem;
 }
 
 .wildlife-grid {
@@ -421,7 +422,7 @@ section {
 
 /* Parks Section */
 .parks-section {
-    background: rgba(255,255,255,0.75);
+    background: var(--lighter);
 }
 
 .parks-grid {
@@ -490,7 +491,7 @@ section {
 
 /* Conservation Section */
 .conservation-section {
-    background: rgba(255,255,255,0.75);
+    background: var(--lighter);
 }
 
 .conservation-grid {
@@ -535,7 +536,7 @@ section {
 
 /* Get Involved Section */
 .get-involved-section {
-    background: rgba(194,178,128,0.75);
+    background: var(--savanna);
     color: var(--dark);
 }
 
