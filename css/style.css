@@ -68,7 +68,7 @@ img {
 
 /* Header */
 .navbar {
-    background: var(--header-bg);
+    background: rgba(15,42,32,0.8);
     color: var(--header-text);
     padding: 0.5rem 1rem;
     box-shadow: var(--shadow);
@@ -353,7 +353,7 @@ section {
 
 /* Wildlife Section */
 .wildlife-section {
-    background: var(--lighter);
+    background: rgba(255,255,255,0.8);
     margin-bottom: 3rem;
 }
 
@@ -423,7 +423,7 @@ section {
 
 /* Parks Section */
 .parks-section {
-    background: var(--lighter);
+    background: rgba(255,255,255,0.8);
 }
 
 .parks-grid {
@@ -492,7 +492,8 @@ section {
 
 /* Conservation Section */
 .conservation-section {
-    background: var(--lighter);
+    background: rgba(255,255,255,0.8);
+    margin-bottom: 3rem;
 }
 
 .conservation-grid {
@@ -537,8 +538,9 @@ section {
 
 /* Get Involved Section */
 .get-involved-section {
-    background: var(--savanna);
+    background: rgba(194,178,128,0.8);
     color: var(--dark);
+    margin-bottom: 3rem;
 }
 
 .get-involved-section .section-title,
@@ -605,9 +607,10 @@ section {
 
 /* Footer */
 .site-footer {
-    background: var(--darker);
+    background: rgba(26,37,26,0.8);
     color: var(--lighter);
     padding: 3rem 0 1.5rem;
+    margin-top: 3rem;
 }
 
 .footer-content {
