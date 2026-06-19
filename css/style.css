@@ -83,7 +83,7 @@ img { max-width: 100%; height: auto; display: block; }
 .hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; background-repeat: no-repeat; display: none; }
 .hero-slide.active { display: block; }
 .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%); z-index: 1; }
-.hero-text { position: relative; z-index: 2; max-width: 800px; }
+.hero-text { position: relative; z-index: 2; max-width: 800px; background: rgba(255,255,255,0.08); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-radius: 20px; padding: 2rem 2.5rem; border: 1px solid rgba(255,255,255,0.25); }
 .hero-text h2 { font-family: 'Fraunces', serif; font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
 .hero-text p { font-size: 1.3rem; opacity: 0.9; max-width: 700px; margin: 0 auto; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
 
@@ -113,20 +113,15 @@ section { padding: 1rem 0; position: relative; background: transparent; }
   border-color: rgba(255,255,255,0.35); box-shadow: 0 4px 14px rgba(0,0,0,0.12); transform: translateY(-3px);
 }
 
-/* Hover hint arrow */
-.wildlife-card::after, .park-card::after, .conservation-item::after, .action-card::after {
-  content: '->'; position: absolute; bottom: 4px; right: 6px; font-size: 0.7rem;
-  color: var(--green); opacity: 0.5; z-index: 3; transition: opacity 0.3s;
-}
-.wildlife-card:hover::after, .park-card:hover::after, .conservation-item:hover::after, .action-card:hover::after { opacity: 0; }
-
 /* Slide-in panel */
 .wildlife-info .full-details, .park-info .full-details,
 .conservation-item .full-details, .action-card .full-details {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(255,255,255,0.97); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  padding: 0.75rem; transform: translateX(100%); transition: transform 0.35s ease;
-  z-index: 5; overflow-y: auto; box-sizing: border-box; display: flex; flex-direction: column;
+  padding: 0.75rem; transform: translateX(110%); transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 15; overflow-y: auto; box-sizing: border-box; display: flex; flex-direction: column;
+  box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+  border-left: 3px solid var(--green);
 }
 .wildlife-card:hover .full-details, .park-card:hover .full-details,
 .conservation-item:hover .full-details, .action-card:hover .full-details { transform: translateX(0); }
