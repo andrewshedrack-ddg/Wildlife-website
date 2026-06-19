@@ -816,3 +816,26 @@ section {
 .park-card { overflow: visible !important; }
 .conservation-item { overflow: visible !important; }
 .action-card { overflow: visible !important; }
+
+/* Further reduce header size */
+.navbar {
+    padding: 0.25rem 0 !important;
+}
+.navbar .logo-img {
+    width: 40px !important;
+    height: 40px !important;
+}
+.navbar .logo-text {
+    font-size: 1rem !important;
+}
+.navbar nav li a {
+    padding: 0.15rem 0.3rem !important;
+    font-size: 0.7rem !important;
+}
+/* Adjust animal name positioning */
+.wildlife-info h3 {
+    margin-bottom: 0.5rem !important;
+}
+.park-info h3 {
+    margin-bottom: 0.5rem !important;
+}
