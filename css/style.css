@@ -254,7 +254,7 @@ section {
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 1.5rem;
+    padding: 0.75rem;
     background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
     color: var(--lighter);
     display: flex;
@@ -264,7 +264,7 @@ section {
 
 .wildlife-info h3 {
     font-family: 'Fraunces', serif;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
     color: var(--lighter);
@@ -276,7 +276,7 @@ section {
     line-height: 1.4;
     color: var(--lighter);
     text-shadow: 0 1px 1px rgba(0,0,0,0.2);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .wildlife-info p strong {
@@ -327,7 +327,7 @@ section {
 }
 
 .park-info {
-    padding: 1.5rem;
+    padding: 0.75rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -342,7 +342,7 @@ section {
 }
 
 .park-info p {
-    margin: 0.75rem 0;
+    margin: 0.5rem 0;
     line-height: 1.6;
     color: var(--text-dark);
     flex-grow: 1;
@@ -554,7 +554,7 @@ section {
     text-align: center;
     padding-top: 2rem;
     border-top: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: rgba(255,255,255,0.7);
 }
 
@@ -653,7 +653,7 @@ section {
     }
     
     .header-content p {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
     
     .hero-text h2 {
@@ -685,7 +685,7 @@ section {
     
     .conservation-item,
     .action-card {
-        padding: 1.5rem;
+        padding: 0.75rem;
     }
     
     .conservation-icon,
@@ -706,7 +706,7 @@ section {
     width: 100%;
     height: 100%;
     background: var(--lighter);
-    padding: 1.5rem;
+    padding: 0.75rem;
     box-sizing: border-box;
     border-left: 3px solid var(--green);
     box-shadow: -3px 0 10px rgba(0,0,0,0.1);
@@ -727,7 +727,7 @@ section {
 /* Also style the content inside the full-details */
 .wildlife-card .full-details p,
 .park-card .full-details p {
-    margin: 0.75rem 0;
+    margin: 0.5rem 0;
     line-height: 1.6;
     color: var(--text-dark);
 }
