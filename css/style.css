@@ -729,3 +729,14 @@ section {
 }
 .wildlife-card { position: relative; }
 .park-card { position: relative; }
+
+
+body {
+    background: url('../assets/images/background.png') center/cover fixed no-repeat !important;
+    background-color: var(--darker) !important;
+}
+.navbar {
+    background: rgba(26,37,26,0.15) !important;
+    box-shadow: none !important;
+}
+
