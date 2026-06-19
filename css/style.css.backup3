@@ -1,7 +1,3 @@
-body {
-    background: url('../assets/images/background.png') center/cover fixed no-repeat !important;
-    background-color: transparent !important;
-}
 /* WildGuard Explorer - Clean, Natural Styles */
 * {
     margin: 0;
@@ -41,6 +37,12 @@ html {
     font-size: 16px;
 }
 
+body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    background: var(--lighter);
+    color: var(--text-dark);
+    line-height: 1.7;
+}
 
 a {
     color: inherit;
@@ -729,6 +731,10 @@ section {
 .park-card { position: relative; }
 
 
+body {
+    background: url('../assets/images/background.png') center/cover fixed no-repeat !important;
+    background-color: var(--darker) !important;
+}
 .navbar {
     background: rgba(26,37,26,0.15) !important;
     box-shadow: none !important;
@@ -768,7 +774,7 @@ section {
 .parks-section,
 .conservation-section,
 .get-involved-section {
-    background: rgba(26,37,26,0.3) !important;
+    background: rgba(26,37,26,0.6) !important;
     color: var(--lighter) !important;
 }
 
@@ -810,9 +816,3 @@ section {
 .action-card .full-details p strong {
     color: var(--green) !important;
 }
-
-/* Ensure cards can overflow to show full details panel */
-.wildlife-card { overflow: visible !important; }
-.park-card { overflow: visible !important; }
-.conservation-item { overflow: visible !important; }
-.action-card { overflow: visible !important; }
