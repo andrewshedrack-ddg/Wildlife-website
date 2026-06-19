@@ -1,0 +1,247 @@
+#!/usr/bin/env python3
+# Creates the style.css file
+
+header = """/* ============================================================
+   WildGuard Explorer - Main Stylesheet
+   Ultra-compact cards with side panel hover effect
+   ============================================================ */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --dark: #2d372d;
+  --darker: #1a251a;
+  --light: #f8f9fa;
+  --lighter: #ffffff;
+  --green: #1b4d3e;
+  --green-light: #6b8e23;
+  --text-dark: #2c3e2c;
+  --text-light: #f0f0f0;
+  --max-width: 1200px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow: 0 2px 6px rgba(0,0,0,0.15);
+  --shadow-hover: 0 6px 18px rgba(0,0,0,0.2);
+  --transition: all 0.3s ease;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+html, body { min-height: 100%; }
+
+body {
+  font-family: 'Manrope', system-ui, sans-serif;
+  background: url('../assets/images/background.png') center/cover fixed no-repeat;
+  background-color: var(--darker);
+  color: var(--text-dark);
+  line-height: 1.7;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(26, 37, 26, 0.25);
+  z-index: -1;
+  pointer-events: none;
+}
+
+a { color: inherit; text-decoration: none; transition: var(--transition); }
+img { max-width: 100%; height: auto; display: block; }
+.container { max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+"""
+
+navbar = """
+/* ---------- Header ---------- */
+.navbar {
+  background: rgba(15, 42, 32, 0.15);
+  color: var(--text-light);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 100;
+}
+.logo-container { display: flex; align-items: center; gap: 1rem; }
+.logo-img { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 1px solid var(--green-light); box-shadow: var(--shadow); transition: var(--transition); }
+.logo-img:hover { transform: scale(1.05); box-shadow: var(--shadow-hover); }
+.logo-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 800; color: var(--text-light); }
+.navbar nav ul { display: flex; gap: 0.8rem; list-style: none; align-items: center; }
+.navbar nav li a { font-weight: 600; font-size: 0.75rem; padding: 0.2rem 0.5rem; color: var(--text-light); transition: var(--transition); }
+.navbar nav li a:hover, .navbar nav li a.active { color: var(--green-light); text-decoration: underline; }
+.mobile-menu-toggle { display: none; background: none; border: none; color: var(--text-light); font-size: 1.5rem; cursor: pointer; padding: 0.5rem; }
+"""
+
+hero = """
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; height: 60vh; min-height: 400px;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; color: var(--lighter);
+  padding: 0 2rem; overflow: hidden;
+}
+.hero-slideshow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+.hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; background-repeat: no-repeat; display: none; }
+.hero-slide.active { display: block; }
+.hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%); z-index: 1; }
+.hero-text { position: relative; z-index: 2; max-width: 800px; }
+.hero-text h2 { font-family: 'Fraunces', serif; font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
+.hero-text p { font-size: 1.3rem; opacity: 0.9; max-width: 700px; margin: 0 auto; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
+"""
+
+sections = """
+/* ---------- Sections ---------- */
+section { padding: 1rem 0; position: relative; background: transparent; }
+.wildlife-section, .parks-section, .conservation-section, .get-involved-section { background: transparent; }
+
+.section-title {
+  text-align: center; font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 700;
+  margin-bottom: 0.75rem; color: var(--dark); position: relative;
+  text-shadow: 0 1px 3px rgba(255,255,255,0.6);
+}
+.section-title::after { content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); width: 50px; height: 3px; background: var(--green); border-radius: 2px; }
+.section-subtitle { text-align: center; font-size: 1rem; color: var(--text-dark); max-width: 700px; margin: 0 auto 1rem; line-height: 1.5; text-shadow: 0 1px 2px rgba(255,255,255,0.5); }
+"""
+
+cards = """
+/* ============================================================
+   COMPACT CARD LAYOUT - Slide-in detail panel on hover
+   ============================================================ */
+
+/* Shared card base */
+.wildlife-card, .park-card, .conservation-item, .action-card {
+  position: relative; overflow: hidden; border-radius: var(--radius-lg);
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: all 0.3s ease;
+}
+.wildlife-card:hover, .park-card:hover, .conservation-item:hover, .action-card:hover {
+  border-color: rgba(255,255,255,0.35); box-shadow: 0 4px 14px rgba(0,0,0,0.12); transform: translateY(-3px);
+}
+
+/* Hover hint arrow */
+.wildlife-card::after, .park-card::after, .conservation-item::after, .action-card::after {
+  content: '->'; position: absolute; bottom: 4px; right: 6px; font-size: 0.7rem;
+  color: var(--green); opacity: 0.5; z-index: 3; transition: opacity 0.3s;
+}
+.wildlife-card:hover::after, .park-card:hover::after, .conservation-item:hover::after, .action-card:hover::after { opacity: 0; }
+
+/* Slide-in panel */
+.wildlife-info .full-details, .park-info .full-details,
+.conservation-item .full-details, .action-card .full-details {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(255,255,255,0.97); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  padding: 0.75rem; transform: translateX(100%); transition: transform 0.35s ease;
+  z-index: 5; overflow-y: auto; box-sizing: border-box; display: flex; flex-direction: column;
+}
+.wildlife-card:hover .full-details, .park-card:hover .full-details,
+.conservation-item:hover .full-details, .action-card:hover .full-details { transform: translateX(0); }
+
+/* ---------- Wildlife ---------- */
+.wildlife-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
+.wildlife-card { height: 105px; }
+.wildlife-image { height: 60px; overflow: hidden; flex-shrink: 0; }
+.wildlife-image img { width: 100%; height: 100%; object-fit: cover; }
+.wildlife-info { padding: 0.4rem 0.6rem; }
+.wildlife-info h3 { font-family: 'Fraunces', serif; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.15rem; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wildlife-info .brief { font-size: 0.7rem; color: var(--text-dark); line-height: 1.25; }
+.wildlife-info p { margin: 0.2rem 0; line-height: 1.35; color: var(--text-dark); font-size: 0.75rem; }
+.wildlife-info p strong { color: var(--green); }
+
+/* ---------- Parks ---------- */
+.parks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
+.park-card { height: 105px; }
+.park-image { height: 60px; overflow: hidden; flex-shrink: 0; }
+.park-image img { width: 100%; height: 100%; object-fit: cover; }
+.park-info { padding: 0.4rem 0.6rem; }
+.park-info h3 { font-family: 'Fraunces', serif; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.15rem; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.park-info .brief { font-size: 0.7rem; color: var(--text-dark); line-height: 1.25; }
+.park-info p { margin: 0.2rem 0; line-height: 1.35; color: var(--text-dark); font-size: 0.75rem; }
+.park-info p strong { color: var(--green); }
+
+/* ---------- Conservation ---------- */
+.conservation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
+.conservation-item { height: 100px; text-align: center; padding: 0.6rem; }
+.conservation-icon { font-size: 1.3rem; margin-bottom: 0.3rem; color: var(--green); }
+.conservation-item h3 { font-family: 'Fraunces', serif; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.15rem; color: var(--dark); }
+.conservation-item .brief { font-size: 0.7rem; color: var(--text-dark); line-height: 1.25; }
+.conservation-item p { line-height: 1.35; color: var(--text-dark); font-size: 0.75rem; }
+.conservation-item .full-details { justify-content: center; text-align: left; }
+
+/* ---------- Action ---------- */
+.get-involved-section .section-title, .get-involved-section .section-subtitle { color: var(--dark); }
+.action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
+.action-card { height: 105px; text-align: center; padding: 0.6rem; }
+.action-icon { font-size: 1.3rem; margin-bottom: 0.3rem; color: var(--green); }
+.action-card h3 { font-family: 'Fraunces', serif; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.15rem; color: var(--dark); }
+.action-card .brief { font-size: 0.7rem; color: var(--text-dark); line-height: 1.25; }
+.action-card p { line-height: 1.35; color: var(--text-dark); font-size: 0.75rem; margin-bottom: 0.4rem; }
+.action-card .full-details { justify-content: center; }
+.action-button { display: inline-block; background: var(--green); color: var(--lighter); padding: 0.4rem 0.8rem; border-radius: var(--radius); font-weight: 600; font-size: 0.75rem; transition: var(--transition); }
+.action-button:hover { background: var(--green-light); transform: translateY(-2px); }
+"""
+
+footer = """
+/* ---------- Footer ---------- */
+.site-footer { background: rgba(26, 37, 26, 0.15); color: var(--text-light); padding: 1.5rem 0 0.75rem; }
+.footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem; }
+.footer-info h3 { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--lighter); }
+.footer-info p { line-height: 1.5; color: rgba(255,255,255,0.85); margin-bottom: 0.75rem; font-size: 0.85rem; }
+.footer-links h4, .footer-social h4 { font-family: 'Fraunces', serif; font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--lighter); }
+.footer-links ul { list-style: none; padding: 0; margin: 0; }
+.footer-links li { margin-bottom: 0.4rem; }
+.footer-links li a { color: rgba(255,255,255,0.75); transition: var(--transition); font-size: 0.8rem; }
+.footer-links li a:hover { color: var(--lighter); }
+.social-links { display: flex; gap: 0.6rem; }
+.social-link { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: rgba(255,255,255,0.2); border-radius: 50%; color: var(--lighter); font-size: 1rem; transition: var(--transition); }
+.social-link:hover { background: rgba(255,255,255,0.3); transform: translateY(-3px); }
+.footer-bottom { text-align: center; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; color: rgba(255,255,255,0.7); }
+.footer-bottom p { margin: 0.3rem 0; line-height: 1.4; }
+"""
+
+responsive = """
+/* ============================================================
+   Responsive Design
+   ============================================================ */
+@media (max-width: 1024px) {
+  .container { padding: 0 1.5rem; }
+  .section-title { font-size: 1.6rem; }
+  .hero-text h2 { font-size: 2rem; }
+  .hero-text p { font-size: 1.1rem; }
+}
+
+@media (max-width: 768px) {
+  .navbar { flex-wrap: wrap; padding: 0.5rem; }
+  .navbar nav ul { gap: 0.4rem; }
+  .hero { height: 50vh; min-height: 300px; }
+  .hero-text h2 { font-size: 1.8rem; }
+  .hero-text p { font-size: 1.1rem; }
+  .section-title { font-size: 1.5rem; }
+  .wildlife-grid, .parks-grid, .conservation-grid, .action-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-content { grid-template-columns: 1fr; text-align: center; }
+  .footer-info, .footer-links, .footer-social { text-align: center; margin-bottom: 1rem; }
+  .social-links { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 1rem; }
+  .logo-text { font-size: 0.9rem; }
+  .navbar nav li a { font-size: 0.7rem; padding: 0.15rem 0.3rem; }
+  .hero { height: 45vh; }
+  .hero-text h2 { font-size: 1.6rem; }
+  .hero-text p { font-size: 1rem; }
+  .section-title { font-size: 1.3rem; }
+  .wildlife-grid, .parks-grid, .conservation-grid, .action-grid { grid-template-columns: 1fr; }
+  .footer-content { gap: 1rem; }
+}
+"""
+
+with open('css/style.css', 'w', encoding='utf-8') as f:
+    f.write(header + navbar + hero + sections + cards + footer + responsive)
+
+print('CSS file written successfully!')
