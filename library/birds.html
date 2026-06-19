@@ -1,100 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Birds | WildGuard Explorer</title>
-	<link rel="stylesheet" href="../css/style.css">
-	<link rel="stylesheet" href="../css/library.css">
-	<script defer src="../js/main.js"></script>
-	<script defer src="../js/library.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birds | WildGuard Explorer</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/library.css">
+  <script defer src="../js/main.js"></script>
+  <script defer src="../js/library.js"></script>
 </head>
 <body>
-	<header class="navbar">
-		<div class="logo">WildGuard Explorer</div>
-		<nav>
-			<ul>
-				<li><a href="../index.html">Home</a></li>
-				<li><a href="birds.html" class="active">Library</a></li>
-				<li><a href="../scan.html">Scan</a></li>
-				<li><a href="../about.html">About</a></li>
-				<li><a href="../contact.html">Contact</a></li>
-			</ul>
-		</nav>
-	</header>
+  <header class="navbar">
+    <div class="logo">WildGuard Explorer</div>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="birds.html" class="active">Library</a></li>
+        <li><a href="../scan.html">Scan</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-	<main>
-		<section class="page-banner">
-			<span class="eyebrow">Library</span>
-			<h1>Birds</h1>
-			<p class="lede">A selection of notable bird species found across Africa with quick facts and habitat notes.</p>
-		</section>
-
-		<section class="section-shell">
-			<div class="section-header">
-				<div>
-					<span class="section-kicker">Featured birds</span>
-					<h2 class="section-title">Visual ID and short context</h2>
-				</div>
-				<p>Images are from public media collections (Wikimedia Commons). Click a species to open the scan workflow for identification.</p>
-			</div>
-
-			<div class="species-grid">
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/8/87/African_fish_eagle_%28Haliaeetus_vocifer%29_Ethiopia.jpg" alt="African fish eagle">
-					<div class="content">
-						<div class="meta-row"><span>Haliaeetus vocifer</span><span>Raptor</span></div>
-						<h3>African Fish Eagle</h3>
-						<p>Frequently seen perched near large water bodies where it hunts fish and small waterbirds.</p>
-						<ul class="facts"><li>Found near lakes and rivers</li><li>Distinctive call</li></ul>
-					</div>
-				</article>
-
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg" alt="Lilac-breasted roller">
-					<div class="content">
-						<div class="meta-row"><span>Coracias caudatus</span><span>Percher</span></div>
-						<h3>Lilac-breasted Roller</h3>
-						<p>Colorful insectivore often seen perched in open country before swooping on prey.</p>
-						<ul class="facts"><li>Vibrant plumage</li><li>Common in savannahs</li></ul>
-					</div>
-				</article>
-
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Struthio_camelus_portrait_Whipsnade_Zoo.jpg" alt="Ostrich">
-					<div class="content">
-						<div class="meta-row"><span>Struthio camelus</span><span>Flightless</span></div>
-						<h3>Ostrich</h3>
-						<p>Largest living bird; adapted to open plains with strong legs for running.</p>
-						<ul class="facts"><li>Fast runner</li><li>Feeds on seeds and invertebrates</li></ul>
-					</div>
-				</article>
-
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/1/1f/Flamenco_com%C3%BAn_%28Phoenicopterus_roseus%29%2C_Walvis_Bay%2C_Namibia%2C_2018-08-05%2C_DD_30.jpg" alt="Greater flamingo">
-					<div class="content">
-						<div class="meta-row"><span>Phoenicopterus roseus</span><span>Wader</span></div>
-						<h3>Greater Flamingo</h3>
-						<p>Pink wader that feeds by filtering small invertebrates and algae from shallow waters.</p>
-						<ul class="facts"><li>Often forms large flocks</li><li>Feeds in saline lakes</li></ul>
-					</div>
-				</article>
-
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Secretario_%28Sagittarius_serpentarius%29%2C_parque_nacional_de_Amboseli%2C_Kenia%2C_2024-05-23%2C_DD_13.jpg" alt="Secretarybird">
-					<div class="content">
-						<div class="meta-row"><span>Sagittarius serpentarius</span><span>Predator</span></div>
-						<h3>Secretarybird</h3>
-						<p>Long-legged terrestrial bird of prey known for hunting snakes and other small vertebrates.</p>
-						<ul class="facts"><li>Terrestrial hunter</li><li>Found on open grasslands</li></ul>
-					</div>
-				</article>
-			</div>
-		</section>
-	</main>
-
-	<footer>
-		<p>&copy; <span data-current-year></span> WildGuard Explorer | Birds</p>
-	</footer>
-</body>
+  <main>
+    <section class="wildlife-section">
+      <div class="container">
+        <h2 class="section-title">Birds of the Skies</h2>
+        <p class="section-subtitle">A selection of notable bird species found across Africa with quick facts and habitat notes.</p>
+        
+        <div class="wildlife-grid">
+          <!-- Secretarybird (Vulnerable) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Secretario_%28Sagittarius_serpentarius%29%2C_parque_nacional_de_Amboseli%2C_Kenia%2C_2024-05-23%2C_DD_13.jpg" alt="Secretarybird">
+            </div>
+            <div class="wildlife-info">
+              <h3>Secretarybird</h3>
+              <p class="brief">Vulnerable</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Sagittarius serpentarius</p>
+                <p><strong>Conservation Status:</strong> Vulnerable</p>
+                <p><strong>Weight Range:</strong> 4.9 - 7.3 lbs (2.2 - 3.3 kg)</p>
+                <p><strong>Key Detail:</strong> Long-legged terrestrial bird of prey known for hunting snakes and other small vertebrates.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- African Fish Eagle (Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/African_fish_eagle_%28Haliaeetus_vocifer%29_Ethiopia.jpg" alt="African Fish Eagle">
+            </div>
+            <div class="wildlife-info">
+              <h3>African Fish Eagle</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Haliaeetus vocifer</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 4.4 - 7.9 lbs (2.0 - 3.6 kg)</p>
+                <p><strong>Key Detail:</strong> Frequently seen perched near large water bodies where it hunts fish and small waterbirds.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Lilac-breasted Roller (Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg" alt="Lilac-breasted Roller">
+            </div>
+            <div class="wildlife-info">
+              <h3>Lilac-breasted Roller</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Coracias caudatus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 0.24 - 0.28 lbs (110 - 130 g)</p>
+                <p><strong>Key Detail:</strong> Colorful insectivore often seen perched in open country before swooping on prey.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Greater Flamingo (Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="../assets/images/flamingo.png" alt="Greater Flamingo">
+            </div>
+            <div class="wildlife-info">
+              <h3>Greater Flamingo</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Phoenicopterus roseus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 4.4 - 8.8 lbs (2.0 - 4.0 kg)</p>
+                <p><strong>Key Detail:</strong> Pink wader that feeds by filtering small invertebrates and algae from shallow waters.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Ostrich (Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Struthio_camelus_portrait_Whipsnade_Zoo.jpg" alt="Ostrich">
+            </div>
+            <div class="wildlife-info">
+              <h3>Ostrich</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Struthio camelus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 139 - 320 lbs (63 - 145 kg)</p>
+                <p><strong>Key Detail:</strong> Largest living bird; adapted to open plains with strong legs for running.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Eagle (various species, generally Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="../assets/images/Eagle.png" alt="Eagle">
+            </div>
+            <div class="wildlife-info">
+              <h3>Eagle</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Aquila chrysaetos (Golden Eagle example)</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 6.6 - 13.9 lbs (3.0 - 6.3 kg)</p>
+                <p><strong>Key Detail:</strong> Eagles have powerful eyesight, up to 4-8 times stronger than humans, enabling them to spot prey from great distances.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Owl (Least Concern for most species) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="../assets/images/owl.png" alt="Owl">
+            </div>
+            <div class="wildlife-info">
+              <h3>Owl</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Bubo bubo (Eurasian Eagle-Owl example)</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 3.2 - 8.8 lbs (1.5 - 4.0 kg)</p>
+                <p><strong>Key Detail:</strong> Owls have specialized feathers that allow them to fly almost silently, helping them sneak up on prey.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Goose (Least Concern for most species) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="../assets/images/goose.png" alt="Goose">
+            </div>
+            <div class="wildlife-info">
+              <h3>Goose</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Anser anser (Greylag Goose example)</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 5.5 - 8.8 lbs (2.5 - 4.0 kg)</p>
+                <p><strong>Key Detail:</strong> Geese are highly social and mate for life, often forming strong family bonds within their flocks.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Peacock (Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="../assets/images/peacock.png" alt="Peacock">
+            </div>
+            <div class="wildlife-info">
+              <h3>Peacock</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Pavo cristatus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 8.8 - 13.2 lbs (4.0 - 6.0 kg)</p>
+                <p><strong>Key Detail:</strong> The male peacock's vibrant tail feathers are used in elaborate courtship displays to attract mates.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Turkey (Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="../assets/images/Turkey.png" alt="Turkey">
+            </div>
+            <div class="wildlife-info">
+              <h3>Turkey</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Meleagris gallopavo</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 5.5 - 24.0 lbs (2.5 - 11.0 kg)</p>
+                <p><strong>Key Detail:</strong> Turkeys can run at speeds of up to 25 mph (40 km/h) and are surprisingly agile fliers for short distances.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- White-headed Eagle (Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="../assets/images/White Head Eagle.png" alt="White-headed Eagle">
+            </div>
+            <div class="wildlife-info">
+              <h3>White-headed Eagle</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Ichthyophaga ichthyaetus (Grey-headed Fish Eagle example)</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 4.4 - 6.6 lbs (2.0 - 3.0 kg)</p>
+                <p><strong>Key Detail:</strong> The white head and tail of this eagle develop as the bird matures, appearing at around 4-5 years of age.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <footer>
+      <p>&copy; <span data-current-year></span> WildGuard Explorer | Birds</p>
+    </footer>
+  </body>
 </html>

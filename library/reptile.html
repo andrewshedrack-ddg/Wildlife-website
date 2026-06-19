@@ -1,79 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Reptiles | WildGuard Explorer</title>
-	<link rel="stylesheet" href="../css/style.css">
-	<link rel="stylesheet" href="../css/library.css">
-	<script defer src="../js/main.js"></script>
-	<script defer src="../js/library.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reptiles | WildGuard Explorer</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/library.css">
+  <script defer src="../js/main.js"></script>
+  <script defer src="../js/library.js"></script>
 </head>
 <body>
-	<header class="navbar">
-		<div class="logo">WildGuard Explorer</div>
-		<nav>
-			<ul>
-				<li><a href="../index.html">Home</a></li>
-				<li><a href="reptile.html" class="active">Library</a></li>
-				<li><a href="../scan.html">Scan</a></li>
-				<li><a href="../about.html">About</a></li>
-				<li><a href="../contact.html">Contact</a></li>
-			</ul>
-		</nav>
-	</header>
-	<main>
-		<section class="page-banner">
-			<span class="eyebrow">Library</span>
-			<h1>Reptiles</h1>
-			<p class="lede">Notable reptile species from African waterways and savannahs.</p>
-		</section>
-		<section class="section-shell">
-			<div class="species-grid">
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cocodrilo_del_Nilo_%28Crocodylus_niloticus%29%2C_parque_nacional_de_Chobe%2C_Botsuana%2C_2018-07-28%2C_DD_86.jpg" alt="Nile crocodile">
-					<div class="content">
-						<div class="meta-row"><span>Crocodylus niloticus</span><span>Carnivore</span></div>
-						<h3>Nile Crocodile</h3>
-						<p>Large aquatic predator frequenting rivers, lakes and wetlands across Africa.</p>
-						<ul class="facts"><li>Ambush predator</li><li>Powerful jaws</li></ul>
-					</div>
-				</article>
+  <header class="navbar">
+    <div class="logo">WildGuard Explorer</div>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="reptile.html" class="active">Library</a></li>
+        <li><a href="../scan.html">Scan</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Albertus_Seba_Python_sebae.jpg" alt="African rock python">
-					<div class="content">
-						<div class="meta-row"><span>Python sebae</span><span>Constrictor</span></div>
-						<h3>African Rock Python</h3>
-						<p>Large non-venomous constrictor found in a variety of habitats from savannah to woodland.</p>
-						<ul class="facts"><li>Constriction kills prey</li><li>Ambush hunter</li></ul>
-					</div>
-				</article>
-
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Bitis_arietans.jpg" alt="Puff adder">
-					<div class="content">
-						<div class="meta-row"><span>Bitis arietans</span><span>Venomous</span></div>
-						<h3>Puff Adder</h3>
-						<p>Common and widely distributed venomous viper that relies on camouflage and ambush hunting.</p>
-						<ul class="facts"><li>Venomous bite</li><li>Camouflaged ambush predator</li></ul>
-					</div>
-				</article>
-
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Nile_monitor_lizard_%28Varanus_niloticus%29_head.jpg" alt="Nile monitor">
-					<div class="content">
-						<div class="meta-row"><span>Varanus niloticus</span><span>Omnivore</span></div>
-						<h3>Nile Monitor</h3>
-						<p>Large agile lizard often seen near water, feeding on a wide range of prey.</p>
-						<ul class="facts"><li>Aquatic forager</li><li>Good climber</li></ul>
-					</div>
-				</article>
-			</div>
-		</section>
-	</main>
-	<footer>
-		<p>&copy; <span data-current-year></span> WildGuard Explorer | Reptiles</p>
-	</footer>
-</body>
+  <main>
+    <section class="wildlife-section">
+      <div class="container">
+        <h2 class="section-title">Reptiles & Amphibians</h2>
+        <p class="section-subtitle">Cold-blooded wonders of Africa's diverse ecosystems.</p>
+        
+        <div class="wildlife-grid">
+          <!-- Nile Crocodile (Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cocodrilo_del_Nilo_%28Crocodylus_niloticus%29%2C_parque_nacional_de_Chobe%2C_Botsuana%2C_2018-07-28%2C_DD_86.jpg" alt="Nile Crocodile">
+            </div>
+            <div class="wildlife-info">
+              <h3>Nile Crocodile</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Crocodylus niloticus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 500 - 1,650 lbs (227 - 750 kg)</p>
+                <p><strong>Key Detail:</strong> Large aquatic predator frequenting rivers, lakes and wetlands across Africa, known for its powerful jaws and ambush hunting tactics.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- African Rock Python (Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Albertus_Seba_Python_sebae.jpg" alt="African Rock Python">
+            </div>
+            <div class="wildlife-info">
+              <h3>African Rock Python</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Python sebae</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 70 - 120 lbs (32 - 55 kg)</p>
+                <p><strong>Key Detail:</strong> Large non-venomous constrictor found in a variety of habitats from savannah to woodland, killing prey through constriction.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Puff Adder (Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Bitis_arietans.jpg" alt="Puff Adder">
+            </div>
+            <div class="wildlife-info">
+              <h3>Puff Adder</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Bitis arietans</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 2.2 - 4.4 lbs (1.0 - 2.0 kg)</p>
+                <p><strong>Key Detail:</strong> Common and widely distributed venomous viper that relies on camouflage and ambush hunting, responsible for more snakebite fatalities in Africa than any other species.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Nile Monitor (Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Nile_monitor_lizard_%28Varanus_niloticus%29_head.jpg" alt="Nile Monitor">
+            </div
+            <div class="wildlife-info">
+              <h3>Nile Monitor</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Varanus niloticus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 13 - 20 lbs (6 - 9 kg)</p>
+                <p><strong>Key Detail:</strong> Large agile lizard often seen near water, feeding on a wide range of prey and known for its aquatic foraging abilities and climbing skills.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Chameleon (Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="../assets/images/chameleon.png" alt="Chameleon">
+            </div>
+            <div class="wildlife-info">
+              <h3>Chameleon</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Chamaeleo calyptratus (Veiled Chameleon example)</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 0.15 - 0.26 lbs (70 - 120 g)</p>
+                <p><strong>Key Detail:</strong> Chameleons can move each eye independently and have tongues that can be longer than their bodies to catch prey, with specialized feet for gripping branches.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Tortoise (Least Concern) -->
+          <div class="wildlife-card">
+            <div class="wildlife-image">
+              <img src="../assets/images/Tortoise.png" alt="Tortoise">
+            </div>
+            <div class="wildlife-info">
+              <h3>Tortoise</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Geochelone sulcata (African Spurred Tortoise example)</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 70 - 100 lbs (32 - 45 kg)</p>
+                <p><strong>Key Detail:</strong> Some tortoise species can live over 100 years and are known for their slow but steady pace of life, with the African spurred tortoise being the third-largest tortoise species in the world.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <footer>
+      <p>&copy; <span data-current-year></span> WildGuard Explorer | Reptiles</p>
+    </footer>
+  </body>
 </html>
