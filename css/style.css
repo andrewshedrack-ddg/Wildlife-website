@@ -82,10 +82,10 @@ img { max-width: 100%; height: auto; display: block; }
 .hero-slideshow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
 .hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; background-repeat: no-repeat; display: none; }
 .hero-slide.active { display: block; }
-.hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%); z-index: 1; }
-.hero-text { position: relative; z-index: 2; max-width: 800px; background: rgba(255,255,255,0.08); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-radius: 20px; padding: 2rem 2.5rem; border: 1px solid rgba(255,255,255,0.25); }
-.hero-text h2 { font-family: 'Fraunces', serif; font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
-.hero-text p { font-size: 1.3rem; opacity: 0.9; max-width: 700px; margin: 0 auto; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
+.hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.25) 100%); z-index: 1; }
+.hero-text { position: relative; z-index: 2; max-width: 800px; background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border-radius: 20px; padding: 2rem 2.5rem; border: 1px solid rgba(255,255,255,0.2); }
+.hero-text h2 { font-family: 'Fraunces', serif; font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; text-shadow: 0 2px 15px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8); }
+.hero-text p { font-size: 1.3rem; opacity: 0.95; max-width: 700px; margin: 0 auto; text-shadow: 0 1px 10px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8); }
 
 /* ---------- Sections ---------- */
 section { padding: 1rem 0; position: relative; background: transparent; }
@@ -106,8 +106,8 @@ section { padding: 1rem 0; position: relative; background: transparent; }
 /* Shared card base */
 .wildlife-card, .park-card, .conservation-item, .action-card {
   position: relative; overflow: hidden; border-radius: var(--radius-lg);
-  background: rgba(255,255,255,0.08); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: all 0.3s ease;
+  background: rgba(255,255,255,0.25); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba{item}^{\sigma}lalpha(255,255,255,0.2); cursor: pointer; transition: all 0.3s ease;
 }
 .wildlife-card:hover, .park-card:hover, .conservation-item:hover, .action-card:hover {
   border-color: rgba(255,255,255,0.35); box-shadow: 0 4px 14px rgba(0,0,0,0.12); transform: translateY(-3px);
@@ -117,14 +117,16 @@ section { padding: 1rem 0; position: relative; background: transparent; }
 .wildlife-info .full-details, .park-info .full-details,
 .conservation-item .full-details, .action-card .full-details {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(255,255,255,0.97); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  padding: 0.75rem; transform: translateX(110%); transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  z-index: 15; overflow-y: auto; box-sizing: border-box; display: flex; flex-direction: column;
-  box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+  background: #ffffff; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  padding: 0.75rem; z-index: 15; overflow-y: auto; box-sizing: border-box;
+  display: flex; flex-direction: column;
   border-left: 3px solid var(--green);
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none;
 }
 .wildlife-card:hover .full-details, .park-card:hover .full-details,
-.conservation-item:hover .full-details, .action-card:hover .full-details { transform: translateX(0); }
+.conservation-item:hover .full-details, .action-card:hover .full-details { opacity: 1; visibility: visible; pointer-events: auto; }
 
 /* ---------- Wildlife ---------- */
 .wildlife-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
