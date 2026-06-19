@@ -222,7 +222,7 @@ section {
     box-shadow: var(--shadow);
     transition: var(--transition);
     display: flex;
-    flex-direction: column;
+    position: relative;
 }
 
 .wildlife-card:hover {
@@ -231,8 +231,11 @@ section {
 }
 
 .wildlife-image {
-    height: 200px;
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* 1:1 aspect ratio */
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .wildlife-image img {
@@ -247,29 +250,37 @@ section {
 }
 
 .wildlife-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     padding: 1.5rem;
-    flex-grow: 1;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    color: var(--lighter);
     display: flex;
     flex-direction: column;
+    flex-grow: 0;
 }
 
 .wildlife-info h3 {
     font-family: 'Fraunces', serif;
     font-size: 1.4rem;
     font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--dark);
+    margin-bottom: 0.5rem;
+    color: var(--lighter);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 .wildlife-info p {
-    margin: 0.75rem 0;
-    line-height: 1.6;
-    color: var(--text-dark);
-    flex-grow: 1;
+    margin: 0.25rem 0;
+    line-height: 1.4;
+    color: var(--lighter);
+    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    font-size: 0.9rem;
 }
 
 .wildlife-info p strong {
-    color: var(--green);
+    color: var(--green-light);
 }
 
 /* Parks Section */

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library | WildGuard Explorer</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/library.css">
+  <script defer src="../js/main.js"></script>
+  <script defer src="../js/library.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">WildGuard Explorer</div>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="library.html" class="active">Library</a></li>
+        <li><a href="../scan.html">Scan</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Tabbed Library Interface -->
+    <section class="library-tabs-section">
+      <div class="container">
+        <h2 class="section-title">Explore Wildlife by Category</h2>
+        <p class="section-subtitle">Select a category to discover animals from different kingdoms</p>
+        
+        <!-- Tab Navigation -->
+        <div class="tab-container">
+          <div class="tab-buttons">
+            <button class="tab-btn active" data-tab="mammals">Mammals</button>
+            <button class="tab-btn" data-tab="birds">Birds</button>
+            <button class="tab-btn" data-tab="reptiles">Reptiles & Amphibians</button>
+            <button class="tab-btn" data-tab="aquatic">Aquatic Life</button>
+            <button class="tab-btn" data-tab="plants">Plants & Fungi</button>
+            <button class="tab-btn" data-tab="microorganisms">Microorganisms</button>
+          </div>
+        </div>
+        
+        <!-- Tab Content -->
+        <div class="tab-content">
+          <!-- Mammals Tab -->
+          <div class="tab-pane active" id="mammals-tab">
+            <div class="wildlife-section">
+              <div class="container">
+                <h2 class="section-title">Mammals of the Savannah</h2>
+                <p class="section-subtitle">A collection of iconic African mammals presented as high-contrast editorial cards with quick facts and conservation context.</p>
+                
+                <div class="wildlife-grid">
+                  <!-- Black Rhinoceros (Critically Endangered) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/rhino.png" alt="Black Rhinoceros">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Black Rhinoceros</h3>
+                      <p class="brief">Critically Endangered</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Diceros bicornis</p>
+                      <p><strong>Conservation Status:</strong> Critically Endangered</p>
+                      <p><strong>Weight Range:</strong> 1,800 - 3,100 lbs (800 - 1,400 kg)</p>
+                      <p><strong>Key Detail:</strong> They have a hooked, prehensile upper lip used like a thumb to strip leaves and twigs from branches.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- African Bush Elephant (Endangered) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/elephant.jpg" alt="African Bush Elephant">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Elephant</h3>
+                      <p class="brief">Endangered</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Loxodonta africana</p>
+                      <p><strong>Conservation Status:</strong> Endangered</p>
+                      <p><strong>Weight Range:</strong> 4 - 7 tons (3,600 - 6,300 kg)</p>
+                      <p><strong>Key Detail:</strong> Their massive ears act like built-in air conditioners. By flapping them, elephants can cool down the blood flowing through the large vessels in their ears to drop their body temperature.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- African Lion (Vulnerable) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/lion.jpg" alt="African Lion">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Lion</h3>
+                      <p class="brief">Vulnerable</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Panthera leo</p>
+                      <p><strong>Conservation Status:</strong> Vulnerable</p>
+                      <p><strong>Weight Range:</strong> 330 - 550 lbs (150 - 250 kg)</p>
+                      <p><strong>Key Detail:</strong> A male's mane isn't just for show; a darker, thicker mane indicates top health and higher testosterone, which helps them attract mates and intimidate rivals.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- African Leopard (Vulnerable) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/leopard.png" alt="African Leopard">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Leopard</h3>
+                      <p class="brief">Vulnerable</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Panthera pardus pardus</p>
+                      <p><strong>Conservation Status:</strong> Vulnerable</p>
+                      <p><strong>Weight Range:</strong> 65 - 200 lbs (30 - 90 kg)</p>
+                      <p><strong>Key Detail:</strong> To protect their food from scavengers like lions and hyenas, leopards can haul prey weighing as much as themselves entirely up into the branches of trees.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Cheetah (Vulnerable) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Cheetah_%28Acinonyx_jubatus%29_female_2.jpg" alt="Cheetah">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Cheetah</h3>
+                      <p class="brief">Vulnerable</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Acinonyx jubatus</p>
+                      <p><strong>Conservation Status:</strong> Vulnerable</p>
+                      <p><strong>Weight Range:</strong> 46 - 158 lbs (21 - 72 kg)</p>
+                      <p><strong>Key Detail:</strong> Built for speed and agility, cheetahs can accelerate from 0 to 60 mph in just 3 seconds.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Giraffe (Vulnerable) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/Giraffa_camelopardalis_in_Duisburg_Zoo_sticking_out_tongue.jpg" alt="Giraffe">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Giraffe</h3>
+                      <p class="brief">Vulnerable</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Giraffa camelopardalis</p>
+                      <p><strong>Conservation Status:</strong> Vulnerable</p>
+                      <p><strong>Weight Range:</strong> 1,750 - 2,800 lbs (794 - 1,270 kg)</p>
+                      <p><strong>Key Detail:</strong> Kenya’s tall icon, shaped for browsing treetops and spotting movement across open country.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Plains Zebra (Near Threatened) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/zebra.png" alt="Plains Zebra">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Zebra</h3>
+                      <p class="brief">Near Threatened</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Equus quagga</p>
+                      <p><strong>Conservation Status:</strong> Near Threatened</p>
+                      <p><strong>Weight Range:</strong> 440 - 990 lbs (200 - 450 kg)</p>
+                      <p><strong>Key Detail:</strong> Every zebra has a unique stripe pattern, much like human fingerprints, which helps them recognize each other.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- African Buffalo (Near Threatened) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/buffalo.png" alt="African Buffalo">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Buffalo</h3>
+                      <p class="brief">Near Threatened</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Syncerus caffer</p>
+                      <p><strong>Conservation Status:</strong> Near Threatened</p>
+                      <p><strong>Weight Range:</strong> 1,100 - 2,200 lbs (500 - 1,000 kg)</p>
+                      <p><strong>Key Detail:</strong> An adult male's massive horns fuse to form a 'boss' that can even stop bullets.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Warthog (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/warthog.png" alt="Warthog">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Warthog</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Phacochoerus africanus</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 110 - 330 lbs (50 - 150 kg)</p>
+                      <p><strong>Key Detail:</strong> Warthogs can run up to 30 mph (48 km/h) and often use abandoned aardvark burrows for shelter.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Hippopotamus (Vulnerable) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/Hippo.png" alt="Hippopotamus">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Hippopotamus</h3>
+                      <p class="brief">Vulnerable</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Hippopotamus amphibius</p>
+                      <p><strong>Conservation Status:</strong> Vulnerable</p>
+                      <p><strong>Weight Range:</strong> 2,900 - 4,000 lbs (1,300 - 1,800 kg)</p>
+                      <p><strong>Key Detail:</strong> Despite their bulky appearance, hippos can run faster than humans on land and spend up to 16 hours a day submerged in water to keep cool.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Birds Tab -->
+          <div class="tab-pane" id="birds-tab">
+            <div class="wildlife-section">
+              <div class="container">
+                <h2 class="section-title">Birds of the Skies</h2>
+                <p class="section-subtitle">A selection of notable bird species found across Africa with quick facts and habitat notes.</p>
+                
+                <div class="wildlife-grid">
+                  <!-- Secretarybird (Vulnerable) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Secretario_%28Sagittarius_serpentarius%29%2C_parque_nacional_de_Amboseli%2C_Kenia%2C_2024-05-23%2C_DD_13.jpg" alt="Secretarybird">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Secretarybird</h3>
+                      <p class="brief">Vulnerable</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Sagittarius serpentarius</p>
+                      <p><strong>Conservation Status:</strong> Vulnerable</p>
+                      <p><strong>Weight Range:</strong> 4.9 - 7.3 lbs (2.2 - 3.3 kg)</p>
+                      <p><strong>Key Detail:</strong> Long-legged terrestrial bird of prey known for hunting snakes and other small vertebrates.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- African Fish Eagle (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/African_fish_eagle_%28Haliaeetus_vocifer%29_Ethiopia.jpg" alt="African Fish Eagle">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>African Fish Eagle</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Haliaeetus vocifer</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 4.4 - 7.9 lbs (2.0 - 3.6 kg)</p>
+                      <p><strong>Key Detail:</strong> Frequently seen perched near large water bodies where it hunts fish and small waterbirds.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Lilac-breasted Roller (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg" alt="Lilac-breasted Roller">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Lilac-breasted Roller</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Coracias caudatus</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 0.24 - 0.28 lbs (110 - 130 g)</p>
+                      <p><strong>Key Detail:</strong> Colorful insectivore often seen perched in open country before swooping on prey.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Greater Flamingo (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/flamingo.png" alt="Greater Flamingo">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Greater Flamingo</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Phoenicopterus roseus</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 4.4 - 8.8 lbs (2.0 - 4.0 kg)</p>
+                      <p><strong>Key Detail:</strong> Pink wader that feeds by filtering small invertebrates and algae from shallow waters.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Ostrich (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Struthio_camelus_portrait_Whipsnade_Zoo.jpg" alt="Ostrich">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Ostrich</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Struthio camelus</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 139 - 320 lbs (63 - 145 kg)</p>
+                      <p><strong>Key Detail:</strong> Largest living bird; adapted to open plains with strong legs for running.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Eagle (various species, generally Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/Eagle.png" alt="Eagle">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Eagle</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Aquila chrysaetos (Golden Eagle example)</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 6.6 - 13.9 lbs (3.0 - 6.3 kg)</p>
+                      <p><strong>Key Detail:</strong> Eagles have powerful eyesight, up to 4-8 times stronger than humans, enabling them to spot prey from great distances.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Owl (Least Concern for most species) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/owl.png" alt="Owl">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Owl</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Bubo bubo (Eurasian Eagle-Owl example)</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 3.2 - 8.8 lbs (1.5 - 4.0 kg)</p>
+                      <p><strong>Key Detail:</strong> Owls have specialized feathers that allow them to fly almost silently, helping them sneak up on prey.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Goose (Least Concern for most species) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/goose.png" alt="Goose">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Goose</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Anser anser (Greylag Goose example)</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 5.5 - 8.8 lbs (2.5 - 4.0 kg)</p>
+                      <p><strong>Key Detail:</strong> Geese are highly social and mate for life, often forming strong family bonds within their flocks.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Peacock (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/peacock.png" alt="Peacock">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Peacock</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Pavo cristatus</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 8.8 - 13.2 lbs (4.0 - 6.0 kg)</p>
+                      <p><strong>Key Detail:</strong> The male peacock's vibrant tail feathers are used in elaborate courtship displays to attract mates.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Turkey (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/Turkey.png" alt="Turkey">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Turkey</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Meleagris gallopavo</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 5.5 - 24.0 lbs (2.5 - 11.0 kg)</p>
+                      <p><strong>Key Detail:</strong> Turkeys can run at speeds of up to 25 mph (40 km/h) and are surprisingly agile fliers for short distances.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- White-headed Eagle (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/White Head Eagle.png" alt="White-headed Eagle">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>White-headed Eagle</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Ichthyophaga ichthyaetus (Grey-headed Fish Eagle example)</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 4.4 - 6.6 lbs (2.0 - 3.0 kg)</p>
+                      <p><strong>Key Detail:</strong> The white head and tail of this eagle develop as the bird matures, appearing at around 4-5 years of age.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Reptiles & Amphibians Tab -->
+          <div class="tab-pane" id="reptiles-tab">
+            <div class="wildlife-section">
+              <div class="container">
+                <h2 class="section-title">Reptiles & Amphibians</h2>
+                <p class="section-subtitle">Cold-blooded wonders of Africa's diverse ecosystems.</p>
+                
+                <div class="wildlife-grid">
+                  <!-- Nile Crocodile (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cocodrilo_del_Nilo_%28Crocodylus_niloticus%29%2C_parque_nacional_de_Chobe%2C_Botsuana%2C_2018-07-28%2C_DD_86.jpg" alt="Nile Crocodile">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Nile Crocodile</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Crocodylus niloticus</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 500 - 1,650 lbs (227 - 750 kg)</p>
+                      <p><strong>Key Detail:</strong> Large aquatic predator frequenting rivers, lakes and wetlands across Africa, known for its powerful jaws and ambush hunting tactics.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- African Rock Python (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Albertus_Seba_Python_sebae.jpg" alt="African Rock Python">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>African Rock Python</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Python sebae</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 70 - 120 lbs (32 - 55 kg)</p>
+                      <p><strong>Key Detail:</strong> Large non-venomous constrictor found in a variety of habitats from savannah to woodland, killing prey through constriction.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Puff Adder (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Bitis_arietans.jpg" alt="Puff Adder">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Puff Adder</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Bitis arietans</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 2.2 - 4.4 lbs (1.0 - 2.0 kg)</p>
+                      <p><strong>Key Detail:</strong> Common and widely distributed venomous viper that relies on camouflage and ambush hunting, responsible for more snakebite fatalities in Africa than any other species.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Nile Monitor (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Nile_monitor_lizard_%28Varanus_niloticus%29_head.jpg" alt="Nile Monitor">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Nile Monitor</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Varanus niloticus</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 13 - 20 lbs (6 - 9 kg)</p>
+                      <p><strong>Key Detail:</strong> Large agile lizard often seen near water, feeding on a wide range of prey and known for its aquatic foraging abilities and climbing skills.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Chameleon (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/chameleon.png" alt="Chameleon">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Chameleon</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Chamaeleo calyptratus (Veiled Chameleon example)</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 0.15 - 0.26 lbs (70 - 120 g)</p>
+                      <p><strong>Key Detail:</strong> Chameleons can move each eye independently and have tongues that can be longer than their bodies to catch prey, with specialized feet for gripping branches.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Tortoise (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/Tortoise.png" alt="Tortoise">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Tortoise</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Geochelone sulcata (African Spurred Tortoise example)</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 70 - 100 lbs (32 - 45 kg)</p>
+                      <p><strong>Key Detail:</strong> Some tortoise species can live over 100 years and are known for their slow but steady pace of life, with the African spurred tortoise being the third-largest tortoise species in the world.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- African Bullfrog (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Pyxicephalus_adspersus.jpg" alt="African Bullfrog">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>African Bullfrog</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Pyxicephalus adspersus</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 1.1 - 2.0 lbs (500 - 900 g)</p>
+                      <p><strong>Key Detail:</strong> Large burrowing frog that estivates during dry seasons and emerges to breed in temporary pools.</p>
+                      <p><em>Image credit: Dezidor, CC BY 3.0, via Wikimedia Commons</em></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Aquatic Life Tab -->
+          <div class="tab-pane" id="aquatic-tab">
+            <div class="wildlife-section">
+              <div class="container">
+                <h2 class="section-title">Aquatic Life</h2>
+                <p class="section-subtitle">Fish, large semi-aquatic mammals and reef life that shape freshwater and coastal ecosystems.</p>
+                
+                <div class="wildlife-grid">
+                  <!-- Hippopotamus (Vulnerable) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/Hippo.png" alt="Hippopotamus">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Hippopotamus</h3>
+                      <p class="brief">Vulnerable</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Hippopotamus amphibius</p>
+                      <p><strong>Conservation Status:</strong> Vulnerable</p>
+                      <p><strong>Weight Range:</strong> 2,900 - 4,000 lbs (1,300 - 1,800 kg)</p>
+                      <p><strong>Key Detail:</strong> Despite their bulky appearance, hippos can run faster than humans on land and spend up to 16 hours a day submerged in water to keep cool.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Shark (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="../assets/images/shark.png" alt="Shark">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Shark</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Selachimorpha</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 200 - 500 lbs (90 - 227 kg)</p>
+                      <p><strong>Key Detail:</strong> Sharks have been around for over 400 million years and possess a skeleton made entirely of cartilage.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Nile Tilapia (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Oreochromis-niloticus-Nairobi.JPG" alt="Nile Tilapia">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Nile Tilapia</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Oreochromis niloticus</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 1.0 - 2.2 lbs (0.5 - 1.0 kg)</p>
+                      <p><strong>Key Detail:</strong> Important freshwater fish both ecologically and for local fisheries.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Nile Perch (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Lates_niloticus.jpg" alt="Nile Perch">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Nile Perch</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Lates niloticus</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Weight Range:</strong> 20 - 40 lbs (9 - 18 kg)</p>
+                      <p><strong>Key Detail:</strong> Large freshwater predator introduced or native in some large lakes; influential in fish community dynamics.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Coral Reefs (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Coral_%28Acropora_hemprichii%29%2C_Ras_Katy%2C_Sharm_el-Sheij%2C_Egipto%2C_2022-03-26%2C_DD_108.jpg" alt="Coral">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Coral Reefs</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Various corals</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Key Detail:</strong> Complex marine ecosystems supporting high biodiversity; sensitive to warming and local stressors.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Plants & Fungi Tab -->
+          <div class="tab-pane" id="plants-tab">
+            <div class="wildlife-section">
+              <div class="container">
+                <h2 class="section-title">Plants & Fungi</h2>
+                <p class="section-subtitle">A selection of important plants and fungi from regional ecosystems.</p>
+                
+                <div class="wildlife-grid">
+                  <!-- Baobab (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Baobab_%28Adansonia_digitata%29%2C_parque_nacional_Makgadikgadi_Pans%2C_Botsuana%2C_2018-07-30%2C_DD_03-08_PAN.jpg" alt="Baobab">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Baobab</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Adansonia digitata</p>
+                      <p><strong>Conservation Status:</strong> Least Concern</p>
+                      <p><strong>Key Detail:</strong> Iconic broad-trunked trees that store water and support wildlife; culturally important across Africa.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Acacia (Least Concern) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/e/ed/Acacia_senegal_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-004.jpg" alt="Acacia senegal">
+                    </div>
+                    <div class="wildlife-info">
+                      <h3>Acacia</h3>
+                      <p class="brief">Least Concern</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Acacia senegal</p
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Microorganisms Tab -->
+          <div class="tab-pane" id="microorganisms-tab">
+            <div class="wildlife-section">
+              <div class="container">
+                <h2 class="section-title">Microorganisms</h2>
+                <p class="section-subtitle">Microscopic life is essential for ecosystems; here are basic notes and links for further reading.</p>
+                
+                <div class="wildlife-grid">
+                  <!-- Escherichia coli (Model Organism) -->
+                  <div class="wildlife-card">
+                    <div class="wildlife-image">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/Escherichia_Coli_bacteria_%283309073954%29.jpg" alt="Escherichia coli">
+                    </div
+                    <div class="wildlife-info">
+                      <h3>Escherichia coli</h3>
+                      <p class="brief">Model</p>
+                    </div>
+                    <div class="full-details">
+                      <p><strong>Scientific Name:</strong> Escherichia coli</p>
+                      <p><strong>Habitat:</strong> Gut bacterium</p>
+                      <p><strong>Key Detail:</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-info">
+          <h3>WildGuard Explorer</h3>
+          <p>Using AI-powered monitoring to protect Tanzania's iconic wildlife and ecosystems through technology, education, and community action.</p>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="library.html">Library</a></li>
+            <li><a href="../scan.html">Scan</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-social">
+          <h4>Follow Us</h4>
+          <div class="social-links">
+            <a href="#" class="social-link" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+            <a href="#" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" class="social-link" title="Telegram"><i class="fab fa-telegram"></i></a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year></span> WildGuard Explorer | Protecting Tanzania's Wildlife Heritage</p>
+        <p class="footer-details">Our mission: protect wildlife through AI-powered monitoring, real-time alerts, and community engagement.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Tab functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabPanes = document.querySelectorAll('.tab-pane');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Deactivate all tabs
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabPanes.forEach(pane => pane.classList.remove('active'));
+          
+          // Activate clicked tab
+          button.classList.add('active');
+          const tabId = button.getAttribute('data-tab');
+          document.getElementById(`${tabId}-tab`).classList.add('active');
+        });
+      });
+      
+      // Card accordion interaction (for full-details panel)
+      const cards = document.querySelectorAll('.wildlife-card');
+      
+      cards.forEach(function(card) {
+        card.addEventListener('click', function(e) {
+          // Don't toggle if clicking on a link inside full-details
+          if (e.target.closest('a')) return;
+          
+          const isExpanded = card.classList.contains('expanded');
+          
+          // Close all cards first (accordion behavior)
+          cards.forEach(function(c) {
+            c.classList.remove('expanded');
+          });
+          
+          // Toggle current card: if it wasn't expanded, expand it
+          if (!isExpanded) {
+            card.classList.add('expanded');
+          }
+        });
+      });
+      
+      // Close all cards when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.wildlife-card')) {
+          cards.forEach(function(c) {
+            c.classList.remove('expanded');
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
