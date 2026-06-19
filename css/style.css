@@ -802,3 +802,17 @@ section {
 .get-involved-section p {
     color: var(--lighter) !important;
 }
+
+/* Fix text color in full-details to ensure visibility */
+.wildlife-card .full-details p,
+.park-card .full-details p,
+.conservation-item .full-details p,
+.action-card .full-details p {
+    color: var(--text-dark) !important;
+}
+.wildlife-card .full-details p strong,
+.park-card .full-details p strong,
+.conservation-item .full-details p strong,
+.action-card .full-details p strong {
+    color: var(--green) !important;
+}
