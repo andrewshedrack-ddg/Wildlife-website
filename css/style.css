@@ -108,30 +108,30 @@ img {
 }
 
 .navbar nav li a {
-    font-weight: 600;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius);
-    transition: var(--transition);
-}
-
-.navbar nav li a:hover,
-.navbar nav li a.active {
-    background: rgba(255,255,255,0.2);
-    color: var(--lighter);
-}
-
-/* Hero Section */
-.hero {
-    position: relative;
-    height: 60vh;
-    min-height: 400px;
-    background: url('https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmVsfDF8fHx8fHx8MTY3MDY0MDU2&ixlib=rb-4.0.3&q=80&w=1080') center/cover no-repeat;
+    display: block;
+    width: 110px;
+    height: 40px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: var(--lighter);
+    justify-content: flex-start;
+    gap: 10px;
+    background-color: rgb(161, 255, 20);
+    border-radius: 30px;
+    color: rgb(19, 19, 19);
+    font-weight: 600;
+    border: none;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.116);
+    padding-left: 8px;
+    transition: all 0.5s ease;
+}
+.navbar nav li a:hover,
+.navbar nav li a.active {
+    background-color: rgb(192, 255, 20);
+    transform: scale(0.97);
+    transition: all 0.2s ease;
+}
     padding: 0 2rem;
     overflow: hidden;
 }
@@ -215,23 +215,23 @@ section {
     margin-top: 2rem;
 }
 
-.wildlife-card {
-    background: var(--lighter);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    display: flex;
-    position: relative;
-}
+/* .wildlife-card { */
+/*     background: var(--lighter); */
+/*     border-radius: var(--radius-lg); */
+/*     overflow: hidden; */
+/*     box-shadow: var(--shadow); */
+/*     transition: var(--transition); */
+/*     display: flex; */
+/*     position: relative; */
+/* } */
 
-.wildlife-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-hover);
-}
-
-.wildlife-image {
-    position: relative;
+/* .wildlife-card:hover { */
+/*     transform: translateY(-5px); */
+/*     box-shadow: var(--shadow-hover); */
+/* } */
+/*  */
+/* .wildlife-image { */
+/*     position: relative; */
     width: 100%;
     padding-top: 120%; /* 4:5 aspect ratio, taller than wide */
     overflow: hidden;
@@ -245,23 +245,23 @@ section {
     transition: transform 0.5s ease;
 }
 
-.wildlife-card:hover .wildlife-image img {
-    transform: scale(1.05);
-}
-
-.wildlife-info {
+/* .wildlife-card:hover .wildlife-image img { */
+/*     transform: scale(1.05); */
+/* } */
+/*  */
+/* .wildlife-info { */
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 0.75rem;
-    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+/*     bottom: 0; */
+/*     left: 0; */
+/*     right: 0; */
+/*     padding: 0.75rem; */
+/*     background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); */
     color: var(--lighter);
-    display: flex;
-    flex-direction: column;
-    flex-grow: 0;
-}
-
+/*     display: flex; */
+/*     flex-direction: column; */
+/*     flex-grow: 0; */
+/* } */
+/*  */
 .wildlife-info h3 {
     font-family: 'Fraunces', serif;
     font-size: 1.2rem;
@@ -698,45 +698,45 @@ section {
     }
 }
 /* Slide-in hover panel for wildlife and park cards */
-.wildlife-card .full-details,
-.park-card .full-details {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--lighter);
-    padding: 0.75rem;
-    box-sizing: border-box;
-    border-left: 3px solid var(--green);
-    box-shadow: -3px 0 10px rgba(0,0,0,0.1);
-    opacity: 0;
-    transform: translateX(100%);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    pointer-events: none;
-    z-index: 10;
+/* .wildlife-card .full-details, */
+/* .park-card .full-details { */
+/*     position: absolute; */
+/*     top: 0; */
+/*     left: 0; */
+/*     width: 100%; */
+/*     height: 100%; */
+/*     background: var(--lighter); */
+/*     padding: 0.75rem; */
+/*     box-sizing: border-box; */
+/*     border-left: 3px solid var(--green); */
+/*     box-shadow: -3px 0 10px rgba(0,0,0,0.1); */
+/*     opacity: 0; */
+/*     transform: translateX(100%); */
+/*     transition: opacity 0.3s ease, transform 0.3s ease; */
+/*     pointer-events: none; */
+/*     z-index: 10; */
 }
 
-.wildlife-card:hover .full-details,
-.park-card:hover .full-details {
-    opacity: 1;
-    transform: translateX(0);
-    pointer-events: auto;
-}
-
+/* .wildlife-card:hover .full-details, */
+/* .park-card:hover .full-details { */
+/*     opacity: 1; */
+/*     transform: translateX(0); */
+/*     pointer-events: auto; */
+/* } */
+/*  */
 /* Also style the content inside the full-details */
-.wildlife-card .full-details p,
-.park-card .full-details p {
-    margin: 0.5rem 0;
-    line-height: 1.6;
-    color: var(--text-dark);
-}
-
-.wildlife-card .full-details p strong,
-.park-card .full-details p strong {
-    color: var(--green);
-}
-.wildlife-card { position: relative; }
+/* .wildlife-card .full-details p, */
+/* .park-card .full-details p { */
+/*     margin: 0.5rem 0; */
+/*     line-height: 1.6; */
+/*     color: var(--text-dark); */
+/* } */
+/*  */
+/* .wildlife-card .full-details p strong, */
+/* .park-card .full-details p strong { */
+/*     color: var(--green); */
+/* } */
+/* /* .wildlife-card { position: relative; } */ */
 .park-card { position: relative; }
 
 
@@ -850,3 +850,647 @@ section {
 .park-info h3 {
     margin-bottom: 0.5rem !important;
 }
+
+/* Luminous Card Design - Adapted for Wildlife Cards */
+.luminous-card-container {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+  --sz: clamp(17px, min(2%, 3%), 24px);
+  font-size: var(--sz);
+  display: grid;
+  place-items: center;
+  background: #1e1e1e;
+  background: radial-gradient(circle at 50% 30%, #2a2a2a 0%, #131313 64%);
+  font-family: "Aeonik Pro Regular", sans-serif;
+  min-height: 100%;
+  overflow: hidden;
+  min-width: 100%;
+}
+
+.luminous-card-container * {
+  box-sizing: border-box;
+}
+
+.luminous-card {
+  position: relative;
+  background: radial-gradient(circle at 50% 0%, #3a3a3a 0%, #1a1a1a 64%);
+  box-shadow:
+    inset 0 1.01rem 0.2rem -1rem #fff0,
+    inset 0 -1.01rem 0.2rem -1rem #0000,
+    0 -1.02rem 0.2rem -1rem #fff0,
+    0 1rem 0.2rem -1rem #0000,
+    0 0 0 1px #fff3,
+    0 4px 4px 0 #0004,
+    0 0 0 1px #333;
+  width: 18rem;
+  height: 24rem;
+  border-radius: 1.8rem;
+  color: #fff;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  transition:
+    all 0.4s ease-in-out,
+    translate 0.4s ease-out;
+}
+
+.luminous-card::before {
+  content: ";
+  display: block;
+  --offset: 1rem;
+  width: calc(100% + 2 * var(--offset));
+  height: calc(100% + 2 * var(--offset));
+  position: absolute;
+  left: calc(-1 * var(--offset));
+  right: calc(-1 * var(--offset));
+  top: calc(-1 * var(--offset));
+  bottom: calc(-1 * var(--offset));
+  margin: auto;
+  box-shadow: inset 0 0 0px 0.06rem #fff2;
+  border-radius: 2.6rem;
+  --ax: 4rem;
+  clip-path: polygon(
+    var(--ax) 0,
+    0 0,
+    0 var(--ax),
+    var(--ax) var(--ax),
+    var(--ax) calc(100% - var(--ax)),
+    0 calc(100% - var(--ax)),
+    0 100%,
+    var(--ax) 100%,
+    var(--ax) calc(100% - var(--ax)),
+    calc(100% - var(--ax)) calc(100% - var(--ax)),
+    calc(100% - var(--ax)) 100%,
+    100% 100%,
+    100% calc(100% - var(--ax)),
+    calc(100% - var(--ax)) calc(100% - var(--ax)),
+    calc(100% - var(--ax)) var(--ax),
+    100% var(--ax),
+    100% 0,
+    calc(100% - var(--ax)) 0,
+    calc(100% - var(--ax)) var(--ax),
+    var(--ax) var(--ax)
+  );
+  transition: all 0.4s ease-in-out;
+}
+
+.luminous-card:hover {
+  translate: 0 -0.2rem;
+}
+
+.luminous-card:hover::before {
+  --offset: 0.5rem;
+  --ax: 8rem;
+  border-radius: 2.2rem;
+  box-shadow: inset 0 0 0 0.08rem #fff1;
+}
+
+.luminous-light-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  transform-style: preserve-3d;
+  perspective: 400px;
+  pointer-events: none;
+}
+
+.luminous-slit {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 64%;
+  height: 1.2rem;
+  transform: rotateX(-76deg);
+  background: #121212;
+  box-shadow: 0 0 4px 0 #fff0;
+  transition: all 0.4s ease-in-out;
+}
+
+.luminous-lumen {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  perspective: 400px;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.luminous-lumen .min {
+  width: 70%;
+  height: 3rem;
+  background: linear-gradient(#fff0, #fffa);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 2.5rem;
+  margin: auto;
+  transform: rotateX(-42deg);
+  opacity: 0.4;
+}
+
+.luminous-lumen .mid {
+  width: 74%;
+  height: 13rem;
+  background: linear-gradient(#fff0, #fffa);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 10em;
+  margin: auto;
+  transform: rotateX(-42deg);
+  filter: blur(1rem);
+  opacity: 0.8;
+  border-radius: 100% 100% 0 0;
+}
+
+.luminous-lumen .hi {
+  width: 50%;
+  height: 13rem;
+  background: linear-gradient(#fff0, #fffa);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 12em;
+  margin: auto;
+  transform: rotateX(22deg);
+  filter: blur(1rem);
+  opacity: 0.6;
+  border-radius: 100% 100% 0 0;
+}
+
+.luminous-darken {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  perspective: 400px;
+  transition: opacity 0.4s ease-in-out;
+  opacity: 0.5;
+}
+
+.luminous-darken > * {
+  transition: opacity 0.4s ease-in-out;
+}
+
+.luminous-darken .sl {
+  width: 64%;
+  height: 10rem;
+  background: linear-gradient(#000, #0000);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 9.6em;
+  bottom: 0;
+  margin: auto;
+  filter: blur(0.2rem);
+  opacity: 0.1;
+  border-radius: 0 0 100% 100%;
+  transform: rotateX(-22deg);
+}
+
+.luminous-darken .ll {
+  width: 62%;
+  height: 10rem;
+  background: linear-gradient(#000a, #0000);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 11em;
+  bottom: 0;
+  margin: auto;
+  filter: blur(0.8rem);
+  opacity: 0.4;
+  border-radius: 0 0 100% 100%;
+  transform: rotateX(22deg);
+}
+
+.luminous-darken .slt {
+  width: 0.5rem;
+  height: 4rem;
+  background: linear-gradient(#0005, #0000);
+  position: absolute;
+  left: 0;
+  right: 11.5rem;
+  top: 3.9em;
+  bottom: 0;
+  margin: auto;
+  opacity: 0.6;
+  border-radius: 0 0 100% 100%;
+  transform: skewY(42deg);
+}
+
+.luminous-darken .srt {
+  width: 0.5rem;
+  height: 4rem;
+  background: linear-gradient(#0005, #0000);
+  position: absolute;
+  right: 0;
+  left: 11.5rem;
+  top: 3.9em;
+  bottom: 0;
+  margin: auto;
+  opacity: 0.6;
+  border-radius: 0 0 100% 100%;
+  transform: skewY(-42deg);
+}
+
+.luminous-content {
+  position: relative;
+  z-index: 1;
+}
+
+.luminous-icon {
+  position: absolute;
+  top: -13rem;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: fit-content;
+  filter: drop-shadow(0 -1.2rem 1px transparent);
+  transition: filter 0.4s ease-in-out;
+}
+
+.luminous-bottom {
+  position: relative;
+}
+
+.luminous-title {
+  margin: 0;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #fff;
+  font-weight: normal;
+}
+
+.luminous-description {
+  margin: 0;
+  padding-bottom: 0.6rem;
+  color: #aaa;
+  font-size: 0.6rem;
+  font-weight: 100;
+  border-bottom: 1px solid #fff1;
+  max-width: 64%;
+}
+
+
+/* Map Wildlife Card Structure to Luminous Card */
+.wildlife-card {
+  /* Apply luminous card styles to our container */
+  position: relative;
+  background: radial-gradient(circle at 50% 0%, #3a3a3a 0%, #1a1a1a 64%);
+  box-shadow:
+    inset 0 1.01rem 0.2rem -1rem #fff0,
+    inset 0 -1.01rem 0.2rem -1rem #0000,
+    0 -1.02rem 0.2rem -1rem #fff0,
+    0 1rem 0.2rem -1rem #0000,
+    0 0 0 1px #fff3,
+    0 4px 4px 0 #0004,
+    0 0 0 1px #333;
+  width: 18rem;
+  height: 24rem;
+  border-radius: 1.8rem;
+  color: #fff;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  transition:
+    all 0.4s ease-in-out,
+    translate 0.4s ease-out;
+  overflow: hidden;
+}
+
+/* Pseudo-element for luminous effect */
+.wildlife-card::before {
+  content: ";
+  display: block;
+  --offset: 1rem;
+  width: calc(100% + 2 * var(--offset));
+  height: calc(100% + 2 * var(--offset));
+  position: absolute;
+  left: calc(-1 * var(--offset));
+  right: calc(-1 * var(--offset));
+  top: calc(-1 * var(--offset));
+  bottom: calc(-1 * var(--offset));
+  margin: auto;
+  box-shadow: inset 0 0 0px 0.06rem #fff2;
+  border-radius: 2.6rem;
+  --ax: 4rem;
+  clip-path: polygon(
+    var(--ax) 0,
+    0 0,
+    0 var(--ax),
+    var(--ax) var(--ax),
+    var(--ax) calc(100% - var(--ax)),
+    0 calc(100% - var(--ax)),
+    0 100%,
+    var(--ax) 100%,
+    var(--ax) calc(100% - var(--ax)),
+    calc(100% - var(--ax)) calc(100% - var(--ax)),
+    calc(100% - var(--ax)) 100%,
+    100% 100%,
+    100% calc(100% - var(--ax)),
+    calc(100% - var(--ax)) calc(100% - var(--ax)),
+    calc(100% - var(--ax)) var(--ax),
+    100% var(--ax),
+    100% 0,
+    calc(100% - var(--ax)) 0,
+    calc(100% - var(--ax)) var(--ax),
+    var(--ax) var(--ax)
+  );
+  transition: all 0.4s ease-in-out;
+  pointer-events: none;
+}
+
+/* Hover effects */
+.wildlife-card:hover {
+  translate: 0 -0.2rem;
+}
+
+.wildlife-card:hover::before {
+  --offset: 0.5rem;
+  --ax: 8rem;
+  border-radius: 2.2rem;
+  box-shadow: inset 0 0 0 0.08rem #fff1;
+}
+
+/* Lighting layers */
+.wildlife-card .luminous-light-layer,
+.wildlife-card .luminous-slit,
+.wildlife-card .luminous-lumen,
+.wildlife-card .luminous-darken {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+}
+
+.wildlife-card .luminous-light-layer {
+  transform-style: preserve-3d;
+  perspective: 400px;
+}
+
+.wildlife-card .luminous-slit {
+  width: 64%;
+  height: 1.2rem;
+  transform: rotateX(-76deg);
+  background: #121212;
+  box-shadow: 0 0 4px 0 #fff0;
+  transition: all 0.4s ease-in-out;
+}
+
+.wildlife-card .luminous-lumen {
+  perspective: 400px;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.wildlife-card .luminous-lumen .min {
+  width: 70%;
+  height: 3rem;
+  background: linear-gradient(#fff0, #fffa);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 2.5rem;
+  margin: auto;
+  transform: rotateX(-42deg);
+  opacity: 0.4;
+}
+
+.wildlife-card .luminous-lumen .mid {
+  width: 74%;
+  height: 13rem;
+  background: linear-gradient(#fff0, #fffa);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 10em;
+  margin: auto;
+  transform: rotateX(-42deg);
+  filter: blur(1rem);
+  opacity: 0.8;
+  border-radius: 100% 100% 0 0;
+}
+
+.wildlife-card .luminous-lumen .hi {
+  width: 50%;
+  height: 13rem;
+  background: linear-gradient(#fff0, #fffa);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 12em;
+  margin: auto;
+  transform: rotateX(22deg);
+  filter: blur(1rem);
+  opacity: 0.6;
+  border-radius: 100% 100% 0 0;
+}
+
+.wildlife-card .luminous-darken {
+  perspective: 400px;
+  transition: opacity 0.4s ease-in-out;
+  opacity: 0.5;
+}
+
+.wildlife-card .luminous-darken > * {
+  transition: opacity 0.4s ease-in-out;
+}
+
+.wildlife-card .luminous-darken .sl {
+  width: 64%;
+  height: 10rem;
+  background: linear-gradient(#000, #0000);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 9.6em;
+  bottom: 0;
+  margin: auto;
+  filter: blur(0.2rem);
+  opacity: 0.1;
+  border-radius: 0 0 100% 100%;
+  transform: rotateX(-22deg);
+}
+
+.wildlife-card .luminous-darken .ll {
+  width: 62%;
+  height: 10rem;
+  background: linear-gradient(#000a, #0000);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 11em;
+  bottom: 0;
+  margin: auto;
+  filter: blur(0.8rem);
+  opacity: 0.4;
+  border-radius: 0 0 100% 100%;
+  transform: rotateX(22deg);
+}
+
+.wildlife-card .luminous-darken .slt {
+  width: 0.5rem;
+  height: 4rem;
+  background: linear-gradient(#0005, #0000);
+  position: absolute;
+  left: 0;
+  right: 11.5rem;
+  top: 3.9em;
+  bottom: 0;
+  margin: auto;
+  opacity: 0.6;
+  border-radius: 0 0 100% 100%;
+  transform: skewY(42deg);
+}
+
+.wildlife-card .luminous-darken .srt {
+  width: 0.5rem;
+  height: 4rem;
+  background: linear-gradient(#0005, #0000);
+  position: absolute;
+  right: 0;
+  left: 11.5rem;
+  top: 3.9em;
+  bottom: 0;
+  margin: auto;
+  opacity: 0.6;
+  border-radius: 0 0 100% 100%;
+  transform: skewY(-42deg);
+}
+
+/* Content layers */
+.wildlife-card .luminous-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+/* Image container - map .wildlife-image to .luminous-icon */
+.wildlife-card .wildlife-image {
+  position: absolute;
+  top: -13rem;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: fit-content;
+  filter: drop-shadow(0 -1.2rem 1px transparent);
+  transition: filter 0.4s ease-in-out;
+  overflow: hidden;
+  border-radius: 50%;
+  width: 10rem;
+  height: 10rem;
+  margin-bottom: 1rem;
+}
+
+.wildlife-card .wildlife-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Title and info - map .wildlife-info to .luminous-title and .luminous-description */
+.wildlife-card .wildlife-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.wildlife-card .wildlife-info h3 {
+  margin: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: #fff;
+  font-weight: normal;
+}
+
+.wildlife-card .wildlife-info p.brief {
+  margin: 0;
+  padding-bottom: 0.6rem;
+  color: #aaa;
+  font-size: 0.6rem;
+  font-weight: 100;
+  border-bottom: 1px solid #fff1;
+  max-width: 64%;
+  width: 100%;
+}
+
+/* Full details - map to luminous content area */
+.wildlife-card .full-details {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 1rem 0;
+  color: #fff;
+  line-height: 1.6;
+}
+
+.wildlife-card .full-details p {
+  margin: 0.5rem 0;
+  color: #fff;
+}
+
+.wildlife-card .full-details p strong {
+  color: #fffa;
+}
+
+/* Hide the original hover slide-in effect since we're using luminous hover */
+.wildlife-card .full-details {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+  pointer-events: auto !important;
+  position: static !important;
+}
+
+/* Restore hover effect for detailed info if needed */
+.wildlife-card:hover .wildlife-info {
+  opacity: 0.8;
+}
+
+.wildlife-card:hover .full-details {
+  opacity: 1;
+}
+
+/* Ensure proper layering */
+.wildlife-card {
+  position: relative;
+}
+
+.wildlife-card .wildlife-image,
+.wildlife-card .wildlife-info,
+.wildlife-card .full-details {
+  position: relative;
+  z-index: 2;
+}
+
