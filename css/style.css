@@ -64,6 +64,7 @@ body {
   background-color: var(--darker);
   color: var(--text-light);
   line-height: 1.7;
+  padding-top: 3.5rem;
 }
 
 /* ---------- Links & Media ---------- */
@@ -88,6 +89,11 @@ img {
 
 /* ---------- Header / Navbar ---------- */
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   background: rgba(15, 42, 32, 0.15);
   color: var(--header-text);
   padding: 0.5rem 1rem;
@@ -674,6 +680,7 @@ section {
 
 .footer-info p {
   line-height: 1.7;
+  padding-top: 3.5rem;
   color: rgba(255, 255, 255, 0.85);
   margin-bottom: 1.5rem;
 }
@@ -978,5 +985,14 @@ section {
     font-size: 0.65rem;
     padding: 2px 5px;
   }
+}
+
+
+@media (max-width: 1024px) {
+  body { padding-top: 4.5rem; }
+}
+
+@media (max-width: 768px) {
+  body { padding-top: 3rem; }
 }
 
