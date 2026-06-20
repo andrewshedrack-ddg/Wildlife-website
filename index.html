@@ -27,7 +27,7 @@
     <nav>
       <ul>
         <li>
-          <div class="nav-item-group">
+          <div class="nav-item-group" data-page="index.html">
             <div class="nav-item-icon">
               <i class="fas fa-home"></i>
             </div>
@@ -35,7 +35,7 @@
           </div>
         </li>
         <li>
-          <div class="nav-item-group">
+          <div class="nav-item-group" data-page="library/library.html">
             <div class="nav-item-icon">
               <i class="fas fa-book"></i>
             </div>
@@ -43,7 +43,7 @@
           </div>
         </li>
         <li>
-          <div class="nav-item-group">
+          <div class="nav-item-group" data-page="scan.html">
             <div class="nav-item-icon">
               <i class="fas fa-barcode"></i>
             </div>
@@ -51,7 +51,7 @@
           </div>
         </li>
         <li>
-          <div class="nav-item-group">
+          <div class="nav-item-group" data-page="about.html">
             <div class="nav-item-icon">
               <i class="fas fa-info-circle"></i>
             </div>
@@ -59,7 +59,7 @@
           </div>
         </li>
         <li>
-          <div class="nav-item-group">
+          <div class="nav-item-group" data-page="contact.html">
             <div class="nav-item-icon">
               <i class="fas fa-envelope"></i>
             </div>
@@ -466,5 +466,16 @@
       });
     });
   </script>
+<script>
+document.querySelectorAll('.nav-item-group').forEach(function(item) {
+    item.addEventListener('click', function() {
+        var page = this.getAttribute('data-page');
+        if (page) {
+            window.location.href = page;
+        }
+    });
+});
+</script>
 </body>
 </html>
+
