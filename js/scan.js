@@ -1,4 +1,4 @@
-// scan.js for WildGuard Explorer
+﻿// scan.js for WildGuard Explorer
 document.addEventListener('DOMContentLoaded', () => {
     const uploadBtn = document.getElementById('uploadBtn');
     const cameraBtn = document.getElementById('cameraBtn');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             commonName: 'African Elephant',
             scientificName: 'Loxodonta africana',
-            classification: 'Mammal · Proboscidea · Elephantidae',
+            classification: 'Mammal Â· Proboscidea Â· Elephantidae',
             habitat: 'Savannas, forests, and deserts across sub-Saharan Africa.',
             diet: 'Herivorous, feeding on grasses, leaves, bark, and fruits.',
             conservationStatus: 'Vulnerable',
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             commonName: 'Lion',
             scientificName: 'Panthera leo',
-            classification: 'Mammal · Carnivora · Felidae',
+            classification: 'Mammal Â· Carnivora Â· Felidae',
             habitat: 'Grasslands, savannas, and open woodlands of sub-Saharan Africa.',
             diet: 'Carnivorous, primarily hunting large ungulates like zebras and wildebeest.',
             conservationStatus: 'Vulnerable',
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             commonName: 'Reticulated Giraffe',
             scientificName: 'Giraffa reticulata',
-            classification: 'Mammal · Artiodactyla · Giraffidae',
+            classification: 'Mammal Â· Artiodactyla Â· Giraffidae',
             habitat: 'Open woodlands and savannas of the Horn of Africa.',
             diet: 'Herbivorous, feeding mainly on leaves of acacia and other trees.',
             conservationStatus: 'Endangered',
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             commonName: 'African Leopard',
             scientificName: 'Panthera pardus',
-            classification: 'Mammal · Carnivora · Felidae',
+            classification: 'Mammal Â· Carnivora Â· Felidae',
             habitat: 'Various habitats from forests to grasslands across sub-Saharan Africa.',
             diet: 'Carnivorous, opportunistic predator eating a wide range of prey.',
             conservationStatus: 'Vulnerable',
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             commonName: 'Nile Crocodile',
             scientificName: 'Crocodylus niloticus',
-            classification: 'Reptile · Crocodylia · Crocodylidae',
+            classification: 'Reptile Â· Crocodylia Â· Crocodylidae',
             habitat: 'Freshwater habitats like rivers, lakes, and marshes throughout sub-Saharan Africa.',
             diet: 'Carnivorous, feeding on fish, birds, mammals, and occasionally carrion.',
             conservationStatus: 'Least Concern',
@@ -157,133 +157,76 @@ document.addEventListener('DOMContentLoaded', () => {
         reader.readAsDataURL(file);
     });
 
-    // Handle camera capture
-    cameraBtn.addEventListener('click', async () => {
+    # Handle camera capture
+let webcamStream = null;
+cameraBtn.addEventListener('click', async () => {
+    if (!webcamStream) {
+        // Start webcam
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            const video = document.createElement('video');
+            webcamStream = stream;
+            const video = document.getElementById('webcamVideo');
             video.srcObject = stream;
-            video.play();
-
-            // Create a temporary container for the video
-            const container = document.createElement('div');
-            container.style.position = 'fixed';
-            container.style.top = '0';
-            container.style.left = '0';
-            container.style.width = '100%';
-            container.style.height = '100%';
-            container.style.background = 'rgba(0,0,0,0.8)';
-            container.style.display = 'flex';
-            container.style.alignItems = 'center';
-            container.style.justifyContent = 'center';
-            container.style.zIndex = '1000';
-            container.appendChild(video);
-            document.body.appendChild(container);
-
-            // Add a capture button
-            const captureBtn = document.createElement('button');
-            captureBtn.textContent = 'Capture';
-            captureBtn.style.position = 'absolute';
-            captureBtn.style.bottom = '20px';
-            captureBtn.style.left = '50%';
-            captureBtn.style.transform = 'translateX(-50%)';
-            captureBtn.style.padding = '10px 20px';
-            captureBtn.style.background = '#2ecc71';
-            captureBtn.style.border = 'none';
-            captureBtn.style.color = 'white';
-            captureBtn.style.borderRadius = '5px';
-            captureBtn.style.cursor = 'pointer';
-            container.appendChild(captureBtn);
-
-            captureBtn.addEventListener('click', () => {
-                // Create canvas to capture frame
-                const canvas = document.createElement('canvas');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const imageDataUrl = canvas.toDataURL('image/jpeg');
-
-                // Stop video stream
-                stream.getTracks().forEach(track => track.stop());
-                document.body.removeChild(container);
-
-                // Show preview and analyze
-                previewImg.src = imageDataUrl;
-                previewImg.style.display = 'block';
-                uploadBtn.style.display = 'none';
-                cameraBtn.style.display = 'none';
-
-                // Show loading state
-                resultTitle.textContent = 'Analyzing...';
-                resultStatus.textContent = 'Processing image...';
-                resultDetails.innerHTML = '';
-                libLink.style.display = 'none';
-
-                // Call mock identification
-                mockIdentifyOrganism(imageDataUrl).then(result => {
-                    displayResult(result);
-                });
-            });
+            // Show webcam container, hide upload fallback
+            document.getElementById('webcam-container').style.display = 'block';
+            document.getElementById('uploadFallback').style.display = 'none';
+            // Change button text to 'Capture'
+            cameraBtn.textContent = 'Capture';
         } catch (err) {
             alert('Unable to access camera. Please ensure you grant permission and try again.');
             console.error(err);
         }
-    });
+    } else {
+        // Capture image from webcam video
+        const video = document.getElementById('webcamVideo');
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageDataUrl = canvas.toDataURL('image/jpeg');
 
-    // Display result function
-    function displayResult(result) {
-        // Hide preview and show results
-        previewImg.style.display = 'none';
-        uploadBtn.style.display = 'block';
-        cameraBtn.style.display = 'block';
+        // Stop webcam stream
+        webcamStream.getTracks().forEach(track => track.stop());
+        webcamStream = null;
+        // Hide webcam container, show upload fallback
+        document.getElementById('webcam-container').style.display = 'none';
+        document.getElementById('uploadFallback').style.display = 'block';
+        // Change button text back to 'Take Photo'
+        cameraBtn.textContent = 'Take Photo';
 
-        if (result.detected) {
-            resultTitle.textContent = result.commonName;
-            resultStatus.textContent = `${result.scientificName} • ${result.confidence.toFixed(0)}% confidence`;
-            
-            const detailsHTML = `
-                <div class="result-item"><strong>Classification:</strong> ${result.classification}</div>
-                <div class="result-item"><strong>Habitat:</strong> ${result.habitat}</div>
-                <div class="result-item"><strong>Diet:</strong> ${result.diet}</div>
-                <div class="result-item"><strong>Conservation Status:</strong> ${result.conservationStatus}</div>
-                <div class="result-item"><strong>Description:</strong> ${result.description}</div>
-                ${result.funFacts.length > 0 ? `
-                <div class="result-item"><strong>Fun Facts:</strong>
-                    <ul style="margin-top:5px; padding-left:20px;">
-                        ${result.funFacts.map(fact => `<li>${fact}</li>`).join('')}
-                    </ul>
-                </div>` : ''}
-            `;
-            resultDetails.innerHTML = detailsHTML;
-            libLink.style.display = 'inline-block';
-            // Update library link based on classification (simplified)
-            if (result.classification.toLowerCase().includes('mammal')) {
-                libLink.href = 'library/mammals.html';
-            } else if (result.classification.toLowerCase().includes('bird')) {
-                libLink.href = 'library/birds.html';
-            } else if (result.classification.toLowerCase().includes('reptile') || result.classification.toLowerCase().includes('amphibian')) {
-                libLink.href = 'library/reptile.html';
-            } else if (result.classification.toLowerCase().includes('fish') || result.classification.toLowerCase().includes('aquatic')) {
-                libLink.href = 'library/aquatic.html';
-            } else if (result.classification.toLowerCase().includes('plant') || result.classification.toLowerCase().includes('fungi')) {
-                libLink.href = 'library/plants.html';
-            } else {
-                libLink.href = 'library/microorganisms.html';
-            }
-        } else {
-            resultTitle.textContent = 'No Organism Detected';
-            resultStatus.textContent = 'Try again with a clearer image';
-            resultDetails.innerHTML = `<p>${result.description}</p>`;
-            libLink.style.display = 'none';
-        }
+        // Now proceed to show preview and analyze as in the upload flow
+        // Show preview
+        const previewImg = document.getElementById('previewImg');
+        previewImg.src = imageDataUrl;
+        previewImg.style.display = 'block';
+        // Hide the buttons
+        document.getElementById('uploadBtn').style.display = 'none';
+        cameraBtn.style.display = 'none';
+
+        // Show loading state
+        const resultTitle = document.getElementById('resultTitle');
+        const resultStatus = document.getElementById('resultStatus');
+        const resultDetails = document.getElementById('resultDetails');
+        const libLink = document.getElementById('libLink');
+
+        resultTitle.textContent = 'Analyzing...';
+        resultStatus.textContent = 'Processing image...';
+        resultDetails.innerHTML = '';
+        libLink.style.display = 'none';
+
+        // Call mock identification
+        mockIdentifyOrganism(imageDataUrl).then(result => {
+            displayResult(result);
+            // Reset file input (not needed for webcam, but we do it for consistency)
+            // document.getElementById('fileInput').value = '';
+        });
     }
-});
-
-// Update year in footer
+});// Update year in footer
 document.addEventListener('DOMContentLoaded', () => {
     const yearNode = document.querySelector('[data-current-year]');
     if (yearNode) {
         yearNode.textContent = String(new Date().getFullYear());
     }
 });
+

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -70,6 +70,19 @@
         <!-- Search Box -->
         <div class="search-box">
           <input type="text" id="searchInput" placeholder="Search species...">
+        </div>
+
+        <!-- Biome Filter -->
+        <div class="biome-filter">
+          <label for="biomeSelect">Biome:</label>
+          <select id="biomeSelect">
+            <option value="all">All Biomes</option>
+            <option value="savanna">Savanna</option>
+            <option value="forest">Forest</option>
+            <option value="wetland">Wetland</option>
+            <option value="desert">Desert</option>
+            <option value="aquatic">Aquatic</option>
+          </select>
         </div>
 
         
@@ -193,7 +206,7 @@
                       <p><strong>Scientific Name:</strong> Giraffa camelopardalis</p>
                       <p><strong>Conservation Status:</strong> Vulnerable</p>
                       <p><strong>Weight Range:</strong> 1,750 - 2,800 lbs (794 - 1,270 kg)</p>
-                      <p><strong>Key Detail:</strong> Kenya’s tall icon, shaped for browsing treetops and spotting movement across open country.</p>
+                      <p><strong>Key Detail:</strong> Kenyaâ€™s tall icon, shaped for browsing treetops and spotting movement across open country.</p>
                     </div>
                   </div>
                   
@@ -867,23 +880,6 @@ document.querySelectorAll('.nav-item-group').forEach(function(item) {
         }
     });
 });
-</script>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    if (!searchInput) return;
-    searchInput.addEventListener('input', function() {
-      const query = this.value.trim().toLowerCase();
-      document.querySelectorAll('.wildlife-card').forEach(card => {
-        const title = card.querySelector('h3')?.textContent.trim().toLowerCase() || '';
-        if (title.includes(query)) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
-  });
 </script>
 </body>
 </html>
