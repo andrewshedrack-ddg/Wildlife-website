@@ -67,6 +67,11 @@
       <div class="container">
         <h2 class="section-title">Explore Wildlife by Category</h2>
         <p class="section-subtitle">Select a category to discover animals from different kingdoms</p>
+        <!-- Search Box -->
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search species...">
+        </div>
+
         
         <!-- Tab Navigation -->
         <div class="tab-container">
@@ -862,6 +867,23 @@ document.querySelectorAll('.nav-item-group').forEach(function(item) {
         }
     });
 });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    if (!searchInput) return;
+    searchInput.addEventListener('input', function() {
+      const query = this.value.trim().toLowerCase();
+      document.querySelectorAll('.wildlife-card').forEach(card => {
+        const title = card.querySelector('h3')?.textContent.trim().toLowerCase() || '';
+        if (title.includes(query)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
 </script>
 </body>
 </html>

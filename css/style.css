@@ -94,7 +94,7 @@ img {
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(15, 42, 32, 0.15);
+  background: rgba(15, 42, 32, 0.85);
   color: var(--header-text);
   padding: 0.5rem 1rem;
   display: flex;
