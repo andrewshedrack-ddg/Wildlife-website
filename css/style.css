@@ -62,7 +62,7 @@ body {
   /* Full background image visibility */
   background: url('../assets/images/background.png') center/cover fixed no-repeat;
   background-color: var(--darker);
-  color: var(--text-dark);
+  color: var(--text-light);
   line-height: 1.7;
 }
 
@@ -275,7 +275,7 @@ section {
 .section-subtitle {
   text-align: center;
   font-size: 1.2rem;
-  color: var(--text-dark);
+  color: var(--text-light);
   max-width: 700px;
   margin: 0 auto 3rem;
   line-height: 1.6;
@@ -359,7 +359,7 @@ section {
   display: block;
   margin: 0.3rem 0;
   line-height: 1.4;
-  color: var(--text-dark);
+  color: var(--text-light);
   font-size: 0.75rem;
 }
 
@@ -381,7 +381,7 @@ section {
 .wildlife-info p {
   margin: 0.4rem 0;
   line-height: 1.5;
-  color: var(--text-dark);
+  color: var(--text-light);
   font-size: 0.75rem;
 }
 
@@ -459,7 +459,7 @@ section {
   display: block;
   margin: 0.3rem 0;
   line-height: 1.4;
-  color: var(--text-dark);
+  color: var(--text-light);
   font-size: 0.75rem;
 }
 
@@ -481,7 +481,7 @@ section {
 .park-info p {
   margin: 0.4rem 0;
   line-height: 1.5;
-  color: var(--text-dark);
+  color: var(--text-light);
   font-size: 0.75rem;
 }
 
@@ -533,7 +533,7 @@ section {
 .conservation-item .brief {
   display: block;
   line-height: 1.4;
-  color: var(--text-dark);
+  color: var(--text-light);
   font-size: 0.75rem;
 }
 
@@ -554,7 +554,7 @@ section {
 
 .conservation-item p {
   line-height: 1.5;
-  color: var(--text-dark);
+  color: var(--text-light);
   font-size: 0.75rem;
 }
 
@@ -607,7 +607,7 @@ section {
 .action-card .brief {
   display: block;
   line-height: 1.4;
-  color: var(--text-dark);
+  color: var(--text-light);
   font-size: 0.75rem;
   margin-bottom: 0.5rem;
 }
@@ -629,7 +629,7 @@ section {
 
 .action-card p {
   line-height: 1.5;
-  color: var(--text-dark);
+  color: var(--text-light);
   font-size: 0.75rem;
   margin-bottom: 1rem;
 }
