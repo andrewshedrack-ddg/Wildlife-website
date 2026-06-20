@@ -1,1496 +1,982 @@
-body {
-    background: url('../assets/images/background.png') center/cover fixed no-repeat !important;
-    background-color: transparent !important;
-}
-/* WildGuard Explorer - Clean, Natural Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ============================================================
+   WildGuard Explorer - Main Stylesheet
+   Crystal clear background with glassmorphism cards
+   ============================================================ */
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* ---------- CSS Variables ---------- */
 :root {
-    /* Colors - Natural, earthy tones */
-    --dark: #2d372d;
-    --darker: #1a251a;
-    --light: #f8f9fa;
-    --lighter: #ffffff;
-    --green: #4a7c59;
-    --green-light: #6b8e23;
-    --savanna: #c2b280;
-    --savanna-light: #d2b48c;
-    --text-dark: #2c3e2c;
-    --text-light: #f0f0f0;
-    --text-muted: #8a8a8a;
-    
-    /* Layout */
-    --max-width: 1200px;
-    --radius: 12px;
-    --radius-lg: 20px;
-    
-    /* Shadows */
-    --shadow: 0 4px 12px rgba(0,0,0,0.1);
-    --shadow-hover: 0 8px 20px rgba(0,0,0,0.15);
-    
-    /* Transitions */
-    --transition: all 0.3s ease;
+  /* Colors - Natural, earthy tones */
+  --dark: #2d372d;
+  --darker: #1a251a;
+  --light: #f8f9fa;
+  --lighter: #ffffff;
+  --green: #1b4d3e;
+  --green-light: #6b8e23;
+  --savanna: #c2b280;
+  --savanna-light: #d2b48c;
+  --text-dark: #2c3e2c;
+  --text-light: #f0f0f0;
+  --text-muted: #5a5a5a;
+
+  /* Header */
+  --header-bg: #0f2a20;
+  --header-text: #e0e0e0;
+
+  /* Layout */
+  --max-width: 1200px;
+  --radius: 8px;
+  --radius-lg: 12px;
+
+  /* Shadows */
+  --shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  --shadow-hover: 0 6px 18px rgba(0, 0, 0, 0.2);
+
+  /* Transitions */
+  --transition: all 0.3s ease;
 }
 
+/* ---------- HTML & Body ---------- */
 html {
-    scroll-behavior: smooth;
-    font-size: 16px;
+  scroll-behavior: smooth;
+  font-size: 16px;
 }
 
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
+body {
+  font-family: 'Manrope', system-ui, sans-serif;
+  /* Full background image visibility */
+  background: url('../assets/images/background.png') center/cover fixed no-repeat;
+  background-color: var(--darker);
+  color: var(--text-dark);
+  line-height: 1.7;
+}
+
+/* ---------- Links & Media ---------- */
 a {
-    color: inherit;
-    text-decoration: none;
-    transition: var(--transition);
+  color: inherit;
+  text-decoration: none;
+  transition: var(--transition);
 }
 
 img {
-    max-width: 100%;
-    height: auto;
-    display: block;
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
-/* Header */
-.navbar {
-    background: var(--green);
-    color: var(--lighter);
-    padding: 1.5rem 0;
-    box-shadow: var(--shadow);
-}
-
+/* ---------- Layout Utilities ---------- */
 .container {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
-/* Logo image styles */
-.navbar .logo-img {
-    width: 180px;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 50%; /* Makes it circular */
-    border: 3px solid var(--green-light);
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-  }
+/* ---------- Header / Navbar ---------- */
+.navbar {
+  background: rgba(15, 42, 32, 0.15);
+  color: var(--header-text);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 100;
+}
 
-  .navbar .logo-img:hover {
-      transform: scale(1.05);
-      box-shadow: var(--shadow-hover);
-  }
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
-  /* Logo container styles */
-  .navbar .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-  }
+.logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid var(--green-light);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
 
-  /* Logo text styles */
-  .navbar .logo-text {
-      font-family: 'Fraunces', serif;
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--lighter);
-  }
+.logo-img:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-hover);
+}
 
-  /* Navigation styles */
+.logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--header-text);
+}
+
+/* Navigation */
 .navbar nav ul {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    list-style: none;
+  display: flex;
+  gap: 0.8rem;
+  list-style: none;
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .navbar nav li a {
-    display: block;
-    width: 110px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-    background-color: rgb(161, 255, 20);
-    border-radius: 30px;
-    color: rgb(19, 19, 19);
-    font-weight: 600;
-    border: none;
-    position: relative;
-    cursor: pointer;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.116);
-    padding-left: 8px;
-    transition: all 0.5s ease;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  color: var(--header-text);
+  transition: var(--transition);
+  text-decoration: none;
 }
+
 .navbar nav li a:hover,
 .navbar nav li a.active {
-    background-color: rgb(192, 255, 20);
-    transform: scale(0.97);
-    transition: all 0.2s ease;
+  color: var(--green-light);
+  text-decoration: underline;
 }
-    padding: 0 2rem;
-    overflow: hidden;
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--header-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+/* ---------- Hero Section ---------- */
+.hero {
+  position: relative;
+  height: 60vh;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--lighter);
+  padding: 0 2rem;
+  overflow: hidden;
+}
+
+.hero-slideshow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: none;
+}
+
+.hero-slide.active {
+  display: block;
 }
 
 .hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
+  z-index: 1;
 }
 
 .hero-text {
-    position: relative;
-    z-index: 2;
-    max-width: 800px;
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
 }
 
 .hero-text h2 {
-    font-family: 'Fraunces', serif;
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  font-family: 'Fraunces', serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
 .hero-text p {
-    font-size: 1.3rem;
-    opacity: 0.9;
-    max-width: 700px;
-    margin: 0 auto;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  font-size: 1.3rem;
+  opacity: 0.9;
+  max-width: 700px;
+  margin: 0 auto;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* Sections */
+/* ---------- Sections (global) ---------- */
 section {
-    padding: 5rem 0;
+  padding: 5rem 0;
+  position: relative;
+  background: transparent;
 }
 
+/* All sections - completely transparent, no overlay */
+.wildlife-section,
+.parks-section,
+.conservation-section,
+.get-involved-section {
+  background: transparent;
+}
+
+/* Section title styling */
 .section-title {
-    text-align: center;
-    font-family: 'Fraunces', serif;
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: var(--dark);
-    position: relative;
+  text-align: center;
+  font-family: 'Fraunces', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--dark);
+  position: relative;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.6);
 }
 
 .section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 4px;
-    background: var(--green);
-    border-radius: 2px;
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: var(--green);
+  border-radius: 2px;
 }
 
 .section-subtitle {
-    text-align: center;
-    font-size: 1.2rem;
-    color: var(--text-muted);
-    max-width: 700px;
-    margin: 0 auto 3rem;
-    line-height: 1.6;
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--text-dark);
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  line-height: 1.6;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
-/* Wildlife Section */
-.wildlife-section {
-    background: var(--light);
-}
+/* ============================================================
+   EXPANDABLE GLASSMORPHISM CARDS
+   Small when idle, expand on hover to show full details
+   ============================================================ */
 
+/* ---------- Wildlife Section ---------- */
 .wildlife-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
 }
 
-/* .wildlife-card { */
-/*     background: var(--lighter); */
-/*     border-radius: var(--radius-lg); */
-/*     overflow: hidden; */
-/*     box-shadow: var(--shadow); */
-/*     transition: var(--transition); */
-/*     display: flex; */
-/*     position: relative; */
-/* } */
+.wildlife-card {
+  /* IDLE STATE: Small, compact, nearly invisible background */
+  background: transparent;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  /* Small fixed height when idle */
+  max-height: 200px;
+}
 
-/* .wildlife-card:hover { */
-/*     transform: translateY(-5px); */
-/*     box-shadow: var(--shadow-hover); */
-/* } */
-/*  */
-/* .wildlife-image { */
-/*     position: relative; */
-    width: 100%;
-    padding-top: 120%; /* 4:5 aspect ratio, taller than wide */
-    overflow: hidden;
-    flex-shrink: 0;
+.wildlife-card:hover {
+  /* HOVER STATE: Expand to show full details - still very transparent */
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: var(--shadow-hover);
+  max-height: 400px;
+  transform: translateY(-5px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.wildlife-image {
+  height: 100px;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.wildlife-card:hover .wildlife-image {
+  height: 140px;
 }
 
 .wildlife-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-/* .wildlife-card:hover .wildlife-image img { */
-/*     transform: scale(1.05); */
-/* } */
-/*  */
-/* .wildlife-info { */
-    position: absolute;
-/*     bottom: 0; */
-/*     left: 0; */
-/*     right: 0; */
-/*     padding: 0.75rem; */
-/*     background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); */
-    color: var(--lighter);
-/*     display: flex; */
-/*     flex-direction: column; */
-/*     flex-grow: 0; */
-/* } */
-/*  */
-.wildlife-info h3 {
-    font-family: 'Fraunces', serif;
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: var(--lighter);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-}
-
-.wildlife-info p {
-    margin: 0.25rem 0;
-    line-height: 1.4;
-    color: var(--lighter);
-    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
-    font-size: 0.8rem;
-}
-
-.wildlife-info p strong {
-    color: var(--green-light);
-}
-
-/* Parks Section */
-.parks-section {
-    background: var(--light);
-}
-
-.parks-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.park-card {
-    background: var(--lighter);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    display: flex;
-    flex-direction: column;
-}
-
-.park-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-hover);
-}
-
-.park-image {
-    height: 180px;
-    overflow: hidden;
-}
-
-.park-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.park-card:hover .park-image img {
-    transform: scale(1.05);
-}
-
-.park-info {
-    padding: 0.75rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.park-info h3 {
-    font-family: 'Fraunces', serif;
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--dark);
-}
-
-.park-info p {
-    margin: 0.5rem 0;
-    line-height: 1.6;
-    color: var(--text-dark);
-    flex-grow: 1;
-}
-
-.park-info p strong {
-    color: var(--green);
-}
-
-/* Conservation Section */
-.conservation-section {
-    background: var(--light);
-}
-
-.conservation-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.conservation-item {
-    text-align: center;
-    padding: 2rem;
-    background: var(--lighter);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-}
-
-.conservation-item:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-hover);
-}
-
-.conservation-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    color: var(--green);
-}
-
-.conservation-item h3 {
-    font-family: 'Fraunces', serif;
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--dark);
-}
-
-.conservation-item p {
-    line-height: 1.6;
-    color: var(--text-dark);
-}
-
-/* Get Involved Section */
-.get-involved-section {
-    background: var(--savanna);
-    color: var(--dark);
-}
-
-.get-involved-section .section-title,
-.get-involved-section .section-subtitle {
-    color: var(--dark);
-}
-
-.action-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.action-card {
-    background: var(--lighter);
-    border-radius: var(--radius-lg);
-    padding: 2rem;
-    text-align: center;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-}
-
-.action-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-hover);
-}
-
-.action-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    color: var(--green);
-}
-
-.action-card h3 {
-    font-family: 'Fraunces', serif;
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--dark);
-}
-
-.action-card p {
-    line-height: 1.6;
-    color: var(--text-dark);
-    margin-bottom: 1.5rem;
-}
-
-.action-button {
-    display: inline-block;
-    background: var(--green);
-    color: var(--lighter);
-    padding: 0.8rem 1.5rem;
-    border-radius: var(--radius);
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: var(--transition);
-}
-
-.action-button:hover {
-    background: var(--green-light);
-    transform: translateY(-2px);
-}
-
-/* Footer */
-.site-footer {
-    background: var(--darker);
-    color: var(--lighter);
-    padding: 3rem 0 1.5rem;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2.5rem;
-    margin-bottom: 2rem;
-}
-
-.footer-info h3 {
-    font-family: 'Fraunces', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--lighter);
-}
-
-.footer-info p {
-    line-height: 1.7;
-    color: rgba(255,255,255,0.8);
-    margin-bottom: 1.5rem;
-}
-
-.footer-links h4 {
-    font-family: 'Fraunces', serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--lighter);
-}
-
-.footer-links ul {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-links li {
-    margin-bottom: 0.75rem;
-}
-
-.footer-links li a {
-    color: rgba(255,255,255,0.7);
-    transition: var(--transition);
-}
-
-.footer-links li a:hover {
-    color: var(--lighter);
-}
-
-.footer-social h4 {
-    font-family: 'Fraunces', serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--lighter);
-}
-
-.social-links {
-    display: flex;
-    gap: 1rem;
-}
-
-.social-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 50%;
-    color: var(--lighter);
-    font-size: 1.2rem;
-    transition: var(--transition);
-}
-
-.social-link:hover {
-    background: rgba(255,255,255,0.3);
-    transform: translateY(-3px);
-}
-
-.footer-bottom {
-    text-align: center;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.7);
-}
-
-.footer-bottom p {
-    margin: 0.5rem 0;
-    line-height: 1.6;
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .container {
-        padding: 0 1.5rem;
-    }
-    
-    .header-content h1 {
-        font-size: 2rem;
-    }
-    
-    .section-title {
-        font-size: 2rem;
-    }
-    
-    .hero-text h2 {
-        font-size: 2.2rem;
-    }
-    
-    .hero-text p {
-        font-size: 1.2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .main-nav {
-        display: none;
-    }
-    
-    .hero {
-        height: 50vh;
-    }
-    
-    .header-content h1 {
-        font-size: 1.8rem;
-    }
-    
-    .header-content p {
-        font-size: 1rem;
-    }
-    
-    .hero-text h2 {
-        font-size: 2rem;
-    }
-    
-    .hero-text p {
-        font-size: 1.1rem;
-    }
-    
-    .section-title {
-        font-size: 1.8rem;
-    }
-    
-    .wildlife-grid,
-    .parks-grid,
-    .conservation-grid,
-    .action-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .footer-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-    
-    .footer-info,
-    .footer-links,
-    .footer-social {
-        text-align: center;
-        margin-bottom: 1.5rem;
-    }
-    
-    .social-links {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 0 1rem;
-    }
-    
-    .hero {
-        height: 45vh;
-    }
-    
-    .header-content h1 {
-        font-size: 1.6rem;
-    }
-    
-    .header-content p {
-        font-size: 0.8rem;
-    }
-    
-    .hero-text h2 {
-        font-size: 1.8rem;
-    }
-    
-    .hero-text p {
-        font-size: 1rem;
-    }
-    
-    .section-title {
-        font-size: 1.6rem;
-    }
-    
-    .wildlife-image,
-    .park-image {
-        height: 160px;
-    }
-    
-    .wildlife-info,
-    .park-info {
-        padding: 1rem;
-    }
-    
-    .wildlife-info h3,
-    .park-info h3 {
-        font-size: 1.2rem;
-    }
-    
-    .conservation-item,
-    .action-card {
-        padding: 0.75rem;
-    }
-    
-    .conservation-icon,
-    .action-icon {
-        font-size: 2rem;
-    }
-    
-    .footer-content {
-        gap: 1.5rem;
-    }
-}
-/* Slide-in hover panel for wildlife and park cards */
-/* .wildlife-card .full-details, */
-/* .park-card .full-details { */
-/*     position: absolute; */
-/*     top: 0; */
-/*     left: 0; */
-/*     width: 100%; */
-/*     height: 100%; */
-/*     background: var(--lighter); */
-/*     padding: 0.75rem; */
-/*     box-sizing: border-box; */
-/*     border-left: 3px solid var(--green); */
-/*     box-shadow: -3px 0 10px rgba(0,0,0,0.1); */
-/*     opacity: 0; */
-/*     transform: translateX(100%); */
-/*     transition: opacity 0.3s ease, transform 0.3s ease; */
-/*     pointer-events: none; */
-/*     z-index: 10; */
-}
-
-/* .wildlife-card:hover .full-details, */
-/* .park-card:hover .full-details { */
-/*     opacity: 1; */
-/*     transform: translateX(0); */
-/*     pointer-events: auto; */
-/* } */
-/*  */
-/* Also style the content inside the full-details */
-/* .wildlife-card .full-details p, */
-/* .park-card .full-details p { */
-/*     margin: 0.5rem 0; */
-/*     line-height: 1.6; */
-/*     color: var(--text-dark); */
-/* } */
-/*  */
-/* .wildlife-card .full-details p strong, */
-/* .park-card .full-details p strong { */
-/*     color: var(--green); */
-/* } */
-/* /* .wildlife-card { position: relative; } */ */
-.park-card { position: relative; }
-
-
-.navbar {
-    background: rgba(26,37,26,0.15) !important;
-    box-shadow: none !important;
-}
-
-
-/* Adjusted navbar size */
-.navbar {
-    padding: 0.5rem 0 !important;
-}
-.navbar .logo-img {
-    width: 60px !important;
-    height: 60px !important;
-}
-.navbar .logo-text {
-    font-size: 1.2rem !important;
-}
-.navbar nav li a {
-    padding: 0.25rem 0.5rem !important;
-    font-size: 0.8rem !important;
-}
-
-/* Make sections transparent to show background */
-.wildlife-section,
-.parks-section,
-.conservation-section,
-.get-involved-section {
-    background: transparent !important;
-}
-
-/* Reduce section padding */
-section {
-    padding: 3rem 0 !important;
-}
-
-.wildlife-section,
-.parks-section,
-.conservation-section,
-.get-involved-section {
-    background: rgba(26,37,26,0.3) !important;
-    color: var(--lighter) !important;
-}
-
-.wildlife-section .section-title,
-.wildlife-section .section-subtitle,
-.parks-section .section-title,
-.parks-section .section-subtitle,
-.conservation-section .section-title,
-.conservation-section .section-subtitle,
-.get-involved-section .section-title,
-.get-involved-section .section-subtitle {
-    color: var(--lighter) !important;
-}
-.wildlife-section h2,
-.wildlife-section h3,
-.wildlife-section p,
-.parks-section h2,
-.parks-section h3,
-.parks-section p,
-.conservation-section h2,
-.conservation-section h3,
-.conservation-section p,
-.get-involved-section h2,
-.get-involved-section h3,
-.get-involved-section p {
-    color: var(--lighter) !important;
-}
-
-/* Fix text color in full-details to ensure visibility */
-.wildlife-card .full-details p,
-.park-card .full-details p,
-.conservation-item .full-details p,
-.action-card .full-details p {
-    color: var(--text-dark) !important;
-}
-.wildlife-card .full-details p strong,
-.park-card .full-details p strong,
-.conservation-item .full-details p strong,
-.action-card .full-details p strong {
-    color: var(--green) !important;
-}
-
-/* Ensure cards can overflow to show full details panel */
-.wildlife-card { overflow: visible !important; }
-.park-card { overflow: visible !important; }
-.conservation-item { overflow: visible !important; }
-.action-card { overflow: visible !important; }
-
-/* Further reduce header size */
-.navbar {
-    padding: 0.25rem 0 !important;
-}
-.navbar .logo-img {
-    width: 40px !important;
-    height: 40px !important;
-}
-.navbar .logo-text {
-    font-size: 1rem !important;
-}
-.navbar nav li a {
-    padding: 0.15rem 0.3rem !important;
-    font-size: 0.7rem !important;
-}
-/* Adjust animal name positioning */
-.wildlife-info h3 {
-    margin-bottom: 0.5rem !important;
-}
-.park-info h3 {
-    margin-bottom: 0.5rem !important;
-}
-
-/* Luminous Card Design - Adapted for Wildlife Cards */
-.luminous-card-container {
-  box-sizing: border-box;
-  scroll-behavior: smooth;
-  margin: 0;
-  padding: 0;
-  --sz: clamp(17px, min(2%, 3%), 24px);
-  font-size: var(--sz);
-  display: grid;
-  place-items: center;
-  background: #1e1e1e;
-  background: radial-gradient(circle at 50% 30%, #2a2a2a 0%, #131313 64%);
-  font-family: "Aeonik Pro Regular", sans-serif;
-  min-height: 100%;
-  overflow: hidden;
-  min-width: 100%;
-}
-
-.luminous-card-container * {
-  box-sizing: border-box;
-}
-
-.luminous-card {
-  position: relative;
-  background: radial-gradient(circle at 50% 0%, #3a3a3a 0%, #1a1a1a 64%);
-  box-shadow:
-    inset 0 1.01rem 0.2rem -1rem #fff0,
-    inset 0 -1.01rem 0.2rem -1rem #0000,
-    0 -1.02rem 0.2rem -1rem #fff0,
-    0 1rem 0.2rem -1rem #0000,
-    0 0 0 1px #fff3,
-    0 4px 4px 0 #0004,
-    0 0 0 1px #333;
-  width: 18rem;
-  height: 24rem;
-  border-radius: 1.8rem;
-  color: #fff;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  transition:
-    all 0.4s ease-in-out,
-    translate 0.4s ease-out;
-}
-
-.luminous-card::before {
-  content: ";
-  display: block;
-  --offset: 1rem;
-  width: calc(100% + 2 * var(--offset));
-  height: calc(100% + 2 * var(--offset));
-  position: absolute;
-  left: calc(-1 * var(--offset));
-  right: calc(-1 * var(--offset));
-  top: calc(-1 * var(--offset));
-  bottom: calc(-1 * var(--offset));
-  margin: auto;
-  box-shadow: inset 0 0 0px 0.06rem #fff2;
-  border-radius: 2.6rem;
-  --ax: 4rem;
-  clip-path: polygon(
-    var(--ax) 0,
-    0 0,
-    0 var(--ax),
-    var(--ax) var(--ax),
-    var(--ax) calc(100% - var(--ax)),
-    0 calc(100% - var(--ax)),
-    0 100%,
-    var(--ax) 100%,
-    var(--ax) calc(100% - var(--ax)),
-    calc(100% - var(--ax)) calc(100% - var(--ax)),
-    calc(100% - var(--ax)) 100%,
-    100% 100%,
-    100% calc(100% - var(--ax)),
-    calc(100% - var(--ax)) calc(100% - var(--ax)),
-    calc(100% - var(--ax)) var(--ax),
-    100% var(--ax),
-    100% 0,
-    calc(100% - var(--ax)) 0,
-    calc(100% - var(--ax)) var(--ax),
-    var(--ax) var(--ax)
-  );
-  transition: all 0.4s ease-in-out;
-}
-
-.luminous-card:hover {
-  translate: 0 -0.2rem;
-}
-
-.luminous-card:hover::before {
-  --offset: 0.5rem;
-  --ax: 8rem;
-  border-radius: 2.2rem;
-  box-shadow: inset 0 0 0 0.08rem #fff1;
-}
-
-.luminous-light-layer {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  transform-style: preserve-3d;
-  perspective: 400px;
-  pointer-events: none;
-}
-
-.luminous-slit {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  width: 64%;
-  height: 1.2rem;
-  transform: rotateX(-76deg);
-  background: #121212;
-  box-shadow: 0 0 4px 0 #fff0;
-  transition: all 0.4s ease-in-out;
-}
-
-.luminous-lumen {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  perspective: 400px;
-  opacity: 0;
-  transition: opacity 0.4s ease-in-out;
-}
-
-.luminous-lumen .min {
-  width: 70%;
-  height: 3rem;
-  background: linear-gradient(#fff0, #fffa);
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 2.5rem;
-  margin: auto;
-  transform: rotateX(-42deg);
-  opacity: 0.4;
-}
-
-.luminous-lumen .mid {
-  width: 74%;
-  height: 13rem;
-  background: linear-gradient(#fff0, #fffa);
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 10em;
-  margin: auto;
-  transform: rotateX(-42deg);
-  filter: blur(1rem);
-  opacity: 0.8;
-  border-radius: 100% 100% 0 0;
-}
-
-.luminous-lumen .hi {
-  width: 50%;
-  height: 13rem;
-  background: linear-gradient(#fff0, #fffa);
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 12em;
-  margin: auto;
-  transform: rotateX(22deg);
-  filter: blur(1rem);
-  opacity: 0.6;
-  border-radius: 100% 100% 0 0;
-}
-
-.luminous-darken {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  perspective: 400px;
-  transition: opacity 0.4s ease-in-out;
-  opacity: 0.5;
-}
-
-.luminous-darken > * {
-  transition: opacity 0.4s ease-in-out;
-}
-
-.luminous-darken .sl {
-  width: 64%;
-  height: 10rem;
-  background: linear-gradient(#000, #0000);
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 9.6em;
-  bottom: 0;
-  margin: auto;
-  filter: blur(0.2rem);
-  opacity: 0.1;
-  border-radius: 0 0 100% 100%;
-  transform: rotateX(-22deg);
-}
-
-.luminous-darken .ll {
-  width: 62%;
-  height: 10rem;
-  background: linear-gradient(#000a, #0000);
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 11em;
-  bottom: 0;
-  margin: auto;
-  filter: blur(0.8rem);
-  opacity: 0.4;
-  border-radius: 0 0 100% 100%;
-  transform: rotateX(22deg);
-}
-
-.luminous-darken .slt {
-  width: 0.5rem;
-  height: 4rem;
-  background: linear-gradient(#0005, #0000);
-  position: absolute;
-  left: 0;
-  right: 11.5rem;
-  top: 3.9em;
-  bottom: 0;
-  margin: auto;
-  opacity: 0.6;
-  border-radius: 0 0 100% 100%;
-  transform: skewY(42deg);
-}
-
-.luminous-darken .srt {
-  width: 0.5rem;
-  height: 4rem;
-  background: linear-gradient(#0005, #0000);
-  position: absolute;
-  right: 0;
-  left: 11.5rem;
-  top: 3.9em;
-  bottom: 0;
-  margin: auto;
-  opacity: 0.6;
-  border-radius: 0 0 100% 100%;
-  transform: skewY(-42deg);
-}
-
-.luminous-content {
-  position: relative;
-  z-index: 1;
-}
-
-.luminous-icon {
-  position: absolute;
-  top: -13rem;
-  left: 0;
-  right: 0;
-  margin: auto;
-  width: fit-content;
-  filter: drop-shadow(0 -1.2rem 1px transparent);
-  transition: filter 0.4s ease-in-out;
-}
-
-.luminous-bottom {
-  position: relative;
-}
-
-.luminous-title {
-  margin: 0;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-  color: #fff;
-  font-weight: normal;
-}
-
-.luminous-description {
-  margin: 0;
-  padding-bottom: 0.6rem;
-  color: #aaa;
-  font-size: 0.6rem;
-  font-weight: 100;
-  border-bottom: 1px solid #fff1;
-  max-width: 64%;
-}
-
-
-/* Map Wildlife Card Structure to Luminous Card */
-.wildlife-card {
-  /* Apply luminous card styles to our container */
-  position: relative;
-  background: radial-gradient(circle at 50% 0%, #3a3a3a 0%, #1a1a1a 64%);
-  box-shadow:
-    inset 0 1.01rem 0.2rem -1rem #fff0,
-    inset 0 -1.01rem 0.2rem -1rem #0000,
-    0 -1.02rem 0.2rem -1rem #fff0,
-    0 1rem 0.2rem -1rem #0000,
-    0 0 0 1px #fff3,
-    0 4px 4px 0 #0004,
-    0 0 0 1px #333;
-  width: 18rem;
-  height: 24rem;
-  border-radius: 1.8rem;
-  color: #fff;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  transition:
-    all 0.4s ease-in-out,
-    translate 0.4s ease-out;
-  overflow: hidden;
-}
-
-/* Pseudo-element for luminous effect */
-.wildlife-card::before {
-  content: ";
-  display: block;
-  --offset: 1rem;
-  width: calc(100% + 2 * var(--offset));
-  height: calc(100% + 2 * var(--offset));
-  position: absolute;
-  left: calc(-1 * var(--offset));
-  right: calc(-1 * var(--offset));
-  top: calc(-1 * var(--offset));
-  bottom: calc(-1 * var(--offset));
-  margin: auto;
-  box-shadow: inset 0 0 0px 0.06rem #fff2;
-  border-radius: 2.6rem;
-  --ax: 4rem;
-  clip-path: polygon(
-    var(--ax) 0,
-    0 0,
-    0 var(--ax),
-    var(--ax) var(--ax),
-    var(--ax) calc(100% - var(--ax)),
-    0 calc(100% - var(--ax)),
-    0 100%,
-    var(--ax) 100%,
-    var(--ax) calc(100% - var(--ax)),
-    calc(100% - var(--ax)) calc(100% - var(--ax)),
-    calc(100% - var(--ax)) 100%,
-    100% 100%,
-    100% calc(100% - var(--ax)),
-    calc(100% - var(--ax)) calc(100% - var(--ax)),
-    calc(100% - var(--ax)) var(--ax),
-    100% var(--ax),
-    100% 0,
-    calc(100% - var(--ax)) 0,
-    calc(100% - var(--ax)) var(--ax),
-    var(--ax) var(--ax)
-  );
-  transition: all 0.4s ease-in-out;
-  pointer-events: none;
-}
-
-/* Hover effects */
-.wildlife-card:hover {
-  translate: 0 -0.2rem;
-}
-
-.wildlife-card:hover::before {
-  --offset: 0.5rem;
-  --ax: 8rem;
-  border-radius: 2.2rem;
-  box-shadow: inset 0 0 0 0.08rem #fff1;
-}
-
-/* Lighting layers */
-.wildlife-card .luminous-light-layer,
-.wildlife-card .luminous-slit,
-.wildlife-card .luminous-lumen,
-.wildlife-card .luminous-darken {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  pointer-events: none;
-}
-
-.wildlife-card .luminous-light-layer {
-  transform-style: preserve-3d;
-  perspective: 400px;
-}
-
-.wildlife-card .luminous-slit {
-  width: 64%;
-  height: 1.2rem;
-  transform: rotateX(-76deg);
-  background: #121212;
-  box-shadow: 0 0 4px 0 #fff0;
-  transition: all 0.4s ease-in-out;
-}
-
-.wildlife-card .luminous-lumen {
-  perspective: 400px;
-  opacity: 0;
-  transition: opacity 0.4s ease-in-out;
-}
-
-.wildlife-card .luminous-lumen .min {
-  width: 70%;
-  height: 3rem;
-  background: linear-gradient(#fff0, #fffa);
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 2.5rem;
-  margin: auto;
-  transform: rotateX(-42deg);
-  opacity: 0.4;
-}
-
-.wildlife-card .luminous-lumen .mid {
-  width: 74%;
-  height: 13rem;
-  background: linear-gradient(#fff0, #fffa);
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 10em;
-  margin: auto;
-  transform: rotateX(-42deg);
-  filter: blur(1rem);
-  opacity: 0.8;
-  border-radius: 100% 100% 0 0;
-}
-
-.wildlife-card .luminous-lumen .hi {
-  width: 50%;
-  height: 13rem;
-  background: linear-gradient(#fff0, #fffa);
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 12em;
-  margin: auto;
-  transform: rotateX(22deg);
-  filter: blur(1rem);
-  opacity: 0.6;
-  border-radius: 100% 100% 0 0;
-}
-
-.wildlife-card .luminous-darken {
-  perspective: 400px;
-  transition: opacity 0.4s ease-in-out;
-  opacity: 0.5;
-}
-
-.wildlife-card .luminous-darken > * {
-  transition: opacity 0.4s ease-in-out;
-}
-
-.wildlife-card .luminous-darken .sl {
-  width: 64%;
-  height: 10rem;
-  background: linear-gradient(#000, #0000);
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 9.6em;
-  bottom: 0;
-  margin: auto;
-  filter: blur(0.2rem);
-  opacity: 0.1;
-  border-radius: 0 0 100% 100%;
-  transform: rotateX(-22deg);
-}
-
-.wildlife-card .luminous-darken .ll {
-  width: 62%;
-  height: 10rem;
-  background: linear-gradient(#000a, #0000);
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 11em;
-  bottom: 0;
-  margin: auto;
-  filter: blur(0.8rem);
-  opacity: 0.4;
-  border-radius: 0 0 100% 100%;
-  transform: rotateX(22deg);
-}
-
-.wildlife-card .luminous-darken .slt {
-  width: 0.5rem;
-  height: 4rem;
-  background: linear-gradient(#0005, #0000);
-  position: absolute;
-  left: 0;
-  right: 11.5rem;
-  top: 3.9em;
-  bottom: 0;
-  margin: auto;
-  opacity: 0.6;
-  border-radius: 0 0 100% 100%;
-  transform: skewY(42deg);
-}
-
-.wildlife-card .luminous-darken .srt {
-  width: 0.5rem;
-  height: 4rem;
-  background: linear-gradient(#0005, #0000);
-  position: absolute;
-  right: 0;
-  left: 11.5rem;
-  top: 3.9em;
-  bottom: 0;
-  margin: auto;
-  opacity: 0.6;
-  border-radius: 0 0 100% 100%;
-  transform: skewY(-42deg);
-}
-
-/* Content layers */
-.wildlife-card .luminous-content {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-}
-
-/* Image container - map .wildlife-image to .luminous-icon */
-.wildlife-card .wildlife-image {
-  position: absolute;
-  top: -13rem;
-  left: 0;
-  right: 0;
-  margin: auto;
-  width: fit-content;
-  filter: drop-shadow(0 -1.2rem 1px transparent);
-  transition: filter 0.4s ease-in-out;
-  overflow: hidden;
-  border-radius: 50%;
-  width: 10rem;
-  height: 10rem;
-  margin-bottom: 1rem;
-}
-
-.wildlife-card .wildlife-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
+  transition: transform 0.5s ease;
 }
 
-/* Title and info - map .wildlife-info to .luminous-title and .luminous-description */
-.wildlife-card .wildlife-info {
+.wildlife-card:hover .wildlife-image img {
+  transform: scale(1.05);
+}
+
+.wildlife-info {
+  padding: 0.5rem;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 1.5rem;
+  overflow: hidden;
 }
 
-.wildlife-card .wildlife-info h3 {
-  margin: 0;
+.wildlife-info h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
   margin-bottom: 0.5rem;
-  font-size: 1.2rem;
-  color: #fff;
-  font-weight: normal;
+  color: var(--dark);
 }
 
-.wildlife-card .wildlife-info p.brief {
-  margin: 0;
-  padding-bottom: 0.6rem;
-  color: #aaa;
-  font-size: 0.6rem;
-  font-weight: 100;
-  border-bottom: 1px solid #fff1;
-  max-width: 64%;
-  width: 100%;
+/* IDLE: Show only brief text */
+.wildlife-info .brief {
+  display: block;
+  margin: 0.3rem 0;
+  line-height: 1.4;
+  color: var(--text-dark);
+  font-size: 0.75rem;
 }
 
-/* Full details - map to luminous content area */
-.wildlife-card .full-details {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  padding: 1rem 0;
-  color: #fff;
-  line-height: 1.6;
-}
-
-.wildlife-card .full-details p {
-  margin: 0.5rem 0;
-  color: #fff;
-}
-
-.wildlife-card .full-details p strong {
-  color: #fffa;
-}
-
-/* Hide the original hover slide-in effect since we're using luminous hover */
-.wildlife-card .full-details {
-  opacity: 1 !important;
-  transform: translateX(0) !important;
-  pointer-events: auto !important;
-  position: static !important;
-}
-
-/* Restore hover effect for detailed info if needed */
-.wildlife-card:hover .wildlife-info {
-  opacity: 0.8;
+.wildlife-info .full-details {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .wildlife-card:hover .full-details {
+  display: block;
   opacity: 1;
 }
 
-/* Ensure proper layering */
-.wildlife-card {
-  position: relative;
+.wildlife-card:hover .brief {
+  display: none;
 }
 
-.wildlife-card .wildlife-image,
-.wildlife-card .wildlife-info,
-.wildlife-card .full-details {
+.wildlife-info p {
+  margin: 0.4rem 0;
+  line-height: 1.5;
+  color: var(--text-dark);
+  font-size: 0.75rem;
+}
+
+.wildlife-info p strong {
+  color: var(--green);
+}
+
+/* ---------- Parks Section ---------- */
+.parks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.park-card {
+  /* IDLE STATE */
+  background: transparent;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  max-height: 260px;
+}
+
+.park-card:hover {
+  /* HOVER STATE */
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: var(--shadow-hover);
+  max-height: 580px;
+  transform: translateY(-5px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.park-image {
+  height: 130px;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.park-card:hover .park-image {
+  height: 170px;
+}
+
+.park-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.park-card:hover .park-image img {
+  transform: scale(1.05);
+}
+
+.park-info {
+  padding: 0.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.park-info h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--dark);
+}
+
+.park-info .brief {
+  display: block;
+  margin: 0.3rem 0;
+  line-height: 1.4;
+  color: var(--text-dark);
+  font-size: 0.75rem;
+}
+
+.park-info .full-details {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.park-card:hover .full-details {
+  display: block;
+  opacity: 1;
+}
+
+.park-card:hover .brief {
+  display: none;
+}
+
+.park-info p {
+  margin: 0.4rem 0;
+  line-height: 1.5;
+  color: var(--text-dark);
+  font-size: 0.75rem;
+}
+
+.park-info p strong {
+  color: var(--green);
+}
+
+/* ---------- Conservation Section ---------- */
+.conservation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.conservation-item {
+  text-align: center;
+  padding: 1.5rem;
+  background: transparent;
+  border-radius: var(--radius-lg);
+  transition: var(--transition);
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  max-height: 240px;
+  overflow: hidden;
+}
+
+.conservation-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: var(--shadow-hover);
+  max-height: 500px;
+  transform: translateY(-4px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.conservation-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--green);
+}
+
+.conservation-item h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--dark);
+}
+
+.conservation-item .brief {
+  display: block;
+  line-height: 1.4;
+  color: var(--text-dark);
+  font-size: 0.75rem;
+}
+
+.conservation-item .full-details {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.conservation-item:hover .full-details {
+  display: block;
+  opacity: 1;
+}
+
+.conservation-item:hover .brief {
+  display: none;
+}
+
+.conservation-item p {
+  line-height: 1.5;
+  color: var(--text-dark);
+  font-size: 0.75rem;
+}
+
+/* ---------- Get Involved Section ---------- */
+.get-involved-section .section-title,
+.get-involved-section .section-subtitle {
+  color: var(--dark);
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.action-card {
+  background: transparent;
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  text-align: center;
+  transition: var(--transition);
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  max-height: 250px;
+  overflow: hidden;
+}
+
+.action-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: var(--shadow-hover);
+  max-height: 520px;
+  transform: translateY(-4px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.action-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--green);
+}
+
+.action-card h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--dark);
+}
+
+.action-card .brief {
+  display: block;
+  line-height: 1.4;
+  color: var(--text-dark);
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.action-card .full-details {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.action-card:hover .full-details {
+  display: block;
+  opacity: 1;
+}
+
+.action-card:hover .brief {
+  display: none;
+}
+
+.action-card p {
+  line-height: 1.5;
+  color: var(--text-dark);
+  font-size: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.action-button {
+  display: inline-block;
+  background: var(--green);
+  color: var(--lighter);
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.75rem;
+  transition: var(--transition);
+}
+
+.action-button:hover {
+  background: var(--green-light);
+  transform: translateY(-2px);
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: rgba(26, 37, 26, 0.15);
+  color: var(--lighter);
+  padding: 3rem 0 1.5rem;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.footer-info h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--lighter);
+}
+
+.footer-info p {
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1.5rem;
+}
+
+.footer-links h4,
+.footer-social h4 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--lighter);
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.75rem;
+}
+
+.footer-links li a {
+  color: rgba(255, 255, 255, 0.75);
+  transition: var(--transition);
+}
+
+.footer-links li a:hover {
+  color: var(--lighter);
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: var(--lighter);
+  font-size: 1.2rem;
+  transition: var(--transition);
+}
+
+.social-link:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-3px);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-bottom p {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Responsive Design
+   ============================================================ */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .hero-text h2 {
+    font-size: 2.2rem;
+  }
+
+  .hero-text p {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+    padding: 0.5rem;
+  }
+
+  .navbar nav ul {
+    gap: 0.4rem;
+  }
+
+  .hero {
+    height: 50vh;
+    min-height: 300px;
+  }
+
+  .hero-text h2 {
+    font-size: 1.8rem;
+  }
+
+  .hero-text p {
+    font-size: 1.1rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .wildlife-grid,
+  .parks-grid,
+  .conservation-grid,
+  .action-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-info,
+  .footer-links,
+  .footer-social {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .logo-text {
+    font-size: 0.9rem;
+  }
+
+  .navbar nav li a {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.3rem;
+  }
+
+  .hero {
+    height: 45vh;
+  }
+
+  .hero-text h2 {
+    font-size: 1.6rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+  }
+
+  .wildlife-image,
+  .park-image {
+    height: 160px;
+  }
+
+  .wildlife-info,
+  .park-info {
+    padding: 0.5rem;
+  }
+
+  .wildlife-info h3,
+  .park-info h3 {
+    font-size: 1.2rem;
+  }
+
+  .conservation-item,
+  .action-card {
+    padding: 1.5rem;
+  }
+
+  .conservation-icon,
+  .action-icon {
+    font-size: 2rem;
+  }
+
+  .footer-content {
+    gap: 1.5rem;
+  }
+}
+
+/* Navigation Tooltip Design - Matching user's example */
+.nav-item-group {
   position: relative;
-  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%; /* rounded-full */
+  background-color: transparent;
+  transition: all 0.5s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-item-group:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+.nav-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--header-text);
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.nav-item-group:hover .nav-item-icon {
+  color: var(--green-light);
+}
+
+.nav-item-tooltip {
+  position: absolute;
+  bottom: 100%; /* bottom-full */
+  left: 50%; /* left-1/2 */
+  transform: translateX(-50%) translateY(-8px); /* -translate-x-1/2 plus mb-4 */
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px; /* px-2 py-1 */
+  border-radius: 4px; /* rounded-md */
+  opacity: 0;
+  transform: scale(0.5); /* scale-50 */
+  transition: all 0.5s ease;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 10;
+  min-width: 60px;
+  text-align: center;
+  font-size: 0.75rem;
+}
+
+.nav-item-group:hover .nav-item-tooltip {
+  opacity: 1; /* group-hover:opacity-100 */
+  transform: translateX(-50%) translateY(0); /* -translate-x-1/2 plus mb-4 animation */
+  scale: 1; /* group-hover:scale-100 */
+}
+
+/* Hide original nav links */
+.navbar nav li a {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav-item-group {
+    width: 45px;
+    height: 45px;
+    padding: 6px;
+  }
+  
+  .nav-item-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 0.9rem;
+  }
+  
+  .nav-item-tooltip {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-item-group {
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+  }
+  
+  .nav-item-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 0.8rem;
+  }
+  
+  .nav-item-tooltip {
+    font-size: 0.65rem;
+    padding: 2px 5px;
+  }
 }
 
