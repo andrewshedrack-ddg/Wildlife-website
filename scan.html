@@ -68,43 +68,31 @@
   <main>
     <section class="page-banner">
       <span class="eyebrow">Live scan</span>
-      <h1>Track movement in real time.</h1>
-      <p class="lede">This page uses real wildlife footage as the visual anchor for the scan workflow. The progress indicator is still simulated, but the presentation is now polished and publish-ready.</p>
+      <h1>Identify wildlife from photos</h1>
+      <p class="lede">Upload an image or take a photo to identify the organism. The AI will analyze and provide details.</p>
     </section>
 
     <section class="scan-layout">
       <div class="scan-media">
-        <div class="spotlight-video">
-          <video controls muted playsinline poster="https://upload.wikimedia.org/wikipedia/commons/6/61/Giraffa_camelopardalis_in_Duisburg_Zoo_sticking_out_tongue.jpg">
-            <source src="https://upload.wikimedia.org/wikipedia/commons/0/09/Nairobi_National_Park_%28August_2025%29_Giraffe_eating.webm" type="video/webm">
-          </video>
+        <div class="image-preview">
+          <img id="previewImg" src="#" alt="Preview" style="max-width:100%; display:none;">
+          <div class="upload-area">
+            <button id="uploadBtn" class="btn">Upload Image</button>
+            <button id="cameraBtn" class="btn">Take Photo</button>
+            <input type="file" id="fileInput" accept="image/*" style="display:none;">
+          </div>
+          <p class="hint">Supported formats: JPG, PNG, WebP</p>
         </div>
       </div>
 
       <aside class="scan-panel">
         <div class="content">
-          <span class="scan-kicker">Recognition feed</span>
-          <h2>Giraffe detected along the corridor.</h2>
-          <p>The scan interface is designed to feel like a field console, with a clean status indicator and a progress bar that can later connect to a real model or camera feed.</p>
-
-          <div class="progress-bar"><span></span></div>
-          <div class="scan-status">Scanning... 0%</div>
-
-          <div class="panel-item">
-            <strong>Current habitat</strong>
-            <p>Savannah edge and open woodland</p>
-          </div>
-          <div class="panel-item">
-            <strong>Suggested match</strong>
-            <p>Reticulated giraffe</p>
-          </div>
-          <div class="panel-item">
-            <strong>Next step</strong>
-            <p>Open the library card for quick facts and conservation notes.</p>
-          </div>
-
+          <span class="scan-kicker">Recognition result</span>
+          <h2 id="resultTitle">—</h2>
+          <p id="resultStatus">Ready to scan</p>
+          <div id="resultDetails"></div>
           <div class="scan-actions">
-            <a href="library/mammals.html" class="btn">Open species library</a>
+            <a href="library/mammals.html" id="libLink" class="btn" style="display:none;">Open species library</a>
             <a href="contact.html" class="btn ghost">Report an issue</a>
           </div>
         </div>
@@ -159,4 +147,3 @@ document.querySelectorAll('.nav-item-group').forEach(function(item) {
 </script>
 </body>
 </html>
-
