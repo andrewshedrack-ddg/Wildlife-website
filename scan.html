@@ -72,32 +72,34 @@
       <p class="lede">Upload an image or take a photo to identify the organism. The AI will analyze and provide details.</p>
     </section>
 
-    <section class="scan-layout">
-      <div class="scan-media">
-        <div class="image-preview">
-          <img id="previewImg" src="#" alt="Preview" style="max-width:100%; display:none;">
-          <div class="upload-area">
-            <button id="uploadBtn" class="btn">Upload Image</button>
-            <button id="cameraBtn" class="btn">Take Photo</button>
-            <input type="file" id="fileInput" accept="image/*" style="display:none;">
-          </div>
-          <p class="hint">Supported formats: JPG, PNG, WebP</p>
-        </div>
-      </div>
+     <section class="scan-layout">
+       <div class="container">
+       <div class="scan-media">
+         <div class="image-preview">
+           <img id="previewImg" src="#" alt="Preview" style="max-width:100%; display:none;">
+           <div class="upload-area">
+             <button id="uploadBtn" class="btn">Upload Image</button>
+             <button id="cameraBtn" class="btn">Take Photo</button>
+             <input type="file" id="fileInput" accept="image/*" style="display:none;">
+           </div>
+           <p class="hint">Supported formats: JPG, PNG, WebP</p>
+         </div>
+       </div>
 
-      <aside class="scan-panel">
-        <div class="content">
-          <span class="scan-kicker">Recognition result</span>
-          <h2 id="resultTitle">—</h2>
-          <p id="resultStatus">Ready to scan</p>
-          <div id="resultDetails"></div>
-          <div class="scan-actions">
-            <a href="library/mammals.html" id="libLink" class="btn" style="display:none;">Open species library</a>
-            <a href="contact.html" class="btn ghost">Report an issue</a>
-          </div>
-        </div>
-      </aside>
-    </section>
+       <aside class="scan-panel">
+         <div class="content">
+           <span class="scan-kicker">Recognition result</span>
+           <h2 id="resultTitle">—</h2>
+           <p id="resultStatus">Ready to scan</p>
+           <div id="resultDetails"></div>
+           <div class="scan-actions">
+             <a href="library/mammals.html" id="libLink" class="btn" style="display:none;">Open species library</a>
+             <a href="contact.html" class="btn ghost">Report an issue</a>
+           </div>
+         </div>
+       </aside>
+       </div>
+     </section>
   </main>
 
   <footer class="site-footer">
