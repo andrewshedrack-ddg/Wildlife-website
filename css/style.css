@@ -87,21 +87,19 @@ img {
   padding: 0 2rem;
 }
 
-/* ---------- Header / Navbar ---------- */
+/---------- Header / Navbar ----------/
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  background: var(--header-bg);
+  background: transparent;
   color: var(--header-text);
   padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
-  z-index: 100;
 }
 
 .logo-container {
