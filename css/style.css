@@ -178,6 +178,140 @@ img {
   color: var(--lighter);
   padding: 0 2rem;
   overflow: hidden;
+  /* Add subtle background pattern */
+  background-image: radial-gradient(circle at center, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Hero slideshow enhancements */
+.hero-slideshow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* Hero slide enhancements with subtle zoom effect */
+.hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: none;
+  transition: transform 15s ease; /* Slow zoom effect */
+}
+
+.hero-slide.active {
+  display: block;
+  transform: scale(1.02); /* Slight zoom */
+}
+
+/* Enhanced overlay with more depth */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, 
+    rgba(0, 0, 0, 0.3) 0%, 
+    rgba(0, 0, 0, 0.4) 30%, 
+    rgba(0, 0, 0, 0.5) 50%, 
+    rgba(0, 0, 0, 0.6) 70%, 
+    rgba(0, 0, 0, 0.7) 100%);
+  z-index: 1;
+  /* Add subtle animated gradient */
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* Animated gradient keyframes */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Hero text enhancements */
+.hero-text {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  text-align: center;
+  animation: fadeInUp 1.5s ease-out;
+  /* Add subtle backdrop for better readability */
+  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-text h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(to right, var(--green-light), var(--savanna-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+/* Enhanced paragraph styling */
+.hero-text p {
+  font-size: 1.4rem;
+  opacity: 0.95;
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+  /* Add subtle underline animation */
+  position: relative;
+}
+
+.hero-text p::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(to right, var(--green), var(--green-light));
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hero-text:hover p::after {
+  opacity: 1;
+}
+
+/* Pulse animation for heading */
+@keyframes pulse {
+  0% { text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5); }
+  50% { text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7); }
+  100% { text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5); }
+}
+
+/* Fade in up animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-slideshow {
@@ -754,17 +888,21 @@ section {
   .container {
     padding: 0 1.5rem;
   }
-
+  
   .section-title {
     font-size: 2rem;
   }
-
+  
   .hero-text h2 {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
   }
-
+  
   .hero-text p {
     font-size: 1.2rem;
+  }
+  
+  .hero-text {
+    padding: 1.5rem;
   }
 }
 
@@ -773,49 +911,58 @@ section {
     flex-wrap: wrap;
     padding: 0.5rem;
   }
-
+  
   .navbar nav ul {
     gap: 0.4rem;
   }
-
+  
   .hero {
     height: 50vh;
     min-height: 300px;
   }
-
+  
   .hero-text h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
-
+  
   .hero-text p {
     font-size: 1.1rem;
   }
-
+  
   .section-title {
     font-size: 1.8rem;
   }
-
+  
   .wildlife-grid,
   .parks-grid,
   .conservation-grid,
   .action-grid {
     grid-template-columns: 1fr;
   }
-
+  
   .footer-content {
     grid-template-columns: 1fr;
     text-align: center;
   }
-
+  
   .footer-info,
   .footer-links,
   .footer-social {
     text-align: center;
     margin-bottom: 1.5rem;
   }
-
+  
   .social-links {
     justify-content: center;
+  }
+  
+  /* Adjust hero section for mobile */
+  .hero-text {
+    padding: 1rem;
+  }
+  
+  .hero-text h2 {
+    font-size: 1.8rem;
   }
 }
 
@@ -823,59 +970,72 @@ section {
   .container {
     padding: 0 1rem;
   }
-
+  
   .logo-text {
     font-size: 0.9rem;
   }
-
+  
   .navbar nav li a {
     font-size: 0.7rem;
     padding: 0.15rem 0.3rem;
   }
-
+  
   .hero {
     height: 45vh;
   }
-
+  
   .hero-text h2 {
     font-size: 1.6rem;
   }
-
+  
   .hero-text p {
     font-size: 1rem;
   }
-
+  
   .section-title {
     font-size: 1.6rem;
   }
-
+  
   .wildlife-image,
   .park-image {
     height: 160px;
   }
-
+  
   .wildlife-info,
   .park-info {
     padding: 0.5rem;
   }
-
+  
   .wildlife-info h3,
   .park-info h3 {
     font-size: 1.2rem;
   }
-
+  
   .conservation-item,
   .action-card {
     padding: 1.5rem;
   }
-
+  
   .conservation-icon,
   .action-icon {
     font-size: 2rem;
   }
-
+  
   .footer-content {
     gap: 1.5rem;
+  }
+  
+  /* Further adjust hero section for small mobile */
+  .hero-text {
+    padding: 0.8rem;
+  }
+  
+  .hero-text h2 {
+    font-size: 1.5rem;
+  }
+  
+  .hero-text p {
+    font-size: 0.95rem;
   }
 }
 
