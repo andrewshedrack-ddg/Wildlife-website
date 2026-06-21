@@ -933,6 +933,11 @@ section {
   width: 100%;
 }
 
+/* Hide original nav links */
+.navbar nav li a {
+  display: none;
+}
+
 /* Hide tooltip */
 .nav-item-tooltip {
   display: none;
