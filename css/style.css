@@ -94,9 +94,9 @@ img {
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(15, 42, 32, 0.85);
+  background: var(--header-bg);
   color: var(--header-text);
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -881,109 +881,99 @@ section {
   }
 }
 
-/* Navigation Tooltip Design - Matching user's example */
+/* Navigation Item Design - Icon with label below */
 .nav-item-group {
   position: relative;
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 70px;
   cursor: pointer;
   padding: 8px;
-  border-radius: 50%; /* rounded-full */
+  border-radius: 12px;
   background-color: transparent;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Individual background colors */
+.nav-item-group:nth-child(1) { background-color: rgba(255, 99, 71, 0.15); } /* tomato */
+.nav-item-group:nth-child(2) { background-color: rgba(60, 179, 113, 0.15); } /* mediumseagreen */
+.nav-item-group:nth-child(3) { background-color: rgba(70, 130, 180, 0.15); } /* steelblue */
+.nav-item-group:nth-child(4) { background-color: rgba(218, 112, 214, 0.15); } /* orchid */
+.nav-item-group:nth-child(5) { background-color: rgba(255, 165, 0, 0.15); } /* orange */
+
 .nav-item-group:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  transform: scale(1.05);
+  transform: translateY(-2px);
 }
 
 .nav-item-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   color: var(--header-text);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   transition: color 0.3s ease;
+  margin-bottom: 4px;
 }
 
 .nav-item-group:hover .nav-item-icon {
   color: var(--green-light);
 }
 
-.nav-item-tooltip {
-  position: absolute;
-  bottom: 100%; /* bottom-full */
-  left: 50%; /* left-1/2 */
-  transform: translateX(-50%) translateY(-8px); /* -translate-x-1/2 plus mb-4 */
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 4px 8px; /* px-2 py-1 */
-  border-radius: 4px; /* rounded-md */
-  opacity: 0;
-  transform: scale(0.5); /* scale-50 */
-  transition: all 0.5s ease;
-  pointer-events: none;
-  white-space: nowrap;
-  z-index: 10;
-  min-width: 60px;
-  text-align: center;
+.nav-item-label {
   font-size: 0.75rem;
+  color: var(--header-text);
+  text-align: center;
+  width: 100%;
 }
 
-.nav-item-group:hover .nav-item-tooltip {
-  opacity: 1; /* group-hover:opacity-100 */
-  transform: translateX(-50%) translateY(0); /* -translate-x-1/2 plus mb-4 animation */
-  scale: 1; /* group-hover:scale-100 */
-}
-
-/* Hide original nav links */
-.navbar nav li a {
+/* Hide tooltip */
+.nav-item-tooltip {
   display: none;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .nav-item-group {
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 60px;
     padding: 6px;
+    border-radius: 10px;
   }
   
   .nav-item-icon {
-    width: 20px;
-    height: 20px;
-    font-size: 0.9rem;
+    width: 24px;
+    height: 24px;
+    font-size: 1rem;
   }
   
-  .nav-item-tooltip {
-    font-size: 0.7rem;
-    padding: 3px 6px;
+  .nav-item-label {
+    font-size: 0.65rem;
   }
 }
 
 @media (max-width: 480px) {
   .nav-item-group {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 55px;
     padding: 5px;
+    border-radius: 8px;
   }
   
   .nav-item-icon {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     font-size: 0.8rem;
   }
   
-  .nav-item-tooltip {
-    font-size: 0.65rem;
-    padding: 2px 5px;
+  .nav-item-label {
+    font-size: 0.6rem;
   }
 }
 
