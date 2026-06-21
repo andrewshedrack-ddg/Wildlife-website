@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Track wildlife movement in real time with WildGuard Explorer's AI-powered scan interface.">
+  <meta name="keywords" content="wildlife scan, animal detection, AI monitoring, Wildguardian wildlife tracking">
+  <meta name="author" content="WildGuard Explorer">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <title>Scan | WildGuard Explorer</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/main.js"></script>
+  <script defer src="js/scan.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <header class="navbar">
+  <div class="logo-container">
+    <img src="assets/images/logo.png" alt="Logo" class="logo-img">
+    <span class="logo-text">WildGuard Conservation Society</span>
+  </div>
+  <nav>
+    <ul>
+      <li>
+        <div class="nav-item-group" data-page="index.html">
+          <div class="nav-item-icon">
+            <i class="fas fa-home"></i>
+          </div>
+          <div class="nav-item-label">Home</div>
+        </div>
+      </li>
+      <li>
+        <div class="nav-item-group" data-page="library/library.html">
+          <div class="nav-item-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <div class="nav-item-label">Library</div>
+        </div>
+      </li>
+      <li>
+        <div class="nav-item-group" data-page="scan.html">
+          <div class="nav-item-icon">
+            <i class="fas fa-barcode"></i>
+          </div>
+          <div class="nav-item-label">Scan</div>
+        </div>
+      </li>
+      <li>
+        <div class="nav-item-group" data-page="about.html">
+          <div class="nav-item-icon">
+            <i class="fas fa-info-circle"></i>
+          </div>
+          <div class="nav-item-label">About</div>
+        </div>
+      </li>
+      <li>
+        <div class="nav-item-group" data-page="contact.html">
+          <div class="nav-item-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="nav-item-label">Contact</div>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+  <main>
+    <section class="page-banner">
+      <span class="eyebrow">Live scan</span>
+      <h1>Identify wildlife from photos</h1>
+      <p class="lede">Upload an image or take a photo to identify the organism. The AI will analyze and provide details.</p>
+    </section>
+
+    <section class="scan-layout">
+      <div class="scan-media">
+        <div class="image-preview">
+          <img id="previewImg" src="#" alt="Preview" style="max-width:100%; display:none;">
+          <div class="upload-area">
+            <button id="uploadBtn" class="btn">Upload Image</button>
+            <button id="cameraBtn" class="btn">Take Photo</button>
+            <input type="file" id="fileInput" accept="image/*" style="display:none;">
+          </div>
+          <p class="hint">Supported formats: JPG, PNG, WebP</p>
+        </div>
+      </div>
+
+      <aside class="scan-panel">
+        <div class="content">
+          <span class="scan-kicker">Recognition result</span>
+          <h2 id="resultTitle">—</h2>
+          <p id="resultStatus">Ready to scan</p>
+          <div id="resultDetails"></div>
+          <div class="scan-actions">
+            <a href="library/mammals.html" id="libLink" class="btn" style="display:none;">Open species library</a>
+            <a href="contact.html" class="btn ghost">Report an issue</a>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>WildGuard Explorer</h3>
+                <p>Scan, learn, and protect wildlife through real-time monitoring and conservation efforts.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="library/mammals.html">Library</a></li>
+                    <li><a href="scan.html" class="active">Scan</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-social">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="social-link" title="Telegram"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; <span data-current-year></span> WildGuard Explorer | Scan, learn, protect</p>
+        </div>
+    </div>
+  </footer>
+<script>
+document.querySelectorAll('.nav-item-group').forEach(function(item) {
+    item.addEventListener('click', function() {
+        var page = this.getAttribute('data-page');
+        if (page) {
+            window.location.href = page;
+        }
+    });
+});
+</script>
+</body>
+</html>
