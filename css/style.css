@@ -1102,25 +1102,6 @@ section {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .nav-item-group {
-    width: 50px;
-    height: 60px;
-    padding: 6px;
-    border-radius: 10px;
-  }
-  
-  .nav-item-icon {
-    width: 24px;
-    height: 24px;
-    font-size: 1rem;
-  }
-  
-  .nav-item-label {
-    font-size: 0.65rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-item-group {
     width: 45px;
     height: 55px;
     padding: 5px;
@@ -1130,11 +1111,30 @@ section {
   .nav-item-icon {
     width: 20px;
     height: 20px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
   
   .nav-item-label {
     font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-item-group {
+    width: 40px;
+    height: 50px;
+    padding: 4px;
+    border-radius: 6px;
+  }
+  
+  .nav-item-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 0.7rem;
+  }
+  
+  .nav-item-label {
+    font-size: 0.55rem;
   }
 }
 
