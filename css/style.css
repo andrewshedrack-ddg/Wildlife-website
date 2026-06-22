@@ -839,22 +839,39 @@ section {
 }
 
 .social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  color: var(--lighter);
-  font-size: 1.2rem;
-  transition: var(--transition);
-}
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 40px;
+   height: 40px;
+   background: rgba(255, 255, 255, 0.2);
+   border-radius: 50%;
+   color: var(--lighter);
+   font-size: 1.2rem;
+   transition: var(--transition);
+ }
 
-.social-link:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-3px);
-}
+ .social-link:hover {
+   background: rgba(255, 255, 255, 0.3);
+   transform: translateY(-3px);
+ }
+
+ /* Social media brand colors */
+ .social-link .fa-instagram {
+   color: #E1306C; /* Instagram gradient approximated */
+ }
+ .social-link .fa-whatsapp {
+   color: #25D366; /* WhatsApp green */
+ }
+ .social-link .fa-telegram {
+   color: #0088CC; /* Telegram blue */
+ }
+ .social-link .fa-tiktok {
+   color: #000000; /* TikTok black */
+ }
+ .social-link .fa-x-twitter {
+   color: #1DA1F2; /* Twitter blue */
+ }
 
 .footer-bottom {
   text-align: center;
