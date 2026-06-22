@@ -1044,105 +1044,69 @@ section {
   }
 }
 
-/* Navigation Item Design - Icon with label below */
-.nav-item-group {
-  position: relative;
+/* Mobile menu toggle */
+.mobile-menu-toggle {
+  display: block;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--header-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1100;
+}
+
+/* Hide nav links by default */
+.navbar nav ul {
+  display: none;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.8);
+  padding: 1rem;
+}
+.navbar nav.active ul {
+  display: flex;
+}
+
+/* Nav link styles */
+.navbar nav ul .nav-link {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 70px;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 12px;
-  background-color: transparent;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 0.3rem;
+  color: var(--lighter);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem;
+  transition: background 0.2s, color 0.2s;
 }
-
-/* Individual background colors */
-.nav-item-group:nth-child(1) { background-color: rgba(255, 99, 71, 0.15); } /* tomato */
-.nav-item-group:nth-child(2) { background-color: rgba(60, 179, 113, 0.15); } /* mediumseagreen */
-.nav-item-group:nth-child(3) { background-color: rgba(70, 130, 180, 0.15); } /* steelblue */
-.nav-item-group:nth-child(4) { background-color: rgba(218, 112, 214, 0.15); } /* orchid */
-.nav-item-group:nth-child(5) { background-color: rgba(255, 165, 0, 0.15); } /* orange */
-
-.nav-item-group:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-}
-
-.nav-item-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  color: var(--header-text);
-  font-size: 1.2rem;
-  transition: color 0.3s ease;
-  margin-bottom: 4px;
-}
-
-.nav-item-group:hover .nav-item-icon {
+.navbar nav ul .nav-link:hover {
+  background: rgba(255,255,255,0.1);
   color: var(--green-light);
 }
-
-.nav-item-label {
-  font-size: 0.75rem;
-  color: var(--header-text);
-  text-align: center;
-  width: 100%;
+.navbar nav ul .nav-link i {
+  font-size: 1.8rem;
+  margin-bottom: 0.2rem;
+}
+.navbar nav ul .nav-link span {
+  display: block;
+  font-size: 0.9rem;
 }
 
-/* Hide original nav links */
-.navbar nav li a {
-  display: none;
-}
-
-/* Hide tooltip */
-.nav-item-tooltip {
-  display: none;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .nav-item-group {
-    width: 45px;
-    height: 55px;
-    padding: 5px;
-    border-radius: 8px;
-  }
-  
-  .nav-item-icon {
-    width: 20px;
-    height: 20px;
-    font-size: 0.85rem;
-  }
-  
-  .nav-item-label {
-    font-size: 0.6rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-item-group {
-    width: 40px;
-    height: 50px;
-    padding: 4px;
-    border-radius: 6px;
-  }
-  
-  .nav-item-icon {
-    width: 16px;
-    height: 16px;
-    font-size: 0.7rem;
-  }
-  
-  .nav-item-label {
-    font-size: 0.55rem;
-  }
+/* Optional: active link */
+.navbar nav ul .nav-link.active {
+  color: var(--green-light);
 }
 
 

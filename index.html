@@ -31,47 +31,38 @@
       <img src="assets/images/logo.png" alt="Logo" class="logo-img">
       <span class="logo-text">WildGuard Society</span>
     </div>
+    <button class="mobile-menu-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
     <nav>
       <ul>
         <li>
-          <div class="nav-item-group" data-page="index.html">
-            <div class="nav-item-icon">
-              <i class="fas fa-home"></i>
-            </div>
-            <div class="nav-item-label">Home</div>
-          </div>
+          <a href="#" class="nav-link" data-page="index.html">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+          </a>
         </li>
         <li>
-          <div class="nav-item-group" data-page="library/library.html">
-            <div class="nav-item-icon">
-              <i class="fas fa-book"></i>
-            </div>
-            <div class="nav-item-label">Library</div>
-          </div>
+          <a href="#" class="nav-link" data-page="library/library.html">
+            <i class="fas fa-book"></i>
+            <span>Library</span>
+          </a>
         </li>
         <li>
-          <div class="nav-item-group" data-page="scan.html">
-            <div class="nav-item-icon">
-              <i class="fas fa-barcode"></i>
-            </div>
-            <div class="nav-item-label">Scan</div>
-          </div>
+          <a href="#" class="nav-link" data-page="scan.html">
+            <i class="fas fa-barcode"></i>
+            <span>Scan</span>
+          </a>
         </li>
         <li>
-          <div class="nav-item-group" data-page="about.html">
-            <div class="nav-item-icon">
-              <i class="fas fa-info-circle"></i>
-            </div>
-            <div class="nav-item-label">About</div>
-          </div>
+          <a href="#" class="nav-link" data-page="about.html">
+            <i class="fas fa-info-circle"></i>
+            <span>About</span>
+          </a>
         </li>
         <li>
-          <div class="nav-item-group" data-page="contact.html">
-            <div class="nav-item-icon">
-              <i class="fas fa-envelope"></i>
-            </div>
-            <div class="nav-item-label">Contact</div>
-          </div>
+          <a href="#" class="nav-link" data-page="contact.html">
+            <i class="fas fa-envelope"></i>
+            <span>Contact</span>
+          </a>
         </li>
       </ul>
     </nav>
@@ -469,7 +460,7 @@
      });
    </script>
 <script>
-document.querySelectorAll('.nav-item-group').forEach(function(item) {
+document.querySelectorAll('.nav-link').forEach(function(item) {
     item.addEventListener('click', function() {
         var page = this.getAttribute('data-page');
         if (page) {
