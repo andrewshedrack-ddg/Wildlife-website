@@ -145,38 +145,73 @@ img {
 
 /* Navigation */
 .navbar nav ul {
-  display: flex;
-  gap: 0.8rem;
-  list-style: none;
-  align-items: center;
-  margin: 0;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(0,0,0,0.8);
+  width: 200px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
   padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.navbar nav.active ul {
+  max-height: 500px; /* enough for links */
+  transition: max-height 0.4s ease-in;
 }
 
-.navbar nav li a {
-  font-weight: 600;
-  font-size: 0.75rem;
-  padding: 0.2rem 0.5rem;
-  color: var(--header-text);
-  transition: var(--transition);
+/* Nav link styles */
+.navbar nav ul .nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  color: var(--lighter);
   text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem;
+  transition: background 0.2s, color 0.2s;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.navbar nav ul .nav-link:last-child {
+  border-bottom: none;
+}
+.navbar nav ul .nav-link:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--green-light);
+}
+.navbar nav ul .nav-link i {
+  font-size: 1.8rem;
+  margin-bottom: 0.2rem;
+}
+.navbar nav ul .nav-link span {
+  display: block;
+  font-size: 0.9rem;
 }
 
-.navbar nav li a:hover,
-.navbar nav li a.active {
+/* Optional: active link */
+.navbar nav ul .nav-link.active {
   color: var(--green-light);
-  text-decoration: underline;
 }
 
 /* Mobile Menu Toggle */
 .mobile-menu-toggle {
-  display: none;
+  display: block;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
   color: var(--header-text);
   font-size: 1.5rem;
   cursor: pointer;
   padding: 0.5rem;
+  z-index: 1100;
 }
 
 /* ---------- Hero Section ---------- */
