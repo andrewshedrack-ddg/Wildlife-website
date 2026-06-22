@@ -468,6 +468,11 @@ document.querySelectorAll('.nav-link').forEach(function(item) {
         }
     });
 });
+
+// Mobile menu toggle
+document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+    document.querySelector('nav').classList.toggle('active');
+});
 </script>
 </body>
 </html>
