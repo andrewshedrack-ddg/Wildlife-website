@@ -2579,9 +2579,11 @@ section {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
+    justify-content: center; align-items: center;
 }
 #contact-form-container.show {
   display: flex;
+    justify-content: center; align-items: center;
 }
 
 
@@ -2590,4 +2592,5 @@ section {
   display: block;
   margin: 30px auto;
 }
+
 
