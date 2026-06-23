@@ -199,6 +199,41 @@ img {
   color: var(--green-light);
 }
 
+/* Desktop navigation - show horizontally in navbar */
+@media (min-width: 768px) {
+  .navbar nav {
+    position: static;
+    width: auto;
+  }
+  .navbar nav ul {
+    position: static;
+    display: flex;
+    gap: 1.5rem;
+    background: transparent;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+  .navbar nav ul .nav-link {
+    flex-direction: row;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    border-bottom: none;
+    border-radius: var(--radius);
+  }
+  .navbar nav ul .nav-link:hover {
+    background: rgba(255,255,255,0.1);
+  }
+  .navbar nav ul .nav-link i {
+    margin-right: 0.5rem;
+    margin-bottom: 0;
+  }
+  .navbar nav ul .nav-link span {
+    display: inline;
+  }
+}
+
 /* Mobile Menu Toggle */
 .mobile-menu-toggle {
   display: block;
@@ -213,6 +248,12 @@ img {
   cursor: pointer;
   padding: 0.5rem;
   z-index: 1100;
+}
+
+@media (min-width: 768px) {
+  .mobile-menu-toggle {
+    display: none;
+  }
 }
 
 /* ---------- Hero Section ---------- */
@@ -948,13 +989,66 @@ section {
 }
 
 @media (max-width: 768px) {
+  body {
+    padding-top: 3rem;
+  }
+  
   .navbar {
     flex-wrap: wrap;
     padding: 0.5rem;
   }
   
-  .navbar nav ul {
-    gap: 0.4rem;
+/* Mobile menu - dropdown below navbar */
+.navbar nav ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 90%;
+  max-width: 300px;
+  background: rgba(0,0,0,0.8);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-top: 0.5rem;
+  box-shadow: var(--shadow-hover);
+  z-index: 1100;
+}
+  .navbar nav.active ul {
+    display: block;
+  }
+  
+  /* Mobile menu links */
+  .navbar nav ul .nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    color: var(--lighter);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.75rem;
+    width: 100%;
+    border-radius: var(--radius);
+    transition: background 0.2s, color 0.2s;
+  }
+  .navbar nav ul .nav-link:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--green-light);
+  }
+  .navbar nav ul .nav-link i {
+    font-size: 1.8rem;
+    margin-bottom: 0.2rem;
+  }
+  .navbar nav ul .nav-link span {
+    display: block;
+    font-size: 0.9rem;
+  }
+  
+  /* Optional: active link */
+  .navbar nav ul .nav-link.active {
+    color: var(--green-light);
   }
   
   .hero {
@@ -1004,6 +1098,43 @@ section {
   
   .hero-text h2 {
     font-size: 1.8rem;
+  }
+  
+  .features-section {
+    padding: 3rem 0;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .features-grid {
+    gap: 1.5rem;
+  }
+  
+  .feature-card {
+    padding: 1.8rem;
+  }
+  
+  .feature-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 1.8rem;
+  }
+  
+  .feature-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .feature-description {
+    font-size: 0.95rem;
+  }
+  
+  .contact-grid {
+    gap: 2rem;
+    padding: 2rem 1rem;
   }
 }
 
@@ -1080,78 +1211,11 @@ section {
   }
 }
 
-/* Mobile menu toggle */
-.mobile-menu-toggle {
-  display: block;
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--header-text);
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  z-index: 1100;
-}
 
-/* Hide nav links by default */
-.navbar nav ul {
-  display: none;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,0.8);
-  padding: 1rem;
-}
-.navbar nav.active ul {
-  display: flex;
-}
-
-/* Nav link styles */
-.navbar nav ul .nav-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  color: var(--lighter);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 0.75rem;
-  transition: background 0.2s, color 0.2s;
-}
-.navbar nav ul .nav-link:hover {
-  background: rgba(255,255,255,0.1);
-  color: var(--green-light);
-}
-.navbar nav ul .nav-link i {
-  font-size: 1.8rem;
-  margin-bottom: 0.2rem;
-}
-.navbar nav ul .nav-link span {
-  display: block;
-  font-size: 0.9rem;
-}
-
-/* Optional: active link */
-.navbar nav ul .nav-link.active {
-  color: var(--green-light);
-}
 
 
 @media (max-width: 1024px) {
   body { padding-top: 4.5rem; }
-}
-
-@media (max-width: 768px) {
-  body { padding-top: 3rem; }
 }
 
 /* Feature Cards Section */
@@ -1281,6 +1345,10 @@ section {
 }
 
 @media (max-width: 1024px) {
+  body {
+    padding-top: 4.5rem;
+  }
+  
   .features-section {
     padding: 3.5rem 0;
   }
@@ -1309,42 +1377,9 @@ section {
   }
 }
 
-@media (max-width: 768px) {
-  .features-section {
-    padding: 3rem 0;
-  }
-  
-  .section-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-  }
-  
-  .features-grid {
-    gap: 1.5rem;
-  }
-  
-  .feature-card {
-    padding: 1.8rem;
-  }
-  
-  .feature-icon {
-    width: 70px;
-    height: 70px;
-    font-size: 1.8rem;
-  }
-  
-  .feature-title {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-  }
-  
-  .feature-description {
-    font-size: 0.95rem;
-  }
-}
 /* ============================================================
-   Uiverse Contact Form Styles
-   ============================================================ */
+    Uiverse Contact Form Styles
+    ============================================================ */
 
 .uiverse-form-wrapper {
   display: flex;
@@ -1448,21 +1483,12 @@ section {
 }
 
 .uiverse-form .textarea:focus {
-  border: 1px solid #66da4300;
-  border-bottom: 1px solid #ff5900;
-  background-color: transparent;
-  color: white;
-}
+   border: 1px solid #66da4300;
+   border-bottom: 1px solid #ff5900;
+   background-color: transparent;
+   color: white;
+ }
 
-/* Adjust contact grid for new form */
-.contact-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: stretch;
-  gap: 3rem;
-  padding: 3rem 1rem;
-}
 
 .contact-panel {
     flex: 1 1 300px;
@@ -1478,12 +1504,7 @@ section {
    max-width: 400px;
 }
 
-@media (max-width: 768px) {
-  .contact-grid {
-    gap: 2rem;
-    padding: 2rem 1rem;
-  }
-}
+
 
 /* ============================================================
    Contact Us Button (Uiverse by Itskrish01 converted to pure CSS)
