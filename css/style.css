@@ -212,6 +212,8 @@ img {
     background: transparent;
     width: auto;
     height: auto;
+    max-height: none;
+    overflow: visible;
     margin: 0;
     padding: 0;
   }
