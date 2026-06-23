@@ -1003,7 +1003,7 @@ section {
   display: none;
   position: absolute;
   top: 100%;
-  left: 0;
+  right: 0;
   width: 90%;
   max-width: 300px;
   background: rgba(0,0,0,0.8);
