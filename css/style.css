@@ -65,7 +65,7 @@ body {
    background-color: var(--darker);
    color: var(--text-light);
    line-height: 1.7;
-   padding-top: 4.5rem;
+   padding-top: 7.5rem;
    /* Add overlay for better text readability */
 }
 body::before {
@@ -100,18 +100,23 @@ img {
 }
 
 /* ---------- Header / Navbar ---------- */
+/* ---------- Header / Navbar ---------- */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  background: transparent;
+  /* FIXED: Changed from transparent to an elegant dark glass overlay for high text contrast */
+  background: rgba(15, 42, 32, 0.75);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px); /* Safari support */
   color: var(--header-text);
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .logo-container {
@@ -864,7 +869,7 @@ section {
 
 .footer-info p {
   line-height: 1.7;
-  padding-top: 4.5rem;
+  padding-top: 7.5rem;
   color: rgba(255, 255, 255, 0.85);
   margin-bottom: 1.5rem;
 }
@@ -980,10 +985,24 @@ section {
     padding-top: 3rem;
   }
   
-  .navbar {
-    flex-wrap: wrap;
-    padding: 0.5rem;
-  }
+  /* ---------- Header / Navbar ---------- */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  /* FIXED: Changed from transparent to an elegant dark glass overlay for high text contrast */
+  background: rgba(15, 42, 32, 0.75);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px); /* Safari support */
+  color: var(--header-text);
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
   
 /* Mobile menu - dropdown below navbar */
 .navbar nav ul {
@@ -1201,7 +1220,7 @@ section {
 
 
 @media (max-width: 1024px) {
-  body { padding-top: 4.5rem; }
+  body { padding-top: 7.5rem; }
 }
 
 /* Feature Cards Section */
@@ -1327,7 +1346,7 @@ section {
 
 @media (max-width: 1024px) {
   body {
-    padding-top: 4.5rem;
+    padding-top: 7.5rem;
   }
   
   .features-section {
@@ -2592,5 +2611,6 @@ section {
   display: block;
   margin: 30px auto;
 }
+
 
 
