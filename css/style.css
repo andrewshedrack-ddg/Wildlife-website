@@ -1698,3 +1698,423 @@ section {
 .page-slide.active {
   opacity: 1;
 }
+/* Container for the contact form - slides up from bottom */
+.gold-form-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 1100;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.gold-form-container.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* The form itself */
+.gold-form {
+    /* Keep the existing gold-form styles from the user */
+    width: 285px;
+    height: 380px;
+    padding: 25px;
+    background: linear-gradient(135deg, #ffd700, #daa520, #b8860b);
+    border-radius: 20px;
+    box-shadow:
+        10px 10px 20px rgba(139, 90, 43, 0.6),
+        -10px -10px 20px rgba(204, 173, 2, 0.126),
+        inset 2px 2px 5px rgba(237, 201, 0, 0.5),
+        inset -2px -2px 5px rgba(139, 90, 43, 0.5);
+    background-image: radial-gradient(
+        circle,
+        rgba(255, 215, 0, 0.25) 1px,
+        transparent 1px
+    ),
+    radial-gradient(circle, rgba(255, 193, 7, 0.15) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position:
+        0 0,
+        10px 10px;
+    transform: translateY(100%);
+    transition: transform 0.5s ease;
+}
+
+.gold-form-container.show .gold-form {
+    transform: translateY(0);
+}
+
+/* Position the contact button at bottom right */
+#contact-button {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1101;
+}
+
+/* Container for the contact form - slides up from bottom */
+.gold-form-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 1100;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.gold-form-container.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* The form itself - keeping the gold form styles from user's request */
+.gold-form {
+    width: 285px;
+    height: 380px;
+    padding: 25px;
+    background: linear-gradient(135deg, #ffd700, #daa520, #b8860b);
+    border-radius: 20px;
+    box-shadow:
+        10px 10px 20px rgba(139, 90, 43, 0.6),
+        -10px -10px 20px rgba(204, 173, 2, 0.126),
+        inset 2px 2px 5px rgba(237, 201, 0, 0.5),
+        inset -2px -2px 5px rgba(139, 90, 43, 0.5);
+    background-image: radial-gradient(
+        circle,
+        rgba(255, 215, 0, 0.25) 1px,
+        transparent 1px
+    ),
+    radial-gradient(circle, rgba(255, 193, 7, 0.15) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position:
+        0 0,
+        10px 10px;
+    transform: translateY(100%);
+    transition: transform 0.5s ease;
+}
+
+.gold-form-container.show .gold-form {
+    transform: translateY(0);
+}
+
+/* Position the contact button - place it where we inserted it in the content */
+#contact-button {
+    margin: 2rem auto;
+    display: block;
+}
+
+/* Form inner styles from Uiverse.io by chase2k25 */
+.gold-form-group {
+    position: relative;
+    margin-bottom: 14px;
+}
+
+.gold-form-label {
+    display: block;
+    color: hsl(44, 100%, 67%); /* Light gold color */
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.3s cubic-bezier(0.5, 0, 0.1, 1);
+}
+
+.gold-form-input,
+.gold-form-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: none;
+    background: linear-gradient(135deg, #daa520, #b8860b);
+    border-radius: 12px;
+    font-weight: bold;
+    box-shadow:
+        6px 6px 12px rgba(139, 90, 43, 0.6),
+        -6px -6px 12px rgba(255, 215, 0, 0.4),
+        inset 2px 2px 4px rgba(139, 90, 43, 0.5),
+        inset -2px -2px 4px rgba(255, 215, 0, 0.5);
+    font-size: 16px;
+    color: hsl(44, 100%, 84%);
+    transition:
+        box-shadow 0.4s cubic-bezier(0.5, 0, 0.1, 1),
+        background 0.4s cubic-bezier(0.5, 0, 0.1, 1),
+        border-color 0.4s cubic-bezier(0.5, 0, 0.1, 1);
+}
+
+.gold-form-textarea {
+    height: 90px;
+    resize: none;
+}
+
+.gold-form-input:focus,
+.gold-form-textarea:focus {
+    outline: none;
+    background: linear-gradient(135deg, #daa520, #b8860b);
+    border-color: #ffcc00;
+    box-shadow:
+        4px 4px 8px rgba(139, 90, 43, 0.7),
+        -4px -4px 8px rgba(255, 215, 0, 0.5),
+        inset 4px 4px 8px rgba(139, 90, 43, 0.6),
+        inset -4px -4px 8px rgba(255, 215, 0, 0.6);
+}
+
+.gold-form-input:focus + .gold-form-label,
+.gold-form-textarea:focus + .gold-form-label {
+    color: #ffcc00;
+}
+
+.gold-form-button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #f0cd07, #ffc32d, #f5ba26);
+    border: 0px solid rgba(255, 217, 0, 0);
+    border-radius: 12px;
+    color: #3d2f1a;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    margin-top: 14px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow:
+        10px 10px 20px rgba(139, 90, 43, 0.6),
+        -10px -10px 20px rgba(255, 215, 0, 0.4),
+        inset 2px 2px 5px rgba(255, 215, 0, 0.5),
+        inset -2px -2px 5px rgba(139, 90, 43, 0.5);
+    transition:
+        transform 0.3s cubic-bezier(0.5, 0, 0.1, 1),
+        box-shadow 0.3s cubic-bezier(0.5, 0, 0.1, 1),
+        background 0.4s cubic-bezier(0.5, 0, 0.1, 1);
+}
+
+.gold-form-button:hover {
+    background: linear-gradient(135deg, #f0cd07, #ffc32d, #f5ba26);
+    box-shadow:
+        10px 10px 20px rgba(139, 90, 43, 0.6),
+        -10px -10px 20px rgba(255, 215, 0, 0.4),
+        inset 2px 2px 5px rgba(255, 215, 0, 0.5),
+        inset -2px -2px 5px rgba(139, 90, 43, 0.5);
+    transform: translateY(-2px);
+}
+
+.gold-form-button:active {
+    background: linear-gradient(135deg, #f0cd07, #ffc32d, #f5ba26);
+    box-shadow:
+        10px 10px 20px rgba(139, 90, 43, 0.6),
+        -10px -10px 20px rgba(255, 215, 0, 0.4),
+        inset 2px 2px 5px rgba(255, 215, 0, 0.5),
+        inset -2px -2px 5px rgba(139, 90, 43, 0.5);
+    transform: translateY(1px);
+}
+
+/* Container for the contact form - slides up from bottom */
+.gold-form-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 1100;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.gold-form-container.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* The form itself - keeping the gold form styles from user's request */
+.gold-form {
+    width: 285px;
+    height: 380px;
+    padding: 25px;
+    background: linear-gradient(135deg, #ffd700, #daa520, #b8860b);
+    border-radius: 20px;
+    box-shadow:
+        10px 10px 20px rgba(139, 90, 43, 0.6),
+        -10px -10px 20px rgba(204, 173, 2, 0.126),
+        inset 2px 2px 5px rgba(237, 201, 0, 0.5),
+        inset -2px -2px 5px rgba(139, 90, 43, 0.5);
+    background-image: radial-gradient(
+        circle,
+        rgba(255, 215, 0, 0.25) 1px,
+        transparent 1px
+    ),
+    radial-gradient(circle, rgba(255, 193, 7, 0.15) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position:
+        0 0,
+        10px 10px;
+    transform: translateY(100%);
+    transition: transform 0.5s ease;
+}
+
+.gold-form-container.show .gold-form {
+    transform: translateY(0);
+}
+
+/* Position the contact button where we placed it in the content */
+/* The button is already positioned where we placed it in the HTML */
+
+/* Button from Uiverse.io by eraly_2449 - keeping the original classes */
+.cursor-pointer { cursor: pointer; }
+.relative { position: relative; }
+.bg-white\/10 { background-color: rgba(255, 255, 255, 0.1); }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.rounded-full { border-radius: 9999px; }
+.min-w-\[8\.5rem\] { min-width: 21.6rem; }
+.min-h-\[2\.92rem\] { min-height: 7.3rem; }
+.group { position: relative; }
+.max-w-full { max-width: 100%; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-start { justify-content: flex-start; }
+.hover\:bg-green-400:hover { --tw-bg-opacity: 1; background-color: rgb(74 222 128); }
+.transition-all { transition-property: all; }
+.duration-\[0\.8s\] { transition-duration: 0.8s; }
+.ease-\[cubic-bezier\(0\.510,0\.026,0\.368,1\.016\)\] { transition-timing-function: cubic-bezier(0.51, 0.026, 0.368, 1.016); }
+.shadow-\[inset_1px_2px_5px_#00000080\] { --tw-shadow: inset 1px 2px 5px rgb(0 0 0 / 0.5); --tw-shadow-offset: 0 0; box-shadow: var(--tw-shadow, 0 0 #000000), var(--tw-shadow-offset, 0 0); }
+.absolute { position: absolute; }
+.px-1 { padding-left: 0.25rem; padding-right: 0.25rem; }
+.py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+.justify-start { justify-content: flex-start; }
+.items-center { align-items: center; }
+.inset-0 { inset: 0; }
+.w-\[0\%\] { width: 0%; }
+.group-hover\:w-full:hover .group:hover .w-\[0\%\] { width: 100%; }
+.transition-all { transition-property: all; }
+.duration-\[1s\] { transition-duration: 1s; }
+.ease-\[cubic-bezier\(0\.510,0\.026,0\.368,1\.016\)\] { transition-timing-function: cubic-bezier(0.51, 0.026, 0.368, 1.016); }
+.shrink-0 { flex-shrink: 0; }
+.h-full { height: 100%; }
+.aspect-square { aspect-ratio: 1 / 1; }
+.shadow-\[inset_1px_-1px_3px_0_black\] { --tw-shadow: inset 1px -1px 3px rgb(0 0 0); --tw-shadow-offset: 0 0; box-shadow: var(--tw-shadow, 0 0 #000000), var(--tw-shadow-offset, 0 0); }
+.bg-green-400 { --tw-bg-opacity: 1; background-color: rgb(74 222 128); }
+.group-hover\:bg-black:hover .group:hover .bg-green-400 { --tw-bg-opacity: 1; background-color: rgb(0 0 0); }
+.size-\[0\.8rem\] { height: 0.8rem; width: 0.8rem; }
+.text-black { --tw-text-opacity: 1; color: rgb(0 0 0); }
+.group-hover\:text-white:hover .group:hover .text-black { --tw-text-opacity: 1; color: rgb(255 255 255); }
+.group-hover\:-rotate-45:hover .group:hover .size-\[0\.8rem\] { --tw-rotate: -45deg; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
+.transition-all { transition-property: all; }
+.duration-\[1s\] { transition-duration: 1s; }
+.ease-\[cubic-bezier\(0\.510,0\.026,0\.368,1\.016\)\] { transition-timing-function: cubic-bezier(0.51, 0.026, 0.368, 1.016); }
+
+/* Form Styles from Uiverse.io by chase2k25 */
+.gold-form-group {
+    position: relative;
+    margin-bottom: 14px;
+}
+
+.gold-form-label {
+    display: block;
+    color: hsl(44, 100%, 67%); /* Light gold color */
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.3s cubic-bezier(0.5, 0, 0.1, 1);
+}
+
+.gold-form-input,
+.gold-form-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: none;
+    background: linear-gradient(135deg, #daa520, #b8860b);
+    border-radius: 12px;
+    font-weight: bold;
+    box-shadow:
+        6px 6px 12px rgba(139, 90, 43, 0.6),
+        -6px -6px 12px rgba(255, 215, 0, 0.4),
+        inset 2px 2px 4px rgba(139, 90, 43, 0.5),
+        inset -2px -2px 4px rgba(255, 215, 0, 0.5);
+    font-size: 16px;
+    color: hsl(44, 100%, 84%);
+    transition:
+        box-shadow 0.4s cubic-bezier(0.5, 0, 0.1, 1),
+        background 0.4s cubic-bezier(0.5, 0, 0.1, 1),
+        border-color 0.4s cubic-bezier(0.5, 0, 0.1, 1);
+}
+
+.gold-form-textarea {
+    height: 90px;
+    resize: none;
+}
+
+.gold-form-input:focus,
+.gold-form-textarea:focus {
+    outline: none;
+    background: linear-gradient(135deg, #daa520, #b8860b);
+    border-color: #ffcc00;
+    box-shadow:
+        4px 4px 8px rgba(139, 90, 43, 0.7),
+        -4px -4px 8px rgba(255, 215, 0, 0.5),
+        inset 4px 4px 8px rgba(139, 90, 43, 0.6),
+        inset -4px -4px 8px rgba(255, 215, 0, 0.6);
+}
+
+.gold-form-input:focus + .gold-form-label,
+.gold-form-textarea:focus + .gold-form-label {
+    color: #ffcc00;
+}
+
+.gold-form-button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #f0cd07, #ffc32d, #f5ba26);
+    border: 0px solid rgba(255, 217, 0, 0);
+    border-radius: 12px;
+    color: #3d2f1a;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    margin-top: 14px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow:
+        10px 10px 20px rgba(139, 90, 43, 0.6),
+        -10px -10px 20px rgba(255, 215, 0, 0.4),
+        inset 2px 2px 5px rgba(255, 215, 0, 0.5),
+        inset -2px -2px 5px rgba(139, 90, 43, 0.5);
+    transition:
+        transform 0.3s cubic-bezier(0.5, 0, 0.1, 1),
+        box-shadow 0.3s cubic-bezier(0.5, 0, 0.1, 1),
+        background 0.4s cubic-bezier(0.5, 0, 0.1, 1);
+}
+
+.gold-form-button:hover {
+    background: linear-gradient(135deg, #f0cd07, #ffc32d, #f5ba26);
+    box-shadow:
+        10px 10px 20px rgba(139, 90, 43, 0.6),
+        -10px -10px 20px rgba(255, 215, 0, 0.4),
+        inset 2px 2px 5px rgba(255, 215, 0, 0.5),
+        inset -2px -2px 5px rgba(139, 90, 43, 0.5);
+    transform: translateY(-2px);
+}
+
+.gold-form-button:active {
+    background: linear-gradient(135deg, #f0cd07, #ffc32d, #f5ba26);
+    box-shadow:
+        10px 10px 20px rgba(139, 90, 43, 0.6),
+        -10px -10px 20px rgba(255, 215, 0, 0.4),
+        inset 2px 2px 5px rgba(255, 215, 0, 0.5),
+        inset -2px -2px 5px rgba(139, 90, 43, 0.5);
+    transform: translateY(1px);
