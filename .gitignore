@@ -20,3 +20,19 @@ output.txt
 update_style.ps1
 scan_backup.html
 admin_credentials.txt
+# Python
+__pycache__
+*.py[cod]
+*.class
+*.pyo
+*.pyd
+*.cover
+*.log
+.env
+.env.*
+!.env.example
+# Logs
+*.log
+# OS
+.DS_Store
+Thumbs.db

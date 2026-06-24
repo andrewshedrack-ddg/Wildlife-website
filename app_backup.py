@@ -263,49 +263,6 @@ if __name__ == '__main__':
         except Exception as e:
             print(f'Could not write credentials file: {e}')
         
-        # Seed Sample Species Data
-        sample_species = [
-            {
-                'name': 'African Elephant',
-                'status': 'Endangered',
-                'description': 'The largest land mammal, known for its intelligence and complex social structures.',
-                'image_url': 'https://upload.wikimedia.org/wikipedia/commons/3/37/African_Bush_Elephant.jpg'
-            },
-            {
-                'name': 'Lion',
-                'status': 'Vulnerable',
-                'description': 'Known as the ""King of the Jungle"", lions live in prides and are apex predators.',
-                'image_url': 'https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg'
-            },
-            {
-                'name': 'Giraffe',
-                'status': 'Vulnerable',
-                'description': 'The tallest land animal with a distinctive spotted coat and long neck.',
-                'image_url': 'https://upload.wikimedia.org/wikipedia/commons/8/18/Giraffa_camelopardalis.jpg'
-            },
-            {
-                'name': 'Leopard',
-                'status': 'Vulnerable',
-                'description': 'A solitary and elusive big cat known for its spotted coat and excellent climbing ability.',
-                'image_url': 'https://upload.wikimedia.org/wikipedia/commons/d/de/Leopard_-_Sabi_Sands_PF.jpg'
-            },
-            {
-                'name': 'Cheetah',
-                'status': 'Vulnerable',
-                'description': 'The fastest land animal, capable of reaching speeds up to 70 mph in short bursts.',
-                'image_url': 'https://upload.wikimedia.org/wikipedia/commons/9/9b/Cheetah_on_the_Serengeti_Peninsula,_Serengeti,_Tanzania.jpg'
-            }
-        ]
-
-        for species_data in sample_species:
-            if not Species.query.filter_by(name=species_data['name']).first():
-                species = Species(
-                    name=species_data['name'],
-                    status=species_data['status'],
-                    description=species_data['description'],
-                    image_url=species_data['image_url']
-                )
-                db.session.add(species)
         # Seed Basic Config Defaults
         defaults = {
             'site_name': 'WildGuard Society',

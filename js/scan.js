@@ -1,4 +1,4 @@
-﻿// scan.js for WildGuard Explorer
+// scan.js for WildGuard Explorer
 document.addEventListener('DOMContentLoaded', () => {
     const uploadBtn = document.getElementById('uploadBtn');
     const cameraBtn = document.getElementById('cameraBtn');
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
         reader.readAsDataURL(file);
     });
 
-    # Handle camera capture
+    // Handle camera capture
 let webcamStream = null;
 cameraBtn.addEventListener('click', async () => {
     if (!webcamStream) {
