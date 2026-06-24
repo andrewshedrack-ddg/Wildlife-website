@@ -14,13 +14,18 @@
   <link rel="icon" type="image/png" href="assets/images/logo.png">
      <title>WildGuard Society</title>
   <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/auth.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Fraunces:wght@600;700;800&900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="page-slideshow">
-      <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
+        <div class="page-slideshow">
+      <div class="page-slide active" style="background-image: url('assets/images/Background3.png');"></div>
+      <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
+      <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
+      <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
+    </div>
       <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
       <div class="page-slide" style="background-image: url('assets/images/background3.png');"></div>
       <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
@@ -30,6 +35,24 @@
     <div class="logo-container">
       <img src="assets/images/logo.png" alt="Logo" class="logo-img">
       <span class="logo-text">WildGuard Society</span>
+    </div>
+    <!-- Auth Buttons -->
+    <div class="auth-buttons" id="auth-buttons">
+      <a href="login.html" class="signin-btn" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+      <div class="user-menu" id="user-menu" style="display:none;">
+        <button class="user-menu-toggle" id="user-menu-toggle">
+          <i class="fas fa-user-circle"></i>
+          <span id="user-email">User</span>
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="user-dropdown" id="user-dropdown">
+          <a href="user/Profile.html"><i class="fas fa-user"></i> Profile</a>
+          <a href="user/History.html"><i class="fas fa-history"></i> History</a>
+          <a href="user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+          <div class="dropdown-divider"></div>
+          <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
     </div>
     <button class="mobile-menu-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
     <nav>
@@ -476,5 +499,7 @@ document.querySelector('.mobile-menu-toggle').addEventListener('click', function
 </script>
 </body>
 </html>
+
+
 
 
