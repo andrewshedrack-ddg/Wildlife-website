@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | WildGuard Society</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --primary: #0f2a20;
+      --primary-light: #1e3a2f;
+      --accent: #10b981;
+      --accent-light: #34d399;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--gray-50);
+      color: var(--gray-800);
+      line-height: 1.6;
+    }
+    
+    /* Top Navigation */
+    .top-nav {
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 60px;
+    }
+    .top-nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 100%;
+    }
+    .top-nav .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .top-nav nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+    }
+    .top-nav nav a {
+      text-decoration: none;
+      color: var(--gray-600);
+      font-weight: 500;
+      padding: 0.5rem 0;
+      position: relative;
+    }
+    .top-nav nav a:hover,
+    .top-nav nav a.active {
+      color: var(--primary);
+    }
+    .top-nav nav a.active::after,
+    .top-nav nav a:hover::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--accent);
+    }
+    
+    /* Admin Layout */
+    .admin-layout {
+      display: flex;
+      min-height: calc(100vh - 60px); /* account for top nav */
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: white;
+      border-right: 1px solid var(--gray-200);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .sidebar-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    
+    .sidebar-header h2 {
+      color: var(--primary);
+      font-size: 1.25rem;
+      margin: 0;
+    }
+    
+    .sidebar-nav {
+      flex: 1;
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      color: var(--gray-600);
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      transition: all 0.2s ease;
+    }
+    
+    .nav-item:hover {
+      background-color: var(--gray-50);
+      color: var(--primary);
+      border-left-color: var(--accent);
+    }
+    
+    .nav-item.active {
+      background-color: var(--gray-50);
+      color: var(--primary);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+    
+    .nav-item i {
+      margin-right: 0.75rem;
+      font-size: 1.1rem;
+    }
+    
+    .nav-item.logout {
+      margin-top: auto;
+      border-top: 1px solid var(--gray-200);
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    
+    .page-header {
+      margin-bottom: 2rem;
+    }
+    
+    .page-header h1 {
+      color: var(--primary);
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .page-header p {
+      color: var(--gray-600);
+      font-size: 1rem;
+    }
+    
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .stat-value {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      color: var(--gray-600);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Slideshow */
+    .slideshow {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto 2rem;
+      height: 300px;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      animation: slideShow 12s infinite;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      font-size: 2rem;
+      font-weight: 600;
+    }
+    .slide:nth-child(1) { animation-delay: 0s; background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?auto=format&fit=crop&w=1350&q=80'); }
+    .slide:nth-child(2) { animation-delay: 4s; background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1350&q=80'); }
+    .slide:nth-child(3) { animation-delay: 8s; background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1551009175-8a68da93d5f9?auto=format&fit=crop&w=1350&q=80'); }
+    .slide-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @keyframes slideShow {
+      0% { opacity: 0; }
+      8% { opacity: 1; }
+      33% { opacity: 1; }
+      41% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    
+    /* Content Sections */
+    .content-section {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+    }
+    
+    .content-section h2 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .content-section h2 i {
+      color: var(--accent);
+    }
+    
+    /* Forms */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--gray-700);
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-light);
+    }
+    
+    .btn-secondary {
+      background: var(--gray-200);
+      color: var(--gray-800);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--gray-300);
+    }
+    
+    .btn-accent {
+      background: var(--accent);
+      color: white;
+    }
+    
+    .btn-accent:hover {
+      background: #059669;
+    }
+    
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+    
+    /* Tables */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    
+    .data-table th,
+    .data-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    
+    .data-table th {
+      background-color: var(--gray-50);
+      font-weight: 600;
+      color: var(--gray-700);
+      text-transform: uppercase;
+      font-size: 0.875rem;
+      letter-spacing: 0.5px;
+    }
+    
+    .data-table tbody tr:hover {
+      background-color: var(--gray-50);
+    }
+    
+    .actions-cell {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .btn-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    
+    .btn-icon.edit {
+      background: #fffbeb;
+      color: #d97706;
+    }
+    
+    .btn-icon.delete {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+    
+    .btn-icon.view {
+      background: #eff6ff;
+      color: #2563eb;
+    }
+    
+    /* Loading States */
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: var(--gray-600);
+    }
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 2rem;
+      height: 2rem;
+      border: 3px solid var(--gray-200);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 1rem;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Empty States */
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--gray-600);
+    }
+    
+    .empty-state-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--gray-200);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 1.75rem;
+      color: var(--gray-400);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .admin-layout {
+        flex-direction: column;
+      }
+      
+      .top-nav .container {
+        flex-wrap: wrap;
+      }
+      
+      .top-nav nav {
+        margin-top: 0.5rem;
+        width: 100%;
+      }
+      
+      .top-nav nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .sidebar {
+        width: 100%;
+        height: 60px;
+        flex-direction: row;
+        border-bottom: 1px solid var(--gray-200);
+        border-right: none;
+      }
+      
+      .sidebar-header {
+        display: none;
+      }
+      
+      .sidebar-nav {
+        display: flex;
+        overflow-x: auto;
+        padding: 0;
+      }
+      
+      .nav-item {
+        padding: 1rem;
+        justify-content: center;
+        flex: 0 0 auto;
+        min-width: 80px;
+        border-left: none;
+        border-top: 3px solid transparent;
+      }
+      
+      .nav-item.active {
+        border-top-color: var(--accent);
+        border-left: none;
+      }
+      
+      .nav-item span {
+        display: none;
+      }
+      
+      .nav-item i {
+        margin-right: 0;
+      }
+      
+      .main-content {
+        padding: 1rem;
+      }
+      
+      .slideshow {
+        height: 200px;
+      }
+      .slide {
+        font-size: 1.5rem;
+      }
+    }
+    
+    /* Grid Utilities */
+    .grid-cols-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      .grid-cols-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <header class="top-nav">
+    <div class="container">
+      <div class="logo">WildGuard Admin</div>
+      <nav>
+        <ul>
+          <li><a href="#" data-section="dashboard" class="nav-link active">Dashboard</a></li>
+          <li><a href="#" data-section="species" class="nav-link">Species</a></li>
+          <li><a href="#" data-section="messages" class="nav-link">Messages</a></li>
+          <li><a href="#" data-section="settings" class="nav-link">Settings</a></li>
+          <li><a href="#" id="top-logout">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <!-- Admin Layout -->
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>WildGuard Admin</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-section="dashboard">
+          <i class="fas fa-tachometer-alt"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-section="species">
+          <i class="fas fa-paw"></i>
+          <span>Species</span>
+        </a>
+        <a href="#" class="nav-item" data-section="messages">
+          <i class="fas fa-envelope"></i>
+          <span>Messages</span>
+        </a>
+        <a href="#" class="nav-item" data-section="settings">
+          <i class="fas fa-cog"></i>
+          <span>Settings</span>
+        </a>
+        <a href="#" class="nav-item logout" id="sidebar-logout-link">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </nav>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- This will be populated by JavaScript -->
+      <div id="content-area">
+        <!-- Content will be injected here -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Font Awesome for icons (using CDN) -->
+  <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+  <script>
+    // Fallback for Font Awesome if kit doesn't load
+    if (typeof FontAwesomeKitConfig === 'undefined') {
+      // Create simple fallback icons using text
+      const style = document.createElement('style');
+      style.textContent = `
+        .fas::before {
+          font-family: 'Arial';
+          font-weight: bold;
+        }
+        .fas fa-tachometer-alt::before { content: "⚡"; }
+        .fas fa-paw::before { content: "🐾"; }
+        .fas fa-envelope::before { content: "✉️"; }
+        .fas fa-cog::before { content: "⚙️"; }
+        .fas fa-sign-out-alt::before { content: "🚪"; }
+        .fas fa-plus::before { content: "+"; }
+        .fas fa-trash-alt::before { content: "🗑️"; }
+        .fas fa-edit::before { content: "✏️"; }
+        .fas fa-save::before { content: "💾"; }
+        .fas fa-search::before { content: "🔍"; }
+      `;
+      document.head.appendChild(style);
+    }
+  </script>
+  
+  <script>
+    // Admin Dashboard JavaScript
+    class AdminDashboard {
+      constructor() {
+        this.currentSection = 'dashboard';
+        this.init();
+      }
+      
+      async init() {
+        // Check authentication status
+        const isAuthenticated = await this.checkAuth();
+        if (!isAuthenticated) {
+          window.location.href = 'admin-login.html';
+          return;
+        }
+        
+        // Set up event listeners
+        this.setupNavigation();
+        this.setupLogout();
+        
+        // Load initial view
+        await this.loadSection('dashboard');
+      }
+      
+      async checkAuth() {
+        try {
+          const response = await fetch('/api/admin/verify', {
+            method: 'POST',
+            credentials: 'include'
+          });
+          return response.ok;
+        } catch (error) {
+          console.error('Auth check failed:', error);
+          return false;
+        }
+      }
+      
+      setupNavigation() {
+        // Sidebar nav items
+        const sidebarNavItems = document.querySelectorAll('.sidebar .nav-item:not(.logout)');
+        sidebarNavItems.forEach(item => {
+          item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const section = item.getAttribute('data-section');
+            this.switchSection(section);
+          });
+        });
+        
+        // Top nav links
+        const topNavLinks = document.querySelectorAll('.top-nav .nav-link');
+        topNavLinks.forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const section = link.getAttribute('data-section');
+            this.switchSection(section);
+            // Update active class in top nav
+            topNavLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+          });
+        });
+      }
+      
+      setupLogout() {
+        // Sidebar logout
+        const sidebarLogoutLink = document.getElementById('sidebar-logout-link');
+        sidebarLogoutLink.addEventListener('click', async (e) => {
+          e.preventDefault();
+          await this.logout();
+        });
+        
+        // Top nav logout
+        const topLogoutLink = document.getElementById('top-logout');
+        topLogoutLink.addEventListener('click', async (e) => {
+          e.preventDefault();
+          await this.logout();
+        });
+      }
+      
+      async logout() {
+        try {
+          await fetch('/api/admin/logout', {
+            method: 'POST',
+            credentials: 'include'
+          });
+        } finally {
+          window.location.href = 'admin-login.html';
+        }
+      }
+      
+      async switchSection(section) {
+        // Update active sidebar nav item
+        document.querySelectorAll('.sidebar .nav-item').forEach(item => {
+          item.classList.remove('active');
+          if (item.getAttribute('data-section') === section) {
+            item.classList.add('active');
+          }
+        });
+        
+        // Update active top nav link
+        document.querySelectorAll('.top-nav .nav-link').forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('data-section') === section) {
+            link.classList.add('active');
+          }
+        });
+        
+        this.currentSection = section;
+        await this.loadSection(section);
+      }
+      
+      async loadSection(section) {
+        const contentArea = document.getElementById('content-area');
+        contentArea.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading...</div></div>';
+        
+        try {
+          let content = '';
+          switch (section) {
+            case 'dashboard':
+              content = await this.loadDashboard();
+              break;
+            case 'species':
+              content = await this.loadSpecies();
+              break;
+            case 'messages':
+              content = await this.loadMessages();
+              break;
+            case 'settings':
+              content = await this.loadSettings();
+              break;
+            default:
+              content = '<p>Section not found</p>';
+          }
+          contentArea.innerHTML = content;
+          // Attach event listeners after content loads
+          this.attachEventListeners();
+        } catch (error) {
+          console.error('Error loading section:', error);
+          contentArea.innerHTML = `<div class="error">Error loading content: ${error.message}</div>`;
+        }
+      }
+      
+      // Dashboard Content
+      async loadDashboard() {
+        try {
+          const [speciesCount, messagesCount] = await Promise.all([
+            this.fetchSpeciesCount(),
+            this.fetchMessagesCount()
+          ]);
+          
+          return `
+            <div class="page-header">
+              <h1>Dashboard</h1>
+              <p>Overview of your wildlife conservation platform</p>
+            </div>
+            
+            <!-- Slideshow -->
+            <div class="slideshow">
+              <div class="slide"><div class="slide-overlay">Wildlife Conservation</div></div>
+              <div class="slide"><div class="slide-overlay">Protecting Endangered Species</div></div>
+              <div class="slide"><div class="slide-overlay">Preserving Natural Habitats</div></div>
+            </div>
+            
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-value">${speciesCount}</div>
+                <div class="stat-label">Species Catalogued</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">${messagesCount}</div>
+                <div class="stat-label">Messages Received</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">Online</div>
+                <div class="stat-label">System Status</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">Active</div>
+                <div class="stat-label">Last Updated</div>
+              </div>
+            </div>
+            
+            <div class="content-section">
+              <h2><i class="fas fa-chart-line"></i> Recent Activity</h2>
+              <div class="loading">Loading recent activity...</div>
+            </div>
+          `;
+        } catch (error) {
+          return `<div class="error">Error loading dashboard: ${error.message}</div>`;
+        }
+      }
+      
+      async fetchSpeciesCount() {
+        try {
+          const response = await fetch('/api/species');
+          if (!response.ok) throw new Error('Failed to fetch species');
+          const data = await response.json();
+          return data.species?.length || 0;
+        } catch (error) {
+          return 0;
+        }
+      }
+      
+      async fetchMessagesCount() {
+        try {
+          const response = await fetch('/api/admin/messages', {
+            method: 'GET',
+            credentials: 'include'
+          });
+          if (!response.ok) throw new Error('Failed to fetch messages');
+          const data = await response.json();
+          return data.messages?.length || 0;
+        } catch (error) {
+          return 0;
+        }
+      }
+      
+      // Species Management
+      async loadSpecies() {
+        try {
+          const response = await fetch('/api/species');
+          if (!response.ok) throw new Error('Failed to fetch species');
+          const data = await response.json();
+          
+          return `
+            <div class="page-header">
+              <h1>Species Management</h1>
+              <p>Manage wildlife species in your database</p>
+            </div>
+            
+            <div class="space-y-4">
+              <button id="add-species-btn" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add New Species
+              </button>
+            </div>
+            
+            <div class="content-section">
+              <h2><i class="fas fa-paw"></i> Species List</h2>
+              <div id="species-list">
+                ${this.renderSpeciesList(data.species || [])}
+              </div>
+            </div>
+          `;
+        } catch (error) {
+          return `<div class="error">Error loading species: ${error.message}</div>`;
+        }
+      }
+      
+      renderSpeciesList(species) {
+        if (species.length === 0) {
+          return `
+            <div class="empty-state">
+              <div class="empty-state-icon">🐾</div>
+              <h3>No species found</h3>
+              <p>Add your first species to get started.</p>
+            </div>
+          `;
+        }
+        
+        return `
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${species.map(spec => `
+                <tr data-id="${spec.id}">
+                  <td>${this.escapeHtml(spec.name)}</td>
+                  <td>${this.escapeHtml(spec.status)}</td>
+                  <td class="actions-cell">
+                    <button class="btn-icon edit" title="Edit">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn-icon delete" title="Delete">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      }
+      
+      // Messages Management
+      async loadMessages() {
+        try {
+          const response = await fetch('/api/admin/messages', {
+            method: 'GET',
+            credentials: 'include'
+          });
+          if (!response.ok) throw new Error('Failed to fetch messages');
+          const data = await response.json();
+          
+          return `
+            <div class="page-header">
+              <h1>Messages</h1>
+              <p>View and manage messages from visitors</p>
+            </div>
+            
+            <div class="content-section">
+              <h2><i class="fas fa-envelope"></i> Message List</h2>
+              <div id="messages-list">
+                ${this.renderMessagesList(data.messages || [])}
+              </div>
+            </div>
+          `;
+        } catch (error) {
+          return `<div class="error">Error loading messages: ${error.message}</div>`;
+        }
+      }
+      
+      renderMessagesList(messages) {
+        if (messages.length === 0) {
+          return `
+            <div class="empty-state">
+              <div class="empty-state-icon">📭</div>
+              <h3>No messages found</h3>
+              <p>Messages from visitors will appear here.</p>
+            </div>
+          `;
+        }
+        
+        return `
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>Received</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${messages.map(msg => `
+                <tr data-id="${msg.id}">
+                  <td>${this.escapeHtml(msg.name)}</td>
+                  <td>${this.escapeHtml(msg.email)}</td>
+                  <td>${this.escapeHtml(msg.subject)}</td>
+                  <td>${this.formatDate(msg.created_at)}</td>
+                  <td class="actions-cell">
+                    <button class="btn-icon view" title="View">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn-icon delete" title="Delete">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      }
+      
+      // Settings Management
+      async loadSettings() {
+        try {
+          const response = await fetch('/api/settings');
+          if (!response.ok) throw new Error('Failed to fetch settings');
+          const settings = await response.json();
+          
+          return `
+            <div class="page-header">
+              <h1>Site Settings</h1>
+              <p>Configure global settings for your website</p>
+            </div>
+            
+            <div class="content-section">
+              <h2><i class="fas fa-cog"></i> General Settings</h2>
+              <form id="settings-form">
+                <div class="grid-cols-2">
+                  <div class="form-group">
+                    <label for="site_name">Site Name</label>
+                    <input type="text" id="site_name" name="site_name" value="${this.escapeHtml(settings.site_name || '')}" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="hero_title">Hero Title</label>
+                    <input type="text" id="hero_title" name="hero_title" value="${this.escapeHtml(settings.hero_title || '')}" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="hero_subtitle">Hero Subtitle</label>
+                    <input type="text" id="hero_subtitle" name="hero_subtitle" value="${this.escapeHtml(settings.hero_subtitle || '')}" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="contact_email">Contact Email</label>
+                    <input type="email" id="contact_email" name="contact_email" value="${this.escapeHtml(settings.contact_email || '')}" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Settings
+                  </button>
+                </div>
+              </form>
+            </div>
+          `;
+        } catch (error) {
+          return `<div class="error">Error loading settings: ${error.message}</div>`;
+        }
+      }
+      
+      // Utility Methods
+      escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+      
+      formatDate(dateString) {
+        if (!dateString) return 'Unknown';
+        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+      }
+      
+      // Event handlers will be attached after content loads
+      attachEventListeners() {
+        document.addEventListener('click', (e) => {
+          // Handle species edit/delete
+          if (e.target.closest('.btn-icon.edit')) {
+            const row = e.target.closest('tr');
+            const id = row.dataset.id;
+            this.editSpecies(id);
+          }
+          
+          if (e.target.closest('.btn-icon.delete')) {
+            const row = e.target.closest('tr');
+            const id = row.dataset.id;
+            this.deleteSpecies(id);
+          }
+          
+          // Handle message delete
+          if (e.target.closest('.btn-icon.delete') && e.target.closest('[data-section="messages"]')) {
+            const row = e.target.closest('tr');
+            const id = row.dataset.id;
+            this.deleteMessage(id);
+          }
+          
+          // Handle add species button
+          if (e.target.matches('#add-species-btn') || e.target.closest('#add-species-btn')) {
+            this.showAddSpeciesModal();
+          }
+          
+          // Handle settings form submit
+          if (e.target.matches('#settings-form')) {
+            e.preventDefault();
+            this.saveSettings(e.target);
+          }
+        });
+      }
+      
+      // Species CRUD Operations
+      async showAddSpeciesModal() {
+        // Simple prompt for now - in a real app you'd use a modal
+        const name = prompt('Enter species name:');
+        if (!name) return;
+        
+        const status = prompt('Enter conservation status (e.g., Endangered, Vulnerable):');
+        if (!status) return;
+        
+        const description = prompt('Enter species description:');
+        if (!description) return;
+        
+        const imageUrl = prompt('Enter image URL (optional):');
+        
+        try {
+          const response = await fetch('/api/admin/species', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+              name,
+              status,
+              description,
+              image_url: imageUrl || null
+            })
+          });
+          
+          if (!response.ok) throw new Error('Failed to add species');
+          
+          alert('Species added successfully!');
+          await this.loadSpecies(); // Refresh the list
+        } catch (error) {
+          alert(`Error: ${error.message}`);
+        }
+      }
+      
+      async editSpecies(id) {
+        // Get current species data first
+        try {
+          const response = await fetch(`/api/species/${id}`);
+          if (!response.ok) throw new Error('Failed to fetch species');
+          const species = await response.json();
+          
+          // Prompt for new values
+          const name = prompt('Enter species name:', species.name) || species.name;
+          const status = prompt('Enter conservation status:', species.status) || species.status;
+          const description = prompt('Enter species description:', species.description) || species.description;
+          const imageUrl = prompt('Enter image URL:', species.image_url || '') || species.image_url;
+          
+          const response2 = await fetch(`/api/admin/species/${id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+              name,
+              status,
+              description,
+              image_url: imageUrl || null
+            })
+          });
+          
+          if (!response2.ok) throw new Error('Failed to update species');
+          
+          alert('Species updated successfully!');
+          await this.loadSpecies(); // Refresh the list
+        } catch (error) {
+          alert(`Error: ${error.message}`);
+        }
+      }
+      
+      async deleteSpecies(id) {
+        if (!confirm('Are you sure you want to delete this species? This action cannot be undone.')) return;
+        
+        try {
+          const response = await fetch(`/api/admin/species/${id}`, {
+            method: 'DELETE',
+            credentials: 'include'
+          });
+          
+          if (!response.ok) throw new Error('Failed to delete species');
+          
+          alert('Species deleted successfully!');
+          await this.loadSpecies(); // Refresh the list
+        } catch (error) {
+          alert(`Error: ${error.message}`);
+        }
+      }
+      
+      // Message Operations
+      async deleteMessage(id) {
+        if (!confirm('Are you sure you want to delete this message? This action cannot be undone.')) return;
+        
+        try {
+          // Note: We don't have a delete message API endpoint in our current backend
+          // This would need to be added to the Flask app
+          alert('Delete functionality not implemented in backend yet.');
+        } catch (error) {
+          alert(`Error: ${error.message}`);
+        }
+      }
+      
+      // Settings Operations
+      async saveSettings(form) {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        try {
+          const response = await fetch('/api/admin/settings', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(data)
+          });
+          
+          if (!response.ok) throw new Error('Failed to save settings');
+          
+          alert('Settings saved successfully!');
+        } catch (error) {
+          alert(`Error: ${error.message}`);
+        }
+      }
+    }
+    
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      window.adminDashboard = new AdminDashboard();
+    });
+  </script>
+</body>
+</html>
