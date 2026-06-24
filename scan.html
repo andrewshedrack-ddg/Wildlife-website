@@ -12,6 +12,9 @@
   <script defer src="js/main.js"></script>
   <script defer src="js/scan.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="page-slideshow">
@@ -63,7 +66,7 @@
         </div>
       </li>
       <li>
-        <div class="nav-item-group" data-page="scan.html">
+        <div class="nav-item-group active" data-page="scan.html">
           <div class="nav-item-icon">
             <i class="fas fa-barcode"></i>
           </div>
@@ -100,12 +103,12 @@
 
   <main>
     <section class="page-banner">
-      <span class="eyebrow">Live scan</span>
-      <h1>Identify wildlife from photos</h1>
-      <p class="lede">Upload an image or take a photo to identify the organism. The AI will analyze and provide details.</p>
+      <span class="eyebrow">Wildlife Scan</span>
+      <h1>Real-Time Detection</h1>
+      <p class="lede">AI-powered wildlife monitoring and identification system.</p>
     </section>
 
-     <section class="scan-layout">
+     <section class="scan-layout content-overlay">
        <div class="container">
        <div class="scan-media">
          <div class="image-preview">
@@ -140,7 +143,7 @@
         <div class="footer-content">
             <div class="footer-info">
                 <h3>WildGuard Society</h3>
-                <p>Scan, learn, and protect wildlife through real-time monitoring and conservation efforts.</p>
+                <p>Using AI-powered monitoring to protect Wildguardian's iconic wildlife and ecosystems through technology, education, and community action.</p>
             </div>
             
             <div class="footer-links">
@@ -166,19 +169,10 @@
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; <span data-current-year></span> WildGuard Society | Scan, learn, protect</p>
+            <p>&copy; <span data-current-year></span> WildGuard Society | Protecting Wildguardian's Wildlife Heritage</p>
+            <p class="footer-details">Our mission: protect wildlife through AI-powered monitoring, real‑time alerts, and community engagement.</p>
         </div>
     </div>
-  </footer>
-<script>
-document.querySelectorAll('.nav-item-group').forEach(function(item) {
-    item.addEventListener('click', function() {
-        var page = this.getAttribute('data-page');
-        if (page) {
-            window.location.href = page;
-        }
-    });
-});
-</script>
+</footer>
 </body>
 </html>
