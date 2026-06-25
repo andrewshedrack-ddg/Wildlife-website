@@ -136,7 +136,7 @@ def login():
     if user and bcrypt.check_password_hash(user.password_hash, password):
         token = jwt.encode({'user_id': user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=2)}, app.config['SECRET_KEY'], algorithm='HS256')
         response = make_response(jsonify({'message': 'Login successful', 'role': user.role}))
-        response.set_cookie('auth_token', token, httponly=True, secure=True, samesite='Strict')
+        response.set_cookie('auth_token', token, httponly=True, samesite='Lax')
         return response
     return jsonify({'message': 'Invalid credentials'}), 401
 
@@ -160,7 +160,7 @@ def admin_login():
             return jsonify({'message': 'Admin access required.'}), 403
         token = jwt.encode({'user_id': user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=2)}, app.config['SECRET_KEY'], algorithm='HS256')
         response = make_response(jsonify({'message': 'Login successful.', 'authenticated': True, 'role': user.role}))
-        response.set_cookie('auth_token', token, httponly=True, secure=True, samesite='Strict')
+        response.set_cookie('auth_token', token, httponly=True, samesite='Lax')
         return response
     return jsonify({'message': 'Invalid credentials.'}), 401
 

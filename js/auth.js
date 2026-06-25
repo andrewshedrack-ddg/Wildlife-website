@@ -58,7 +58,6 @@
       return null;
     }
   }
-  }
 
   function saveUser(user) {
     try {
@@ -145,7 +144,6 @@
   function initLoginForm() {
     const loginForm = document.getElementById('login-form');
     if (!loginForm) return;
-平时很难
     const errorMessage = document.getElementById('error-message');
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
