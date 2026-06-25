@@ -183,12 +183,24 @@
             if (contentType.includes('application/json')) {
               const errorData = await response.json().catch(() => ({}));
               errorMessage = errorData.message || errorMessage;
+            } else {
+              const text = await response.text().catch(() => '');
+              console.error('Non-JSON error response from /api/admin/login:', text);
             }
             throw new Error(errorMessage);
           }
+          // Parse successful JSON response and store admin session
+          const data = await response.json();
+          if (data && data.token) {
+            localStorage.setItem('wildguard_admin_token', data.token);
+          }
+          if (data && data.user) {
+            localStorage.setItem('wildguard_user', JSON.stringify(data.user));
+          }
           window.location.href = 'admin.html';
         } catch (error) {
-          alert(error.message);
+          console.error('Admin login error:', error);
+          alert(error.message || 'An unexpected error occurred. The server may be unavailable.');
         }
       });
     });

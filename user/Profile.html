@@ -53,7 +53,7 @@
 </head>
 <body>
     <div class="page-slideshow">
-        <div class="page-slide active" style="background-image: url('../assets/images/authors/authentication-helpers/htmlpurifier-migration');"></div>
+        <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
         <div class="page-slide" style="background-image: url('../assets/images/background2.png')"></div>
         <div class="page-slide" style="background-image: url('../assets/images/background3.png')"></div>
         <div class="page-slide" style="background-image: url('../assets/images/background4.png')"></div>
@@ -111,26 +111,26 @@
                     <!-- Profile Card -->
                     <div class="card profile-card">
                         <div class="profile-avatar-wrap">
-                            <img src="../assets/images/default-avatar.png" alt="Profile Avatar" class="profile-avatar">
+                            <img src="../assets/images/default-avatar.png" alt="Profile Avatar" class="profile-avatar" id="profile-avatar-img">
                             <button class="avatar-edit-btn" title="Change avatar"><i class="fas fa-camera"></i></button>
                         </div>
                         <div class="profile-info">
-                            <h2 class="profile-name" id="profile-display-name">Jane Doe</h2>
-                            <p class="profile-email" id="profile-display-email">jane.doe@example.com</p>
-                            <p class="profile-role"><i class="fas fa-shield-alt"></i> Conservationist</p>
-                            <p class="profile-bio">Wildlife enthusiast documenting species and supporting conservation efforts around the globe.</p>
+                            <h2 class="profile-name" id="profile-display-name">Loading...</h2>
+                            <p class="profile-email" id="profile-display-email">...</p>
+                            <p class="profile-role" id="profile-role-display"><i class="fas fa-shield-alt"></i> Conservationist</p>
+                            <p class="profile-bio" id="profile-bio-display">Wildlife enthusiast documenting species and supporting conservation efforts around the globe.</p>
                         </div>
                         <div class="profile-stats">
                             <div class="stat-item">
-                                <span class="stat-value">24</span>
+                                <span class="stat-value" id="stat-scans">0</span>
                                 <span class="stat-label">Scans</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-value">156</span>
+                                <span class="stat-value" id="stat-favourites">0</span>
                                 <span class="stat-label">Favourites</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-value">3</span>
+                                <span class="stat-value" id="stat-parks">0</span>
                                 <span class="stat-label">Parks</span>
                             </div>
                         </div>
@@ -150,40 +150,40 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="firstName" class="form-label">First Name</label>
-                                    <input type="text" id="firstName" name="firstName" class="form-input" value="Jane" required>
+                                    <input type="text" id="firstName" name="firstName" class="form-input" placeholder="Your first name" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="lastName" class="form-label">Last Name</label>
-                                    <input type="text" id="lastName" name="lastName" class="form-input" value="Doe">
+                                    <input type="text" id="lastName" name="lastName" class="form-input" placeholder="Your last name">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="email" id="email" name="email" class="form-input" value="jane.doe@example.com" required>
+                                    <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com"
+                                    required>
                                 </div>
                                 <div class="form-group">
                                     <label for="username" class="form-label">Username</label>
-                                    <input type="text" id="username" name="username" class="form-input" value="jane_doe_99" required>
+                                    <input type="text" id="username" name="username" class="form-input" placeholder="Choose a username" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="bio" class="form-label">Bio</label>
-                                    <textarea id="bio" name="bio" class="form-input form-textarea" rows="3" placeholder="Tell us about yourself...">Wildlife enthusiast documenting species and supporting conservation efforts around the globe.</textarea>
+                                    <textarea id="bio" name="bio" class="form-input form-textarea" rows="3" placeholder="Tell us about yourself..."></textarea>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="phone" class="form-label">Phone</label>
-                                    <input type="tel" id="phone" name="phone" class="form-input" value="+254 712 345 678">
+                                    <input type="tel" id="phone" name="phone" class="form-input" placeholder="+1 (555) 000-0000">
                                 </div>
                                 <div class="form-group">
                                     <label for="country" class="form-label">Country</label>
                                     <select id="country" name="country" class="form-input">
                                         <option value="">Select Country</option>
-                                        <option value="kenya" selected>Kenya</option>
-                                        <option value="tanzania">Tanzania</option>
+                                        <option value="kenya">Kenya</option>
                                         <option value="uganda">Uganda</option>
                                         <option value="south-africa">South Africa</option>
                                         <option value="other">Other</option>
@@ -273,6 +273,80 @@
                 window.location.replace('../login.html');
             }
         })();
+
+        // Bind user data to profile page
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const raw = localStorage.getItem('wildguard_user');
+                if (!raw || raw === 'null') return;
+                const user = JSON.parse(raw);
+                if (!user || !user.email) return;
+
+                // Name
+                const displayNameEl = document.getElementById('profile-display-name');
+                if (displayNameEl) {
+                    displayNameEl.textContent = user.name || (user.email ? user.email.split('@')[0] : 'User');
+                }
+
+                // Email
+                const displayEmailEl = document.getElementById('profile-display-email');
+                if (displayEmailEl) {
+                    displayEmailEl.textContent = user.email;
+                }
+
+                // Role
+                const displayRoleEl = document.getElementById('profile-role-display');
+                if (displayRoleEl && user.role) {
+                    const roleText = user.role === 'admin' ? 'Administrator' : 'Conservationist';
+                    displayRoleEl.innerHTML = '<i class="fas fa-shield-alt"></i> ' + roleText;
+                }
+
+                // Bind to form fields
+                const firstNameInput = document.getElementById('firstName');
+                const lastNameInput = document.getElementById('lastName');
+                const emailInput = document.getElementById('email');
+                const usernameInput = document.getElementById('username');
+
+                if (firstNameInput && user.firstName) firstNameInput.value = user.firstName;
+                if (lastNameInput && user.lastName) lastNameInput.value = user.lastName;
+                if (emailInput) emailInput.value = user.email;
+                if (usernameInput) {
+                    usernameInput.value = user.username || (user.email ? user.email.split('@')[0] : 'user');
+                }
+
+                // Load stats from localStorage
+                const stats = JSON.parse(localStorage.getItem('wildguard_user_stats') || '{}');
+                const scansEl = document.getElementById('stat-scans');
+                const favsEl = document.getElementById('stat-favourites');
+                const parksEl = document.getElementById('stat-parks');
+                if (scansEl) scansEl.textContent = stats.scans || 0;
+                if (favsEl) favsEl.textContent = stats.favourites || 0;
+                if (parksEl) parksEl.textContent = stats.parks || 0;
+
+                // Handle profile form save
+                const form = document.getElementById('profileForm');
+                if (form) {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        // Update user object
+                        const updated = { ...user };
+                        updated.firstName = document.getElementById('firstName').value.trim();
+                        updated.lastName = document.getElementById('lastName').value.trim();
+                        updated.username = document.getElementById('username').value.trim();
+                        updated.phone = document.getElementById('phone').value.trim();
+                        updated.country = document.getElementById('country').value;
+                        updated.bio = document.getElementById('bio').value.trim();
+                        updated.name = ((updated.firstName + ' ' + updated.lastName)).trim() || updated.username || updated.email.split('@')[0];
+                        // Save back
+                        localStorage.setItem('wildguard_user', JSON.stringify(updated));
+                        // Show simple confirmation
+                        alert('Profile updated successfully!');
+                    });
+                }
+            } catch (e) {
+                console.error('Profile data binding error:', e);
+            }
+        });
     </script>
 </body>
 </html>
