@@ -3,204 +3,173 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Learn about WildGuard Society's mission, vision, and impact in protecting Wildguardian's wildlife through technology and community engagement.">
-  <meta name="keywords" content="wildlife conservation, Wildguardian, mission, about WildGuard, conservation technology">
+  <meta name="description" content="Learn about WildGuard Society's mission, vision, and impact in protecting Tanzania's wildlife through technology and community engagement.">
+  <meta name="keywords" content="wildlife conservation, Tanzania, mission, about WildGuard, conservation technology">
   <meta name="author" content="WildGuard Society">
   <link rel="icon" type="image/png" href="assets/images/logo.png">
   <title>About | WildGuard Society</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="page-slideshow">
-      <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
-      <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
-      <div class="page-slide" style="background-image: url('assets/images/background3.png');"></div>
-      <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
-      <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
-    </div>
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background3.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
+  </div>
 
-    <header class="site-header">
-      <div class="header-container">
-        <a href="index.html" class="logo">
-          <img src="assets/images/logo.png" alt="Logo">
-          <span>WildGuard Society</span>
-        </a>
-        <nav class="desktop-nav">
-          <a href="index.html">Home</a>
-          <a href="library/library.html">Library</a>
-          <a href="scan.html">Scan</a>
-          <a href="about.html" class="active">About</a>
-          <a href="contact.html">Contact</a>
-          <a href="admin-login.html">Admin</a>
-        </nav>
-        <div class="header-actions">
-          <div class="auth-buttons">
-            <a href="login.html" class="signin-btn" id="signin-btn">Sign In</a>
-            <div class="user-menu" id="user-menu" style="display:none;">
-              <button class="user-menu-toggle" id="user-menu-toggle">
-                <span id="user-email">User</span>
-                <i class="fas fa-chevron-down"></i>
-              </button>
-              <div class="user-dropdown" id="user-dropdown">
-                <a href="user/Profile.html"><i class="fas fa-user"></i> Profile</a>
-                <a href="user/History.html"><i class="fas fa-history"></i> History</a>
-                <a href="user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
-                <div class="dropdown-divider"></div>
-                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-              </div>
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="library/library.html"><i class="fas fa-book"></i> Library</a>
+        <a href="scan.html"><i class="fas fa-barcode"></i> Scan</a>
+        <a href="about.html" class="active"><i class="fas fa-info-circle"></i> About</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+        <a href="admin-login.html"><i class="fas fa-shield-halved"></i> Admin</a>
+      </nav>
+      <div class="header-actions">
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <div class="user-menu" id="user-menu" style="display:none;">
+            <button class="user-menu-toggle" id="user-menu-toggle">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-email">User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="user/Profile.html"><i class="fas fa-user"></i> Profile</a>
+              <a href="user/History.html"><i class="fas fa-history"></i> History</a>
+              <a href="user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
           </div>
         </div>
-        <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
-          <i class="fas fa-bars"></i>
-        </button>
       </div>
-    </header>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
 
   <main>
+    <section class="page-banner">
+      <span class="eyebrow">About Us</span>
+      <h1>Our Mission, Vision and Impact</h1>
+      <p class="lede">Empowering wildlife conservation through technology, education, and community action.</p>
+    </section>
+
     <section class="content-overlay">
       <div class="container">
-        <section class="page-banner">
-          <span class="eyebrow">About WildGuard Explorer</span>
-          <h1>Our Mission, Vision &amp; Impact</h1>
-          <p class="lede">Empowering wildlife conservation through technology, education, and community action.</p>
-        </section>
+        <div class="section-header">
+          <h2>Who We Are</h2>
+          <p>WildGuard Society is a non-profit organization dedicated to protecting Tanzania's iconic wildlife and ecosystems through cutting-edge technology and community-driven initiatives.</p>
+        </div>
+
+        <div class="card-grid">
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
+            <h3>Our Mission</h3>
+            <p>To leverage technology and community engagement to protect wildlife, preserve habitats, and foster a world where humans and nature coexist in harmony.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-eye"></i></div>
+            <h3>Our Vision</h3>
+            <p>A thriving ecosystem where technology empowers communities to become guardians of their natural heritage, ensuring wildlife flourishes for generations to come.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-hand-holding-heart"></i></div>
+            <h3>Our Impact</h3>
+            <p>Over 10,000 animals monitored, 50+ rangers trained, and 20 communities engaged in active conservation programs across East Africa.</p>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="content-overlay">
       <div class="container">
-        <section class="about-grid">
-          <div class="info-card">
-            <div class="content">
-              <span class="section-kicker">Our Mission</span>
-              <h3>To identify, understand, and respond to environmental changes affecting nature through conservation action &amp; engagement</h3>
-              <p>WildGuard Explorer leverages cutting-edge AI-powered monitoring systems, real-time alerts, and immersive educational experiences to create a tangible impact on wildlife conservation efforts across Africa and beyond.</p>
-              <p>We bridge the gap between technology and nature, enabling researchers, rangers, and citizen scientists to make informed decisions that protect endangered species and their habitats.</p>
-              <ul class="inline-list">
-                <li>Real-time wildlife monitoring &amp; alert systems</li>
-                <li>AI-powered species identification &amp; tracking</li>
-                <li>Community-driven conservation initiatives</li>
-                <li>Educational outreach &amp; awareness programs</li>
-              </ul>
-            </div>
+        <div class="section-header">
+          <h2>Core Technology</h2>
+          <p>The tools we use to monitor and protect wildlife</p>
+        </div>
+        <div class="card-grid">
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-satellite-dish"></i></div>
+            <h3>AI Monitoring</h3>
+            <p>Machine learning models analyze camera trap images and acoustic sensors for real-time wildlife detection and threat identification.</p>
           </div>
-
-          <div class="info-card">
-            <div class="content">
-              <span class="section-kicker">What We Do</span>
-              <div class="timeline">
-                <li><strong>Advanced Monitoring Systems</strong> Deploy AI-equipped camera traps and sensor networks that provide 24/7 wildlife surveillance with instant threat detection capabilities.</li>
-                <li><strong>Interactive Educational Platform</strong> Offer immersive learning experiences through our wildlife library, virtual field trips, and species identification tools for students and enthusiasts.</li>
-                <li><strong>Community Engagement Programs</strong> Collaborate with local communities to develop sustainable conservation practices that benefit both wildlife and people.</li>
-                <li><strong>Research &amp; Data Analytics</strong> Provide conservation organizations with actionable insights through comprehensive wildlife behavior analysis and habitat monitoring.</li>
-              </div>
-            </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-network-wired"></i></div>
+            <h3>Mesh Networks</h3>
+            <p>Low-power IoT sensor networks provide continuous data from remote locations without relying on cellular infrastructure.</p>
           </div>
-
-          <div class="info-card">
-            <div class="content">
-              <span class="section-kicker">Our Vision</span>
-              <h3>A thriving ecosystem where technology and nature coexist in harmony</h3>
-              <p>We envision a future where every wildlife reserve is equipped with smart monitoring systems, where local communities actively participate in conservation efforts, and where endangered species populations are recovering thanks to data-driven protection strategies.</p>
-              <p>Our goal is to create a global network of protected areas connected through shared wildlife intelligence, ensuring that no species faces extinction due to lack of information or resources.</p>
-              <a href="library/mammals.html" class="btn ghost">Explore Our Wildlife Library</a>
-            </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-cloud"></i></div>
+            < <h3>Cloud Analytics</h3>
+            <p>Data aggregation and visualization platform for rangers and researchers to track patterns and make informed decisions.</p>
           </div>
-        </section>
-      </div>
-    </section>
-
-    <section class="content-overlay">
-      <div class="container">
-        <section class="features-section">
-          <h2 class="section-title">Our Features</h2>
-          <div class="features-grid">
-            <div class="feature-card">
-              <div class="feature-icon">
-                <i class="fas fa-robot"></i>
-              </div>
-              <h3 class="feature-title">AI-Powered Monitoring</h3>
-              <p class="feature-description">Advanced artificial intelligence analyzes camera trap images and sensor data to detect wildlife and threats in real time.</p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">
-                <i class="fas fa-bell"></i>
-              </div>
-              <h3 class="feature-title">Real-Time Alerts</h3>
-              <p class="feature-description">Get instant notifications when wildlife is detected or when threats like poaching are identified.</p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">
-                <i class="fas fa-users"></i>
-              </div>
-              <h3 class="feature-title">Community Science</h3>
-              <p class="feature-description">Engage with local communities and citizen scientists to collect valuable data and promote conservation awareness.</p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">
-                <i class="fas fa-heart"></i>
-              </div>
-              <h3 class="feature-title">Conservation Impact</h3>
-              <p class="feature-description">Track the positive impact of conservation efforts on wildlife populations and habitat health.</p>
-            </div>
+          <div class="feature-card Mih3>Mobile App</h3]
+            <p>Field rangers use our mobile app to log sightings, receive alerts, and coordinate patrols in real time.</p>
           </div>
-        </section>
+        </div>
       </div>
     </section>
   </main>
 
-<footer class="site-footer">
+  <footer class="site-footer">
     <div class="footer-content">
-        <div class="footer-brand">
-            <h3>WildGuard Society</h3>
-            <p>Using AI-powered monitoring to protect Wildguardian's iconic wildlife and ecosystems through technology, education, and community action.</p>
-            <div class="social-links">
-                <a href="#" class="social-link" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-                <a href="https://www.instagram.com/wildguard_society/" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="social-link" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                <a href="#" class="social-link" title="Telegram"><i class="fab fa-telegram"></i></a>
-            </div>
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <div class="footer-social">
+          <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
         </div>
-        <div class="footer-links">
-            <h4>Explore</h4>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="library/library.html">Library</a></li>
-                <li><a href="scan.html">Scan</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="admin-login.html">Admin</a></li>
-            </ul>
-        </div>
-        <div class="footer-links">
-            <h4>Get Involved</h4>
-            <ul>
-                <li><a href="#">Donate</a></li>
-                <li><a href="#">Adopt</a></li>
-                <li><a href="#">Volunteer</a></li>
-                <li><a href="#">Partner</a></li>
-            </ul>
-        </div>
-        <div class="footer-contact">
-            <h4>Contact</h4>
-            <ul>
-                <li><a href="mailto:contact@wildguardsociety.org"><i class="fas fa-envelope"></i> contact@wildguardsociety.org</a></li>
-                <li><a href="tel:+254712345678"><i class="fas fa-phone"></i> +254 712 345 678</a></li>
-                <li><i class="fas fa-map-marker-alt"></i> Wildguardian, Kenya</li>
-            </ul>
-        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="library/library.html">Library</a></li>
+          <li><a href="scan.html">Scan</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="admin-login.html">Admin</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="#">Donate</a></li>
+          <li><a href="#">Adopt an Animal</a></li>
+          <li><a href="#">Volunteer</a></li>
+          <li><a href="#">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> info@wildguardsociety.org</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> Moshi, Tanzania</p>
+      </div>
     </div>
     <div class="footer-bottom">
-        <p><span data-current-year></span> WildGuard Society | Protecting Wildguardian's Wildlife Heritage</p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Tanzania's Wildlife Heritage.</p>
     </div>
-</footer>
+  </footer>
 
-<script defer src="js/main.js"></script>
-<script defer src="js/auth.js"></script>
+  <script defer src="js/main.js"></script>
+  <script defer src="js/auth.js"></script>
 </body>
 </html>

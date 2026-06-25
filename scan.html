@@ -3,103 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Track wildlife movement in real time with WildGuard Society's AI-powered scan interface.">
-  <meta name="keywords" content="wildlife scan, animal detection, AI monitoring, Wildguardian wildlife tracking">
+  <meta name="description" content="AI-powered wildlife monitoring and identification system.">
   <meta name="author" content="WildGuard Society">
   <link rel="icon" type="image/png" href="assets/images/logo.png">
   <title>Scan | WildGuard Society</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script defer src="js/main.js"></script>
-  <script defer src="js/scan.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="page-slideshow">
-      <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
-      <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
-      <div class="page-slide" style="background-image: url('assets/images/background3.png');"></div>
-      <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
-      <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
-    </div>
-  <header class="navbar">
-  <div class="logo-container">
-    <img src="assets/images/logo.png" alt="Logo" class="logo-img">
-    <span class="logo-text">WildGuard Society</span>
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background3.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
   </div>
-    <!-- Auth Buttons -->
-    <div class="auth-buttons" id="auth-buttons">
-      <a href="login.html" class="signin-btn" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
-      <div class="user-menu" id="user-menu" style="display:none;">
-        <button class="user-menu-toggle" id="user-menu-toggle">
-          <i class="fas fa-user-circle"></i>
-          <span id="user-email">User</span>
-          <i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="user-dropdown" id="user-dropdown">
-          <a href="user/Profile.html"><i class="fas fa-user"></i> Profile</a>
-          <a href="user/History.html"><i class="fas fa-history"></i> History</a>
-          <a href="user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
-          <div class="dropdown-divider"></div>
-          <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="library/library.html"><i class="fas fa-book"></i> Library</a>
+        <a href="scan.html" class="active"><i class="fas fa-barcode"></i> Scan</a>
+        <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+        <a href="admin-login.html"><i class="fas fa-shield-halved"></i> Admin</a>
+      </nav>
+      <div class="header-actions">
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <div class="user-menu" id="user-menu" style="display:none;">
+            <button class="user-menu-toggle" id="user-menu-toggle">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-email">User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="user/Profile.html"><i class="fas fa-user"></i> Profile</a>
+              <a href="user/History.html"><i class="fas fa-history"></i> History</a>
+              <a href="user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
         </div>
       </div>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
     </div>
-  <nav>
-    <ul>
-      <li>
-        <div class="nav-item-group" data-page="index.html">
-          <div class="nav-item-icon">
-            <i class="fas fa-home"></i>
-          </div>
-          <div class="nav-item-label">Home</div>
-        </div>
-      </li>
-      <li>
-        <div class="nav-item-group" data-page="library/library.html">
-          <div class="nav-item-icon">
-            <i class="fas fa-book"></i>
-          </div>
-          <div class="nav-item-label">Library</div>
-        </div>
-      </li>
-      <li>
-        <div class="nav-item-group active" data-page="scan.html">
-          <div class="nav-item-icon">
-            <i class="fas fa-barcode"></i>
-          </div>
-          <div class="nav-item-label">Scan</div>
-        </div>
-      </li>
-      <li>
-        <div class="nav-item-group" data-page="about.html">
-          <div class="nav-item-icon">
-            <i class="fas fa-info-circle"></i>
-          </div>
-          <div class="nav-item-label">About</div>
-        </div>
-      </li>
-      <li>
-        <div class="nav-item-group" data-page="contact.html">
-          <div class="nav-item-icon">
-            <i class="fas fa-envelope"></i>
-          </div>
-          <div class="nav-item-label">Contact</div>
-        </div>
-      </li>
-      <li>
-        <div class="nav-item-group" data-page="admin-login.html">
-          <div class="nav-item-icon">
-            <i class="fas fa-shield-halved"></i>
-          </div>
-          <div class="nav-item-label">Admin</div>
-        </div>
-      </li>
-    </ul>
-  </nav>
-</header>
+  </header>
 
   <main>
     <section class="page-banner">
@@ -108,71 +65,83 @@
       <p class="lede">AI-powered wildlife monitoring and identification system.</p>
     </section>
 
-     <section class="scan-layout content-overlay">
-       <div class="container">
-       <div class="scan-media">
-         <div class="image-preview">
-           <img id="previewImg" src="#" alt="Preview" style="max-width:100%; display:none;">
-           <div class="upload-area">
-             <button id="uploadBtn" class="btn">Upload Image</button>
-             <button id="cameraBtn" class="btn">Take Photo</button>
-             <input type="file" id="fileInput" accept="image/*" style="display:none;">
-           </div>
-           <p class="hint">Supported formats: JPG, PNG, WebP</p>
-         </div>
-       </div>
-
-       <aside class="scan-panel">
-         <div class="content">
-           <span class="scan-kicker">Recognition result</span>
-           <h2 id="resultTitle">—</h2>
-           <p id="resultStatus">Ready to scan</p>
-           <div id="resultDetails"></div>
-           <div class="scan-actions">
-             <a href="library/mammals.html" id="libLink" class="btn" style="display:none;">Open species library</a>
-             <a href="contact.html" class="btn ghost">Report an issue</a>
-           </div>
-         </div>
-       </aside>
-       </div>
-     </section>
+    <section class="content-overlay">
+      <div class="container">
+        <div class="scan-layout">
+          <div class="scan-media">
+            <div class="image-preview">
+              <img id="previewImg" src="#" alt="Preview" style="max-width:100%; display:none;">
+              <div class="upload-area">
+                <button id="uploadBtn" class="btn">Upload Image</button>
+                <button id="cameraBtn" class="btn">Take Photo</button>
+                <input type="file" id="fileInput" accept="image/*" style="display:none;">
+              </div>
+              <p class="hint">Supported formats: JPG, PNG, WebP</p>
+            </div>
+          </div>
+          <aside class="scan-panel">
+            <div class="content">
+              <span class="scan-kicker">Recognition result</span>
+              <h2 id="resultTitle">&mdash;</h2>
+              <p id="resultStatus">Ready to scan</p>
+              <div id="resultDetails"></div>
+              <div class="scan-actions">
+                <a href="library/mammals.html" id="libLink" class="btn" style="display:none;">Open species library</a>
+                <a href="contact.html" class="btn ghost">Report an issue</a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-info">
-                <h3>WildGuard Society</h3>
-                <p>Using AI-powered monitoring to protect Wildguardian's iconic wildlife and ecosystems through technology, education, and community action.</p>
-            </div>
-            
-            <div class="footer-links">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="library/mammals.html">Library</a></li>
-                    <li><a href="scan.html" class="active">Scan</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-social">
-                <h4>Follow Us</h4>
-                <div class="social-links">
-                    <a href="#" class="social-link" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-                     <a href="https://www.instagram.com/wildguard_society/" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#" class="social-link" title="Telegram"><i class="fab fa-telegram"></i></a>
-                </div>
-            </div>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <div class="footer-social">
+          <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
         </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; <span data-current-year></span> WildGuard Society | Protecting Wildguardian's Wildlife Heritage</p>
-            <p class="footer-details">Our mission: protect wildlife through AI-powered monitoring, real‑time alerts, and community engagement.</p>
-        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="library/library.html">Library</a></  library/library.html">Library</a></li>
+          <li><a href="scan.html">Scan</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="admin-login.html">Admin</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="#">Donate</a></li>
+          <li><a href="#">Adopt an Animal</a></li>
+          <li><a href="#">Volunteer</a></li>
+          <li><a href="#">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> info@,](,) org</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt">  <Moshi,ram Tanzania</p>
+      </div>
     </div>
-</footer>
+    <div class="footer-bottom">
+      <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Tanzania's Wildlife Heritage.</p>
+    </div>
+  </footer>
+  <script defer src="js/main.js"></script>
+  <script defer src="js/scan.js"></script>
+  <script defer src="js/auth.js"></script>
 </body>
 </html>
