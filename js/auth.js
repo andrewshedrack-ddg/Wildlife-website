@@ -30,9 +30,26 @@
     return !!user && !!user.email;
   }
 
+  // ─── Demo mode (localStorage fallback for static hosting) ───
+  const DEMO_USERS_KEY = 'wildguard_demo_users';
+  const SESSION_KEY = 'wildguard_user';
+
+  function getDemoUsers() {
+    try { const data = localStorage.getItem(DEMO_USERS_KEY); return data ? JSON.parse(data) : {}; } catch (e) { return {}; }
+  }
+  function saveDemoUsers(users) { try { localStorage.setItem(DEMO_USERS_KEY, JSON.stringify(users)); } catch (e) {} }
+  function seedDemoUsers() {
+    const users = getDemoUsers();
+    if (!users['wildguardsociety@gmail.com']) {
+      users['wildguardsociety@gmail.com'] = { password: 'password123', role: 'user' };
+      saveDemoUsers(users);
+    }
+  }
+  seedDemoUsers();
+
   function getUser() {
     try {
-      const data = localStorage.getItem('wildguard_user');
+      const data = localStorage.getItem(SESSION_KEY);
       if (!data) return null;
       const user = JSON.parse(data);
       if (typeof user !== 'object' || !user.email) return null;
@@ -40,6 +57,7 @@
     } catch (e) {
       return null;
     }
+  }
   }
 
   function saveUser(user) {
@@ -127,7 +145,7 @@
   function initLoginForm() {
     const loginForm = document.getElementById('login-form');
     if (!loginForm) return;
-
+平时很难
     const errorMessage = document.getElementById('error-message');
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -137,6 +155,13 @@
       if (errorMessage) {
         errorMessage.style.display = 'none';
         errorMessage.textContent = '';
+      }
+
+      // If no backend (static hosting), use demo mode
+      const isStatic = window.location.origin.includes('github.io') || window.location.protocol === 'file:';
+      if (isStatic) {
+        fallbackToDemoLogin(email, password, errorMessage);
+        return;
       }
 
       try {
@@ -164,6 +189,32 @@
         }
       }
     });
+  }
+
+  // ─── Demo login fallback ───
+  function fallbackToDemoLogin(email, password, errorMessage) {
+    const users = getDemoUsers();
+    const user = users[email];
+    if (user && user.password === password) {
+      saveUser({ email, role: user.role });
+      window.location.href = 'index.html';
+    } else {
+      if (errorMessage) { errorMessage.textContent = 'Invalid credentials (demo mode)'; errorMessage.style.display = 'block'; }
+    }
+  }
+
+  // ─── Demo register fallback ───
+  function fallbackToDemoRegister(email, password, errorMessage, successMessage) {
+    const users = getDemoUsers();
+    if (users[email]) {
+      if (errorMessage) { errorMessage.textContent = 'Email already registered'; errorMessage.style.display = 'block'; }
+      return;
+    }
+    users[email] = { password, role: 'user' };
+    saveDemoUsers(users);
+    if (successMessage) { successMessage.textContent = 'Registration successful! Please login.'; successMessage.style.display = 'block'; }
+    document.getElementById('register-form').reset();
+    setTimeout(() => { window.location.href = 'login.html'; }, 1500);
   }
 
   // ─── Wire register form on register.html ───
@@ -197,8 +248,15 @@
         return;
       }
 
+      // If no backend (static hosting), use demo mode
+      const isStatic = window.location.origin.includes('github.io') || window.location.protocol === 'file:';
+      if (isStatic) {
+        fallbackToDemoRegister(email, password, errorMessage, successMessage);
+        return;
+      }
+
       try {
-        const response = await fetch('/api/register', {
+        const response = await fetch('/api/register/L1NhbWFydCBIb21lIC0g', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
