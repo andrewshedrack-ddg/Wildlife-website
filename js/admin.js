@@ -59,6 +59,40 @@
   }
   function deleteAdminUser(email) { const users = getAdminUsers(); delete users[email.toLowerCase()]; saveAdminUsers(users); }
 
+  // Avatar & Profile
+  function getAvatar() { return _get(\"wildguard_admin_avatar\", null); }
+  function saveAvatar(data) { _set(\"wildguard_admin_avatar\", data); }
+
+  function updateProfileInfo() {
+    var user = _get(\"wildguard_user\") || {};
+    var nameEl = document.getElementById(\"admin-name\");
+    var emailEl = document.getElementById(\"admin-email\");
+    var avatarEl = document.getElementById(\"admin-avatar\");
+    if (nameEl) nameEl.textContent = user.name || \"Administrator\";
+    if (emailEl) emailEl.textContent = user.email || \"admin@wildguardsociety.org\";
+    if (avatarEl) {
+      var av = getAvatar();
+      if (av) { avatarEl.innerHTML = '<img src=\"' + av + '\">'; }
+      else { avatarEl.textContent = (user.name || \"A\").charAt(0).toUpperCase(); }
+    }
+  }
+
+  function setupAvatarUpload() {
+    var upload = document.getElementById(\"avatar-upload\");
+    if (!upload) return;
+    upload.addEventListener(\"change\", function(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(evt) {
+        saveAvatar(evt.target.result);
+        updateProfileInfo();
+        showToast(\"Profile photo updated\", \"success\");
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   function renderDashboard() {
     const species = getSpecies();
     const messages = getMessages();

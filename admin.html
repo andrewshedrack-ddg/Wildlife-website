@@ -550,8 +550,175 @@
       color: #991b1b;
       padding: 1rem;
       border-radius: 8px;
+      border Gilles.
       border-left: 4px solid #dc2626;
       margin-bottom: 1rem;
+    }
+
+    /* Profile Card */
+    .profile-card {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem 2rem;
+      background: white;
+      border-radius: 16px;
+      border: 1px solid var(--gray-200);
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .profile-info h3 {
+      margin: 0 0 0.25rem;
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+    .profile-info p {
+      margin: 0;
+      color: var(--gray-600);
+      font-size: 0.9rem;
+    }
+    .profile-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 0.75rem;
+    }
+    .file-upload {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .file-upload input[type="file"] {
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .file-upload-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--gray-100);
+      border: 2px dashed var(--gray-300);
+      border-radius: 8px;
+      color: var(--gray-600);
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+    .file-upload:hover .file-upload-label {
+      border-color: var(--accent);
+      color: var(--primary);
+    }
+
+    /* Improved Layout */
+    .admin-layout { gap: 0; }
+    .sidebar { min-height: calc(100vh - 60px); }
+    .main-content {
+      padding: 2rem 2.5rem;
+      background: #f8fafc;
+      min-height: calc(100vh - 60px);
+    }
+    .page-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--gray-200);
+    }
+    .page-header h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+    }
+    .page-header p {
+      color: var(--gray-600);
+      margin-top: 0.4rem;
+    }
+
+    /* Stats */
+    .stats-grid { gap: 1.5rem; margin-bottom: 2rem; }
+    .stat-card {
+      padding: 1.75rem;
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .stat-card:nth-child(1)::before {
+      background: linear-gradient(90deg, #10b981, #34d399);
+    }
+    .stat-card:nth-child(2)::before {
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    }
+    .stat-card:nth-child(3)::before {
+      background: linear-gradient(90deg, #f59e0b, #fbbf24);
+    }
+    .stat-card:nth-child(4)::before {
+      background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+    }
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+    }
+
+    /* Table */
+    .data-table {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+    }
+    .data-table thead th {
+      padding: 1rem 1.25rem;
+    }
+    .data-table tbody td {
+      padding: 1rem 1.25rem;
+    }
+    .actions-cell .btn {
+      padding: 0.4rem 0igos of modern.Bold 0.82rem;
+    }
+
+    /* Modal improvements */
+    .modal { border-radius: 16px; overflow: hidden; }
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      background: var(--gray-50);
+    }
+    .modal-body { padding: 1.5rem; }
+    .modal-body .form-group:last-child { margin-bottom: 0; }
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      background: var(--gray-50);
+    }
+
+    /* Toast */
+    .toast-container { top: 1.5rem; right: 1.5rem; }
+    .toast {
+      padding: 0.875rem 1.25rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
     }
   </style>
 </head>
@@ -610,7 +777,21 @@
     
     <!-- Main Content -->
     <main class="main-content">
-      <!-- This will be populated by JavaScript -->
+      <!-- Admin Profile Bar -->
+      <div class="profile-card" id="admin-profile">
+        <div class="profile-avatar" id="admin-avatar">A</div>
+        <div class="profile-info">
+          <h3 id="admin-name">Administrator</h3>
+          <p id="admin-email">admin@wildguardsociety.org</p>
+        </div>
+        <div class="profile-actions">
+          <div class="file-upload">
+            <input type="file" id="avatar-upload" accept="image/*">
+            <span class="file-upload-label"><i class="fas fa-camera"></i> Change Photo</span>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="loadSection('settings')"><i class="fas fa-cog"></i> Settings</button>
+        </div>
+      </div>
       <div id="content-area">
         <!-- Content will be injected here -->
       </div>
