@@ -12,6 +12,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .password-field { position: relative; }
+    .password-field .form-input { padding-right: 3rem; }
+    .password-toggle { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1rem; padding: 0.25rem; transition: var(--transition); z-index: 10; }
+    .password-toggle:hover { color: var(--accent); }
+    .password-toggle:focus { outline: none; color: var(--accent); }
+    .login-security { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+    .login-security i { color: #22c55e; font-size: 0.85rem; }
+    .error-message { background:#fee2e2; color:#991b1b; padding:0.75rem 1rem; border-radius:8px; border-left:4px solid #dc2626; margin-bottom: 1rem; display:none; }
+    .admin-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.75rem; background: rgba(201,162,39,0.1); border: 1px solid rgba(201,162,39,0.2); border-radius: 100px; color: var(--accent); font-size: 0.78rem; font-weight: 500; margin-bottom: 1rem; }
+    .admin-badge i { font-size: 0.75rem; }
+    .attempts-warning { color: #f59e0b; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
+  </style>
 </head>
 <body>
   <div class="page-slideshow">
@@ -62,7 +75,12 @@
           </div>
           <div class="form-group">
             <label for="password" class="form-label">Password</label>
-            <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
+            <div class="password-field">
+              <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
+              <button type="button" class="password-toggle" id="password-toggle" aria-label="Show password">
+                <i class="fas fa-eye" id="password-toggle-icon"></i>
+              </button>
+            </div>
           </div>
           <button type="submit" class="btn-submit">Sign In</button>
         </form>
@@ -118,17 +136,60 @@
   <script defer src="js/main.js"></script>
   <script defer src="js/auth.js"></script>
   <script>
+    // Password visibility toggle for admin login
+    (function() {
+      const toggleBtn = document.getElementById('password-toggle');
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.getElementById('password-toggle-icon');
+      if (toggleBtn && passwordInput) {
+        toggleBtn.addEventListener('click', function() {
+          const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+          passwordInput.setAttribute('type', type);
+          toggleIcon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+          this.setAttribute('aria-label', type === 'password' ? 'Show password' : 'Hide password');
+        });
+      }
+    })();
+
     document.addEventListener('DOMContentLoaded', () => {
       const adminForm = document.getElementById('admin-login-form');
       adminForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
+        
+        // Static/demo mode: validate admin credentials locally
+        const isStatic = window.location.origin.includes('github.io') || window.location.protocol === 'file:';
+        if (isStatic) {
+          // Demo admin credentials check
+          if (email === 'admin@wildguardsociety.org' && password === 'admin123') {
+            // Store admin session
+            const adminUser = { email: email, role: 'admin', name: 'Administrator' };
+            localStorage.setItem('wildguard_user', JSON.stringify(adminUser));
+            window.location.href = 'admin.html';
+          } else {
+            alert('Invalid admin credentials. Use admin@wildguardsociety.org / admin123');
+          }
+          return;
+        }
+        
+        // Backend mode (if API exists)
         try {
           const response = await fetch('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }), credentials: 'include' });
-          if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.message || 'Admin login failed'); }
-          window.location.href = '/admin.html';
-        } catch (error) { alert(error.message); }
+          let errorMessage = 'Admin login failed. Please check your credentials.';
+          if (!response.ok) {
+            // Safely parse error - the server might return HTML or non-JSON on failure
+            const contentType = response.headers.get('content-type') || '';
+            if (contentType.includes('application/json')) {
+              const errorData = await response.json().catch(() => ({}));
+              errorMessage = errorData.message || errorMessage;
+            }
+            throw new Error(errorMessage);
+          }
+          window.location.href = 'admin.html';
+        } catch (error) {
+          alert(error.message);
+        }
       });
     });
   </script>

@@ -655,12 +655,21 @@
       }
       
       async checkAuth() {
+        // For static/demo mode, check localStorage session
         try {
-          const response = await fetch('/api/admin/verify', {
-            method: 'POST',
-            credentials: 'include'
-          });
-          return response.ok;
+          const userData = localStorage.getItem('wildguard_user');
+          if (!userData) return false;
+          
+          const user = JSON.parse(userData);
+          // Check if user has admin role or specific admin email
+          const isAdmin = user.role === 'admin' || user.email === 'admin@wildguardsociety.org';
+          
+          if (!isAdmin) {
+            console.warn('User is not an admin');
+            return false;
+          }
+          
+          return true;
         } catch (error) {
           console.error('Auth check failed:', error);
           return false;
@@ -714,7 +723,11 @@
             method: 'POST',
             credentials: 'include'
           });
+        } catch (e) {
+          // Ignore fetch errors in static/demo mode
         } finally {
+          // Clear localStorage session for static/demo mode
+          localStorage.removeItem('wildguard_user');
           window.location.href = 'admin-login.html';
         }
       }

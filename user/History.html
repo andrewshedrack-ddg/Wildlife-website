@@ -1,80 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>History | WildGuard Explorer</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <script defer src="../js/main.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View your WildGuard Society activity history and timeline.">
+    <meta name="author" content="WildGuard Society">
+    <link rel="icon" type="image/png" href="../assets/images/logo.png">
+    <title>History | WildGuard Society</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .history-layout { display: grid; grid-template-columns: 1fr 350px; gap: 2rem; align-items: start; }
+        @media (max-width: 768px) { .history-layout { grid-template-columns: 1fr; } }
+        .timeline { position: relative; padding-left: 1.5rem; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.1); }
+        .timeline-item { position: relative; padding-bottom: 2rem; padding-left: 1.5rem; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-icon { position: absolute; left: 0; top: 0; width: 32px; height: 32px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: var(--lighter); font-size: 0.85rem; transform: translateX(-50%); }
+        .timeline-date { display: block; color: var(--accent); font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .timeline-title { color: var(--lighter); font-size: 1rem; margin-bottom: 0.25rem; }
+        .timeline-desc { color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.5; }
+        .summary-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .summary-item { text-align: center; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: var(--radius); }
+        .summary-value { display: block; color: var(--lighter); font-size: 1.4rem; font-weight: 700; font-family: var(--font-heading); }
+        .summary-label { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+        .quick-links { display: flex; flex-direction: column; gap: 0.75rem; }
+        .quick-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); color: rgba(255,255,255,0.75); font-size: 0.9rem; transition: var(--transition); }
+        .quick-link:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); color: var(--lighter); }
+        .quick-link i { color: var(--accent); }
+    </style>
 </head>
 <body>
-   <header class="navbar">
-     <div class="logo-container">
-       <img src="../assets/images/logo.png" alt="Logo" class="logo-img">
-       <span class="logo-text">WildGuard Conservation Society</span>
-     </div>
-     <nav>
-       <ul>
-         <li>
-           <div class="nav-item-group" data-page="../index.html">
-             <div class="nav-item-icon">
-               <i class="fas fa-home"></i>
-             </div>
-             <div class="nav-item-label">Home</div>
-           </div>
-         </li>
-         <li>
-           <div class="nav-item-group" data-page="../library/mammals.html">
-             <div class="nav-item-icon">
-               <i class="fas fa-book"></i>
-             </div>
-             <div class="nav-item-label">Library</div>
-           </div>
-         </li>
-         <li>
-           <div class="nav-item-group" data-page="../scan.html">
-             <div class="nav-item-icon">
-               <i class="fas fa-barcode"></i>
-             </div>
-             <div class="nav-item-label">Scan</div>
-           </div>
-         </li>
-         <li>
-           <div class="nav-item-group" data-page="../about.html">
-             <div class="nav-item-icon">
-               <i class="fas fa-info-circle"></i>
-             </div>
-             <div class="nav-item-label">About</div>
-           </div>
-         </li>
-         <li>
-           <div class="nav-item-group" data-page="../contact.html">
-             <div class="nav-item-icon">
-               <i class="fas fa-envelope"></i>
-             </div>
-             <div class="nav-item-label">Contact</div>
-           </div>
-         </li>
-       </ul>
-     </nav>
-   </header>
+    <div class="page-slideshow">
+        <div class="page-slide active" style="background-image: url('../assets/images/background.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background2.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background3.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background4.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background5.png')"></div>
+    </div>
 
-  <main>
-    <section class="page-banner">
-      <span class="eyebrow">User</span>
-      <h1>Viewing history.</h1>
-      <p class="lede">A compact timeline for recent scans and species pages you have opened during a session.</p>
-    </section>
+    <header class="site-header" id="site-header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+                <span class="logo-text">WildGuard Society</span>
+            </a>
+            <nav class="desktop-nav" id="desktop-nav">
+                <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="../library/library.html"><i class="fas fa-book"></i> Library</a>
+                <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
+                <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
+                <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a>
+                <a href="../admin-login.html"><i class="fas fa-shield-halved"></i> Admin</a>
+            </nav>
+            <div class="header-actions">
+                <div class="auth-buttons" id="auth-buttons">
+                    <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+                    <div class="user-menu" id="user-menu" style="display:none;">
+                        <button class="user-menu-toggle" id="user-menu-toggle">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="user-email">User</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="user-dropdown" id="user-dropdown">
+                            <a href="Profile.html"><i class="fas fa-user"></i> Profile</a>
+                            <a href="History.html"><i class="fas fa-history"></i> History</a>
+                            <a href="Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
 
-    <section class="info-card">
-      <div class="content">
-        <ul class="timeline">
-          <li><strong>Today</strong> Scanned 5 animals and opened the mammal library.</li>
-          <li><strong>Yesterday</strong> Viewed the lion, elephant, and giraffe cards.</li>
-          <li><strong>This week</strong> Reviewed the scan workflow and contact page.</li>
-        </ul>
-      </div>
-    </section>
-  </main>
+    <main>
+        <section class="content-overlay">
+            <div class="container" style="padding-top: 6rem; padding-bottom: 3rem;">
+                <div class="section-header" style="margin-top: 2rem; margin-bottom: 2rem;">
+                    <span class="page-eyebrow">Account</span>
+                    <h1 class="page-title">Your History</h1>
+                </div>
+                <div class="history-layout">
+                    <div class="card timeline-card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-clock-rotate-left"></i> Activity Timeline</h3>
+                            <p class="card-subtitle">A record of your recent interactions and discoveries</p>
+                        </div>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-icon"><i class="fas fa-camera"></i></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-date">Today, 2:34 PM</span>
+                                    <h4 class="timeline-title">Wildlife Scan Completed</h4>
+                                    <p class="timeline-desc">Identified African Elephant in Amboseli National Park using AI scan.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon"><i class="fas fa-heart"></i></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-date">Yesterday, 11:15 AM</span>
+                                    <h4 class="timeline-title">Added to Favourites</h4>
+                                    <p class="timeline-desc">Cheetah (Acinonyx jubatus) added to your favourites list.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon"><i classclass="fas fa-book-open"></i></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-date">Jun 23, 2026</span>
+                                    <h4 class="timeline-title">Library Visit</h4>
+                                    <p class="timeline-desc">Browsed the Savanna category and viewed 12 species profiles.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon"><i class="fas fa-camera"></i></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-date">Jun 22, 2026</span>
+                                    <h4 class="timeline-title">Wildlife Scan Completed</h4>
+                                    <p class="timeline-desc">Identified Reticulated Giraffe in Samburu National Reserve.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon"><i class="fas fa-comment"></i></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-date">Jun 20, 2026</span>
+                                    <h4 class="timeline-title">Contact Message Sent</h4>
+                                    <p class="timeline-desc">Sent a message to the WildGuard Society support team.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon"><i class="fas fa-user-plus"></i></div>
+                                <div class="timeline-content">
+                                    <span class="timeline-date">Jun 18, 2026</span>
+                                    <h4 class="timeline-title">Account Created</h4>
+                                    <p class="timeline-desc">Welcome to WildGuard Society! Your conservation journey begins.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="history-sidebar">
+                        <div class="card summary-card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-chart-pie"></i> Summary</h3>
+                            </div>
+                            <div class="summary-stats">
+                                <div class="summary-item">
+                                    <span class="summary-value">24</span>
+                                    <span class="summary-label">Total Scans</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-value">156</span>
+                                    <span class="summary-label">Favourites</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-value">42</span>
+                                    <span class="summary-label">Library Views</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-value">8</span>
+                                    <span class="summary-label">Parks Visited</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card quick-links-card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-link"></i> Quick Links</h3>
+                            </div>
+                            <div class="quick-links">
+                                <a href="../scan.html" class="quick-link"><i class="fas fa-camera"></i> New Scan</a>
+                                <a href="../library/library.html" class="quick-link"><i class="fas fa-book-open"></i> Browse Library</a>
+                                <a href="Favourite.html" class="quick-link"><i class="fas fa-heart"></i> View Favourites</a>
+                                <a href="Profile.html" class="quick-link"><i class="fas fa-user"></i> Edit Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>WildGuard Society</h3>
+                <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+                <div class="footer-social">
+                    <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i资本金="fab fa-instagram"></i></a>
+                    <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+                    <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../library/library.html">Library</a></li>
+                    <li><a href="../scan.html">Scan</a></li>
+                    <li><a href="../about.html">About</a></li>
+                    <li><a href="../contact.html">Contact</a></li>
+                    <li><a href="../admin-login.html">Admin</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Account</h4>
+                <ul>
+                    <li><a href="Profile.html">Profile</a></li>
+                    <li><a href="History.html">History</a></li>
+                    <li><a href="Favourite.html">Favourites</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+                <p><i class="fas fa-map-marker-alt"></i> Global</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
+        </div>
+    </footer>
+
+    <script defer src="../js/main.js"></script>
+    <script defer src="../js/auth.js"></script>
+    <script>
+        (function() {
+            const user = localStorage.getItem('wildguard_user') || sessionStorage.getItem('wildguard_user');
+            if (!user || user === 'null') {
+                window.location.replace('../login.html');
+            }
+        })();
+    </script>
 </body>
 </html>

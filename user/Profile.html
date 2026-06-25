@@ -1,90 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile | WildGuard Explorer</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <script defer src="../js/main.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your WildGuard Society profile and account settings.">
+    <meta name="author" content="WildGuard Society">
+    <link rel="icon" type="image/png" href="../assets/images/logo.png">
+    <title>Your Profile | WildGuard Society</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .profile-layout { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; align-items: start; }
+        @media (max-width: 768px) { .profile-layout { grid-template-columns: 1fr; } }
+        .profile-card { padding: 2rem; text-align: center; }
+        .profile-avatar-wrap { position: relative; width: 120px; height: 120px; margin: 0 auto 1.5rem; }
+        .profile-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); }
+        .avatar-edit-btn { position: absolute; bottom: 0; right: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); border: none; color: var(--dark); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); }
+        .avatar-edit-btn:hover { background: var(--accent-hover); transform: scale(1.1); }
+        .profile-name { color: var(--lighter); font-size: 1.5rem; margin-bottom: 0.25rem; }
+        .profile-email { color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .profile-role { color: var(--accent); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .profile-bio { color: rgba(255,255,255,0.65); font-size: 0.9rem; line-height: 1.6; }
+        .profile-stats { display: flex; justify-content: center; gap: 1.5rem; padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 1.5rem; }
+        .stat-item { text-align: center; }
+        .stat-value { display: block; color: var(--lighter); font-size: 1.5rem; font-weight: 700; font-family: var(--font-heading); }
+        .stat-label { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+        .profile-actions { display: flex; flex-direction: column; gap: 0.75rem; }
+        .profile-actions .btn { width: 100%; justify-content: center; }
+        .settings-card { padding: 2rem; }
+        .settings-card .card-header { margin-bottom: 1.5rem; }
+        .settings-card .card-title { color: var(--lighter); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
+        .settings-card .card-subtitle { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+        .settings-form { display: flex; flex-direction: column; gap: 1.5rem; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
+        .form-actions { display: flex; justify-content: flex-end; gap: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); }
+        .toggle-row { padding: 1rem; background: rgba(255,255,255,0.03); border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); }
+        .toggle-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .toggle-hint { font-size: 0.8rem; color: rgba(255,255,255,0.45); }
+        .toggle-switch { position: relative; display: inline-block; width: 48px; height: 26px; flex-shrink: 0; }
+        .toggle-switch input { display: none; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.2); border-radius: 26px; transition: var(--transition); }
+        .toggle-slider::before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background: var(--lighter); border-radius: 50%; transition: var(--transition); }
+        .toggle-switch input:checked + .toggle-slider { background: var(--accent); }
+        .toggle-switch input:checked + .toggle-slider::before { transform: translateX(22px); }
+        .form-group.toggle-group { flex-direction: row !important; align-items: center; justify-content: space-between; }
+        .form-group.toggle-group .form-label { margin-bottom: 0; font-size: 0.9rem; }
+    </style>
 </head>
 <body>
-   <header class="navbar">
-     <div class="logo-container">
-       <img src="../assets/images/logo.png" alt="Logo" class="logo-img">
-       <span class="logo-text">WildGuard Conservation Society</span>
-     </div>
-     <nav>
-       <ul>
-         <li>
-           <div class="nav-item-group" data-page="../index.html">
-             <div class="nav-item-icon">
-               <i class="fas fa-home"></i>
-             </div>
-             <div class="nav-item-label">Home</div>
-           </div>
-         </li>
-         <li>
-           <div class="nav-item-group" data-page="../library/mammals.html">
-             <div class="nav-item-icon">
-               <i class="fas fa-book"></i>
-             </div>
-             <div class="nav-item-label">Library</div>
-           </div>
-         </li>
-         <li>
-           <div class="nav-item-group" data-page="../scan.html">
-             <div class="nav-item-icon">
-               <i class="fas fa-barcode"></i>
-             </div>
-             <div class="nav-item-label">Scan</div>
-           </div>
-         </li>
-         <li>
-           <div class="nav-item-group" data-page="../about.html">
-             <div class="nav-item-icon">
-               <i class="fas fa-info-circle"></i>
-             </div>
-             <div class="nav-item-label">About</div>
-           </div>
-         </li>
-         <li>
-           <div class="nav-item-group" data-page="../contact.html">
-             <div class="nav-item-icon">
-               <i class="fas fa-envelope"></i>
-             </div>
-             <div class="nav-item-label">Contact</div>
-           </div>
-         </li>
-       </ul>
-     </nav>
-   </header>
+    <div class="page-slideshow">
+        <div class="page-slide active" style="background-image: url('../assets/images/authors/authentication-helpers/htmlpurifier-migration');"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background2.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background3.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background4.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background5.png')"></div>
+    </div>
 
-  <main>
-    <section class="page-banner">
-      <span class="eyebrow">User</span>
-      <h1>Profile overview.</h1>
-      <p class="lede">A simple profile shell for future saved species, scan history, and favorite wildlife cards.</p>
-    </section>
+    <header class="site-header" id="site-header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+                <span class="logo-text">WildGuard Society</span>
+            </a>
+            <nav class="desktop-nav" id="desktop-nav">
+                <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="../library/library.html"><i class="fas fa-book"></i> Library</a>
+                <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
+                <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
+                <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a>
+                <a href="../admin-login.html"><i class="fas fa-shield-halved"></i> Admin</a>
+            </nav>
+            <div class="header-actions">
+                <div class="auth-buttons" id="auth-buttons">
+                    <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+                    <div class="user-menu" id="user-menu" style="display:none;">
+                        <button class="user-menu-toggle" id="user-menu-toggle">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="user-email">User</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="user-dropdown" id="user-dropdown">
+                            <a href="Profile.html"><i class="fas fa-user"></i> Profile</a>
+                            <a href="History.html"><i class="fas fa-history"></i> History</a>
+                            <a href="Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
 
-    <section class="detail-grid">
-      <div class="info-card">
-        <div class="content">
-          <span class="section-kicker">Account</span>
-          <h3>Name</h3>
-          <p>Anderson</p>
-          <h3>Favorites</h3>
-          <p>12 species</p>
+    <main>
+        <section class="content-overlay">
+            <div class="container" style="padding-top: 6rem; padding-bottom: 3rem;">
+                <!-- Page Banner -->
+                <div class="section-header" style="margin-top: 2rem; margin-bottom: 2rem;">
+                    <span class="page-eyebrow">Account</span>
+                    <h1 class="page-title">Your Profile</h1>
+                </div>
+
+                <!-- Profile Content -->
+                <div class="profile-layout">
+                    <!-- Profile Card -->
+                    <div class="card profile-card">
+                        <div class="profile-avatar-wrap">
+                            <img src="../assets/images/default-avatar.png" alt="Profile Avatar" class="profile-avatar">
+                            <button class="avatar-edit-btn" title="Change avatar"><i class="fas fa-camera"></i></button>
+                        </div>
+                        <div class="profile-info">
+                            <h2 class="profile-name" id="profile-display-name">Jane Doe</h2>
+                            <p class="profile-email" id="profile-display-email">jane.doe@example.com</p>
+                            <p class="profile-role"><i class="fas fa-shield-alt"></i> Conservationist</p>
+                            <p class="profile-bio">Wildlife enthusiast documenting species and supporting conservation efforts around the globe.</p>
+                        </div>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <span class="stat-value">24</span>
+                                <span class="stat-label">Scans</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value">156</span>
+                                <span class="stat-label">Favourites</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value">3</span>
+                                <span class="stat-label">Parks</span>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <a href="History.html" class="btn btn-secondary"><i class="fas fa-history"></i> View History</a>
+                            <a href="Favourite.html" class="btn btn-primary"><i class="fas fa-heart"></i> Favourites</a>
+                        </div>
+                    </div>
+
+                    <!-- Account Settings -->
+                    <div class="card settings-card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-cog"></i> Account Settings</h3>
+                            <p class="card-subtitle">Update your personal details and preferences</p>
+                        </div>
+                        <form id="profileForm" class="settings-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" id="firstName" name="firstName" class="form-input" value="Jane" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" id="lastName" name="lastName" class="form-input" value="Doe">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" id="email" name="email" class="form-input" value="jane.doe@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" id="username" name="username" class="form-input" value="jane_doe_99" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="bio" class="form-label">Bio</label>
+                                    <textarea id="bio" name="bio" class="form-input form-textarea" rows="3" placeholder="Tell us about yourself...">Wildlife enthusiast documenting species and supporting conservation efforts around the globe.</textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone" class="form-label">Phone</label>
+                                    <input type="tel" id="phone" name="phone" class="form-input" value="+254 712 345 678">
+                                </div>
+                                <div class="form-group">
+                                    <label for="country" class="form-label">Country</label>
+                                    <select id="country" name="country" class="form-input">
+                                        <option value="">Select Country</option>
+                                        <option value="kenya" selected>Kenya</option>
+                                        <option value="tanzania">Tanzania</option>
+                                        <option value="uganda">Uganda</option>
+                                        <option value="south-africa">South Africa</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row toggle-row">
+                                <div class="form-group toggle-group">
+                                    <label class="form-label">Email Notifications</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="toggle-hint">Receive updates about conservation news</span>
+                                </div>
+                                <div class="form-group toggle-group">
+                                    <label class="form-label">Privacy: Public Profile</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="toggle-hint">Allow others to see your public profile</span>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="reset" class="btn btn-ghost">Reset Changes</button>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>WildGuard Society</h3>
+                <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+                <div class="footer-social">
+                    <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+                    <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../library/library.html">Library</a></li>
+                    <li><a href="../scan.html">Scan</a></li>
+                    <li><a href="../about.html">About</a></li>
+                    <li><a href="../contact.html">Contact</a></li>
+                    <li><a href="../admin-login.html">Admin</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Account</h4>
+                <ul>
+                    <li><a href="Profile.html">Profile</a></li>
+                    <li><a href="History.html">History</a></li>
+                    <li><a href="Favourite.html">Favourites</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+                <p><i class="fas fa-map-marker-alt"></i> Global</p>
+            </div>
         </div>
-      </div>
-      <div class="info-card">
-        <div class="content">
-          <span class="section-kicker">Suggested next step</span>
-          <h3>Open the mammal library</h3>
-          <p>Continue browsing species with the same editorial card system used on the public pages.</p>
-          <a href="../library/mammals.html" class="btn ghost">Browse library</a>
+        <div class="footer-bottom">
+            <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
         </div>
-      </div>
-    </section>
-  </main>
+    </footer>
+
+    <script defer src="../js/main.js"></script>
+    <script defer src="../js/auth.js"></script>
+    <script>
+        // Auth guard - redirect to login if not authenticated
+        (function() {
+            const user = localStorage.getItem('wildguard_user') || sessionStorage.getItem('wildguard_user');
+            if (!user || user === 'null') {
+                window.location.replace('../login.html');
+            }
+        })();
+    </script>
 </body>
 </html>
