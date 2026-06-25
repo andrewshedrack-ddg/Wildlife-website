@@ -544,6 +544,15 @@
         grid-template-columns: 1fr;
       }
     }
+
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid #dc2626;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -635,6 +644,7 @@
     class AdminDashboard {
       constructor() {
         this.currentSection = 'dashboard';
+        this._eventListenersAttached = false;
         this.init();
       }
       
@@ -755,7 +765,7 @@
       
       async loadSection(section) {
         const contentArea = document.getElementById('content-area');
-        contentArea.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading...</div></div>';
+        contentArea.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading...</p></div>';
         
         try {
           let content = '';
@@ -1068,6 +1078,8 @@
       
       // Event handlers will be attached after content loads
       attachEventListeners() {
+        if (this._eventListenersAttached) return;
+        this._eventListenersAttached = true;
         document.addEventListener('click', (e) => {
           // Handle species edit/delete
           if (e.target.closest('.btn-icon.edit')) {
