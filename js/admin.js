@@ -15,13 +15,15 @@
   function _get(k, d) {
     try { var r = localStorage.getItem(k); return r ? JSON.parse(r) : d; } catch(e) { return d; }
   }
-  function _set(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+  function _set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) { console.warn("Cannot save to localStorage:", e); } }
   function initStorage() {
-    if (!_get(STORAGE_KEYS.SPECIES)) _set(STORAGE_KEYS.SPECIES, []);
-    if (!_get(STORAGE_KEYS.MESSAGES)) _set(STORAGE_KEYS.MESSAGES, []);
-    if (!_get(STORAGE_KEYS.ADMIN_USERS)) _set(STORAGE_KEYS.ADMIN_USERS, {});
-    if (!_get(STORAGE_KEYS.SETTINGS)) _set(STORAGE_KEYS.SETTINGS, { siteName: "WildGuard Society", contactEmail: "wildguardsociety@gmail.com", heroTitle: "Protecting Wildlife", heroSubtitle: "Conservation through technology and community" });
-    if (!_get(STORAGE_KEYS.CURRENT_ADMIN)) { var admin = _get("wildguard_user"); if (admin) _set(STORAGE_KEYS.CURRENT_ADMIN, admin); }
+    try {
+      if (!_get(STORAGE_KEYS.SPECIES)) _set(STORAGE_KEYS.SPECIES, []);
+      if (!_get(STORAGE_KEYS.MESSAGES)) _set(STORAGE_KEYS.MESSAGES, []);
+      if (!_get(STORAGE_KEYS.ADMIN_USERS)) _set(STORAGE_KEYS.ADMIN_USERS, {});
+      if (!_get(STORAGE_KEYS.SETTINGS)) _set(STORAGE_KEYS.SETTINGS, { siteName: "WildGuard Society", contactEmail: "wildguardsociety@gmail.com", heroTitle: "Protecting Wildlife", heroSubtitle: "Conservation through technology and community" });
+      if (!_get(STORAGE_KEYS.CURRENT_ADMIN)) { var admin = _get("wildguard_user"); if (admin) _set(STORAGE_KEYS.CURRENT_ADMIN, admin); }
+    } catch(err) { console.warn("Storage init error:", err); }
   }
 
   function showToast(msg, type) {
@@ -169,7 +171,7 @@
     } else {
       html += '<div class="content-section"><h2><i class="fas fa-user-friends"></i> Registered Users</h2><table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Logins</th><th>Last Login</th><th>Registered</th><th>Actions</th></tr></thead><tbody>';
       users.forEach(function(u) {
-        html += '<tr><td>' + escapeHtml(u.name) + '</td><td>' + escapeHtml(u.email) + '</td><td><span class="badge badge-' + (u.status === "online" ? "success" : "danger") + '">' + (u.status === "online" ? "Online" : "Offline") + '</span></td><td>' + u.loginCount + '</td><td>' + (u.lastLogin ? new Date(u.lastLogin).toLocaleString() : "Never") + '</td><td>' + (u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : "Unknown") + '</td><td class="actions-cell"><button class="btn btn-sm btn-primary" onclick="viewUserDetails('' + u.email + '')"><i class="fas fa-eye"></i></button></td></tr>';
+        html += '<tr><td>' + escapeHtml(u.name) + '</td><td>' + escapeHtml(u.email) + '</td><td><span class="badge badge-' + (u.status === "online" ? "success" : "danger") + '">' + (u.status === "online" ? "Online" : "Offline") + '</span></td><td>' + u.loginCount + '</td><td>' + (u.lastLogin ? new Date(u.lastLogin).toLocaleString() : "Never") + '</td><td>' + (u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : "Unknown") + '</td><td class="actions-cell"><button class="btn btn-sm btn-primary" onclick="viewUserDetails(\'' + escapeHtml(u.email) + '\')"><i class="fas fa-eye"></i></button></td></tr>';
       });
       html += '</tbody></table></div>';
     }
@@ -193,19 +195,19 @@
     var species = getSpecies();
     var messages = getMessages();
     var unread = messages.filter(function(m){return m.status==="unread"}).length;
+    var users = getRegisteredUsers();
+    var onlineUsers = users.filter(function(u){return u.status === "online"}).length;
     return '<div class="page-header"><h1>Dashboard</h1><p>Overview of your wildlife conservation platform</p></div>' +
       '<div class="stats-grid">' +
       '<div class="stat-card"><div class="stat-value">' + species.length + '</div><div class="stat-label">Species Catalogued</div></div>' +
       '<div class="stat-card"><div class="stat-value">' + messages.length + '</div><div class="stat-label">Messages Received</div></div>' +
-      '<div class="stat-card"><div class="stat-value">' + unread + '</div><div class="stat-label">Unread Messages</div></div>' +
-      '<div class="stat-card"><div class="stat-value">Online</div><div class="stat-label">System Status</div></div>' +
+      '<div class="stat-card"><div class="stat-value">' + users.length + '</div><div class="stat-label">Registered Users</div></div>' +
+      '<div class="stat-card"><div class="stat-value">' + onlineUsers + '</div><div class="stat-label">Users Online</div></div>' +
       '</div>' +
       '<div class="content-section"><h2><i class="fas fa-bolt"></i> Quick Actions</h2>' +
       '<button class="btn btn-accent" onclick="openModal(\'modal-add-species\')"><i class="fas fa-plus"></i> Add Species</button> ' +
       '<button class="btn btn-info" onclick="openModal(\'modal-add-message\')"><i class="fas fa-envelope"></i> Send Message</button> ' +
-      '<button class="btn btn-primary" onclick="loadSection(\'admins\')"><i class="fas fa-user-plus"></i> Add Admin</button>' +
-      '</div>' +
-      '<div class="content-section"><h2><i class="fas fa-chart-line"></i> Recent Activity</h2><p>Welcome to the WildGuard Admin Dashboard.</p></div>';
+      '<button class="btn btn-primary" onclick="loadSection(\'users\')"><i class="fas fa-user-friends"></i> View Users</button>';
   }
 
   function renderSpecies() {
@@ -347,6 +349,7 @@
 
   function loadSection(section) {
     var contentArea = document.getElementById("content-area");
+    if (!contentArea) { console.error("content-area not found"); return; }
     contentArea.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading...</p></div>';
     var html = "";
     switch(section) {
@@ -378,18 +381,35 @@
   });
 
   document.addEventListener("DOMContentLoaded", function() {
-    if (!checkAuth()) return;
-    initStorage();
-    var links = document.querySelectorAll(".nav-item[data-section]");
-    for(var i=0;i<links.length;i++){links[i].addEventListener("click",function(e){e.preventDefault();var section=this.dataset.section;for(var j=0;j<links.length;j++)links[j].classList.remove("active");this.classList.add("active");loadSection(section);});}
-    loadSection("dashboard");
-    // Top navigation handlers
-    var topLinks = document.querySelectorAll(".nav-link[data-section]");
-    for(var ii=0;ii<topLinks.length;ii++){topLinks[ii].addEventListener("click",function(e){e.preventDefault();var section=this.dataset.section;for(var jj=0;jj<topLinks.length;jj++)topLinks[jj].classList.remove("active");this.classList.add("active");var navItems=document.querySelectorAll(".nav-item[data-section]");for(var kk=0;kk<navItems.length;kk++)navItems[kk].classList.remove("active");var matching=document.querySelector('.nav-item[data-section="'+section+'"]');if(matching)matching.classList.add("active");loadSection(section);});}
-    var sidebarLogout = document.getElementById("sidebar-logout-link");
-    var topLogout = document.getElementById("top-logout");
-    if (sidebarLogout) sidebarLogout.addEventListener("click", function(e) { e.preventDefault(); localStorage.removeItem("wildguard_user"); window.location.href = "admin-login.html"; });
-    if (topLogout) topLogout.addEventListener("click", function(e) { e.preventDefault(); localStorage.removeItem("wildguard_user"); window.location.href = "admin-login.html"; });
+    try {
+      if (!checkAuth()) return;
+      initStorage();
+      var links = document.querySelectorAll(".nav-item[data-section]");
+      for(var i=0;i<links.length;i++){links[i].addEventListener("click",function(e){e.preventDefault();var section=this.dataset.section;for(var j=0;j<links.length;j++)links[j].classList.remove("active");this.classList.add("active");loadSection(section);});}
+      loadSection("dashboard");
+      // Top navigation handlers
+      var topLinks = document.querySelectorAll(".nav-link[data-section]");
+      for(var ii=0;ii<topLinks.length;ii++){topLinks[ii].addEventListener("click",function(e){e.preventDefault();var section=this.dataset.section;for(var jj=0;jj<topLinks.length;jj++)topLinks[jj].classList.remove("active");this.classList.add("active");var navItems=document.querySelectorAll(".nav-item[data-section]");for(var kk=0;kk<navItems.length;kk++)navItems[kk].classList.remove("active");var matching=document.querySelector('.nav-item[data-section="'+section+'"]');if(matching)matching.classList.add("active");loadSection(section);});}
+      var sidebarLogout = document.getElementById("sidebar-logout-link");
+      var topLogout = document.getElementById("top-logout");
+      if (sidebarLogout) sidebarLogout.addEventListener("click", function(e) { e.preventDefault(); localStorage.removeItem("wildguard_user"); window.location.href = "admin-login.html"; });
+      if (topLogout) topLogout.addEventListener("click", function(e) { e.preventDefault(); localStorage.removeItem("wildguard_user"); window.location.href = "admin-login.html"; });
+    } catch(err) {
+      console.error("Admin initialization error:", err);
+      var errContainer = document.getElementById("content-area"); if (errContainer) errContainer.innerHTML = '<div class="content-section"><h2><i class="fas fa-exclamation-triangle"></i> Error Loading Admin</h2><p>There was a problem loading the admin dashboard. Please try:</p><ul><li>Refreshing the page</li><li>Using a supported browser (Chrome, Firefox, Edge)</li><li>Opening via HTTPS: <a href="https://andrewshedrack-ddg.github.io/Wildlife-website/admin.html">GitHub Pages Link</a></li></ul><p>Error details: ' + (err ? err.message : "Unknown") + '</p></div>';
+    }
   });
 
+
+  // Expose functions to global scope for inline dnline onclick handlers
+  window.loadSection = loadSection;
+  window.openModal = openModal;
+  window.closeModal = closeModal;
+  window.showToast = showToast;
+  window.removeSpecies = removeSpecies;
+  window.editSpecies = editSpecies;
+  window.removeMessage = removeMessage;
+  window.viewMessage = viewMessage;
+  window.removeAdmin = removeAdmin;
+  window.viewUserDetails = viewUserDetails;
 })();
