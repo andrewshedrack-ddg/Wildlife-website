@@ -159,24 +159,6 @@
   function viewMessage(id) { const m = getMessages().find(msg => msg.id === id); if (!m) return; updateMessage(id, {status: "read"}); alert("From: " + (m.name || m.from) + "\nSubject: " + m.subject + "\n\n" + m.body); loadSection("messages"); }
   function removeAdmin(email) { if (!confirm("Remove admin " + email + "?")) return; if (email === "admin@wildguardsociety.org") { showToast("Cannot remove default admin", "error"); return; } deleteAdminUser(email); showToast("Admin removed", "success"); loadSection("admins"); }
 
-  function clearAllData() {
-    if (!confirm("WARNING: This will permanently delete ALL data. Are you sure?")) return;
-    Object.values(STORAGE_KEYS).forEach(function(key) { localStorage.removeItem(key); });
-    localStorage.removeItem("wildguard_user");
-    localStorage.removeItem("wildguard_admin_current");
-    showToast("All data cleared. Reloading...", "success");
-    setTimeout(function() { window.location.reload(); }, 1500);
-  }
-
-  function makeUserAdmin(email, name) {
-    if (!email) return;
-    const pass = prompt("Set a temporary password for admin '" + escapeHtml(name || email) + "':", "admin123");
-    if (!pass) { showToast("Admin creation cancelled", "error"); return; }
-    addAdminUser(email, name || email, pass, "admin");
-    showToast("User promoted to admin", "success");
-    loadSection("admins");
-  }
-
   function renderUsers() {
     var users = _get(STORAGE_KEYS.USER_LIST, []);
     var html = '<div class="page-header"><h1>User Management</h1><p>View registered users and activity</p></div>' +
@@ -186,13 +168,29 @@
     if (users.length === 0) {
       html += '<div class="content-section"><div class="empty-state"><div class="empty-state-icon">&#x1F465;</div><h3>No registered users</h3><p>Registered users will appear here.</p></div></div>';
     } else {
-      html += '<div class="content-section"><h2><i class="fas fa-user-friends"></i> Users</h2><table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Registered</th><th>Actions</th></tr></thead><tbody>';
+      html += '<div class="content-section"><h2><i class="fas fa-user-friends"></i> Users</h2><table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Registered</th><th>Actions</th></tr></thead><tbody>';
       users.forEach(u => {
-        html += '<tr><td>' + (u.name || "Unknown") + '</td><td>' + (u.email || "") + '</td><td>' + (u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : "Unknown") + '</td><td class="actions-cell"><button class="btn btn-sm btn-primary" onclick="makeUserAdmin(\'' + (u.email || '') + '\', \'' + (u.name || '') + '\')"><i class="fas fa-user-shield"></i> Make Admin</button></td></tr>';
+        html += '<tr><td>' + escapeHtml(u.name || "Unknown") + '</td><td>' + escapeHtml(u.email || "") + '</td><td><span class="badge badge-' + (u.status === "online" ? "success" : "danger") + '">' + (u.status === "online" ? "Online" : "Offline") + '</span></td><td>' + (u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : "Unknown") + '</td><td class="actions-cell"><button class="btn btn-sm btn-accent" onclick="makeUserAdmin(\'' + (u.email || '') + '\', \'' + (u.name || '') + '\')"><i class="fas fa-user-shield"></i> Make Admin</button></td></tr>';
       });
       html += '</tbody></table></div>';
     }
     return html;
+  }
+
+  function makeUserAdmin(email, username) {
+    if (!email) { showToast("No email provided", "error"); return; }
+    var password = prompt("Set a temporary password for admin: '" + email + "'", "admin123");
+    if (!password) { showToast("Cancelled", "info"); return; }
+    addAdminUser(email, username || email, password, "admin");
+    showToast("User promoted to admin successfully", "success");
+    loadSection("admins");
+  }
+
+  function clearAllData() {
+    if (!confirm("Are you sure you want to clear ALL data? This cannot be undone.")) return;
+    Object.values(STORAGE_KEYS).forEach(function(key) { try { localStorage.removeItem(key); } catch(e) {} });
+    showToast("All data cleared. Page will refresh.", "info");
+    setTimeout(function() { location.reload(); }, 1500);
   }
 
   function setupFormHandlers() {
@@ -257,7 +255,7 @@
     loadSection("dashboard");
     // Top navigation handlers
     const topLinks = document.querySelectorAll(".nav-link[data-section]");
-    topLinks.forEach(l => { l.addEventListener("click", function(e) { e.preventDefault(); const section = this.dataset.section; topLinks.forEach(x => x.classList.remove("active")); this.classList.add("active"); document.querySelectorAll(".nav-item[data-section]").forEach(x => x.classList.remove("active")); const matching = document.querySelector('.nav-item[data-section="' + section + '"]'); if (matching) matching.classList.add("active"); loadSection(section); }); });
+    topLinks.forEach(l => { l.addEventListener("click", function(e) { e.preventDefault(); const section = this.dataset.section; topLinks.forEach(x => x.classList.remove("active")); this.classList.add("active"); document.querySelectorAll(".nav-item[data-section]").forEach(x => x.classList.remove("active")); const matching = document.querySelector('.nav-item[data-section="' + section + '"]]'); if (matching) matching.classList.add("active"); loadSection(section); }); });
     const sidebarLogout = document.getElementById("sidebar-logout-link");
     const topLogout = document.getElementById("top-logout");
     if (sidebarLogout) sidebarLogout.addEventListener("click", function(e) { e.preventDefault(); localStorage.removeItem("wildguard_user"); window.location.href = "admin-login.html"; });
@@ -274,6 +272,6 @@
   window.removeMessage = removeMessage;
   window.viewMessage = viewMessage;
   window.removeAdmin = removeAdmin;
-  window.clearAllData = clearAllData;
   window.makeUserAdmin = makeUserAdmin;
+  window.clearAllData = clearAllData;
 })();
