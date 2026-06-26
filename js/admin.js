@@ -167,13 +167,20 @@
     if (users.length === 0) {
       html += '<div class="content-section"><div class="empty-state"><div class="empty-state-icon">&#x1F465;</div><h3>No registered users</h3><p>Registered users will appear here.</p></div></div>';
     } else {
-      html += '<div class="content-section"><h2><i class="fas fa-user-friends"></i> Users</h2><table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Registered</th></tr></thead><tbody>';
+      html += '<div class="content-section"><h2><i class="fas fa-user-friends"></i> Users</h2><table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Registered</th></tr></thead><tbody>';
       users.forEach(u => {
-        html += '<tr><td>' + (u.name || "Unknown") + '</td><td>' + (u.email || "") + '</td><td>' + (u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : "Unknown") + '</td></tr>';
+        html += '<tr><td>' + escapeHtml(u.name || "Unknown") + '</td><td>' + escapeHtml(u.email || "") + '</td><td><span class="badge badge-' + (u.status === "online" ? "success" : "danger") + '">' + (u.status === "online" ? "Online" : "Offline") + '</span></td><td>' + (u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : "Unknown") + '</td></tr>';
       });
       html += '</tbody></table></div>';
     }
     return html;
+  }
+
+  function clearAllData() {
+    if (!confirm("Are you sure you want to clear ALL data? This cannot be undone.")) return;
+    Object.values(STORAGE_KEYS).forEach(function(key) { try { localStorage.removeItem(key); } catch(e) {} });
+    showToast("All data cleared. Page will refresh.", "info");
+    setTimeout(function() { location.reload(); }, 1500);
   }
 
   function setupFormHandlers() {
@@ -238,7 +245,7 @@
     loadSection("dashboard");
     // Top navigation handlers
     const topLinks = document.querySelectorAll(".nav-link[data-section]");
-    topLinks.forEach(l => { l.addEventListener("click", function(e) { e.preventDefault(); const section = this.dataset.section; topLinks.forEach(x => x.classList.remove("active")); this.classList.add("active"); document.querySelectorAll(".nav-item[data-section]").forEach(x => x.classList.remove("active")); const matching = document.querySelector('.nav-item[data-section="' + section + '"]'); if (matching) matching.classList.add("active"); loadSection(section); }); });
+    topLinks.forEach(l => { l.addEventListener("click", function(e) { e.preventDefault(); const section = this.dataset.section; topLinks.forEach(x => x.classList.remove("active")); this.classList.add("active"); document.querySelectorAll(".nav-item[data-section]").forEach(x => x.classList.remove("active")); const matching = document.querySelector('.nav-item[data-section="' + section + '"]]'); if (matching) matching.classList.add("active"); loadSection(section); }); });
     const sidebarLogout = document.getElementById("sidebar-logout-link");
     const topLogout = document.getElementById("top-logout");
     if (sidebarLogout) sidebarLogout.addEventListener("click", function(e) { e.preventDefault(); localStorage.removeItem("wildguard_user"); window.location.href = "admin-login.html"; });
@@ -255,4 +262,5 @@
   window.removeMessage = removeMessage;
   window.viewMessage = viewMessage;
   window.removeAdmin = removeAdmin;
+  window.clearAllData = clearAllData;
 })();
