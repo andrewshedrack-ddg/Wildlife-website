@@ -7,7 +7,9 @@
     MESSAGES: "wildguard_admin_messages",
     SETTINGS: "wildguard_admin_settings",
     ADMIN_USERS: "wildguard_admin_users",
-    CURRENT_ADMIN: "wildguard_admin_current"
+    CURRENT_ADMIN: "wildguard_admin_current",
+    USER_LIST: "wildguard_user_list",
+    VERIFIED_EMAILS: "wildguard_verified_emails"
   };
 
   function _get(k, d) {
@@ -98,6 +100,26 @@
     saveAdminUsers(users);
   }
   function deleteAdminUser(email) { const users = getAdminUsers(); delete users[email.toLowerCase()]; saveAdminUsers(users); }
+
+  // Email Verification
+  function isVerified(email) {
+    var verified = _get(STORAGE_KEYS.VERIFIED_EMAILS, []);
+    return verified.indexOf(email.toLowerCase()) >= 0;
+  }
+  function verifyEmail(email) {
+    var verified = _get(STORAGE_KEYS.VERIFIED_EMAILS, []);
+    if (verified.indexOf(email.toLowerCase()) < 0) {
+      verified.push(email.toLowerCase());
+      _set(STORAGE_KEYS.VERIFIED_EMAILS, verified);
+    }
+  }
+  function getVerifiedCount() {
+    return _get(STORAGE_KEYS.VERIFIED_EMAILS, []).length;
+  }
+  function getUnverifiedUsers() {
+    var users = getRegisteredUsers();
+    var verified = _get(STORAGE_KEYS.VERIFIED_EMAILS, []);
+    return users.filter(function(u) { return verified.indexOf(u.email.toLowerCase()) < 0; }); }
 
   // Avatar & Profile
   function getAvatar() { return _get(\"wildguard_admin_avatar\", null); }
@@ -320,12 +342,31 @@
     return true;
   }
 
+  window.addEventListener("beforeunload", function() {
+    var user = _get("wildguard_user");
+    if (user && user.email) { setUserOffline(user.email); }
+  });
+
   document.addEventListener("DOMContentLoaded", function() {
     if (!checkAuth()) return;
     initStorage();
     const links = document.querySelectorAll(".nav-item[data-section]");
     links.forEach(l => { l.addEventListener("click", function(e) { e.preventDefault(); const section = this.dataset.section; links.forEach(x => x.classList.remove("active")); this.classList.add("active"); loadSection(section); }); });
     loadSection("dashboard");
+    // Top navigation handlers
+    const topLinks = document.querySelectorAll(".nav-link[data-section]");
+    topLinks.forEach(function(l) {
+      l.addEventListener("click", function(e) {
+        e.preventDefault();
+        var section = this.dataset.section;
+        topLinks.forEach(function(x) { x.classList.remove("active"); });
+        this.classList.add("active");
+        document.querySelectorAll(".nav-item[data-section]").forEach(function(x) { x.classList.remove("active"); });
+        var matching = document.querySelector('.nav-item[data-section="' + section + '"]');
+        if (matching) matching.classList.add("active");
+        loadSection(section);
+      });
+    });
     const sidebarLogout = document.getElementById("sidebar-logout-link");
     const topLogout = document.getElementById("top-logout");
     if (sidebarLogout) sidebarLogout.addEventListener("click", function(e) { e.preventDefault(); localStorage.removeItem("wildguard_user"); window.location.href = "admin-login.html"; });
