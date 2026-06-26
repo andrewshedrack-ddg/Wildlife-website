@@ -75,7 +75,8 @@
       '<div class="content-section"><h2><i class="fas fa-bolt"></i> Quick Actions</h2>' +
       '<button class="btn btn-accent" onclick="openModal(\'modal-add-species\')"><i class="fas fa-plus"></i> Add Species</button> ' +
       '<button class="btn btn-info" onclick="openModal(\'modal-add-message\')"><i class="fas fa-envelope"></i> Send Message</button> ' +
-      '<button class="btn btn-primary" onclick="loadSection(\'admins\')"><i class="fas fa-user-plus"></i> Add Admin</button>' +
+      '<button class="btn btn-primary" onclick="loadSection(\'admins\')"><i class="fas fa-user-plus"></i> Add Admin</button> ' +
+      '<button class="btn btn-danger" onclick="clearAllData()"><i class="fas fa-trash"></i> Reset All Data</button>' +
       '</div>' +
       '<div class="content-section"><h2><i class="fas fa-chart-line"></i> Recent Activity</h2><p>Welcome to the WildGuard Admin Dashboard.</p></div>';
   }
@@ -158,6 +159,24 @@
   function viewMessage(id) { const m = getMessages().find(msg => msg.id === id); if (!m) return; updateMessage(id, {status: "read"}); alert("From: " + (m.name || m.from) + "\nSubject: " + m.subject + "\n\n" + m.body); loadSection("messages"); }
   function removeAdmin(email) { if (!confirm("Remove admin " + email + "?")) return; if (email === "admin@wildguardsociety.org") { showToast("Cannot remove default admin", "error"); return; } deleteAdminUser(email); showToast("Admin removed", "success"); loadSection("admins"); }
 
+  function clearAllData() {
+    if (!confirm("WARNING: This will permanently delete ALL data. Are you sure?")) return;
+    Object.values(STORAGE_KEYS).forEach(function(key) { localStorage.removeItem(key); });
+    localStorage.removeItem("wildguard_user");
+    localStorage.removeItem("wildguard_admin_current");
+    showToast("All data cleared. Reloading...", "success");
+    setTimeout(function() { window.location.reload(); }, 1500);
+  }
+
+  function makeUserAdmin(email, name) {
+    if (!email) return;
+    const pass = prompt("Set a temporary password for admin '" + escapeHtml(name || email) + "':", "admin123");
+    if (!pass) { showToast("Admin creation cancelled", "error"); return; }
+    addAdminUser(email, name || email, pass, "admin");
+    showToast("User promoted to admin", "success");
+    loadSection("admins");
+  }
+
   function renderUsers() {
     var users = _get(STORAGE_KEYS.USER_LIST, []);
     var html = '<div class="page-header"><h1>User Management</h1><p>View registered users and activity</p></div>' +
@@ -167,9 +186,9 @@
     if (users.length === 0) {
       html += '<div class="content-section"><div class="empty-state"><div class="empty-state-icon">&#x1F465;</div><h3>No registered users</h3><p>Registered users will appear here.</p></div></div>';
     } else {
-      html += '<div class="content-section"><h2><i class="fas fa-user-friends"></i> Users</h2><table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Registered</th></tr></thead><tbody>';
+      html += '<div class="content-section"><h2><i class="fas fa-user-friends"></i> Users</h2><table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Registered</th><th>Actions</th></tr></thead><tbody>';
       users.forEach(u => {
-        html += '<tr><td>' + (u.name || "Unknown") + '</td><td>' + (u.email || "") + '</td><td>' + (u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : "Unknown") + '</td></tr>';
+        html += '<tr><td>' + (u.name || "Unknown") + '</td><td>' + (u.email || "") + '</td><td>' + (u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : "Unknown") + '</td><td class="actions-cell"><button class="btn btn-sm btn-primary" onclick="makeUserAdmin(\'' + (u.email || '') + '\', \'' + (u.name || '') + '\')"><i class="fas fa-user-shield"></i> Make Admin</button></td></tr>';
       });
       html += '</tbody></table></div>';
     }
@@ -255,4 +274,6 @@
   window.removeMessage = removeMessage;
   window.viewMessage = viewMessage;
   window.removeAdmin = removeAdmin;
+  window.clearAllData = clearAllData;
+  window.makeUserAdmin = makeUserAdmin;
 })();
