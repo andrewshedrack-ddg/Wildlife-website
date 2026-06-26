@@ -2,7 +2,7 @@
 (function() {
   "use strict";
 
-  const STORAGE_KEYS = {
+  var STORAGE_KEYS = {
     SPECIES: "wildguard_admin_species",
     MESSAGES: "wildguard_admin_messages",
     SETTINGS: "wildguard_admin_settings",
@@ -13,7 +13,7 @@
   };
 
   function _get(k, d) {
-    try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : d; } catch(e) { return d; }
+    try { var r = localStorage.getItem(k); return r ? JSON.parse(r) : d; } catch(e) { return d; }
   }
   function _set(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
   function initStorage() {
@@ -21,33 +21,33 @@
     if (!_get(STORAGE_KEYS.MESSAGES)) _set(STORAGE_KEYS.MESSAGES, []);
     if (!_get(STORAGE_KEYS.ADMIN_USERS)) _set(STORAGE_KEYS.ADMIN_USERS, {});
     if (!_get(STORAGE_KEYS.SETTINGS)) _set(STORAGE_KEYS.SETTINGS, { siteName: "WildGuard Society", contactEmail: "wildguardsociety@gmail.com", heroTitle: "Protecting Wildlife", heroSubtitle: "Conservation through technology and community" });
-    if (!_get(STORAGE_KEYS.CURRENT_ADMIN)) { const admin = _get("wildguard_user"); if (admin) _set(STORAGE_KEYS.CURRENT_ADMIN, admin); }
+    if (!_get(STORAGE_KEYS.CURRENT_ADMIN)) { var admin = _get("wildguard_user"); if (admin) _set(STORAGE_KEYS.CURRENT_ADMIN, admin); }
   }
 
   function showToast(msg, type) {
-    const c = document.getElementById("toast-container");
-    const t = document.createElement("div");
+    var c = document.getElementById("toast-container");
+    var t = document.createElement("div");
     t.className = "toast " + (type || "success");
     t.innerHTML = msg;
     c.appendChild(t);
-    setTimeout(() => t.remove(), 3000);
+    setTimeout(function(){t.remove();}, 3000);
   }
-  function openModal(id) { document.getElementById(id).classList.add("open"); }
-  function closeModal(id) { document.getElementById(id).classList.remove("open"); }
-  function escapeHtml(t) { const d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+  function openModal(id) { var el = document.getElementById(id); if (el) el.classList.add("open"); }
+  function closeModal(id) { var el = document.getElementById(id); if (el) el.classList.remove("open"); }
+  function escapeHtml(t) { var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
 
   function getSpecies() { return _get(STORAGE_KEYS.SPECIES, []); }
   function saveSpecies(data) { _set(STORAGE_KEYS.SPECIES, data); }
-  function getSpeciesById(id) { return getSpecies().find(s => s.id === id); }
-  function addSpecies(s) { const data = getSpecies(); s.id = Date.now().toString(); s.createdAt = new Date().toISOString(); data.push(s); saveSpecies(data); }
-  function updateSpecies(id, updates) { const data = getSpecies(); const idx = data.findIndex(s => s.id === id); if (idx >= 0) { data[idx] = { ...data[idx], ...updates }; saveSpecies(data); } }
-  function deleteSpecies(id) { const data = getSpecies().filter(s => s.id !== id); saveSpecies(data); }
+  function getSpeciesById(id) { return getSpecies().find(function(s){return s.id===id;}); }
+  function addSpecies(s) { var data = getSpecies(); s.id = Date.now().toString(); s.createdAt = new Date().toISOString(); data.push(s); saveSpecies(data); }
+  function updateSpecies(id, updates) { var data = getSpecies(); var idx = data.findIndex(function(s){return s.id===id}); if (idx >= 0) { data[idx] = { ...data[idx], ...updates }; saveSpecies(data); } }
+  function deleteSpecies(id) { var data = getSpecies().filter(function(s){return s.id!==id;}); saveSpecies(data); }
 
   function getMessages() { return _get(STORAGE_KEYS.MESSAGES, []); }
   function saveMessages(data) { _set(STORAGE_KEYS.MESSAGES, data); }
-  function addMessage(m) { const data = getMessages(); m.id = Date.now().toString(); m.createdAt = new Date().toISOString(); m.status = m.status || "unread"; data.push(m); saveMessages(data); }
-  function updateMessage(id, updates) { const data = getMessages(); const idx = data.findIndex(m => m.id === id); if (idx >= 0) { data[idx] = { ...data[idx], ...updates }; saveMessages(data); } }
-  function deleteMessage(id) { const data = getMessages().filter(m => m.id !== id); saveMessages(data); }
+  function addMessage(m) { var data = getMessages(); m.id = Date.now().toString(); m.createdAt = new Date().toISOString(); m.status = m.status || "unread"; data.push(m); saveMessages(data); }
+  function updateMessage(id, updates) { var data = getMessages(); var idx = data.findIndex(function(m){return m.id===id;}); if (idx >= 0) { data[idx]=Object.assign({},data[idx],updates); saveMessages(data); } }
+  function deleteMessage(id) { var data = getMessages().filter(function(m){return m.id!==id;}); saveMessages(data); }
 
   function getSettings() { return _get(STORAGE_KEYS.SETTINGS, {}); }
   function saveSettings(s) { _set(STORAGE_KEYS.SETTINGS, s); }
@@ -95,11 +95,11 @@
   function getAdminUsers() { return _get(STORAGE_KEYS.ADMIN_USERS, {}); }
   function saveAdminUsers(users) { _set(STORAGE_KEYS.ADMIN_USERS, users); }
   function addAdminUser(email, name, password, role) {
-    const users = getAdminUsers();
+    var users = getAdminUsers();
     users[email.toLowerCase()] = { name: name, password: password, role: role || "admin", createdAt: new Date().toISOString() };
     saveAdminUsers(users);
   }
-  function deleteAdminUser(email) { const users = getAdminUsers(); delete users[email.toLowerCase()]; saveAdminUsers(users); }
+  function deleteAdminUser(email) { var users = getAdminUsers(); delete users[email.toLowerCase()]; saveAdminUsers(users); }
 
   // Email Verification
   function isVerified(email) {
@@ -122,8 +122,8 @@
     return users.filter(function(u) { return verified.indexOf(u.email.toLowerCase()) < 0; }); }
 
   // Avatar & Profile
-  function getAvatar() { return _get(\"wildguard_admin_avatar\", null); }
-  function saveAvatar(data) { _set(\"wildguard_admin_avatar\", data); }
+  function getAvatar() { return _get("wildguard_admin_avatar", null); }
+  function saveAvatar(data) { _set("wildguard_admin_avatar", data); }
 
   function updateProfileInfo() {
     var user = _get(\"wildguard_user\") || {};
@@ -190,9 +190,9 @@
   }
 
   function renderDashboard() {
-    const species = getSpecies();
-    const messages = getMessages();
-    const unread = messages.filter(m => m.status === "unread").length;
+    var species = getSpecies();
+    var messages = getMessages();
+    var unread = messages.filter(function(m){return m.status==="unread"}).length;
     return '<div class="page-header"><h1>Dashboard</h1><p>Overview of your wildlife conservation platform</p></div>' +
       '<div class="stats-grid">' +
       '<div class="stat-card"><div class="stat-value">' + species.length + '</div><div class="stat-label">Species Catalogued</div></div>' +
@@ -209,14 +209,14 @@
   }
 
   function renderSpecies() {
-    const species = getSpecies();
-    let html = '<div class="page-header"><h1>Species Management</h1><p>Manage wildlife species in your database</p></div>' +
+    var species = getSpecies();
+    var html = '<div class="page-header"><h1>Species Management</h1><p>Manage wildlife species in your database</p></div>' +
       '<div style="margin-bottom:1rem;"><button class="btn btn-accent" onclick="openModal(\'modal-add-species\')"><i class="fas fa-plus"></i> Add New Species</button></div>';
     if (species.length === 0) {
       html += '<div class="content-section"><div class="empty-state"><div class="empty-state-icon">&#x1F43E;</div><h3>No species found</h3><p>Add your first species using the button above.</p></div></div>';
     } else {
       html += '<div class="content-section"><h2><i class="fas fa-paw"></i> Species List</h2><table class="data-table"><thead><tr><th>Name</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
-      species.forEach(s => {
+      species.forEach(function(s){
         html += '<tr data-id="' + s.id + '"><td>' + escapeHtml(s.name) + '</td><td><span class="badge badge-' + (s.status === "Endangered" ? "danger" : "success") + '">' + escapeHtml(s.status) + '</span></td><td class="actions-cell"><button class="btn btn-sm btn-primary" onclick="editSpecies(\'' + s.id + '\')"><i class="fas fa-edit"></i></button> <button class="btn btn-sm btn-danger" onclick="removeSpecies(\'' + s.id + '\')"><i class="fas fa-trash"></i></button></td></tr>';
       });
       html += '</tbody></table></div>';
@@ -225,14 +225,14 @@
   }
 
   function renderMessages() {
-    const messages = getMessages();
-    let html = '<div class="page-header"><h1>Messages</h1><p>View and manage messages from visitors and staff</p></div>' +
+    var messages = getMessages();
+    var html = '<div class="page-header"><h1>Messages</h1><p>View and manage messages from visitors and staff</p></div>' +
       '<div style="margin-bottom:1rem;"><button class="btn btn-accent" onclick="openModal(\'modal-add-message\')"><i class="fas fa-plus"></i> Compose Message</button></div>';
     if (messages.length === 0) {
       html += '<div class="content-section"><div class="empty-state"><div class="empty-state-icon">&#x1F4ED;</div><h3>No messages found</h3><p>Messages will appear here.</p></div></div>';
     } else {
       html += '<div class="content-section"><h2><i class="fas fa-envelope"></i> Message List</h2><table class="data-table"><thead><tr><th>From</th><th>Subject</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
-      messages.slice().reverse().forEach(m => {
+      messages.slice().reverse().forEach(function(m){
         html += '<tr data-id="' + m.id + '"><td>' + escapeHtml(m.name || m.from || "Unknown") + '</td><td>' + escapeHtml(m.subject) + '</td><td><span class="badge badge-' + (m.status === "read" ? "success" : "warning") + '">' + (m.status === "read" ? "Read" : "Unread") + '</span></td><td>' + new Date(m.createdAt).toLocaleString() + '</td><td class="actions-cell"><button class="btn btn-sm btn-primary" onclick="viewMessage(\'' + m.id + '\')"><i class="fas fa-eye"></i></button> <button class="btn btn-sm btn-danger" onclick="removeMessage(\'' + m.id + '\')"><i class="fas fa-trash"></i></button></td></tr>';
       });
       html += '</tbody></table></div>';
@@ -241,7 +241,7 @@
   }
 
   function renderSettings() {
-    const s = getSettings();
+    var s = getSettings();
     return '<div class="page-header"><h1>Site Settings</h1><p>Configure global settings for your website</p></div>' +
       '<div class="content-section"><h2><i class="fas fa-cog"></i> General Settings</h2>' +
       '<form id="settings-form">' +
@@ -265,14 +265,14 @@
   }
 
   function renderAdmins() {
-    const users = Object.entries(getAdminUsers());
-    let html = '<div class="page-header"><h1>Admin Users</h1><p>Manage administrator accounts</p></div>' +
+    var users = Object.keys(getAdminUsers()).map(function(k){return[k,getAdminUsers()[k]]});
+    var html = '<div class="page-header"><h1>Admin Users</h1><p>Manage administrator accounts</p></div>' +
       '<div style="margin-bottom:1rem;"><button class="btn btn-accent" onclick="openModal(\'modal-add-admin\')"><i class="fas fa-user-plus"></i> Add New Admin</button></div>';
     if (users.length === 0) {
       html += '<div class="content-section"><div class="empty-state"><div class="empty-state-icon">&#x1F464;</div><h3>No admin users</h3><p>Add admin users using the button above.</p></div></div>';
     } else {
       html += '<div class="content-section"><h2><i class="fas fa-users"></i> Admin List</h2><table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Actions</th></tr></thead><tbody>';
-      users.forEach(([email, u]) => {
+      users.forEach(function(pair){var email=pair[0],u=pair[1];
         html += '<tr><td>' + escapeHtml(u.name || email) + '</td><td>' + escapeHtml(email) + '</td><td><span class="badge badge-info">' + escapeHtml(u.role) + '</span></td><td class="actions-cell"><button class="btn btn-sm btn-danger" onclick="removeAdmin(\'' + email + '\')"><i class="fas fa-trash"></i></button></td></tr>';
       });
       html += '</tbody></table></div>';
@@ -281,46 +281,74 @@
   }
 
   function removeSpecies(id) { if (!confirm("Are you sure you want to delete this species?")) return; deleteSpecies(id); showToast("Species deleted", "success"); loadSection("species"); }
-  function editSpecies(id) { const s = getSpeciesById(id); if (!s) return; const name = prompt("Species name:", s.name); const status = prompt("Status (e.g. Endangered, Vulnerable):", s.status); if (!name || !status) return; updateSpecies(id, {name, status}); showToast("Species updated", "success"); loadSection("species"); }
+  function editSpecies(id) { var s = getSpeciesById(id); if (!s) return; var name = prompt("Species name:", s.name); var status = prompt("Status (e.g. Endangered, Vulnerable):", s.status); if (!name || !status) return; updateSpecies(id, {name, status}); showToast("Species updated", "success"); loadSection("species"); }
   function removeMessage(id) { if (!confirm("Delete this message?")) return; deleteMessage(id); showToast("Message deleted", "success"); loadSection("messages"); }
-  function viewMessage(id) { const m = getMessages().find(msg => msg.id === id); if (!m) return; updateMessage(id, {status: "read"}); alert("From: " + (m.name || m.from) + "\nSubject: " + m.subject + "\n\n" + m.body); loadSection("messages"); }
+  function viewMessage(id) { var m = getMessages().find(function(msg){return msg.id===id}); if (!m) return; updateMessage(id, {status: "read"}); alert("From: " + (m.name || m.from) + "\nSubject: " + m.subject + "\n\n" + m.body); loadSection("messages"); }
   function removeAdmin(email) { if (!confirm("Remove admin " + email + "?")) return; if (email === "admin@wildguardsociety.org") { showToast("Cannot remove default admin", "error"); return; } deleteAdminUser(email); showToast("Admin removed", "success"); loadSection("admins"); }
 
   function setupFormHandlers() {
-    document.getElementById("form-add-species").addEventListener("submit", function(e) {
+    function addSubmit(id, handler) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener("submit", handler);
+    }
+    addSubmit("form-add-species", function(e) {
       e.preventDefault();
-      const name = document.getElementById("sp-name").value;
-      const status = document.getElementById("sp-status").value;
-      const description = document.getElementById("sp-desc").value;
-      addSpecies({name, status, description});
+      var name = document.getElementById("sp-name").value;
+      var status = document.getElementById("sp-status").value;
+      var description = document.getElementById("sp-desc").value;
+      addSpecies({name: name, status: status, description: description});
       closeModal("modal-add-species"); document.getElementById("form-add-species").reset(); showToast("Species added", "success"); loadSection("species");
     });
-    document.getElementById("form-add-message").addEventListener("submit", function(e) {
+    addSubmit("form-add-message", function(e) {
       e.preventDefault();
-      const from = document.getElementById("msg-from").value;
-      const subject = document.getElementById("msg-subject").value;
-      const body = document.getElementById("msg-body").value;
-      addMessage({from, subject, body, name: from, status: "read"});
+      var from = document.getElementById("msg-from").value;
+      var subject = document.getElementById("msg-subject").value;
+      var body = document.getElementById("msg-body").value;
+      addMessage({from: from, subject: subject, body: body, name: from, status: "read"});
       closeModal("modal-add-message"); document.getElementById("form-add-message").reset(); showToast("Message sent", "success"); loadSection("messages");
     });
-    document.getElementById("form-add-admin").addEventListener("submit", function(e) {
+    addSubmit("form-add-admin", function(e) {
       e.preventDefault();
-      const name = document.getElementById("adm-name").value;
-      const email = document.getElementById("adm-email").value;
-      const password = document.getElementById("adm-password").value;
-      const role = document.getElementById("adm-role").value;
+      var name = document.getElementById("adm-name").value;
+      var email = document.getElementById("adm-email").value;
+      var password = document.getElementById("adm-password").value;
+      var role = document.getElementById("adm-role").value;
       addAdminUser(email, name, password, role);
       closeModal("modal-add-admin"); document.getElementById("form-add-admin").reset(); showToast("Admin added", "success"); loadSection("admins");
-    }); document.body.addEventListener("submit", function(e) {
-      if (e.target.id === "settings-form") { e.preventDefault(); const s = getSettings(); s.siteName = document.getElementById("siteName").value; s.contactEmail = document.getElementById("contactEmail").value; s.heroTitle = document.getElementById("heroTitle").value; s.heroSubtitle = document.getElementById("heroSubtitle").value; saveSettings(s); showToast("Settings saved", "success"); }
-      if (e.target.id === "password-form") { e.preventDefault(); const p = document.getElementById("newPassword").value; const c = document.getElementById("confirmPassword").value; const cur = document.getElementById("currentPassword").value; const a = _get(STORAGE_KEYS.CURRENT_ADMIN); const u = _get(STORAGE_KEYS.ADMIN_USERS, {}); const target = (a && a.email) ? u[a.email.toLowerCase()] : null; if (!target && a && a.email === "admin@wildguardsociety.org") { if (cur !== "admin123") { showToast("Incorrect current password", "error"); return; } u["admin@wildguardsociety.org"] = {name: "Administrator", password: "admin123", role: "admin"}; u[a.email.toLowerCase()] = u["admin@wildguardsociety.org"]; saveAdminUsers(u); } else if (!target) { showToast("Current admin not found", "error"); return; } else if (target.password !== cur) { showToast("Incorrect current password", "error"); return; } if (p !== c) { showToast("Passwords do not match", "error"); return; } if (p.length < 6) { showToast("Password too short", "error"); return; } target.password = p; saveAdminUsers(u); showToast("Password changed", "success"); document.getElementById("password-form").reset(); }
+    });
+    addSubmit("settings-form", function(e) {
+      e.preventDefault();
+      var s = getSettings();
+      s.siteName = document.getElementById("siteName").value;
+      s.contactEmail = document.getElementById("contactEmail").value;
+      s.heroTitle = document.getElementById("heroTitle").value;
+      s.heroSubtitle = document.getElementById("heroSubtitle").value;
+      saveSettings(s); showToast("Settings saved", "success");
+    });
+    addSubmit("password-form", function(e) {
+      e.preventDefault();
+      var p = document.getElementById("newPassword").value;
+      var c = document.getElementById("confirmPassword").value;
+      var cur = document.getElementById("currentPassword").value;
+      var a = _get(STORAGE_KEYS.CURRENT_ADMIN);
+      var u = _get(STORAGE_KEYS.ADMIN_USERS, {});
+      var target = (a && a.email) ? u[a.email.toLowerCase()] : null;
+      if (!target && a && a.email === "admin@wildguardsociety.org") {
+        if (cur !== "admin123") { showToast("Incorrect current password", "error"); return; }
+        u["admin@wildguardsociety.org"] = {name: "Administrator", password: "admin123", role: "admin"};
+        u[a.email.toLowerCase()] = u["admin@wildguardsociety.org"]; saveAdminUsers(u);
+      } else if (!target) { showToast("Current admin not found", "error"); return; }
+      else if (target.password !== cur) { showToast("Incorrect current password", "error"); return; }
+      if (p !== c) { showToast("Passwords do not match", "error"); return; }
+      if (p.length < 6) { showToast("Password too short", "error"); return; }
+      target.password = p; saveAdminUsers(u); showToast("Password changed", "success"); document.getElementById("password-form").reset();
     });
   }
 
   function loadSection(section) {
-    const contentArea = document.getElementById("content-area");
+    var contentArea = document.getElementById("content-area");
     contentArea.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading...</p></div>';
-    let html = "";
+    var html = "";
     switch(section) {
       case "dashboard": html = renderDashboard(); break;
       case "species": html = renderSpecies(); break;
@@ -335,11 +363,13 @@
   }
 
   function checkAuth() {
-    var user = _get("wildguard_user");
-    if (!user || (user.role !== "admin" && user.email !== "admin@wildguardsociety.org")) { window.location.href = "admin-login.html"; return false; }
-    _set(STORAGE_KEYS.CURRENT_ADMIN, user);
-    if (user.email) { trackUserLogin(user.email, user.name); setUserOnline(user.email); }
-    return true;
+    try {
+      var user = _get("wildguard_user");
+      if (!user || (user.role !== "admin" && user.email !== "admin@wildguardsociety.org")) { window.location.href = "admin-login.html"; return false; }
+      _set(STORAGE_KEYS.CURRENT_ADMIN, user);
+      if (user.email) { trackUserLogin(user.email, user.name); setUserOnline(user.email); }
+      return true;
+    } catch(err) { console.warn("Auth check error:", err); return true; }
   }
 
   window.addEventListener("beforeunload", function() {
@@ -350,25 +380,14 @@
   document.addEventListener("DOMContentLoaded", function() {
     if (!checkAuth()) return;
     initStorage();
-    const links = document.querySelectorAll(".nav-item[data-section]");
-    links.forEach(l => { l.addEventListener("click", function(e) { e.preventDefault(); const section = this.dataset.section; links.forEach(x => x.classList.remove("active")); this.classList.add("active"); loadSection(section); }); });
+    var links = document.querySelectorAll(".nav-item[data-section]");
+    for(var i=0;i<links.length;i++){links[i].addEventListener("click",function(e){e.preventDefault();var section=this.dataset.section;for(var j=0;j<links.length;j++)links[j].classList.remove("active");this.classList.add("active");loadSection(section);});}
     loadSection("dashboard");
     // Top navigation handlers
-    const topLinks = document.querySelectorAll(".nav-link[data-section]");
-    topLinks.forEach(function(l) {
-      l.addEventListener("click", function(e) {
-        e.preventDefault();
-        var section = this.dataset.section;
-        topLinks.forEach(function(x) { x.classList.remove("active"); });
-        this.classList.add("active");
-        document.querySelectorAll(".nav-item[data-section]").forEach(function(x) { x.classList.remove("active"); });
-        var matching = document.querySelector('.nav-item[data-section="' + section + '"]');
-        if (matching) matching.classList.add("active");
-        loadSection(section);
-      });
-    });
-    const sidebarLogout = document.getElementById("sidebar-logout-link");
-    const topLogout = document.getElementById("top-logout");
+    var topLinks = document.querySelectorAll(".nav-link[data-section]");
+    for(var ii=0;ii<topLinks.length;ii++){topLinks[ii].addEventListener("click",function(e){e.preventDefault();var section=this.dataset.section;for(var jj=0;jj<topLinks.length;jj++)topLinks[jj].classList.remove("active");this.classList.add("active");var navItems=document.querySelectorAll(".nav-item[data-section]");for(var kk=0;kk<navItems.length;kk++)navItems[kk].classList.remove("active");var matching=document.querySelector('.nav-item[data-section="'+section+'"]');if(matching)matching.classList.add("active");loadSection(section);});}
+    var sidebarLogout = document.getElementById("sidebar-logout-link");
+    var topLogout = document.getElementById("top-logout");
     if (sidebarLogout) sidebarLogout.addEventListener("click", function(e) { e.preventDefault(); localStorage.removeItem("wildguard_user"); window.location.href = "admin-login.html"; });
     if (topLogout) topLogout.addEventListener("click", function(e) { e.preventDefault(); localStorage.removeItem("wildguard_user"); window.location.href = "admin-login.html"; });
   });
