@@ -50,6 +50,46 @@
   function getSettings() { return _get(STORAGE_KEYS.SETTINGS, {}); }
   function saveSettings(s) { _set(STORAGE_KEYS.SETTINGS, s); }
 
+  // User tracking
+  function getRegisteredUsers() { return _get(STORAGE_KEYS.USER_LIST, []); }
+  function saveRegisteredUsers(users) { _set(STORAGE_KEYS.USER_LIST, users); }
+  function trackUserLogin(email, name) {
+    var users = getRegisteredUsers();
+    var idx = users.findIndex(function(u) { return u.email === email; });
+    var now = new Date().toISOString();
+    if (idx >= 0) {
+      users[idx].lastLogin = now;
+      users[idx].loginCount = (users[idx].loginCount || 0) + 1;
+      users[idx].name = name || users[idx].name;
+    } else {
+      users.push({ email: email, name: name || email.split("@")[0], registeredAt: now, lastLogin: now, loginCount: 1, status: "offline" });
+    }
+    saveRegisteredUsers(users);
+  }
+  function setUserOnline(email) {
+    var users = getRegisteredUsers();
+    var idx = users.findIndex(function(u) { return u.email === email; });
+    if (idx >= 0) { users[idx].status = "online"; users[idx].lastActive = new Date().toISOString(); saveRegisteredUsers(users); }
+  }
+  function setUserOffline(email) {
+    var users = getRegisteredUsers();
+    var idx = users.findIndex(function(u) { return u.email === email; });
+    if (idx >= 0) { users[idx].status = "offline"; users[idx].lastActive = new Date().toISOString(); saveRegisteredUsers(users); }
+  }
+  function getOnlineUserCount() {
+    return getRegisteredUsers().filter(function(u) { return u.status === "online"; }).length;
+  }
+  function getActivitySummary() {
+    var users = getRegisteredUsers();
+    var now = Date.now();
+    return users.map(function(u) {
+      var lastActive = u.lastActive ? new Date(u.lastActive).getTime() : 0;
+      var isOnline = u.status === "online" && (now - lastActive) < 5 * 60 * 1000;
+      return { email: u.email, name: u.name, status: isOnline ? "online" : "offline", lastLogin: u.lastLogin, loginCount: u.loginCount || 0, registeredAt: u.registeredAt };
+    });
+  }
+
+  // Admin user functions (original)
   function getAdminUsers() { return _get(STORAGE_KEYS.ADMIN_USERS, {}); }
   function saveAdminUsers(users) { _set(STORAGE_KEYS.ADMIN_USERS, users); }
   function addAdminUser(email, name, password, role) {
@@ -91,6 +131,40 @@
       };
       reader.readAsDataURL(file);
     });
+  }
+
+  function renderUsers() {
+    var users = getActivitySummary();
+    var onlineCount = users.filter(function(u) { return u.status === "online"; }).length;
+    var html = '<div class="page-header"><h1>User Management</h1><p>View registered users and their activity status</p></div>' +
+      '<div class="stats-grid">' +
+      '<div class="stat-card"><div class="stat-value">' + users.length + '</div><div class="stat-label">Total Users</div></div>' +
+      '<div class="stat-card"><div class="stat-value">' + onlineCount + '</div><div class="stat-label">Online Now</div></div>' +
+      '<div class="stat-card"><div class="stat-value">' + (users.length - onlineCount) + '</div><div class="stat-label">Offline</div></div>' +
+      '</div>';
+    if (users.length === 0) {
+      html += '<div class="content-section"><div class="empty-state"><div class="empty-state-icon">&#x1F465;</div><h3>No registered users</h3><p>Users will appear here after they log in.</p></div></div>';
+    } else {
+      html += '<div class="content-section"><h2><i class="fas fa-user-friends"></i> Registered Users</h2><table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Logins</th><th>Last Login</th><th>Registered</th><th>Actions</th></tr></thead><tbody>';
+      users.forEach(function(u) {
+        html += '<tr><td>' + escapeHtml(u.name) + '</td><td>' + escapeHtml(u.email) + '</td><td><span class="badge badge-' + (u.status === "online" ? "success" : "danger") + '">' + (u.status === "online" ? "Online" : "Offline") + '</span></td><td>' + u.loginCount + '</td><td>' + (u.lastLogin ? new Date(u.lastLogin).toLocaleString() : "Never") + '</td><td>' + (u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : "Unknown") + '</td><td class="actions-cell"><button class="btn btn-sm btn-primary" onclick="viewUserDetails('' + u.email + '')"><i class="fas fa-eye"></i></button></td></tr>';
+      });
+      html += '</tbody></table></div>';
+    }
+    return html;
+  }
+
+  function viewUserDetails(email) {
+    var users = getRegisteredUsers();
+    var u = users.find(function(user) { return user.email === email; });
+    if (!u) return;
+    var body = document.getElementById("user-detail-body");
+    if (body) {
+      body.innerHTML = '<div class="form-row"><div class="form-group"><label>Name</label><p>' + escapeHtml(u.name || "Unknown") + '</p></div><div class="form-group"><label>Email</label><p>' + escapeHtml(u.email) + '</p></div></div>' +
+        '<div class="form-row"><div class="form-group"><label>Status</label><p><span class="badge badge-' + (u.status === "online" ? "success" : "danger") + '">' + (u.status === "online" ? "Online" : "Offline") + '</span></p></div><div class="form-group"><label>Total Logins</label><p>' + (u.loginCount || 0) + '</p></div></div>' +
+        '<div class="form-row"><div class="form-group"><label>Registered</label><p>' + (u.registeredAt ? new Date(u.registeredAt).toLocaleString() : "Unknown") + '</p></div><div class="form-group"><label>Last Login</label><p>' + (u.lastLogin ? new Date(u.lastLogin).toLocaleString() : "Never") + '</p></div></div>';
+    }
+    openModal("modal-user-detail");
   }
 
   function renderDashboard() {
@@ -230,6 +304,7 @@
       case "species": html = renderSpecies(); break;
       case "messages": html = renderMessages(); break;
       case "settings": html = renderSettings(); break;
+      case "users": html = renderUsers(); break;
       case "admins": html = renderAdmins(); break;
       default: html = "<p>Section not found</p>";
     }
@@ -238,9 +313,11 @@
   }
 
   function checkAuth() {
-    const user = _get("wildguard_user");
+    var user = _get("wildguard_user");
     if (!user || (user.role !== "admin" && user.email !== "admin@wildguardsociety.org")) { window.location.href = "admin-login.html"; return false; }
-    _set(STORAGE_KEYS.CURRENT_ADMIN, user); return true;
+    _set(STORAGE_KEYS.CURRENT_ADMIN, user);
+    if (user.email) { trackUserLogin(user.email, user.name); setUserOnline(user.email); }
+    return true;
   }
 
   document.addEventListener("DOMContentLoaded", function() {

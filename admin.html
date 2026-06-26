@@ -732,6 +732,7 @@
           <li><a href="#" data-section="dashboard" class="nav-link active">Dashboard</a></li>
           <li><a href="#" data-section="species" class="nav-link">Species</a></li>
           <li><a href="#" data-section="messages" class="nav-link">Messages</a></li>
+          <li><a href="#" data-section="users" class="nav-link">Users</a></li>
           <li><a href="#" data-section="admins" class="nav-link">Admins</a></li>
           <li><a href="#" data-section="settings" class="nav-link">Settings</a></li>
           <li><a href="#" id="top-logout">Logout</a></li>
@@ -759,6 +760,10 @@
         <a href="#" class="nav-item" data-section="messages">
           <i class="fas fa-envelope"></i>
           <span>Messages</span>
+        </a>
+        <a href="#" class="nav-item" data-section="users">
+          <i class="fas fa-user-friends"></i>
+          <span>Users</span>
         </a>
         <a href="#" class="nav-item" data-section="admins">
           <i class="fas fa-users"></i>
@@ -893,5 +898,22 @@
       </form>
     </div>
   </div>
+
+  <!-- User Detail Modal -->
+  <div class="modal-overlay" id="modal-user-detail">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>User Details</h3>
+        <button class="modal-close" onclick="closeModal('modal-user-detail')">&times;</button>
+      </div>
+      <div class="modal-body" id="user-detail-body">
+        <!-- Populated by JS -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-user-detail')">Close</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

@@ -295,6 +295,22 @@
         if (user && user.passwordHash === simpleHash(password)) {
           saveUser({ email: rawEmail, role: user.role, name: user.name || rawEmail.split('@')[0] });
           setAuthCookie(rawEmail);
+          // Track user login for admin dashboard
+          try {
+            var users = JSON.parse(localStorage.getItem("wildguard_user_list") || "[]");
+            var idx = users.findIndex(function(u) { return u.email === rawEmail; });
+            var now = new Date().toISOString();
+            if (idx >= 0) {
+              users[idx].lastLogin = now;
+              users[idx].loginCount = (users[idx].loginCount || 0) + 1;
+              users[idx].name = user.name || rawEmail.split('@')[0];
+              users[idx].status = "online";
+              users[idx].lastActive = now;
+            } else {
+              users.push({ email: rawEmail, name: user.name || rawEmail.split('@')[0], registeredAt: now, lastLogin: now, loginCount: 1, status: "online", lastActive: now });
+            }
+            localStorage.setItem("wildguard_user_list", JSON.stringify(users));
+          } catch(e) {}
           window.location.href = 'index.html';
           return;
         } else if (user && user.password === password) {
@@ -305,6 +321,22 @@
           localStorage.setItem('wildguard_demo_users', JSON.stringify(users));
           saveUser({ email: rawEmail, role: user.role, name: user.name || rawEmail.split('@')[0] });
           setAuthCookie(rawEmail);
+          // Track user login for admin dashboard
+          try {
+            var users = JSON.parse(localStorage.getItem("wildguard_user_list") || "[]");
+            var idx = users.findIndex(function(u) { return u.email === rawEmail; });
+            var now = new Date().toISOString();
+            if (idx >= 0) {
+              users[idx].lastLogin = now;
+              users[idx].loginCount = (users[idx].loginCount || 0) + 1;
+              users[idx].name = user.name || rawEmail.split('@')[0];
+              users[idx].status = "online";
+              users[idx].lastActive = now;
+            } else {
+              users.push({ email: rawEmail, name: user.name || rawEmail.split('@')[0], registeredAt: now, lastLogin: now, loginCount: 1, status: "online", lastActive: now });
+            }
+            localStorage.setItem("wildguard_user_list", JSON.stringify(users));
+          } catch(e) {}
           window.location.href = 'index.html';
           return;
         } else {
@@ -420,6 +452,13 @@
         }
         users[email] = { passwordHash: simpleHash(password), role: 'user', name: email.split('@')[0] };
         saveDemoUsers(users);
+        // Track new user registration
+        try {
+          var userList = JSON.parse(localStorage.getItem("wildguard_user_list") || "[]");
+          var now = new Date().toISOString();
+          userList.push({ email: email, name: email.split('@')[0], registeredAt: now, lastLogin: now, loginCount: 1, status: "online", lastActive: now });
+          localStorage.setItem("wildguard_user_list", JSON.stringify(userList));
+        } catch(e) {}
         if (successMessage) { successMessage.textContent = 'Registration successful! Please login.'; successMessage.style.display = 'block'; }
         registerForm.reset();
         setTimeout(() => { window.location.href = 'login.html'; }, 1500);
