@@ -189,6 +189,14 @@ const WildlifeScan = {
     if (this.els.voiceBtn) {
       this.els.voiceBtn.addEventListener("click", () => this.toggleVoiceListening());
     }
+    // Keyboard shortcut: press 'v' to toggle voice
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "v" && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const target = e.target;
+        if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable) return;
+        this.toggleVoiceListening();
+      }
+    });
   },
 
   handleFile(event) {

@@ -331,5 +331,10 @@
 
   <script defer src="js/main.js"></script>
   <script defer src="js/auth.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+    }
+  </script>
 </body>
 </html>
