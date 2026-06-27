@@ -4,52 +4,236 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | WildGuard Explorer</title>
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
-  <script defer src="../js/main.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .admin-dashboard { margin-top: var(--header-height, 72px); padding: 3rem 0 2rem; max-width: 1200px; margin-left: auto; margin-right: auto; color: var(--lighter, #fff); }
+    .admin-header { margin-bottom: 2.5rem; }
+    .admin-header h1 { font-family: var(--font-heading, 'Playfair Display', Georgia, serif); font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 0.5rem; }
+    .admin-header p { color: rgba(255,255,255,0.6); font-size: 1.05rem; max-width: 600px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+    .stat-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1.75rem; text-align: center; transition: all 0.3s ease; }
+    .stat-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); }
+    .stat-icon { font-size: 2rem; color: var(--accent, #c9a227); margin-bottom: 0.75rem; }
+    .stat-card h3 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .stat-card p { color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0; }
+    .admin-section { margin-bottom: 3rem; }
+    .admin-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+    .admin-section-header h2 { font-family: var(--font-heading, 'Playfair Display', Georgia, serif); font-size: 1.5rem; margin: 0; }
+    .admin-section-header p { color: rgba(255,255,255,0.6); margin: 0; }
+    .status-tag { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.9rem; border-radius: 100px; font-size: 0.82rem; font-weight: 600; }
+    .status-tag.online { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.25); }
+    .pending-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .pending-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
+    .pending-card:hover { border-color: rgba(255,255,255,0.15); }
+    .pending-img-wrap { width: 100%; height: 200px; overflow: hidden; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; }
+    .pending-img { width: 100%; height: 100%; object-fit: cover; }
+    .pending-placeholder { color: rgba(255,255,255,0.3); font-size: 2.5rem; }
+    .pending-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+    .pending-category { display: inline-block; padding: 0.3rem 0.75rem; background: rgba(201,162,39,0.15); border: 1px solid rgba(201,162,39,0.25); border-radius: 100px; color: var(--accent, #c9a227); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.75rem; width: max-content; }
+    .pending-body h3 { color: var(--lighter, #fff); margin: 0 0 0.4rem; font-size: 1.2rem; }
+    .pending-scientific { color: rgba(255,255,255,0.5); font-style: italic; font-size: 0.9rem; margin-bottom: 0.75rem; }
+    .pending-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.85rem; flex-wrap: wrap; }
+    .pending-status { display: inline-flex; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.8rem; font-weight: 600; }
+    .pending-status.pending { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.25); }
+    .pending-confidence { color: var(--accent); font-size: 0.88rem; font-weight: 500; }
+    .pending-date { color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-bottom: 1rem; }
+    .pending-actions { display: flex; gap: 0.75rem; margin-top: auto; }
+    .approve-btn { flex: 1; padding: 0.65rem; background: linear-gradient(135deg, #1b5e40, #143d2a); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+    .approve-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(27,94,64,0.35); }
+    .reject-btn { flex: 1; padding: 0.65rem; background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.25); border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+    .reject-btn:hover { background: rgba(239,68,68,0.15); transform: translateY(-2px); }
+    .admin-actions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
+    .admin-action-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1.5rem; text-align: center; transition: all 0.3s ease; }
+    .admin-action-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+    .admin-action-card i { font-size: 1.5rem; color: var(--accent, #c9a227); margin-bottom: 0.75rem; }
+    .admin-action-card h4 { color: var(--lighter, #fff); margin: 0 0 0.5rem; font-size: 1.05rem; }
+    .admin-action-card p { color: rgba(255,255,255,0.55); font-size: 0.92rem; margin: 0 0 1rem; }
+    .admin-action-card a, .admin-action-card button { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.2rem; background: rgba(201,162,39,0.12); border: 1px solid rgba(201,162,39,0.25); border-radius: 8px; color: var(--accent); font-weight: 600; font-size: 0.9rem; text-decoration: none; transition: all 0.3s ease; cursor: pointer; }
+    .admin-action-card a:hover, .admin-action-card button:hover { background: rgba(201,162,39,0.2); border-color: rgba(201,162,39,0.4); }
+    @media (max-width: 768px) {
+      .admin-dashboard { padding: 2rem 1.5rem; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .pending-grid { grid-template-columns: 1fr; }
+      .admin-actions-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">WildGuard Explorer</div>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../library/mammals.html">Library</a></li>
-        <li><a href="../scan.html">Scan</a></li>
-        <li><a href="../about.html">About</a></li>
-        <li><a href="../contact.html">Contact</a></li>
-      </ul>
-    </nav>
+  <!-- Background Slideshow -->
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background3.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
+  </div>
+
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="../library/library.html"><i class="fas fa-book"></i> Library</a>
+        <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
+        <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
+        <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a>
+        <a href="../admin-login.html"><i class="fas fa-shield-halved"></i> Admin</a>
+      </nav>
+      <div class="header-actions">
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <div class="user-menu" id="user-menu" style="display:none;">
+            <button class="user-menu-toggle" id="user-menu-toggle">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-email">User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="../user/Profile.html"><i class="fas fa-user"></i> Profile</a>
+              <a href="../user/History.html"><i class="fas fa-history"></i> History</a>
+              <a href="../user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
   </header>
 
-  <main>
-    <section class="page-banner">
-      <span class="eyebrow">Admin</span>
-      <h1>Dashboard overview.</h1>
-      <p class="lede">Track content, review species entries, and keep the wildlife catalog aligned with the rest of the site.</p>
-      <div class="banner-actions">
-        <a href="manage-animals.html" class="btn">Manage animals</a>
-        <a href="upload.html" class="btn ghost">Upload species</a>
-      </div>
-    </section>
+  <main class="admin-dashboard">
+    <div class="admin-header">
+      <span class="eyebrow">Administration</span>
+      <h1>Dashboard Overview</h1>
+      <p>Track content, review species submissions, and manage the wildlife catalog.</p>
+    </div>
 
-    <section class="section-shell">
-      <div class="feature-grid">
-        <article class="info-card"><div class="content"><span class="section-kicker">Content queue</span><h3>Review pending entries</h3><p>Keep the image and fact cards consistent with the editorial style used across the public pages.</p></div></article>
-        <article class="info-card"><div class="content"><span class="section-kicker">Media</span><h3>Confirm wildlife assets</h3><p>Use the same image treatment, captions, and metadata structure for every species card.</p></div></article>
-        <article class="info-card"><div class="content"><span class="section-kicker">Workflow</span><h3>Publish updates</h3><p>Push new organisms into the library after validating the copy and visuals on mobile.</p></div></article>
+    <!-- Stats Overview -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+        <h3 id="statPending">0</h3>
+        <p>Pending Scan Approvals</p>
       </div>
-    </section>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-database"></i></div>
+        <h3 id="statTotal">0</h3>
+        <p>Total Catalog Entries</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-camera"></i></div>
+        <h3 id="statToday">0</h3>
+        <p>Scans Today</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <h3 id="statUsers">1</h3>
+        <p>Active Users</p>
+      </div>
+    </div>
 
     <!-- Pending Scan Approvals -->
-    <section class="section-shell" style="padding: 2rem 0;">
-      <div class="container">
-        <h2 style="color: var(--lighter); margin-bottom: 0.5rem;"><i class="fas fa-user-shield"></i> Pending Scan Approvals</h2>
-        <p style="color: rgba(255,255,255,0.6); margin-bottom: 1.5rem;">Review and approve species submitted by users through the AI scan feature.</p>
-        <div id="pendingAdminContainer"></div>
+    <section class="admin-section">
+      <div class="admin-section-header">
+        <div>
+          <h2><i class="fas fa-user-shield"></i> Pending Scan Approvals</h2>
+          <p>Review and approve species submitted by users through the AI scan feature.</p>
+        </div>
+        <span class="status-tag online"><i class="fas fa-circle" style="font-size:0.5rem;"></i> System Online</span>
+      </div>
+      <div id="pendingAdminContainer"></div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="admin-section">
+      <div class="admin-section-header">
+        <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+      </div>
+      <div class="admin-actions-grid">
+        <div class="admin-action-card">
+          <i class="fas fa-paw"></i>
+          <h4>Manage Animals</h4>
+          <p>Edit species entries, add new organisms to the catalog.</p>
+          <a href="manage-animals.html"><i class="fas fa-arrow-right"></i> Go to Animals</a>
+        </div>
+        <div class="admin-action-card">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <h4>Upload Species</h4>
+          <p>Add new wildlife data with images and descriptions.</p>
+          <a href="upload.html"><i class="fas fa-arrow-right"></i> Upload</a>
+        </div>
+        <div class="admin-action-card">
+          <i class="fas fa-chart-bar"></i>
+          <h4>View Analytics</h4>
+          <p>Check scan trends, most identified species, user-excuse.</p>
+          <a href="#" onclick="alert('Analytics coming soon.'); return false;"><i class="fas fa-arrow-right"></i> View Reports</a>
+        </div>
+        <div class="admin-action-card">
+          <i class="fas fa-gear"></i>
+          <h4>Settings</h4>
+          <p>Configure system parameters, users, and permissions.</p>
+          <a href="#" onclick="alert('Settings coming soon.'); return false;"><i class="fas fa-arrow-right"></i> Manage</a>
+        </div>
       </div>
     </section>
   </main>
 
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <div class="footer-social">
+          <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../library/library.html">Library</a></li>
+          <li><a href="../scan.html">Scan</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+          <li><a href="../admin-login.html">Admin</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="#">Donate</a></li>
+          <li><a href="#">Adopt an Animal</a></li>
+          <li><a href="#">Volunteer</a></li>
+          <li><a href="#">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> info@wildguardsociety.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> Global</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
+    </div>
+  </footer>
+
+  <script defer src="../js/main.js"></script>
+  <script defer src="../js/auth.js"></script>
   <script defer src="../js/scan-integration.js"></script>
 </body>
 </html>
