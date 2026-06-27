@@ -287,85 +287,93 @@
       // Simulate small delay for UX
       await new Promise(r => setTimeout(r, 600));
 
-      // For static/demo hosting, fallback to localStorage auth
-      const isStatic = window.location.origin.includes('github.io') || window.location.protocol === 'file:';
-      if (isStatic) {
-        const users = JSON.parse(localStorage.getItem('wildguard_demo_users') || '{}');
-        const user = users[email];
-        if (user && user.passwordHash === simpleHash(password)) {
-          saveUser({ email: rawEmail, role: user.role, name: user.name || rawEmail.split('@')[0] });
-          setAuthCookie(rawEmail);
-          // Track user login for admin dashboard
-          try {
-            var users = JSON.parse(localStorage.getItem("wildguard_user_list") || "[]");
-            var idx = users.findIndex(function(u) { return u.email === rawEmail; });
-            var now = new Date().toISOString();
-            if (idx >= 0) {
-              users[idx].lastLogin = now;
-              users[idx].loginCount = (users[idx].loginCount || 0) + 1;
-              users[idx].name = user.name || rawEmail.split('@')[0];
-              users[idx].status = "online";
-              users[idx].lastActive = now;
-            } else {
-              users.push({ email: rawEmail, name: user.name || rawEmail.split('@')[0], registeredAt: now, lastLogin: now, loginCount: 1, status: "online", lastActive: now });
-            }
-            localStorage.setItem("wildguard_user_list", JSON.stringify(users));
-          } catch(e) {}
+      // Check if backend is running (port 5000) via config, or use localStorage for static hosting
+      // We'll try the backend first, then fall back gracefully if it's not available
+      const API_BASE = window.location.href.includes(':5000') || window.location.origin.includes('localhost')
+        ? 'http://localhost:5000'
+        : (window.location.origin.includes('github.io') || window.location.protocol === 'file:' ? '' : '/api');
+      const hasBackend = API_BASE !== '';
+      // Try backend first, fall back to localStorage demo mode only if backend unavailable
+      if (hasBackend) {
+        try {
+          const response = await fetch(API_BASE + '/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+            credentials: 'include'
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) { throw new Error(data.message || 'Login failed'); }
+          // Backend login succeeded - store user info in localStorage for UI
+          saveUser({ email: rawEmail, role: data.role || 'user', name: rawEmail.split('@')[0] });
           window.location.href = 'index.html';
           return;
-        } else if (user && user.password === password) {
-          // Legacy plaintext password - upgrade to hash on login
-          user.passwordHash = simpleHash(password);
-          delete user.password;
-          users[email] = user;
-          localStorage.setItem('wildguard_demo_users', JSON.stringify(users));
-          saveUser({ email: rawEmail, role: user.role, name: user.name || rawEmail.split('@')[0] });
-          setAuthCookie(rawEmail);
-          // Track user login for admin dashboard
-          try {
-            var users = JSON.parse(localStorage.getItem("wildguard_user_list") || "[]");
-            var idx = users.findIndex(function(u) { return u.email === rawEmail; });
-            var now = new Date().toISOString();
-            if (idx >= 0) {
-              users[idx].lastLogin = now;
-              users[idx].loginCount = (users[idx].loginCount || 0) + 1;
-              users[idx].name = user.name || rawEmail.split('@')[0];
-              users[idx].status = "online";
-              users[idx].lastActive = now;
-            } else {
-              users.push({ email: rawEmail, name: user.name || rawEmail.split('@')[0], registeredAt: now, lastLogin: now, loginCount: 1, status: "online", lastActive: now });
-            }
-            localStorage.setItem("wildguard_user_list", JSON.stringify(users));
-          } catch(e) {}
-          window.location.href = 'index.html';
-          return;
-        } else {
-          if (errorMessage) {
-            errorMessage.textContent = 'Invalid email or password. Please try again.';
-            errorMessage.style.display = 'block';
-          }
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = submitBtn.originalHTML || 'Sign In';
-          }
-          return;
+        } catch (error) {
+          // If fetch failed (backend down), fall through to demo mode below
+          console.warn('Backend login failed, falling back to demo mode:', error.message);
         }
       }
 
-      // Backend mode
-      try {
-        const response = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }), credentials: 'include' });
-        if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.message || 'Login failed'); }
+      // ---- Demo / Fallback Mode (no backend available) ----
+      const demoUsers = JSON.parse(localStorage.getItem('wildguard_demo_users') || '{}');
+      const demoUser = demoUsers[email];
+      if (demoUser && demoUser.passwordHash === simpleHash(password)) {
+        saveUser({ email: rawEmail, role: demoUser.role, name: demoUser.name || rawEmail.split('@')[0] });
+        setAuthCookie(rawEmail);
+        // Track user login for admin dashboard
+        try {
+          var userList = JSON.parse(localStorage.getItem("wildguard_user_list") || "[]");
+          var idx = userList.findIndex(function(u) { return u.email === rawEmail; });
+          var now = new Date().toISOString();
+          if (idx >= 0) {
+            userList[idx].lastLogin = now;
+            userList[idx].loginCount = (userList[idx].loginCount || 0) + 1;
+            userList[idx].name = demoUser.name || rawEmail.split('@')[0];
+            userList[idx].status = "online";
+            userList[idx].lastActive = now;
+          } else {
+            userList.push({ email: rawEmail, name: demoUser.name || rawEmail.split('@')[0], registeredAt: now, lastLogin: now, loginCount: 1, status: "online", lastActive: now });
+          }
+          localStorage.setItem("wildguard_user_list", JSON.stringify(userList));
+        } catch(e) {}
         window.location.href = 'index.html';
-      } catch (error) {
+        return;
+      } else if (demoUser && demoUser.password === password) {
+        // Legacy plaintext password - upgrade to hash on login
+        demoUser.passwordHash = simpleHash(password);
+        delete demoUser.password;
+        demoUsers[email] = demoUser;
+        localStorage.setItem('wildguard_demo_users', JSON.stringify(demoUsers));
+        saveUser({ email: rawEmail, role: demoUser.role, name: demoUser.name || rawEmail.split('@')[0] });
+        setAuthCookie(rawEmail);
+        // Track user login for admin dashboard
+        try {
+          var userList = JSON.parse(localStorage.getItem("wildguard_user_list") || "[]");
+          var idx = userList.findIndex(function(u) { return u.email === rawEmail; });
+          var now = new Date().toISOString();
+          if (idx >= 0) {
+            userList[idx].lastLogin = now;
+            userList[idx].loginCount = (userList[idx].loginCount || 0) + 1;
+            userList[idx].name = demoUser.name || rawEmail.split('@')[0];
+            userList[idx].status = "online";
+            userList[idx].lastActive = now;
+          } else {
+            userList.push({ email: rawEmail, name: demoUser.name || rawEmail.split('@')[0], registeredAt: now, lastLogin: now, loginCount: 1, status: "online", lastActive: now });
+          }
+          localStorage.setItem("wildguard_user_list", JSON.stringify(userList));
+        } catch(e) {}
+        window.location.href = 'index.html';
+        return;
+      } else {
         if (errorMessage) {
-          errorMessage.textContent = error.message;
+          errorMessage.textContent = 'Invalid email or password. Please try again.';
           errorMessage.style.display = 'block';
         }
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = submitBtn.originalHTML || 'Sign In';
         }
+        return;
       }
     });
   }
@@ -442,52 +450,57 @@
 
       const email = rawEmail.toLowerCase();
 
-      // If no backend (static hosting), use demo mode
-      const isStatic = window.location.origin.includes('github.io') || window.location.protocol === 'file:';
-      if (isStatic) {
-        const users = getDemoUsers();
-        if (users[email]) {
-          if (errorMessage) { errorMessage.textContent = 'Email already registered'; errorMessage.style.display = 'block'; }
-          return;
-        }
-        users[email] = { passwordHash: simpleHash(password), role: 'user', name: email.split('@')[0] };
-        saveDemoUsers(users);
-        // Track new user registration
+      // Try backend first, fall back to demo mode
+      const API_BASE = window.location.href.includes(':5000') || window.location.origin.includes('localhost')
+        ? 'http://localhost:5000'
+        : (window.location.origin.includes('github.io') || window.location.protocol === 'file:' ? '' : '/api');
+      const hasBackend = API_BASE !== '';
+
+      if (hasBackend) {
         try {
-          var userList = JSON.parse(localStorage.getItem("wildguard_user_list") || "[]");
-          var now = new Date().toISOString();
-          userList.push({ email: email, name: email.split('@')[0], registeredAt: now, lastLogin: now, loginCount: 1, status: "online", lastActive: now });
-          localStorage.setItem("wildguard_user_list", JSON.stringify(userList));
-        } catch(e) {}
-        if (successMessage) { successMessage.textContent = 'Registration successful! Please login.'; successMessage.style.display = 'block'; }
-        registerForm.reset();
-        setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+          const response = await fetch(API_BASE + '/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+            credentials: 'include'
+          });
+
+          if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            throw new Error(data.message || 'Registration failed');
+          }
+
+          if (successMessage) {
+            successMessage.textContent = 'Registration successful! Please login.';
+            successMessage.style.display = 'block';
+          }
+          registerForm.reset();
+          setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+          return;
+        } catch (err) {
+          // Backend failed, try demo mode
+          console.warn('Backend register failed, falling back to demo mode:', err.message);
+        }
+      }
+
+      // ---- Demo / Fallback Mode ----
+      const demoUsers = getDemoUsers();
+      if (demoUsers[email]) {
+        if (errorMessage) { errorMessage.textContent = 'Email already registered'; errorMessage.style.display = 'block'; }
         return;
       }
-
-      // Backend mode
+      demoUsers[email] = { passwordHash: simpleHash(password), role: 'user', name: email.split('@')[0] };
+      saveDemoUsers(demoUsers);
+      // Track new user registration
       try {
-        const response = await fetch('/api/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }), credentials: 'include' });
-
-        if (!response.ok) {
-          const data = await response.json().catch(() => ({}));
-          throw new Error(data.message || 'Registration failed');
-        }
-
-        if (successMessage) {
-          successMessage.textContent = 'Registration successful! Please login.';
-          successMessage.style.display = 'block';
-        }
-        registerForm.reset();
-        setTimeout(() => {
-          window.location.href = 'login.html';
-        }, 1500);
-      } catch (err) {
-        if (errorMessage) {
-          errorMessage.textContent = err.message;
-          errorMessage.style.display = 'block';
-        }
-      }
+        var userList = JSON.parse(localStorage.getItem("wildguard_user_list") || "[]");
+        var now = new Date().toISOString();
+        userList.push({ email: email, name: email.split('@')[0], registeredAt: now, lastLogin: now, loginCount: 1, status: "online", lastActive: now });
+        localStorage.setItem("wildguard_user_list", JSON.stringify(userList));
+      } catch(e) {}
+      if (successMessage) { successMessage.textContent = 'Registration successful! Please login.'; successMessage.style.display = 'block'; }
+      registerForm.reset();
+      setTimeout(() => { window.location.href = 'login.html'; }, 1500);
     });
   }
 
