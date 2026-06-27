@@ -72,6 +72,11 @@ const WildlifeScan = {
     this.initSpeechRecognition();
     this.bindEvents();
     this.initStorage();
+    // Load voices for natural-sounding TTS
+    if (window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = () => this.selectNaturalVoice();
+      this.selectNaturalVoice();
+    }
   },
 
   initStorage() {
@@ -222,44 +227,64 @@ const WildlifeScan = {
     if (window.speechSynthesis) window.speechSynthesis.cancel();
   },
 
-  // Smart AI: match by filename tags, fall back to random
+  // Smart AI: match by filename keywords, then by image fingerprint hash if ambiguous
   simulateScan(input) {
     const speciesKeys = Object.keys(this.speciesDB);
     let bestMatch = null;
     let bestScore = 0;
 
-    // Try to extract clues from filename or input
+    // Step 1: extract filename clues
     let searchText = "";
     if (this.lastInputSource && this.lastInputSource.name) {
-      searchText = this.lastInputSource.name.toLowerCase().replace(/[_\-\s]+/g, " ");
+      // Normalize: lowercase, strip extension, split by common separators
+      const raw = this.lastInputSource.name.toLowerCase().replace(/\.[^.]+$/, "");
+      searchText = raw.replace(/[_\-\s.]+/g, " ");
     }
 
-    // Try filename matching against tags and names
+    // Step 2: score each species by keyword matching
     speciesKeys.forEach(key => {
       const item = this.speciesDB[key];
       let score = 0;
-      const checkWords = [key, ...item.tags];
-
-      checkWords.forEach(word => {
-        if (searchText.includes(word.toLowerCase())) {
-          // Prioritize exact tag matches
-          score += word === key ? 10 : 3;
+      const allWords = [key, ...item.tags];
+      allWords.forEach(word => {
+        if (!word) return;
+        const w = word.toLowerCase();
+        if (searchText.includes(" " + w + " ") || searchText.startsWith(w + " ") || searchText.endsWith(" " + w) || searchText === w) {
+          if (w === key.toLowerCase()) { score += 50; }
+          else { score += 10; }
+        } else if (searchText.includes(w)) {
+          if (w === key.toLowerCase()) { score += 30; }
+          else { score += 5; }
         }
       });
-
       if (score > bestScore) {
         bestScore = score;
         bestMatch = key;
       }
     });
 
-    // If no filename match, randomly select (simulating unidentified input)
+    // Step 3: if no filename match, use image data fingerprint (deterministic pseudo-random)
     if (!bestMatch) {
-      bestMatch = speciesKeys[Math.floor(Math.random() * speciesKeys.length)];
+      let hashSeed = 0;
+      if (typeof input === "string" && input.startsWith("data:")) {
+        // Fingerprint from first 200 chars of base64 after header
+        const payload = input.replace(/^data:[^,]+,/, "");
+        for (let i = 0; i < Math.min(payload.length, 200); i++) {
+          hashSeed = ((hashSeed << 5) - hashSeed) + payload.charCodeAt(i);
+          hashSeed |= 0;
+        }
+      } else if (typeof input === "object" && input.name) {
+        for (let i = 0; i < input.name.length; i++) {
+          hashSeed = ((hashSeed << 5) - hashSeed) + input.name.charCodeAt(i);
+          hashSeed |= 0;
+        }
+      }
+      const idx = Math.abs(hashSeed) % speciesKeys.length;
+      bestMatch = speciesKeys[idx];
     }
 
     const species = this.speciesDB[bestMatch];
-    const baseConfidence = bestScore > 0 ? 88 : 82;
+    const baseConfidence = bestScore > 0 ? 89 : 84;
     const confidence = baseConfidence + Math.floor(Math.random() * (99 - baseConfidence));
     this.currentResult = { species, confidence, key: bestMatch };
     this.els.loadingText.textContent = "Analyzing image with neural network...";
@@ -404,23 +429,62 @@ const WildlifeScan = {
     }
   },
 
+  // Select a natural-sounding voice once voices are loaded
+  selectNaturalVoice() {
+    if (!window.speechSynthesis) return;
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return;
+    // Prefer human-like voices
+    const preferred = [
+      "Google UK English Female", "Google US English", "Samantha", "Victoria",
+      "Alex", "Karen", "Moira", "Fiona", "Ashley", "Stephanie",
+      "Microsoft Zira", "Microsoft David", "Microsoft Hazel", "Microsoft Catherine"
+    ];
+    for (let name of preferred) {
+      const found = voices.find(v => v.name === name);
+      if (found) { this.selectedVoice = found; return; }
+    }
+    // Fallback to first English voice
+    const en = voices.find(v => v.lang && v.lang.startsWith("en"));
+    if (en) this.selectedVoice = en;
+  },
+
   speak(text) {
     if (!window.speechSynthesis) return;
+    if (!this.selectedVoice) this.selectNaturalVoice();
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.9;
-    utterance.pitch = 1;
-    window.speechSynthesis.speak(utterance);
+    // Add natural pauses for a human-like feel
+    const phrases = text.split(/\.|!|\?/).filter(s => s.trim().length > 0);
+    const speakNext = (index) => {
+      if (index >= phrases.length) return;
+      const phrase = phrases[index].trim() + ".";
+      const utterance = new SpeechSynthesisUtterance(phrase);
+      // Natural pitch and rate for human-like speech
+      utterance.rate = 0.88;
+      utterance.pitch = 0.96;
+      if (this.selectedVoice) utterance.voice = this.selectedVoice;
+      utterance.onend = () => {
+        setTimeout(() => speakNext(index + 1), 420);
+      };
+      window.speechSynthesis.speak(utterance);
+    };
+    speakNext(0);
   },
 
   readFieldGuide() {
     if (!this.currentResult) return;
     const { species } = this.currentResult;
-    const text = species.name + ". " + species.scientificName + ". Domain: " + species.domain + ", Kingdom: " + species.kingdom + ". Status: " + species.status +
-      ". Population: " + species.population + ". Habitat: " + species.habitat +
-      ". Diet: " + species.diet + ". Behavior: " + species.behavior +
-      ". Threats: " + species.threats;
-    this.speak(text);
+    const text =
+      "Field guide for " + species.name + ". " +
+      "Scientific name: " + species.scientificName + ". " +
+      "Kingdom: " + species.kingdom + ". " +
+      "Status: " + species.status + ". " +
+      "Population estimate: " + species.population + ". " +
+      "Habitat: " + species.habitat + ".";
+    const text2 =
+      "Diet: " + species.diet + ". " +
+      "Behavior: " + species.behavior + ".";
+    this.speak(text + " " + text2);
   }
 };
 
