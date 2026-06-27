@@ -11,9 +11,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/scan.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+  <!-- Background Slideshow -->
   <div class="page-slideshow">
     <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
     <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
@@ -21,6 +23,8 @@
     <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
     <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
   </div>
+
+  <!-- Header -->
   <header class="site-header" id="site-header">
     <div class="header-container">
       <a href="index.html" class="logo">
@@ -59,43 +63,87 @@
   </header>
 
   <main>
-    <section class="page-banner">
-      <span class="eyebrow">Wildlife Scan</span>
-      <h1>Real-Time Detection</h1>
-      <p class="lede">AI-powered wildlife monitoring and identification system.</p>
+    <!-- Hero / Scanner Section -->
+    <section class="scan-hero">
+      <div class="scan-hero-content">
+        <span class="scan-eyebrow"><i class="fas fa-scanner"></i> Scanner</span>
+        <h1>What did you find?</h1>
+        <p class="scan-subtitle">Capture an animal, plant, insect, or even a leaf. AI identifies it and reads the field guide aloud.</p>
+      </div>
     </section>
 
-    <section class="content-overlay">
-      <div class="container">
-        <div class="scan-layout">
-          <div class="scan-media">
-            <div class="image-preview">
-              <img id="previewImg" src="#" alt="Preview" style="max-width:100%; display:none;">
-              <div class="upload-area">
-                <button id="uploadBtn" class="btn">Upload Image</button>
-                <button id="cameraBtn" class="btn">Take Photo</button>
-                <input type="file" id="fileInput" accept="image/*" style="display:none;">
+    <!-- Action Area -->
+    <section class="scan-action-area">
+      <div class="scan-container">
+        <div id="scanInputView">
+          <p class="action-label">Ready when you are</p>
+          <p class="action-hint">Use your camera or upload a photo.</p>
+          <div class="action-buttons">
+            <button id="cameraBtn" class="action-btn camera-btn">
+              <i class="fas fa-camera"></i>
+              <span>Open camera</span>
+            </button>
+            <button id="uploadBtn" class="action-btn upload-btn">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span>Upload photo</span>
+            </button>
+          </div>
+          <input type="file" id="fileInput" accept="image/*" style="display:none;" />
+        </div>
+
+        <!-- Preview & Results View -->
+        <div id="scanResultView" style="display:none;">
+          <div class="result-layout">
+            <div class="preview-panel">
+              <img id="previewImg" src="" alt="Captured image" />
+              <button id="retakeBtn" class="retake-btn">
+                <i class="fas fa-redo"></i> Scan another
+              </button>
+            </div>
+            <div class="result-panel">
+              <div id="loadingState" class="loading-state">
+                <div class="scan-animation">
+                  <div class="scanner-line"></div>
+                  <div class="scan-grid"></div>
+                </div>
+                <p id="loadingText">Analyzing image with neural network...</p>
               </div>
-              <p class="hint">Supported formats: JPG, PNG, WebP</p>
+              <div id="resultState" class="result-state" style="display:none;">
+                <span id="resultCategory" class="result-category"></span>
+                <h2 id="resultTitle"></h2>
+                <p id="resultScientificName" class="scientific-name"></p>
+                <div id="resultStatusBadge" class="status-badge"></div>
+                <p id="resultConfidence" class="confidence"></p>
+                <div id="resultDetails" class="result-details"></div>
+                <div class="result-actions">
+                  <button id="readAloudBtn" class="read-btn">
+                    <i class="fas fa-volume-up"></i> Read field guide aloud
+                  </button>
+                  <a href="library/library.html" class="library-link">
+                    <i class="fas fa-book-open"></i> Open species library
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-          <aside class="scan-panel">
-            <div class="content">
-              <span class="scan-kicker">Recognition result</span>
-              <h2 id="resultTitle">&mdash;</h2>
-              <p id="resultStatus">Ready to scan</p>
-              <div id="resultDetails"></div>
-              <div class="scan-actions">
-                <a href="library/mammals.html" id="libLink" class="btn" style="display:none;">Open species library</a>
-                <a href="contact.html" class="btn ghost">Report an issue</a>
-              </div>
-            </div>
-          </aside>
         </div>
+      </div>
+    </section>
+
+    <!-- Voice Controls -->
+    <section class="voice-section">
+      <div class="scan-container">
+        <button id="voiceBtn" class="voice-btn">
+          <i class="fas fa-microphone"></i>
+          <span id="voiceBtnText">Voice Command</span>
+        </button>
+        <p class="voice-hint">Say: "scan", "take photo", "upload image", or "clear"</p>
+        <p id="voiceStatus" class="voice-status"></p>
       </div>
     </section>
   </main>
 
+  <!-- Footer -->
   <footer class="site-footer">
     <div class="footer-content">
       <div class="footer-brand">
@@ -113,7 +161,7 @@
         <h4>Explore</h4>
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="library/library.html">Library</a></  library/library.html">Library</a></li>
+          <li><a href="library/library.html">Library</a></li>
           <li><a href="scan.html">Scan</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
@@ -131,7 +179,7 @@
       </div>
       <div class="footer-contact">
         <h4>Contact</h4>
-        <p><i class="fas fa-envelope"></i> info@,](,) org</p>
+        <p><i class="fas fa-envelope"></i> info@wildlifeguardians.org</p>
         <p><i class="fas fa-phone"></i> +255 700 123 456</p>
         <p><i class="fas fa-map-marker-alt"></i> Global</p>
       </div>
@@ -140,6 +188,8 @@
       <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
     </div>
   </footer>
+
+  <!-- Scripts -->
   <script defer src="js/main.js"></script>
   <script defer src="js/scan.js"></script>
   <script defer src="js/auth.js"></script>

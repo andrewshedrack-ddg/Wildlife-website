@@ -1,189 +1,343 @@
-// scan.js - AI Wildlife Scan with Voice Commands & Realistic AI
+// scan.js - Wildlife Scan with Voice, AI Simulation, and Read-Aloud
+// Inspired by nature-seer-ai.lovable.app/scan
 
 const WildlifeScan = {
-  elements: {},
-  isListening: false,
+  els: {},
   recognition: null,
+  isListening: false,
+  currentResult: null,
 
-  mockSpecies: {
+  speciesDB: {
     elephant: {
       name: "African Bush Elephant",
       scientificName: "Loxodonta africana",
+      category: "Mammal",
       status: "Vulnerable",
+      statusClass: "vulnerable",
       population: "415,000",
       habitat: "Savannas, forests, grasslands",
       diet: "Herbivore - grasses, bark, fruits, leaves",
-      behavior: "Highly social; lives in matriarchal herds of 10-100 individuals. Uses infrasound for communication over long distances.",
+      behavior: "Highly social; lives in matriarchal herds of 10-100 individuals. Uses infrasound for communication over long distances. Drinks up to 190 liters of water daily.",
       threats: "Habitat loss, human-wildlife conflict, illegal ivory trade",
-      desc: "Large herbivore, key species sharing habitats and competing for resources with others. Open savanna and drier regions."
+      desc: "The African Bush Elephant is the largest land animal on Earth, playing a vital role in shaping its ecosystem by clearing paths and dispersing seeds."
     },
     lion: {
       name: "African Lion",
       scientificName: "Panthera leo",
+      category: "Mammal",
       status: "Vulnerable",
+      statusClass: "vulnerable",
       population: "23,000 - 39,000",
       habitat: "Savannas, grasslands, open woodlands",
       diet: "Carnivore - wildebeest, zebra, buffalo, warthog",
-      behavior: "The only truly social cat. Lions live in prides of 2-40 individuals. Females do most of the hunting while males defend territory.",
+      behavior: "The only truly social cat. Lions live in prides of 2-40 individuals. Females do most of the hunting while males defend territory. Roars can be heard up to 8 km away.",
       threats: "Habitat loss, retaliatory killings, prey depletion, trophy hunting",
-      desc: "Social apex predator. Cooperative hunting in prides."
+      desc: "The African Lion, often called the King of Beasts, is an apex predator that regulates prey populations and maintains ecological balance."
     },
     giraffe: {
       name: "Masai Giraffe",
       scientificName: "Giraffa tippelskirchi",
+      category: "Mammal",
       status: "Endangered",
+      statusClass: "endangered",
       population: "35,000",
       habitat: "Savannas, open woodlands",
       diet: "Herbivore - acacia leaves, twigs, bark",
-      behavior: "Sleeps only 30 minutes per day in short bursts. Uses its 45cm tongue to grab leaves. Known as 'silent giants,' they communicate with infrasound.",
+      behavior: "Sleeps only 30 minutes per day in short bursts. Uses its 45cm tongue to grab leaves. Known as silent giants, they communicate with infrasound below human hearing.",
       threats: "Habitat fragmentation, poaching for bushmeat and tails",
-      desc: "Tallest terrestrial animal. Unique spotted pattern like human fingerprints."
+      desc: "The tallest terrestrial animal, the Masai Giraffe towers over the savanna, using its incredible height to spot predators from miles away."
     },
     zebra: {
       name: "Plains Zebra",
       scientificName: "Equus quagga",
+      category: "Mammal",
       status: "Near Threatened",
+      statusClass: "near-threatened",
       population: "500,000",
       habitat: "Grasslands, savannas, open woodlands",
       diet: "Herbivore - primarily grasses",
-      behavior: "Lives in harems or mixed herds up to 1,000. Each zebra has unique stripe patterns. Excellent swimmers that cross rivers during migration.",
+      behavior: "Lives in harems or mixed herds up to 1,000. Each zebra has unique stripe patterns like human fingerprints. Excellent swimmers that cross rivers during migration.",
       threats: "Habitat loss, hunting for skins, competition with livestock",
-      desc: "Distinctive striped equid. Part of great migrations."
+      desc: "The Plains Zebra is famous for its distinctive black-and-white stripes, which may help confuse predators and biting insects."
     },
     cheetah: {
       name: "Cheetah",
       scientificName: "Acinonyx jubatus",
+      category: "Mammal",
       status: "Vulnerable",
+      statusClass: "vulnerable",
       population: "7,100",
       habitat: "Savannas, grasslands, semi-arid areas",
       diet: "Carnivore - Thomson's gazelle, impala, hare",
-      behavior: "Accelerates from 0-100 km/h in 3 seconds. Cannot retract claws fully. After a sprint, needs 20-30 minutes to cool down.",
+      behavior: "Accelerates from 0-100 km/h in 3 seconds. Cannot retract claws fully. After a sprint, needs 20-30 minutes to cool down, making it vulnerable to scavengers.",
       threats: "Habitat loss, human-wildlife conflict, low genetic diversity",
-      desc: "Fastest land animal. High-speed chases over short distances."
+      desc: "The Cheetah is the fastest land animal, capable of breathtaking acceleration speeds in pursuit of prey across the open plains."
     },
     leopard: {
       name: "Leopard",
       scientificName: "Panthera pardus",
+      category: "Mammal",
       status: "Vulnerable",
-      population: "Unknown (declining)",
+      statusClass: "vulnerable",
+      population: "Unknown",
       habitat: "Forests, grasslands, mountains, savannas",
       diet: "Carnivore - antelope, warthog, birds, fish",
-      behavior: "Incredibly adaptable and stealthy. Can drag prey 3x its body weight up trees. Solitary and primarily nocturnal.",
+      behavior: "Incredibly adaptable and stealthy. Can drag prey 3x its body weight up trees. Solitary and primarily nocturnal. Incredible climbing ability.",
       threats: "Habitat loss, prey depletion, poaching for skins",
-      desc: "Powerful, elusive big cat. Hauls kills into trees."
+      desc: "The Leopard is a master of stealth and power, capable of adapting to almost any habitat from rainforests to deserts."
     },
     wildebeest: {
       name: "Wildebeest",
       scientificName: "Connochaetes taurinus",
+      category: "Mammal",
       status: "Least Concern",
+      statusClass: "least-concern",
       population: "1.5 million",
       habitat: "Open grasslands, savannas",
       diet: "Herbivore - short grasses",
-      behavior: "Participates in the largest mammal migration on Earth with over 1.5 million individuals. Can run at 80 km/h.",
+      behavior: "Participates in the largest mammal migration on Earth with over 1.5 million individuals. Can run at 80 km/h. Gives birth simultaneously in a 3-week window.",
       threats: "Habitat fragmentation, human encroachment, disease from livestock",
-      desc: "Migratory antelope. Part of mass migration."
+      desc: "The Wildebeest, also called the gnu, is a keystone species of the Serengeti famous for its epic annual migration."
+    },
+    rhino: {
+      name: "Black Rhinoceros",
+      scientificName: "Diceros bicornis",
+      category: "Mammal",
+      status: "Critically Endangered",
+      statusClass: "endangered",
+      population: "5,600",
+      habitat: "Savannas, grasslands, scrublands",
+      diet: "Herbivore - leaves, branches, shoots",
+      behavior: "Solitary and territorial. Despite poor eyesight, has excellent hearing and smell. Can run up to 55 km/h. Uses dung middens as communication posts.",
+      threats: "Illegal poaching for horns, habitat loss",
+      desc: "The Black Rhinoceros is a critically endangered browser with a prehensile upper lip for grasping leaves and branches."
     }
   },
 
   init() {
     this.cacheElements();
     this.initSpeechRecognition();
-    this.createVoiceControls();
     this.bindEvents();
   },
 
   cacheElements() {
-    const e = this.elements;
-    e.previewImg = document.getElementById("previewImg");
-    e.uploadBtn = document.getElementById("uploadBtn");
-    e.cameraBtn = document.getElementById("cameraBtn");
-    e.fileInput = document.getElementById("fileInput");
-    e.resultTitle = document.getElementById("resultTitle");
-    e.resultStatus = document.getElementById("resultStatus");
-    e.resultDetails = document.getElementById("resultDetails");
-    e.libLink = document.getElementById("libLink");
+    this.els.scanInputView = document.getElementById("scanInputView");
+    this.els.scanResultView = document.getElementById("scanResultView");
+    this.els.uploadBtn = document.getElementById("uploadBtn");
+    this.els.cameraBtn = document.getElementById("cameraBtn");
+    this.els.fileInput = document.getElementById("fileInput");
+    this.els.previewImg = document.getElementById("previewImg");
+    this.els.retakeBtn = document.getElementById("retakeBtn");
+    this.els.loadingState = document.getElementById("loadingState");
+    this.els.loadingText = document.getElementById("loadingText");
+    this.els.resultState = document.getElementById("resultState");
+    this.els.resultCategory = document.getElementById("resultCategory");
+    this.els.resultTitle = document.getElementById("resultTitle");
+    this.els.resultScientificName = document.getElementById("resultScientificName");
+    this.els.resultStatusBadge = document.getElementById("resultStatusBadge");
+    this.els.resultConfidence = document.getElementById("resultConfidence");
+    this.els.resultDetails = document.getElementById("resultDetails");
+    this.els.readAloudBtn = document.getElementById("readAloudBtn");
+    this.els.voiceBtn = document.getElementById("voiceBtn");
+    this.els.voiceBtnText = document.getElementById("voiceBtnText");
+    this.els.voiceStatus = document.getElementById("voiceStatus");
   },
 
-  // Voice Command Support
+  bindEvents() {
+    if (this.els.uploadBtn) {
+      this.els.uploadBtn.addEventListener("click", () => this.els.fileInput.click());
+    }
+    if (this.els.fileInput) {
+      this.els.fileInput.addEventListener("change", (e) => this.handleFile(e));
+    }
+    if (this.els.cameraBtn) {
+      this.els.cameraBtn.addEventListener("click", () => this.openCamera());
+    }
+    if (this.els.retakeBtn) {
+      this.els.retakeBtn.addEventListener("click", () => this.resetScan());
+    }
+    if (this.els.readAloudBtn) {
+      this.els.readAloudBtn.addEventListener("click", () => this.readFieldGuide());
+    }
+    if (this.els.voiceBtn) {
+      this.els.voiceBtn.addEventListener("click", () => this.toggleVoiceListening());
+    }
+  },
+
+  handleFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    this.showResultView();
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.els.previewImg.src = e.target.result;
+      this.simulateScan(file);
+    };
+    reader.onerror = () => {
+      alert("Error reading file. Please try again.");
+      this.resetScan();
+    };
+    reader.readAsDataURL(file);
+  },
+
+  openCamera() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      alert("Camera not supported on this browser.");
+      return;
+    }
+    const modal = document.createElement("div");
+    modal.id = "cameraModal";
+    const video = document.createElement("video");
+    video.autoplay = true;
+    video.playsInline = true;
+    video.className = "camera-video";
+    const controls = document.createElement("div");
+    controls.className = "camera-controls";
+    const snapBtn = document.createElement("button");
+    snapBtn.className = "action-btn camera-btn";
+    snapBtn.innerHTML = '<i class="fas fa-camera"></i> Capture';
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "action-btn upload-btn";
+    closeBtn.innerHTML = '<i class="fas fa-times"></i> Close';
+    controls.appendChild(snapBtn);
+    controls.appendChild(closeBtn);
+    modal.appendChild(video);
+    modal.appendChild(controls);
+    document.body.appendChild(modal);
+    let streamRef = null;
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
+      .then((stream) => {
+        streamRef = stream;
+        video.srcObject = stream;
+      })
+      .catch((err) => {
+        console.error("Camera error:", err);
+        alert("Could not access camera. Please allow camera permissions.");
+        if (modal.parentNode) modal.parentNode.removeChild(modal);
+      });
+    snapBtn.addEventListener("click", () => {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth || 640;
+        canvas.height = video.videoHeight || 480;
+        const ctx = canvas.getContext("2d");
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL("image/png");
+        this.els.previewImg.src = dataUrl;
+        if (streamRef) streamRef.getTracks().forEach((t) => t.stop());
+        if (modal.parentNode) modal.parentNode.removeChild(modal);
+        this.showResultView();
+        this.simulateScan(dataUrl);
+      } catch (err) {
+        console.error("Capture error:", err);
+        alert("Error capturing image.");
+      }
+    });
+    closeBtn.addEventListener("click", () => {
+      if (streamRef) streamRef.getTracks().forEach((t) => t.stop());
+      if (modal.parentNode) modal.parentNode.removeChild(modal);
+    });
+  },
+
+  showResultView() {
+    if (this.els.scanInputView) this.els.scanInputView.style.display = "none";
+    if (this.els.scanResultView) {
+      this.els.scanResultView.style.display = "block";
+      this.els.loadingState.style.display = "flex";
+      this.els.resultState.style.display = "none";
+    }
+  },
+
+  resetScan() {
+    if (this.els.scanInputView) this.els.scanInputView.style.display = "block";
+    if (this.els.scanResultView) this.els.scanResultView.style.display = "none";
+    this.els.fileInput.value = "";
+    this.currentResult = null;
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+  },
+
+  simulateScan(input) {
+    const speciesKeys = Object.keys(this.speciesDB);
+    const randomKey = speciesKeys[Math.floor(Math.random() * speciesKeys.length)];
+    const species = this.speciesDB[randomKey];
+    const confidence = Math.floor(Math.random() * 15) + 85;
+    this.currentResult = { species, confidence };
+    this.els.loadingText.textContent = "Analyzing image with neural network...";
+    setTimeout(() => {
+      this.els.loadingText.textContent = "Detecting wildlife features...";
+    }, 1000);
+    setTimeout(() => {
+      this.els.loadingText.textContent = "Matching against species database...";
+    }, 1800);
+    setTimeout(() => {
+      this.els.loadingState.style.display = "none";
+      this.els.resultState.style.display = "block";
+      this.els.resultCategory.textContent = species.category;
+      this.els.resultTitle.textContent = species.name;
+      this.els.resultScientificName.textContent = species.scientificName;
+      this.els.resultStatusBadge.className = "status-badge " + species.statusClass;
+      this.els.resultStatusBadge.textContent = species.status;
+      this.els.resultConfidence.textContent = confidence + "% confidence match";
+      this.els.resultDetails.innerHTML =
+        '<div class="detail-section"><h4><i class="fas fa-info-circle"></i> Description</h4><p>' + species.desc + '</p></div>' +
+        '<div class="detail-section"><h4><i class="fas fa-users"></i> Population</h4><p>' + species.population + ' estimated in the wild</p></div>' +
+        '<div class="detail-section"><h4><i class="fas fa-globe-africa"></i> Habitat</h4><p>' + species.habitat + '</p></div>' +
+        '<div class="detail-section"><h4><i class="fas fa-utensils"></i> Diet</h4><p>' + species.diet + '</p></div>' +
+        '<div class="detail-section"><h4><i class="fas fa-paw"></i> Behavior</h4><p>' + species.behavior + '</p></div>' +
+        '<div class="detail-section"><h4><i class="fas fa-exclamation-triangle"></i> Threats</h4><p>' + species.threats + '</p></div>';
+      if (window.speechSynthesis) {
+        this.speak("Identified " + species.name + ", status " + species.status + ". " + species.desc);
+      }
+    }, 2800);
+  },
+
   initSpeechRecognition() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) return;
-
     this.recognition = new SpeechRecognition();
     this.recognition.continuous = false;
     this.recognition.interimResults = false;
     this.recognition.lang = "en-US";
-
     this.recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript.toLowerCase().trim();
       this.processVoiceCommand(transcript);
     };
-
     this.recognition.onerror = () => {
       this.updateVoiceStatus("Error. Try again.", false);
     };
-
     this.recognition.onend = () => {
       this.isListening = false;
+      if (this.els.voiceBtn) this.els.voiceBtn.classList.remove("listening");
       this.updateVoiceStatus("", false);
-      if (this.voiceBtn) this.voiceBtn.classList.remove("listening");
     };
-  },
-
-  createVoiceControls() {
-    const voiceContainer = document.createElement("div");
-    voiceContainer.className = "voice-controls";
-    voiceContainer.style.cssText = "text-align:center;margin-top:20px;padding:15px;background:rgba(255,255,255,0.05);border-radius:12px;";
-
-    this.voiceBtn = document.createElement("button");
-    this.voiceBtn.className = "btn voice-btn";
-    this.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i> Voice Command';
-    this.voiceBtn.style.cssText = "background:linear-gradient(135deg, #1b5e40, #143d2a);border:none;";
-
-    const tips = document.createElement("p");
-    tips.style.cssText = "font-size:12px;color:rgba(255,255,255,0.6);margin-top:8px;";
-    tips.textContent = "Say: 'scan', 'take photo', 'upload image', or 'clear'";
-
-    const statusSpan = document.createElement("span");
-    statusSpan.id = "voiceStatus";
-    statusSpan.style.cssText = "display:block;font-size:12px;color:#c9a227;margin-top:8px;min-height:18px;";
-
-    voiceContainer.appendChild(this.voiceBtn);
-    voiceContainer.appendChild(statusSpan);
-    voiceContainer.appendChild(tips);
-
-    const uploadArea = document.querySelector(".upload-area");
-    if (uploadArea) uploadArea.parentElement.appendChild(voiceContainer);
-
-    this.voiceBtn.addEventListener("click", () => this.toggleVoiceListening());
   },
 
   toggleVoiceListening() {
     if (!this.recognition) {
-      alert("Voice commands not supported in this browser. Try Chrome.");
+      alert("Voice commands not supported. Try Chrome.");
       return;
     }
     if (this.isListening) {
       this.recognition.stop();
     } else {
       this.isListening = true;
-      this.voiceBtn.classList.add("listening");
+      if (this.els.voiceBtn) this.els.voiceBtn.classList.add("listening");
       this.updateVoiceStatus("Listening...", true);
       this.recognition.start();
     }
   },
 
   updateVoiceStatus(text, isActive) {
-    const statusEl = document.getElementById("voiceStatus");
-    if (statusEl) {
-      statusEl.textContent = text;
-      statusEl.style.color = isActive ? "#c9a227" : "#888";
+    if (this.els.voiceStatus) {
+      this.els.voiceStatus.textContent = text;
+      this.els.voiceStatus.style.color = isActive ? "#c9a227" : "#888";
     }
   },
 
   processVoiceCommand(command) {
     this.updateVoiceStatus('Heard: "' + command + '"', false);
-
     if (command.includes("scan") || command.includes("identify")) {
       this.speak("Please upload an image or take a photo to scan.");
     } else if (command.includes("photo") || command.includes("camera") || command.includes("picture")) {
@@ -191,16 +345,17 @@ const WildlifeScan = {
       this.openCamera();
     } else if (command.includes("upload") || command.includes("image")) {
       this.speak("Please select an image to upload.");
-      this.fileInput.click();
+      this.els.fileInput.click();
     } else if (command.includes("clear") || command.includes("reset")) {
       this.speak("Clearing results.");
-      this.clearResults();
+      this.resetScan();
+    } else if (command.includes("read") || command.includes("aloud")) {
+      this.readFieldGuide();
     } else {
       this.speak("Command not recognized. Try: scan, take photo, upload image, or clear.");
     }
   },
 
-  // Text-to-Speech Feedback
   speak(text) {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
@@ -210,166 +365,14 @@ const WildlifeScan = {
     window.speechSynthesis.speak(utterance);
   },
 
-  bindEvents() {
-    this.elements.uploadBtn.addEventListener("click", () => this.elements.fileInput.click());
-    this.elements.fileInput.addEventListener("change", (e) => this.handleFile(e));
-    this.elements.cameraBtn.addEventListener("click", () => this.openCamera());
-  },
-
-  handleFile(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    this.displayResult("Analyzing image...");
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      this.elements.previewImg.src = e.target.result;
-      this.elements.previewImg.style.display = "block";
-      this.simulateScan(file);
-    };
-    reader.readAsDataURL(file);
-  },
-
-  openCamera() {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      alert("Camera not supported.");
-      return;
-    }
-
-    const modal = document.createElement("div");
-    modal.id = "cameraModal";
-    modal.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;";
-
-    const video = document.createElement("video");
-    video.autoplay = true;
-    video.style.cssText = "max-width:90%;max-height:70%;border-radius:8px;transform:scaleX(-1);";
-
-    const controls = document.createElement("div");
-    controls.style.cssText = "margin-top:20px;display:flex;gap:15px;";
-
-    const snapBtn = document.createElement("button");
-    snapBtn.textContent = "Capture";
-    snapBtn.className = "btn";
-
-    const closeBtn = document.createElement("button");
-    closeBtn.textContent = "Close";
-    closeBtn.className = "btn ghost";
-
-    controls.appendChild(snapBtn);
-    controls.appendChild(closeBtn);
-    modal.appendChild(video);
-    modal.appendChild(controls);
-    document.body.appendChild(modal);
-
-    let streamRef = null;
-
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
-      .then((stream) => {
-        streamRef = stream;
-        video.srcObject = stream;
-      })
-      .catch(() => {
-        alert("Could not access camera.");
-        document.body.removeChild(modal);
-      });
-
-    snapBtn.addEventListener("click", () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = video.videoWidth || 640;
-      canvas.height = video.videoHeight || 480;
-      const ctx = canvas.getContext("2d");
-      ctx.translate(canvas.width, 0);
-      ctx.scale(-1, 1);
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const dataUrl = canvas.toDataURL("image/png");
-      this.elements.previewImg.src = dataUrl;
-      this.elements.previewImg.style.display = "block";
-      if (streamRef) streamRef.getTracks().forEach((t) => t.stop());
-      document.body.removeChild(modal);
-      this.displayResult("Analyzing captured image...");
-      this.simulateScan(dataUrl);
-    });
-
-    closeBtn.addEventListener("click", () => {
-      if (streamRef) streamRef.getTracks().forEach((t) => t.stop());
-      document.body.removeChild(modal);
-    });
-  },
-
-  displayResult(status) {
-    this.elements.resultStatus.textContent = status;
-  },
-
-  clearResults() {
-    this.elements.previewImg.src = "#";
-    this.elements.previewImg.style.display = "none";
-    this.elements.resultTitle.textContent = "\u2014";
-    this.elements.resultStatus.textContent = "Ready to scan";
-    this.elements.resultDetails.innerHTML = "";
-    this.elements.libLink.style.display = "none";
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-  },
-
-  simulateScan(input) {
-    const speciesKeys = Object.keys(this.mockSpecies);
-    const randomKey = speciesKeys[Math.floor(Math.random() * speciesKeys.length)];
-    const species = this.mockSpecies[randomKey];
-    const confidence = Math.floor(Math.random() * 15) + 85;
-
-    this.elements.resultTitle.textContent = "Analyzing...";
-    this.elements.resultDetails.innerHTML = '<div style="width:100%;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;margin-bottom:12px;"><div style="width:20%;height:100%;background:#c9a227;animation:scanProgress 1.5s ease-in-out;"></div></div><p>Processing image with neural network...</p>';
-
-    setTimeout(() => {
-      this.elements.resultDetails.innerHTML = '<div style="width:100%;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;margin-bottom:12px;"><div style="width:60%;height:100%;background:#c9a227;"></div></div><p>Detecting wildlife features...</p>';
-      this.elements.resultTitle.textContent = "Detecting...";
-    }, 800);
-
-    setTimeout(() => {
-      this.elements.resultTitle.textContent = species.name;
-      this.elements.resultStatus.textContent = "Status: " + species.status;
-
-      this.elements.resultDetails.innerHTML =
-        '<div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:20px;margin-top:16px;">' +
-          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">' +
-            '<span style="font-style:italic;color:rgba(255,255,255,0.7);">' + species.scientificName + '</span>' +
-            '<span style="background:#1b5e40;color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;">' + confidence + '% Match</span>' +
-          '</div>' +
-          '<div style="display:grid;gap:16px;">' +
-            '<div>' +
-              '<h4 style="color:#c9a227;font-size:14px;margin-bottom:6px;"><i class="fas fa-info-circle"></i> Overview</h4>' +
-              '<p style="margin:0;color:rgba(255,255,255,0.8);font-size:14px;line-height:1.5;">' + species.desc + '</p>' +
-            '</div>' +
-            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
-              '<div>' +
-                '<h4 style="color:#c9a227;font-size:14px;margin-bottom:6px;"><i class="fas fa-users"></i> Population</h4>' +
-                '<p style="margin:0;color:rgba(255,255,255,0.8);font-size:14px;">' +Ru 1> species.population + '</p>' +
-              '</div>' +
-              '<div>' +
-                '<h4 style="color:#c9a227;font-size:14px;margin-bottom:6px;"><i class="fas fa-globe-africa"></i> Habitat</h4>' +
-                '<p style="margin:0;color:rgba(255,255,255,0.8);font-size:14px;">' + species.habitat + '</p>' +
-              '</div>' +
-            '</div>' +
-            '<div>' +
-              '<h4 style="color:#c9a227;font-size:14px;margin-bottom:6px;"><i class="fas fa-utensils"></i> Diet</h4>' +
-              '<p style="margin:0;color:rgba(255,255,255,0.8);font-size:14px;">' + species.diet + '</p>' +
-            '</div>' +
-            '<div>' +
-              '<h4 style="color:#c9a227;font-size:14px;margin-bottom:6px;"><i class="fas fa-paw"></i> Behavior</h4>' +
-              '<p style="margin:0;color:rgba(255,255,255,0.8);font-size:14px;line-height:1.5;">' + species.behavior + '</p>' +
-            '</div>' +
-            '<div>' +
-              '<h4 style="color:#c9a227;font-size:14px;margin-bottom:6px;"><i class="fas fa-exclamation-triangle"></i> Threats</h4>' +
-              '<p style="margin:0;color:rgba(255,255,255,0.8);font-size:14px;">' + species.threats + '</p>' +
-            '</div>' +
-          '</div>' +
-        '</div>';
-
-      this.elements.libLink.style.display = "inline-block";
-      this.elements.libLink.href = "library/library.html";
-
-      if (window.speechSynthesis) {
-        this.speak("Identified " + species.name + ", status " + species.status + ".");
-      }
-    }, 2500);
+  readFieldGuide() {
+    if (!this.currentResult) return;
+    const { species } = this.currentResult;
+    const text = species.name + ". " + species.scientificName + ". Status: " + species.status +
+      ". Population: " + species.population + ". Habitat: " + species.habitat +
+      ". Diet: " + species.diet + ". Behavior: " + species.behavior +
+      ". Threats: " + species.threats;
+    this.speak(text);
   }
 };
 
