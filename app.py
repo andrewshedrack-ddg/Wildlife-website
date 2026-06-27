@@ -235,6 +235,21 @@ def delete_message(current_user, id):
     db.session.commit()
     return jsonify({'message': 'Message deleted successfully.'}), 200
 
+@app.route('/api/admin/stats', methods=['GET'])
+@admin_required
+def get_admin_stats(current_user):
+    total_species = Species.query.count()
+    total_messages = Message.query.count()
+    total_users = User.query.count()
+    return jsonify({'total_species': total_species, 'total_messages': total_messages, 'total_users': total_users}), 200
+
+@app.route('/api/admin/users', methods=['GET'])
+@admin_required
+def get_admin_users(current_user):
+    users = User.query.all()
+    output = [{'id': u.id, 'email': u.email, 'role': u.role, 'created_at': u.created_at.strftime('%Y-%m-%d %H:%M:%S')} for u in users]
+    return jsonify({'users': output}), 200
+
 @app.route('/api/admin/logout', methods=['POST'])
 def admin_logout():
     response = make_response(jsonify({'message': 'Logged out.'}))
