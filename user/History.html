@@ -92,53 +92,12 @@
                             <h3 class="card-title"><i class="fas fa-clock-rotate-left"></i> Activity Timeline</h3>
                             <p class="card-subtitle">A record of your recent interactions and discoveries</p>
                         </div>
-                        <div class="timeline">
+                        <div class="timeline" id="history-timeline">
+                            <!-- Timeline items loaded dynamically -->
                             <div class="timeline-item">
-                                <div class="timeline-icon"><i class="fas fa-camera"></i></div>
+                                <div class="timeline-icon"><i class="fas fa-spinner fa-spin"></i></div>
                                 <div class="timeline-content">
-                                    <span class="timeline-date">Today, 2:34 PM</span>
-                                    <h4 class="timeline-title">Wildlife Scan Completed</h4>
-                                    <p class="timeline-desc">Identified African Elephant in Amboseli National Park using AI scan.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-icon"><i class="fas fa-heart"></i></div>
-                                <div class="timeline-content">
-                                    <span class="timeline-date">Yesterday, 11:15 AM</span>
-                                    <h4 class="timeline-title">Added to Favourites</h4>
-                                    <p class="timeline-desc">Cheetah (Acinonyx jubatus) added to your favourites list.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-icon"><i classclass="fas fa-book-open"></i></div>
-                                <div class="timeline-content">
-                                    <span class="timeline-date">Jun 23, 2026</span>
-                                    <h4 class="timeline-title">Library Visit</h4>
-                                    <p class="timeline-desc">Browsed the Savanna category and viewed 12 species profiles.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-icon"><i class="fas fa-camera"></i></div>
-                                <div class="timeline-content">
-                                    <span class="timeline-date">Jun 22, 2026</span>
-                                    <h4 class="timeline-title">Wildlife Scan Completed</h4>
-                                    <p class="timeline-desc">Identified Reticulated Giraffe in Samburu National Reserve.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-icon"><i class="fas fa-comment"></i></div>
-                                <div class="timeline-content">
-                                    <span class="timeline-date">Jun 20, 2026</span>
-                                    <h4 class="timeline-title">Contact Message Sent</h4>
-                                    <p class="timeline-desc">Sent a message to the WildGuard Society support team.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-icon"><i class="fas fa-user-plus"></i></div>
-                                <div class="timeline-content">
-                                    <span class="timeline-date">Jun 18, 2026</span>
-                                    <h4 class="timeline-title">Account Created</h4>
-                                    <p class="timeline-desc">Welcome to WildGuard Society! Your conservation journey begins.</p>
+                                    <h4 class="timeline-title">Loading your scan history...</h4>
                                 </div>
                             </div>
                         </div>
@@ -150,19 +109,19 @@
                             </div>
                             <div class="summary-stats">
                                 <div class="summary-item">
-                                    <span class="summary-value">24</span>
+                                    <span class="summary-value" id="stat-scans">0</span>
                                     <span class="summary-label">Total Scans</span>
                                 </div>
                                 <div class="summary-item">
-                                    <span class="summary-value">156</span>
+                                    <span class="summary-value" id="stat-favourites">0</span>
                                     <span class="summary-label">Favourites</span>
                                 </div>
                                 <div class="summary-item">
-                                    <span class="summary-value">42</span>
+                                    <span class="summary-value" id="stat-views">0</span>
                                     <span class="summary-label">Library Views</span>
                                 </div>
                                 <div class="summary-item">
-                                    <span class="summary-value">8</span>
+                                    <span class="summary-value" id="stat-parks">0</span>
                                     <span class="summary-label">Parks Visited</span>
                                 </div>
                             </div>
@@ -236,6 +195,41 @@
             if (!user || user === 'null') {
                 window.location.replace('../login.html');
             }
+        })();
+
+        // Load scan history from backend
+        (async function loadHistory() {
+            const API_BASE = window.location.origin.includes('localhost') ? 'http://localhost:5000' : '';
+            try {
+                const resp = await fetch(API_BASE + '/api/user/scans', { credentials: 'include' });
+                if (resp.ok) {
+                    const data = await resp.json();
+                    const timeline = document.getElementById('history-timeline');
+                    if (timeline && data.scans && data.scans.length > 0) {
+                        timeline.innerHTML = '';
+                        data.scans.forEach(scan => {
+                            const item = document.createElement('div');
+                            item.className = 'timeline-item';
+                            item.innerHTML = '<div class="timeline-icon"><i class="fas fa-camera"></i></div>' +
+                                '<div class="timeline-content">' +
+                                '<span class="timeline-date">' + scan.created_at + '</span>' +
+                                '<h4 class="timeline-title">Wildlife Scan: ' + scan.species_name + '</h4>' +
+                                '<p class="timeline-desc">Confidence: ' + scan.confidence + '% match.</p>' +
+                                '</div>';
+                            timeline.appendChild(item);
+                        });
+                        document.getElementById('stat-scans').textContent = data.scans.length;
+                    } else {
+                        timeline.innerHTML = '<div class="timeline-item"><div class="timeline-icon"><i class="fas fa-camera"></i></div>' +
+                            '<div class="timeline-content"><h4 class="timeline-title">No scans yet</h4>' +
+                            '<p class="timeline-desc">Start scanning wildlife to build your history!</p></div></div>';
+                        document.getElementById('stat-scans').textContent = '0';
+                    }
+                    return;
+                }
+            } catch (e) {}
+            // Fallback to localStorage
+            document.getElementById('stat-scans').textContent = '0';
         })();
     </script>
 </body>

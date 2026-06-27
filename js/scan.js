@@ -424,7 +424,7 @@ const WildlifeScan = {
     }
   },
 
-  saveToLibrary() {
+  async saveToLibrary() {
     if (!this.currentResult) return;
     const scans = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || "[]");
     const scanRecord = {
@@ -438,10 +438,28 @@ const WildlifeScan = {
     };
     scans.unshift(scanRecord);
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(scans));
+
+    // Also save to backend if available
+    try {
+      const API_BASE = window.location.origin.includes('localhost') ? 'http://localhost:5000' : '';
+      if (API_BASE) {
+        await fetch(API_BASE + '/api/user/scans', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            species_name: this.currentResult.species.name,
+            confidence: this.currentResult.confidence,
+            image_data: this.els.previewImg ? this.els.previewImg.src : ""
+          })
+        });
+      }
+    } catch (e) {}
+
     this.showToast("Saved to Library!");
   },
 
-  sendToAdmin() {
+  async sendToAdmin() {
     if (!this.currentResult) return;
     const pending = JSON.parse(localStorage.getItem(this.PENDING_ADMIN_KEY) || "[]");
     const scanRecord = {
@@ -455,6 +473,24 @@ const WildlifeScan = {
     };
     pending.unshift(scanRecord);
     localStorage.setItem(this.PENDING_ADMIN_KEY, JSON.stringify(pending));
+
+    // Also save to backend if available
+    try {
+      const API_BASE = window.location.origin.includes('localhost') ? 'http://localhost:5000' : '';
+      if (API_BASE) {
+        await fetch(API_BASE + '/api/user/scans', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            species_name: this.currentResult.species.name,
+            confidence: this.currentResult.confidence,
+            image_data: this.els.previewImg ? this.els.previewImg.src : ""
+          })
+        });
+      }
+    } catch (e) {}
+
     this.showToast("Sent to Admin for approval!");
   },
 

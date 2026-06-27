@@ -314,14 +314,28 @@
                     usernameInput.value = user.username || (user.email ? user.email.split('@')[0] : 'user');
                 }
 
-                // Load stats from localStorage
-                const stats = JSON.parse(localStorage.getItem('wildguard_user_stats') || '{}');
-                const scansEl = document.getElementById('stat-scans');
-                const favsEl = document.getElementById('stat-favourites');
-                const parksEl = document.getElementById('stat-parks');
-                if (scansEl) scansEl.textContent = stats.scans || 0;
-                if (favsEl) favsEl.textContent = stats.favourites || 0;
-                if (parksEl) parksEl.textContent = stats.parks || 0;
+                // Load stats from backend or localStorage
+                (async function loadStats() {
+                    const scansEl = document.getElementById('stat-scans');
+                    const favsEl = document.getElementById('stat-favourites');
+                    const parksEl = document.getElementById('stat-parks');
+                    try {
+                        const API_BASE = window.location.origin.includes('localhost') ? 'http://localhost:5000' : '';
+                        const resp = await fetch(API_BASE + '/api/user/profile', { credentials: 'include' });
+                        if (resp.ok) {
+                            const data = await resp.json();
+                            if (scansEl) scansEl.textContent = data.scans_count || 0;
+                            if (favsEl) favsEl.textContent = data.favourites_count || 0;
+                            if (parksEl) parksEl.textContent = data.scans_count || 0;
+                            return;
+                        }
+                    } catch (e) {}
+                    // Fallback to localStorage
+                    const stats = JSON.parse(localStorage.getItem('wildguard_user_stats') || '{}');
+                    if (scansEl) scansEl.textContent = stats.scans || 0;
+                    if (favsEl) favsEl.textContent = stats.favourites || 0;
+                    if (parksEl) parksEl.textContent = stats.parks || 0;
+                })();
 
                 // Handle profile form save
                 const form = document.getElementById('profileForm');

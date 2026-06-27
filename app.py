@@ -40,6 +40,20 @@ class Setting(db.Model):
     key = db.Column(db.String(50), unique=True, nullable=False)
     value = db.Column(db.Text, nullable=False)
 
+class Scan(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    species_name = db.Column(db.String(100), nullable=False)
+    confidence = db.Column(db.Integer, nullable=False)
+    image_data = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
+class Favourite(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    species_name = db.Column(db.String(100), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
 class Species(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -249,6 +263,62 @@ def get_admin_users(current_user):
     users = User.query.all()
     output = [{'id': u.id, 'email': u.email, 'role': u.role, 'created_at': u.created_at.strftime('%Y-%m-%d %H:%M:%S')} for u in users]
     return jsonify({'users': output}), 200
+
+# --- User Profile & Data APIs ---
+
+@app.route('/api/user/scans', methods=['GET'])
+@token_required
+def get_user_scans(current_user):
+    scans = Scan.query.filter_by(user_id=current_user.id).order_by(Scan.created_at.desc()).all()
+    output = [{'id': s.id, 'species_name': s.species_name, 'confidence': s.confidence, 'image_data': s.image_data, 'created_at': s.created_at.strftime('%Y-%m-%d %H:%M:%S')} for s in scans]
+    return jsonify({'scans': output}), 200
+
+@app.route('/api/user/scans', methods=['POST'])
+@token_required
+def add_user_scan(current_user):
+    data = request.get_json() or {}
+    if 'species_name' not in data or 'confidence' not in data:
+        return jsonify({'message': 'Missing required fields'}), 400
+    scan = Scan(user_id=current_user.id, species_name=data['species_name'], confidence=data['confidence'], image_data=data.get('image_data'))
+    db.session.add(scan)
+    db.session.commit()
+    return jsonify({'message': 'Scan saved', 'id': scan.id}), 201
+
+@app.route('/api/user/favourites', methods=['GET'])
+@token_required
+def get_user_favourites(current_user):
+    favourites = Favourite.query.filter_by(user_id=current_user.id).order_by(Favourite.created_at.desc()).all()
+    output = [{'id': f.id, 'species_name': f.species_name, 'created_at': f.created_at.strftime('%Y-%m-%d %H:%M:%S')} for f in favourites]
+    return jsonify({'favourites': output}), 200
+
+@app.route('/api/user/favourites', methods=['POST'])
+@token_required
+def add_user_favourite(current_user):
+    data = request.get_json() or {}
+    if 'species_name' not in data:
+        return jsonify({'message': 'Missing species_name'}), 400
+    existing = Favourite.query.filter_by(user_id=current_user.id, species_name=data['species_name']).first()
+    if existing:
+        return jsonify({'message': 'Already in favourites'}), 400
+    fav = Favourite(user_id=current_user.id, species_name=data['species_name'])
+    db.session.add(fav)
+    db.session.commit()
+    return jsonify({'message': 'Added to favourites', 'id': fav.id}), 201
+
+@app.route('/api/user/favourites/<int:id>', methods=['DELETE'])
+@token_required
+def delete_user_favourite(current_user, id):
+    fav = Favourite.query.filter_by(id=id, user_id=current_user.id).first_or_404()
+    db.session.delete(fav)
+    db.session.commit()
+    return jsonify({'message': 'Removed from favourites'}), 200
+
+@app.route('/api/user/profile', methods=['GET'])
+@token_required
+def get_user_profile(current_user):
+    scans_count = Scan.query.filter_by(user_id=current_user.id).count()
+    favs_count = Favourite.query.filter_by(user_id=current_user.id).count()
+    return jsonify({'id': current_user.id, 'email': current_user.email, 'role': current_user.role, 'scans_count': scans_count, 'favourites_count': favs_count, 'created_at': current_user.created_at.strftime('%Y-%m-%d %H:%M:%S')}), 200
 
 @app.route('/api/admin/logout', methods=['POST'])
 def admin_logout():

@@ -67,15 +67,8 @@
                     <span class="page-eyebrow">Account</span>
                     <h1 class="page-title">Your Favourites</h1>
                 </div>
-                <div class="card-grid">
-                    <div class="card favourite-card"><div class="card-image"><img src="../assets/images/lion.jpg" alt="Lion"></div><捐献 class="card-body"><h3>Lion</h3><p>Panthera leo</p></div></div>
-                    <div class="card favourite-card"><div class="card-image"><img src="../assets/images/elephant.jpg" alt="African Elephant"></div><div class="card-body"><h3>African Elephant</h3><p>Loxodonta africana</p></div></div>
-                    <div class="card favourite-card"><div class="card-image"><img src="../assets/images/eagle.jpg" alt="African Fish Eagle"></div><div class="card-body"><h3>African Fish Eagle</h3><p>Haliaeetus vocifer</p></div></div>
-                    <div class="card favourite-card"><div class="card-image"><img src="../assets/images/giraffe.jpg" alt="Giraffe"></div><div class="card-body"><h3>Giraffe</h3><p>Giraffa camelopardalis</p></div></div>
-                    <div class="card favourite-card"><div class="card-image"><img src="../assets/images/cheetah.jpg" alt="Cheetah"></div><div class="card-body"><h3>Cheetah</h3><p>Acinonyx jubatus</p></div></div>
-                    <div class="card favourite-card"><div class="card-image"><img src="../assets/images/zebra.jpg" alt="Plains Zebra"></div><div class="card-body"><h3>Plains Zebra</h3><p>Equus quagga</p></div></div>
-                    <div class="card favourite-card"><div class="card-image"><img src="../assets/images/hippo.jpg" alt="Hippopotamus"></div><div class="card-body"><h3>Hippopotamus</h3><p>Hippopotamus amphibius</p></div></div>
-                    <div class="card favourite-card"><div class="card-image"><img src="../assets/images/rhino.jpg" alt="White Rhinoceros"></div><div class="card-body"><h3>White Rhinoceros</h3><p>Ceratotherium simum</p></div></div>
+                <div class="card-grid" id="favourites-grid">
+                    <!-- Favourites loaded dynamically -->
                 </div>
             </div>
         </section>
@@ -131,6 +124,32 @@ xml <p><i class="fas fa-map-marker-alt"></i>婊子 Global</p>
             if (!user || user === 'null') {
                 window.location.replace('../login.html');
             }
+        })();
+
+        // Load favourites from backend
+        (async function loadFavourites() {
+            const grid = document.getElementById('favourites-grid');
+            if (!grid) return;
+            const API_BASE = window.location.origin.includes('localhost') ? 'http://localhost:5000' : '';
+            try {
+                const resp = await fetch(API_BASE + '/api/user/favourites', { credentials: 'include' });
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data.favourites && data.favourites.length > 0) {
+                        grid.innerHTML = '';
+                        data.favourites.forEach(fav => {
+                            const card = document.createElement('div');
+                            card.className = 'card favourite-card';
+                            card.innerHTML = '<div class="card-image"><img src="../assets/images/' + fav.species_name.toLowerCase().replace(/ /g, '_') + '.jpg" alt="' + fav.species_name + '" onerror="this.src=\'../assets/images/background.png\'"></div>' +
+                                '<div class="card-body"><h3>' + fav.species_name + '</h3><p>Added: ' + fav.created_at + '</p></div>';
+                            grid.appendChild(card);
+                        });
+                        return;
+                    }
+                }
+            } catch (e) {}
+            grid.innerHTML = '<div class="card favourite-card" style="grid-column:1/-1;text-align:center;padding:2rem;">' +
+                '<div class="card-body"><h3>No favourites yet</h3><p>Start scanning and save species to your favourites!</p></div></div>';
         })();
     </script>
 </body>
