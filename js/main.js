@@ -15,15 +15,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileToggle = document.querySelector('.mobile-toggle');
   const desktopNav = document.querySelector('.desktop-nav');
   if (mobileToggle && desktopNav) {
-    mobileToggle.addEventListener('click', () => {
+    mobileToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
       desktopNav.classList.toggle('open');
       mobileToggle.classList.toggle('active');
-    });
-    document.addEventListener('click', (e) => {
-      if (desktopNav.classList.contains('open') && !e.target.closest('.site-header')) {
-        desktopNav.classList.remove('open');
-        mobileToggle.classList.remove('active');
+      const icon = mobileToggle.querySelector('i');
+      if (icon) {
+        icon.className = desktopNav.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
       }
+    });
+    // Close mobile menu when clicking outside (but not inside the nav)
+    document.addEventListener('click', (e) => {
+      if (!desktopNav.classList.contains('open')) return;
+      // Don't close if clicking inside desktop-nav or on mobile-toggle
+      if (e.target.closest('.desktop-nav') || e.target.closest('.mobile-toggle')) return;
+      desktopNav.classList.remove('open');
+      mobileToggle.classList.remove('active');
+      const icon = mobileToggle.querySelector('i');
+      if (icon) icon.className = 'fas fa-bars';
     });
   }
 

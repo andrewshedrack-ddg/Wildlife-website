@@ -16,7 +16,8 @@ const WildlifeScan = {
     zebra: "zebra", "plains zebra": "zebra",
     giraffe: "giraffe",
     rhino: "rhino", rhinoceros: "rhino",
-    wolf: "wolf", coyote: "wolf", fox: "wolf", jackal: "wolf",
+    wolf: "wolf", coyote: "wolf", jackal: "wolf",
+    fox: "fox", "red fox": "fox", "arctic fox": "fox", "fennec fox": "fox",
     "polar bear": "polarbear", bear: "polarbear", grizzly: "polarbear",
     "blue whale": "bluewh", whale: "bluewh",
     shark: "shark", "great white shark": "shark",
@@ -68,7 +69,8 @@ const WildlifeScan = {
     rhino: { name: "Black Rhinoceros", scientificName: "Diceros bicornis", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Critically Endangered", statusClass: "endangered", population: "5,600", habitat: "Savannas, grasslands, scrublands", diet: "Herbivore - leaves, branches, shoots", behavior: "Solitary and territorial. Excellent hearing and smell. Can run up to 55 km/h.", threats: "Illegal poaching for horns, habitat loss", desc: "The Black Rhinoceros is a critically endangered browser with a prehensile upper lip.", tags: ["rhino", "rhinoceros", "diceros", "horn", "bicornis", "endangered", "africa", "savanna"] },
     chimpanzee: { name: "Common Chimpanzee", scientificName: "Pan troglodytes", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Endangered", statusClass: "endangered", population: "172,700 - 299,700", habitat: "Tropical forests, savannas of Central and West Africa", diet: "Omnivore - fruits, leaves, insects, meat", behavior: "Shares 98.7% DNA with humans. Uses tools and has complex social structures.", threats: "Habitat loss, bushmeat trade, disease", desc: "The Common Chimpanzee is our closest living relative and exhibits remarkable intelligence.", tags: ["chimpanzee", "chimp", "pan", "troglodytes", "ape", "primate", "africa", "forest", "intelligent"] },
     gorilla: { name: "Mountain Gorilla", scientificName: "Gorilla beringei beringei", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Endangered", statusClass: "endangered", population: "1,063", habitat: "Mountain forests of Rwanda, Uganda, DRC", diet: "Herbivore - leaves, stems, fruit, bamboo", behavior: "Largest primate, males weigh up to 220 kg. Gentle giants that live in troops led by a silverback.", threats: "Habitat loss, poaching, disease, civil unrest", desc: "The Mountain Gorilla is one of the most endangered great apes, with fewer than 1,100 individuals remaining.", tags: ["gorilla", "gorila", "silverback", "mountain", "beringei", "primate", "rwanda", "uganda", "drc", "ape"] },
-    wolf: { name: "Gray Wolf", scientificName: "Canis lupus", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Least Concern", statusClass: "least-concern", population: "200,000 - 250,000", habitat: "Forests, tundra, grasslands of North America, Europe, Asia", diet: "Carnivore - deer, elk, moose, bison", behavior: "Highly social apex predator. Packs of 2-30 with complex hierarchies. Can run 35 mph.", threats: "Habitat loss, persecution, hybridization with dogs", desc: "The Gray Wolf is a highly social apex predator that plays a critical role in maintaining healthy ecosystems.", tags: ["wolf", "gray", "canis", "lupus", "pack", "predator", "north", "america", "europe", "forest", "howl"] },
+    fox: { name: "Red Fox", scientificName: "Vulpes vulpes", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Least Concern", statusClass: "least-concern", population: "Unknown (widespread)", habitat: "Forests, grasslands, mountains, deserts, urban areas across North America, Europe, Asia, Australia", diet: "Omnivore - small mammals, birds, insects, fruits, berries, carrion", behavior: "Solitary hunter with excellent hearing. Can hear mice squeaking from 100 feet away. Highly adaptable and can live in urban environments.", threats: "Habitat loss, hunting, road accidents, disease", soilType: "Forest loam, sandy soils, grassland chernozem, urban garden soils, desert alluvial soils", desc: "The Red Fox is the most widespread and adaptable wild carnivore on Earth, found across the entire Northern Hemisphere including urban environments.", tags: ["fox", "red", "vulpes", "vulpes", "canid", "carnivore", "adaptive", "urban", "forest", "clever", "bushy", "tail"] },
+    wolf: { name: "Gray Wolf", scientificName: "Canis lupus", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Least Concern", statusClass: "least-concern", population: "200,000 - 250,000", habitat: "Forests, tundra, grasslands of North America, Europe, Asia", diet: "Carnivore - deer, elk, moose, bison", behavior: "Highly social apex predator. Packs of 2-30 with complex hierarchies. Can run 35 mph.", threats: "Habitat loss, persecution, hybridization with dogs", soilType: "Forest loam, tundra permafrost, grassland chernozem", desc: "The Gray Wolf is a highly social apex predator that plays a critical role in maintaining healthy ecosystems.", tags: ["wolf", "gray", "canis", "lupus", "pack", "predator", "north", "america", "europe", "forest", "howl"] },
     polarbear: { name: "Polar Bear", scientificName: "Ursus maritimus", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Vulnerable", statusClass: "vulnerable", population: "22,000 - 31,000", habitat: "Arctic sea ice, coastlines, islands", diet: "Carnivore - seals, fish, walrus", behavior: "Largest land carnivore. Swims up to 100 km at a time. Can smell prey 32 km away.", threats: "Climate change, sea ice loss, pollution", desc: "The Polar Bear is the largest land carnivore and is uniquely adapted to life on Arctic sea ice.", tags: ["polar", "bear", "ursus", "maritimus", "arctic", "ice", "seal", "predator", "white", "north"] },
     bluewh: { name: "Blue Whale", scientificName: "Balaenoptera musculus", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Endangered", statusClass: "endangered", population: "10,000 - 25,000", habitat: "Open ocean worldwide", diet: "Carnivore - krill", behavior: "Largest animal ever known, reaching 30 meters and 180 tonnes. Heart the size of a small car.", threats: "Ship strikes, climate change, noise pollution", desc: "The Blue Whale is the largest animal known to have ever lived.", tags: ["blue", "whale", "balaenoptera", "musculus", "ocean", "marine", "giant", "baleen"] },
     eagle: { name: "Bald Eagle", scientificName: "Haliaeetus leucocephalus", domain: "Eukarya", kingdom: "Animalia", category: "Bird", status: "Least Concern", statusClass: "least-concern", population: "316,700", habitat: "Lakes, rivers, coasts of North America", diet: "Carnivore - fish, waterfowl, small mammals", behavior: "National bird of the USA. Wingspan of 2.3 meters. Can see prey from 3 km away.", threats: "Lead poisoning, habitat loss", desc: "The Bald Eagle is a symbol of freedom with remarkable visual acuity.", tags: ["eagle", "bald", "haliaeetus", "leucocephalus", "bird", "raptor", "america", "predator", "flight"] },
@@ -130,7 +132,7 @@ const WildlifeScan = {
     if (typeof mobilenet !== "undefined") {
       try {
         this.els.loadingText.textContent = "Loading AI model...";
-        this.tfModel = await mobilnet.load({ version: 2, alpha: 1.0 });
+        this.tfModel = await mobilenet.load({ version: 2, alpha: 1.0 });
         console.log("MobileNet loaded");
       } catch (err) {
         console.warn("Model load failed:", err);
@@ -206,8 +208,9 @@ const WildlifeScan = {
     this.showResultView();
     const reader = new FileReader();
     reader.onload = (e) => {
+      this.els.previewImg.onload = () => this.simulateScanAsync(e.target.result);
+      this.els.previewImg.onerror = () => { this.els.loadingText.textContent = "Failed to load image for analysis."; };
       this.els.previewImg.src = e.target.result;
-      this.simulateScanAsync(e.target.result);
     };
     reader.onerror = () => {
       alert("Error reading file. Please try again.");
@@ -409,11 +412,13 @@ const WildlifeScan = {
     this.els.resultStatusBadge.textContent = species.status;
     const confText = aiLabel ? confidence + "% AI confidence" : confidence + "% confidence match";
     this.els.resultConfidence.textContent = confText;
+    var soilText = species.soilType || "Not specified";
     this.els.resultDetails.innerHTML =
       '<div class="detail-section"><h4><i class="fas fa-info-circle"></i> Description</h4><p>' + species.desc + '</p></div>' +
       '<div class="detail-section"><h4><i class="fas fa-sitemap"></i> Classification</h4><p><strong>Domain:</strong> ' + species.domain + '<br><strong>Kingdom:</strong> ' + species.kingdom + '<br><strong>Category:</strong> ' + species.category + '</p></div>' +
       '<div class="detail-section"><h4><i class="fas fa-users"></i> Population</h4><p>' + species.population + ' estimated in the wild</p></div>' +
       '<div class="detail-section"><h4><i class="fas fa-globe-africa"></i> Habitat</h4><p>' + species.habitat + '</p></div>' +
+      '<div class="detail-section"><h4><i class="fas fa-layer-group"></i> Environmental Context</h4><p><strong>Soil Type:</strong> ' + soilText + '</p></div>' +
       '<div class="detail-section"><h4><i class="fas fa-utensils"></i> Diet</h4><p>' + species.diet + '</p></div>' +
       '<div class="detail-section"><h4><i class="fas fa-paw"></i> Behavior</h4><p>' + species.behavior + '</p></div>' +
       '<div class="detail-section"><h4><i class="fas fa-exclamation-triangle"></i> Threats</h4><p>' + species.threats + '</p></div>';
