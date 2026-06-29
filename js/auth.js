@@ -77,18 +77,34 @@
     try { const data = localStorage.getItem(DEMO_USERS_KEY); return data ? JSON.parse(data) : {}; } catch (e) { return {}; }
   }
   function saveDemoUsers(users) { try { localStorage.setItem(DEMO_USERS_KEY, JSON.stringify(users)); } catch (e) {} }
-  function seedDemoUsers() {
-    const users = getDemoUsers();
-    if (!users['wildguardsociety@gmail.com']) {
-      // Store hashed password
-      users['wildguardsociety@gmail.com'] = {
-        passwordHash: simpleHash('password123'),
-        role: 'user',
-        name: 'WildGuard User'
-      };
-      saveDemoUsers(users);
-    }
+  function clearAllStorage() {
+    // Clear all wildguard related storage
+    const keysToRemove = [
+      'wildguard_demo_users',
+      'wildguard_user',
+      'wildguard_rate_limit',
+      'wildguard_user_list',
+      'wildguard_admin_messages',
+      'wildlife_scans',
+      'wildlife_pending_admin',
+      'wildguard_admin_session',
+      'wildguard_admin_token',
+      'wildguard_admin_user',
+      'wildguard_cache',
+      'wildguard_lastClear'
+    ];
+    keysToRemove.forEach(key => {
+      try { localStorage.removeItem(key); } catch (e) {}
+    });
   }
+
+  function seedDemoUsers() {
+    // Demo users cleared - no seeded accounts
+    const users = {};
+    saveDemoUsers(users);
+  }
+  // Clear all existing data on load
+  clearAllStorage();
   seedDemoUsers();
 
   function getUser() {
