@@ -3,46 +3,282 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Animals | WildGuard Explorer</title>
+  <title>Manage Animals | WildGuard Society</title>
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
-  <script defer src="../js/main.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .admin-dashboard { margin-top: var(--header-height, 72px); padding: 3rem 0 2rem; max-width: 1200px; margin-left: auto; margin-right: auto; color: var(--lighter, #fff); }
+    .admin-header { margin-bottom: 2.5rem; }
+    .admin-header h1 { font-family: var(--font-heading, 'Playfair Display', Georgia, serif); font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 0.5rem; }
+    .admin-header p { color: rgba(255,255,255,0.6); font-size: 1.05rem; max-width: 600px; }
+    .admin-section { margin-bottom: 3rem; }
+    .admin-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+    .admin-section-header h2 { font-family: var(--font-heading, 'Playfair Display', Georgia, serif); font-size: 1.5rem; margin: 0; }
+    .admin-btn-back { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.2rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: rgba(255,255,255,0.75); font-size: 0.9rem; text-decoration: none; transition: all 0.3s ease; }
+    .admin-btn-back:hover { background: rgba(255,255,255,0.1); color: var(--lighter); }
+    .animals-table-wrap { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; }
+    .animals-table { width: 100%; border-collapse: collapse; }
+    .animals-table th { text-align: left; padding: 1rem 1.5rem; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
+    .animals-table td { padding: 1rem 1.5rem; font-size: 0.95rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: rgba(255,255,255,0.85); }
+    .animals-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .animal-name-cell { display: flex; align-items: center; gap: 0.75rem; }
+    .animal-thumb { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; background: rgba(255,255,255,0.05); }
+    .animal-thumb i { font-size: 1.5rem; color: rgba(255,255,255,0.2); }
+    .status-badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.8rem; font-weight: 600; }
+    .status-badge.vulnerable { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.25); }
+    .status-badge.endangered { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.25); }
+    .status-badge.threatened { background: rgba(168,85,247,0.15); color: #a855f7; border: 1px solid rgba(168,85,247,0.25); }
+    .status-badge.near-threatened { background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.25); }
+    .status-badge.critically-endangered { background: rgba(220,38,38,0.18); color: #dc2626; border: 1px solid rgba(220,38,38,0.3); }
+    .action-btns { display: flex; gap: 0.5rem; }
+    .action-btn { padding: 0.4rem 0.85rem; border-radius: 6px; font-size: 0.82rem; font-weight: 500; border: none; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem; }
+    .action-btn.edit { background: rgba(201,162,39,0.12); color: var(--accent); border: 1px solid rgba(201,162,39,0.25); }
+    .action-btn.edit:hover { background: rgba(201,162,39,0.2); }
+    .action-btn.delete { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.25); }
+    .action-btn.delete:hover { background: rgba(239,68,68,0.2); }
+    .add-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.65rem 1.2rem; background: linear-gradient(135deg, #1b5e40, #143d2a); color: #fff; border: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; text-decoration: none; }
+    .add-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(27,94,64,0.35); }
+    @media (max-width: 768px) {
+      .admin-dashboard { padding: 2rem 1.5rem; }
+      .animals-table { display: block; overflow-x: auto; }
+    }
+  </style>
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">WildGuard Explorer</div>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../library/mammals.html">Library</a></li>
-        <li><a href="../scan.html">Scan</a></li>
-        <li><a href="../about.html">About</a></li>
-        <li><a href="../contact.html">Contact</a></li>
-      </ul>
-    </nav>
+  <!-- Background Slideshow -->
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background3.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
+  </div>
+
+  <!-- Unified Header -->
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="../library/library.html"><i class="fas fa-book"></i> Library</a>
+        <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
+        <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
+        <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a>
+      </nav>
+      <div class="header-actions">
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <div class="user-menu" id="user-menu" style="display:none;">
+            <button class="user-menu-toggle" id="user-menu-toggle">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-email">User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="../user/Profile.html"><i class="fas fa-user"></i> Profile</a>
+              <a href="../user/History.html"><i class="fas fa-history"></i> History</a>
+              <a href="../user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
   </header>
 
-  <main>
-    <section class="page-banner">
-      <span class="eyebrow">Admin</span>
-      <h1>Manage animal records.</h1>
-      <p class="lede">Keep each species entry aligned with the new visual language and the real wildlife media used across the site.</p>
-    </section>
+  <main class="admin-dashboard">
+    <div class="admin-header">
+      <span class="eyebrow">Administration</span>
+      <h1>Manage Animals</h1>
+      <p>Review, edit, and manage wildlife species in the catalog.</p>
+    </div>
 
-    <section class="table-shell">
-      <div class="content">
-        <h2>Animal management</h2>
-        <table>
+    <section class="admin-section">
+      <div class="admin-section-header">
+        <h2><i class="fas fa-paw"></i> Animal Records</h2>
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+          <a href="Dashboard.html" class="admin-btn-back"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+          <a href="upload.html" class="add-btn"><i class="fas fa-plus"></i> Add New Species</a>
+        </div>
+      </div>
+      <div class="animals-table-wrap">
+        <table class="animals-table">
           <thead>
-            <tr><th>Name</th><th>Status</th><th>Actions</th></tr>
+            <tr>
+              <th>Species</th>
+              <th>Scientific Name</th>
+              <th>Status</th>
+              <th>Category</th>
+              <th>Actions</th>
+            </tr>
           </thead>
-          <tbody>
-            <tr><td>Lion</td><td>Vulnerable</td><td><button class="btn ghost" type="button">Edit</button></td></tr>
-            <tr><td>Elephant</td><td>Endangered</td><td><button class="btn ghost" type="button">Edit</button></td></tr>
-            <tr><td>Cheetah</td><td>Threatened</td><td><button class="btn ghost" type="button">Edit</button></td></tr>
+          <tbody id="animals-table-body">
+            <tr>
+              <td>
+                <div class="animal-name-cell">
+                  <img src="../assets/images/lion.jpg" alt="Lion" class="animal-thumb" onerror="this.style.display='none'">
+                  <strong style="color:#fff;">Lion</strong>
+                </div>
+              </td>
+              <td><em style="color:rgba(255,255,255,0.5);">Panthera leo</em></td>
+              <td><span class="status-badge vulnerable">Vulnerable</span></td>
+              <td>Mammal</td>
+              <td>
+                <div class="action-btns">
+                  <button class="action-btn edit" onclick="alert('Edit feature coming soon')"><i class="fas fa-pen"></i> Edit</button>
+                  <button class="action-btn delete" onclick="if(confirm('Delete this record?')) this.closest('tr').remove()"><i class="fas fa-trash"></i> Delete</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="animal-name-cell">
+                  <img src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&q=80&w=200" alt="Elephant" class="animal-thumb" onerror="this.style.display='none'">
+                  <strong style="color:#fff;">Elephant</strong>
+                </div>
+              </td>
+              <td><em style="color:rgba(255,255,255,0.5);">Loxodonta africana</em></td>
+              <td><span class="status-badge endangered">Endangered</span></td>
+              <td>Mammal</td>
+              <td>
+                <div class="action-btns">
+                  <button class="action-btn edit" onclick="alert('Edit feature coming soon')"><i class="fas fa-pen"></i> Edit</button>
+                  <button class="action-btn delete" onclick="if(confirm('Delete this record?')) this.closest('tr').remove()"><i class="fas fa-trash"></i> Delete</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="animal-name-cell">
+                  <img src="../assets/images/rhino.png" alt="Rhinoceros" class="animal-thumb" onerror="this.style.display='none'">
+                  <strong style="color:#fff;">Rhinoceros</strong>
+                </div>
+              </td>
+              <td><em style="color:rgba(255,255,255,0.5);">Diceros bicornis</em></td>
+              <td><span class="status-badge critically-endangered">Critically Endangered</span></td>
+              <td>Mammal</td>
+              <td>
+                <div class="action-btns">
+                  <button class="action-btn edit" onclick="alert('Edit feature coming soon')"><i class="fas fa-pen"></i> Edit</button>
+                  <button class="action-btn delete" onclick="if(confirm('Delete this record?')) this.closest('tr').remove()"><i class="fas fa-trash"></i> Delete</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="animal-name-cell">
+                  <img src="../assets/images/leopard.png" alt="Leopard" class="animal-thumb" onerror="this.style.display='none'">
+                  <strong style="color:#fff;">Leopard</strong>
+                </div>
+              </td>
+              <td><em style="color:rgba(255,255,255,0.5);">Panthera pardus</em></td>
+              <td><span class="status-badge vulnerable">Vulnerable</span></td>
+              <td>Mammal</td>
+              <td>
+                <div class="action-btns">
+                  <button class="action-btn edit" onclick="alert('Edit feature coming soon')"><i class="fas fa-pen"></i> Edit</button>
+                  <button class="action-btn delete" onclick="if(confirm('Delete this record?')) this.closest('tr').remove()"><i class="fas fa-trash"></i> Delete</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="animal-name-cell">
+                  <img src="../assets/images/buffalo.png" alt="Cape Buffalo" class="animal-thumb" onerror="this.style.display='none'">
+                  <strong style="color:#fff;">Cape Buffalo</strong>
+                </div>
+              </td>
+              <td><em style="color:rgba(255,255,255,0.5);">Syncerus caffer</em></td>
+              <td><span class="status-badge near-threatened">Near Threatened</span></td>
+              <td>Mammal</td>
+              <td>
+                <div class="action-btns">
+                  <button class="action-btn edit" onclick="alert('Edit feature coming soon')"><i class="fas fa-pen"></i> Edit</button>
+                  <button class="action-btn delete" onclick="if(confirm('Delete this record?')) this.closest('tr').remove()"><i class="fas fa-trash"></i> Delete</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="animal-name-cell">
+                  <img src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&q=80&w=200" alt="Cheetah" class="animal-thumb" onerror="this.style.display='none'">
+                  <strong style="color:#fff;">Cheetah</strong>
+                </div>
+              </td>
+              <td><em style="color:rgba(255,255,255,0.5);">Acinonyx jubatus</em></td>
+              <td><span class="status-badge vulnerable">Vulnerable</span></td>
+              <td>Mammal</td>
+              <td>
+                <div class="action-btns">
+                  <button class="action-btn edit" onclick="alert('Edit feature coming soon')"><i class="fas fa-pen"></i> Edit</button>
+                  <button class="action-btn delete" onclick="if(confirm('Delete this record?')) this.closest('tr').remove()"><i class="fas fa-trash"></i> Delete</button>
+                </div>
+              </td>
+            </tr>
+            <tr id="new-species-placeholder" style="display:none;">
+              <td colspan="5" style="text-align:center; color:rgba(255,255,255,0.4); padding:2rem;">No records match your search.</td>
+            </tr>
           </tbody>
         </table>
       </div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <div class="footer-social">
+          <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../library/library.html">Library</a></li>
+          <li><a href="../scan.html">Scan</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="#">Donate</a></li>
+          <li><a href="#">Adopt an Animal</a></li>
+          <li><a href="#">Volunteer</a></li>
+          <li><a href="#">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> Global</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
+    </div>
+  </footer>
+
+  <script defer src="../js/main.js"></script>
+  <script defer src="../js/auth.js"></script>
+  <script defer src="../js/admin-auth-guard.js"></script>
 </body>
 </html>

@@ -181,14 +181,14 @@
           var body = document.getElementById("message").value;
 
           // Save to localStorage for offline mode
-          var messages = JSON.parse(localStorage.getItem("wildguard_admin_messages") || "[]");
+          var messages = JSON.parse(localStorage.getItem("wg_messages") || "[]");
           messages.push({
             id: Date.now().toString(),
             name: name, email: email, body: body,
             subject: "Contact Form", from: email,
             status: "unread", createdAt: new Date().toISOString()
           });
-          localStorage.setItem("wildguard_admin_messages", JSON.stringify(messages));
+          localStorage.setItem("wg_messages", JSON.stringify(messages));
 
           // Try to send to backend
           try {

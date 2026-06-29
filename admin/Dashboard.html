@@ -138,6 +138,11 @@
         <h3 id="statUsers">1</h3>
         <p>Active Users</p>
       </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-bell"></i></div>
+        <h3 id="statNotifications">0</h3>
+        <p>Notifications</p>
+      </div>
     </div>
 
     <!-- Pending Scan Approvals -->
@@ -152,10 +157,36 @@
       <div id="pendingAdminContainer"></div>
     </section>
 
+    <!-- Notifications Panel -->
+    <section class="admin-section">
+      <div class="admin-section-header">
+        <div>
+          <h2><i class="fas fa-bell"></i> Notifications</h2>
+          <p>New users, scan submissions, and system alerts.</p>
+        </div>
+      </div>
+      <div id="notificationsContainer" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1.5rem;">
+        <div style="text-align:center; padding:2rem; color:rgba(255,255,255,0.4);"><i class="fas fa-bell" style="font-size:2rem; display:block; margin-bottom:0.5rem;"></i>No new notifications.</div>
+      </div>
+    </section>
+
+    <!-- Recent Activity -->
+    <section class="admin-section">
+      <div class="admin-section-header">
+        <div>
+          <h2><i class="fas fa-list-ul"></i> Recent Activity</h2>
+          <p>Latest system events, logins, and security events.</p>
+        </div>
+      </div>
+      <div id="activityContainer" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1.5rem;">
+        <div style="text-align:center; padding:2rem; color:rgba(255,255,255,0.4);"><i class="fas fa-clock-rotate-left" style="font-size:2rem; display:block; margin-bottom:0.5rem;"></i>No recent activity.</div>
+      </div>
+    </section>
+
     <!-- Quick Actions -->
     <section class="admin-section">
       <div class="admin-section-header">
-        <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+        <h2><i class="fas fa-bolt"></i> Quick Access</h2>
       </div>
       <div class="admin-actions-grid">
         <div class="admin-action-card">
@@ -173,7 +204,7 @@
         <div class="admin-action-card">
           <i class="fas fa-chart-bar"></i>
           <h4>View Analytics</h4>
-          <p>Check scan trends, most identified species, user-excuse.</p>
+          <p>Check scan trends, most identified species, user stats.</p>
           <a href="#" onclick="alert('Analytics coming soon.'); return false;"><i class="fas fa-arrow-right"></i> View Reports</a>
         </div>
         <div class="admin-action-card">
@@ -233,6 +264,7 @@
   <script defer src="../js/main.js"></script>
   <script defer src="../js/auth.js"></script>
   <script defer src="../js/scan-integration.js"></script>
+  <script defer src="../js/admin-auth-guard.js"></script>
   <script defer src="../js/admin.js"></script>
 </body>
 </html>
