@@ -553,7 +553,126 @@
   }
   cleanupOldSessions();
 
-  // --- Init ---
+  // --- Enhanced Security Features ---
+
+  // Account lockout after failed attempts
+  const LOCKOUT_KEY = 'wildguard_lockout';
+  const MAX_FAILED_ATTEMPTS = 5;
+  const LOCKOUT_DURATION = 30 * 60 * 1000; // 30 minutes
+
+  function isAccountLocked(identifier) {
+    try {
+      const lockout = JSON.parse(localStorage.getItem(LOCKOUT_KEY) || '{}');
+      const accountLock = lockout[identifier];
+      if (!accountLock) return false;
+      if (Date.now() - accountLock.time < LOCKOUT_DURATION) {
+        return true;
+      }
+      // Lock expired, clear it
+      delete lockout[identifier];
+      localStorage.setItem(LOCKOUT_KEY, JSON.stringify(lockout));
+      return false;
+    } catch (e) { return false; }
+  }
+
+  function recordFailedAttempt(identifier) {
+    try {
+      const lockout = JSON.parse(localStorage.getItem(LOCKOUT_KEY) || '{}');
+      if (!lockout[identifier]) {
+        lockout[identifier] = { count: 0, time: Date.now() };
+      }
+      lockout[identifier].count++;
+      lockout[identifier].time = Date.now();
+      if (lockout[identifier].count >= MAX_FAILED_ATTEMPTS) {
+        // Account locked
+      }
+      localStorage.setItem(LOCKOUT_KEY, JSON.stringify(lockout));
+    } catch (e) {}
+  }
+
+  function clearFailedAttempts(identifier) {
+    try {
+      const lockout = JSON.parse(localStorage.getItem(LOCKOUT_KEY) || '{}');
+      if (lockout[identifier]) {
+        delete lockout[identifier];
+        localStorage.setItem(LOCKOUT_KEY, JSON.stringify(lockout));
+      }
+    } catch (e) {}
+  }
+
+  // Session timeout (2 hours)
+  const SESSION_TIMEOUT = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+  const SESSION_TIMEOUT_KEY = 'wildguard_session_start';
+
+  function setSessionTimeout() {
+    try {
+      localStorage.setItem(SESSION_TIMEOUT_KEY, Date.now().toString());
+    } catch (e) {}
+  }
+
+  function checkSessionTimeout() {
+    try {
+      const startTime = localStorage.getItem(SESSION_TIMEOUT_KEY);
+      if (!startTime) return false;
+      if (Date.now() - parseInt(startTime, 10) > SESSION_TIMEOUT) {
+        // Session expired, clear user
+        clearUser();
+        clearAuthCookie();
+        return true;
+      }
+      return false;
+    } catch (e) { return false; }
+  }
+
+  // Security monitoring - detect suspicious activity
+  function securityMonitor(action, details) {
+    try {
+      const log = JSON.parse(localStorage.getItem('wildguard_security_log') || '[]');
+      log.push({
+        timestamp: new Date().toISOString(),
+        action: action,
+        details: details,
+        userAgent: navigator.userAgent.substring(0, 100),
+        page: window.location.href
+      });
+      // Keep only last 50 entries
+      if (log.length > 50) log.shift();
+      localStorage.setItem('wildguard_security_log', JSON.stringify(log));
+    } catch (e) {}
+  }
+
+  // Check for suspicious patterns
+  function checkSuspiciousActivity() {
+    try {
+      const log = JSON.parse(localStorage.getItem('wildguard_security_log') || '[]');
+      const recentAttempts = log.filter(entry => 
+        entry.action === 'login_failed' && 
+        Date.now() - new Date(entry.timestamp).getTime() < 5 * 60 * 1000
+      );
+      if (recentAttempts.length >= 3) {
+        securityMonitor('suspicious_activity', { count: recentAttempts.length });
+        return true;
+      }
+      return false;
+    } catch (e) { return false; }
+  }
+
+  // Security check on page load
+  function runSecurityChecks() {
+    // Check session timeout
+    if (checkSessionTimeout()) {
+      securityMonitor('session_timeout', {});
+    }
+    // Check for suspicious activity
+    if (checkSuspiciousActivity()) {
+      securityMonitor('suspicious_activity_detected', {});
+    }
+  }
+
+  // Run security checks periodically
+  setInterval(runSecurityChecks, 60000); // Every minute
+
+  // --- Init --
   document.addEventListener('DOMContentLoaded', () => {
     updateAuthUI();
     initUserMenu();
@@ -571,5 +690,13 @@
 
   // Expose simpleHash for demo mode password handling across pages
   window.simpleHash = simpleHash;
+
+  // Expose security functions
+  window.isAccountLocked = isAccountLocked;
+  window.recordFailedAttempt = recordFailedAttempt;
+  window.clearFailedAttempts = clearFailedAttempts;
+  window.setSessionTimeout = setSessionTimeout;
+  window.checkSessionTimeout = checkSessionTimeout;
+  window.securityMonitor = securityMonitor;
 
 })();
