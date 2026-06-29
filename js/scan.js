@@ -120,6 +120,7 @@ const WildlifeScan = {
 
   async init() {
     this.cacheElements();
+    await this.loadExternalData();
     this.initSpeechRecognition();
     this.bindEvents();
     this.initStorage();
@@ -137,6 +138,24 @@ const WildlifeScan = {
       } catch (err) {
         console.warn("Model load failed:", err);
       }
+    }
+  },
+
+  async loadExternalData() {
+    try {
+      const response = await fetch("js/wildlife-data.json");
+      if (!response.ok) throw new Error("Failed to fetch data");
+      const data = await response.json();
+      // Merge external labelToSpecies and speciesDB with existing ones
+      if (data.labelToSpecies) {
+        this.labelToSpecies = { ...this.labelToSpecies, ...data.labelToSpecies };
+      }
+      if (data.speciesDB) {
+        this.speciesDB = { ...this.speciesDB, ...data.speciesDB };
+      }
+      console.log(`Loaded ${Object.keys(data.speciesDB || {}).length} species from external JSON`);
+    } catch (err) {
+      console.warn("Could not load external data:", err);
     }
   },
 
