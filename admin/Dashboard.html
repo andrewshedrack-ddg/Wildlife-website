@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | WildGuard Explorer</title>
+  <title>Admin Dashboard | WildGuard Society</title>
   <link rel="icon" type="image/png" href="../assets/images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,260 +11,251 @@
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    .admin-dashboard { margin-top: var(--header-height, 72px); padding: 3rem 0 2rem; max-width: 1200px; margin-left: auto; margin-right: auto; color: var(--lighter, #fff); }
-    .admin-header { margin-bottom: 2.5rem; }
-    .admin-header h1 { font-family: var(--font-heading, 'Playfair Display', Georgia, serif); font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 0.5rem; }
-    .admin-header p { color: rgba(255,255,255,0.6); font-size: 1.05rem; max-width: 600px; }
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
-    .stat-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1.75rem; text-align: center; transition: all 0.3s ease; }
-    .stat-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); }
-    .stat-icon { font-size: 2rem; color: var(--accent, #c9a227); margin-bottom: 0.75rem; }
-    .stat-card h3 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.3rem; }
-    .stat-card p { color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0; }
-    .admin-section { margin-bottom: 3rem; }
-    .admin-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
-    .admin-section-header h2 { font-family: var(--font-heading, 'Playfair Display', Georgia, serif); font-size: 1.5rem; margin: 0; }
-    .admin-section-header p { color: rgba(255,255,255,0.6); margin: 0; }
-    .status-tag { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.9rem; border-radius: 100px; font-size: 0.82rem; font-weight: 600; }
-    .status-tag.online { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.25); }
-    .pending-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-    .pending-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
-    .pending-card:hover { border-color: rgba(255,255,255,0.15); }
-    .pending-img-wrap { width: 100%; height: 200px; overflow: hidden; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; }
-    .pending-img { width: 100%; height: 100%; object-fit: cover; }
-    .pending-placeholder { color: rgba(255,255,255,0.3); font-size: 2.5rem; }
-    .pending-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
-    .pending-category { display: inline-block; padding: 0.3rem 0.75rem; background: rgba(201,162,39,0.15); border: 1px solid rgba(201,162,39,0.25); border-radius: 100px; color: var(--accent, #c9a227); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.75rem; width: max-content; }
-    .pending-body h3 { color: var(--lighter, #fff); margin: 0 0 0.4rem; font-size: 1.2rem; }
-    .pending-scientific { color: rgba(255,255,255,0.5); font-style: italic; font-size: 0.9rem; margin-bottom: 0.75rem; }
-    .pending-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.85rem; flex-wrap: wrap; }
-    .pending-status { display: inline-flex; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.8rem; font-weight: 600; }
-    .pending-status.pending { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.25); }
-    .pending-confidence { color: var(--accent); font-size: 0.88rem; font-weight: 500; }
-    .pending-date { color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-bottom: 1rem; }
-    .pending-actions { display: flex; gap: 0.75rem; margin-top: auto; }
-    .approve-btn { flex: 1; padding: 0.65rem; background: linear-gradient(135deg, #1b5e40, #143d2a); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
-    .approve-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(27,94,64,0.35); }
-    .reject-btn { flex: 1; padding: 0.65rem; background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.25); border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
-    .reject-btn:hover { background: rgba(239,68,68,0.15); transform: translateY(-2px); }
-    .admin-actions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
-    .admin-action-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1.5rem; text-align: center; transition: all 0.3s ease; }
-    .admin-action-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
-    .admin-action-card i { font-size: 1.5rem; color: var(--accent, #c9a227); margin-bottom: 0.75rem; }
-    .admin-action-card h4 { color: var(--lighter, #fff); margin: 0 0 0.5rem; font-size: 1.05rem; }
-    .admin-action-card p { color: rgba(255,255,255,0.55); font-size: 0.92rem; margin: 0 0 1rem; }
-    .admin-action-card a, .admin-action-card button { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.2rem; background: rgba(201,162,39,0.12); border: 1px solid rgba(201,162,39,0.25); border-radius: 8px; color: var(--accent); font-weight: 600; font-size: 0.9rem; text-decoration: none; transition: all 0.3s ease; cursor: pointer; }
-    .admin-action-card a:hover, .admin-action-card button:hover { background: rgba(201,162,39,0.2); border-color: rgba(201,162,39,0.4); }
-    @media (max-width: 768px) {
-      .admin-dashboard { padding: 2rem 1.5rem; }
-      .stats-grid { grid-template-columns: 1fr; }
-      .pending-grid { grid-template-columns: 1fr; }
-      .admin-actions-grid { grid-template-columns: 1fr; }
-    }
+    /* Admin Layout */
+    .admin-app { display: flex; min-height: 100vh; background: var(--darker, #0a1510); }
+    .admin-sidebar { width: 260px; background: rgba(10,21,16,0.95); border-right: 1px solid rgba(255,255,255,0.06); padding: 1.5rem; position: fixed; top: 0; bottom: 0; left: 0; overflow-y: auto; z-index: 900; transition: transform 0.3s ease; }
+    @media (max-width: 768px) { .admin-sidebar { transform: translateX(-100%); } .admin-sidebar.open { transform: translateX(0); } }
+    .admin-brand { display: flex; align-items: center; gap: 0.75rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 1.5rem; }
+    .admin-brand img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--accent); }
+    .admin-brand span { font-family: var(--font-heading); font-weight: 700; color: var(--lighter); font-size: 1rem; }
+    .admin-nav { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 2rem; }
+    .admin-nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; border-radius: 10px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.92rem; font-weight: 500; transition: all 0.3s ease; cursor: pointer; border: none; background: none; width: 100%; text-align: left; }
+    .admin-nav-item:hover { background: rgba(255,255,255,0.06); color: var(--lighter); }
+    .admin-nav-item.active { background: rgba(201,162,39,0.1); color: var(--accent); border: 1px solid rgba(201arh,162,39,0.2); }
+    .admin-nav-item i { width: 20px; text-align: center; font-size: 0.95rem; }
+    .admin-nav-badge { margin-left: auto; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700; padding: 1px 6px; border-radius: 10px; min-width: 18px; text-align: center; }
+    .admin-main { flex: 1; margin-left: 260px; min-height: 100vh; }
+    @media (max-width: 768px) { .admin-main { margin-left: 0; } }
+    .admin-topbar { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; background: rgba(10,21,16,0.95); backdrop-filter: blur(10px); z-index: 800; }
+    .admin-topbar h1 { font-family: var(--font-heading); font-size: 1.4rem; margin: 0; }
+    .admin-topbar-right { display: flex; align-items: center; gap: 1rem; }
+    .admin-notif-btn { position: relative; background: none; border: none; color: rgba(255,255,255,0.7); font-size: 1.1rem; cursor: pointer; padding: 0.5rem; transition: all 0.3s ease; }
+    .admin-notif-btn:hover { color: var(--accent); }
+    .admin-notif-badge { position: absolute; top: 2px; right: 2px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .admin-content { padding: 2rem; max-width: 1100px; }
+    .mobile-toggle-sidebar { display: none; background: none; border: none; color: var(--lighter); font-size: 1.4rem; cursor: pointer; padding: 0.5rem; }
+    @media (max-width: 768px) { .mobile-toggle-sidebar { display: block; } }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.25rem; text-align: center; transition: all 0.3s ease; }
+    .stat-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.15); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+    .stat-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .stat-card h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.2rem; color: var(--accent); }
+    .stat-card p { color: rgba(255,255,255,0.55); font-size: 0.82rem; margin: 0; }
+
+    /* Section Styling */
+    .admin-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+    .admin-section-header h2 { font-family: var(--font-heading); font-size: 1.3rem; margin: 0; }
+ calibre .empty-state { text-align: center; padding: 3rem 2rem; color: rgba(255,255,255,0.4); }
+    .empty-state i { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+    .empty-state h3 { color: rgba(255,255,255,0.7); font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .empty-state p { font-size: 0.9rem; }
+
+    /* Tables */
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th { text-align: left; padding: 0.9rem 1rem; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .data-table td { padding: 0.9rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.9rem; }
+    .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .data-table img { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; }
+
+    /* Status Badges */
+    .badge { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.78rem; font-weight: 600; }
+    .badge-pending { background: rgba(245,158,11,0.12); color: #f59e0b; border: 1px solid rgba(245,158,11,0.25); }
+    .badge-approved { background: rgba(34,197,94,0.12); color: #22c55e; border: 1px solid rgba(34,197,94,0.25); }
+    .badge-new { background: rgba(59,130,246,0.12); color: #3b82f6; border: 1px solid rgba(59,130,246,0.25); }
+
+    /* Action Buttons */
+    .btn-sm { padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.3s ease; }
+    .btn-approve { background: linear-gradient(135deg, #1b5e40, #143d2a); color: #fff; }
+    .btn-approve:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(27,94,64,0.3); }
+    .btn-reject { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.25); }
+    .btn-reject:hover { background: rgba(239,68,68,0.2); }
+    .btn-view { background: rgba(201,162,39,0.1); color: var(--accent); border: 1px solid rgba(201,162,39,0.25); }
+    .btn-view:hover { background: rgba(201,162,39,0.2); }
+    .btn-mark-read { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.12); }
+    .btn-mark-read:hover { background: rgba(255,255,255,0.1); color: var(--lighter); }
+
+    /* Message Cards */
+    .message-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.25rem; margin-bottom: 0.75rem; transition: all 0.3s ease; }
+    .message-card:hover { border-color: rgba(255,255,255,0.12); }
+    .message-card.unread { border-left: 3px solid var(--accent); background: rgba(201,162,39,0.04); }
+    .message-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem; }
+    .message-header strong { color: var(--lighter); font-size: 0.95rem; }
+    .message-header span { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+    .message-body { color: rgba(255,255,255,0.7); font-size: 0.88rem; line-height: 1.5; margin-bottom: 0.75rem; }
+    .message-actions { display: flex; gap: 0.5rem; }
+
+    /* Scan Card */
+    .scan-card { display: flex; gap: 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem; margin-bottom: 0.75rem; }
+    .scan-card:hover { border-color: rgba(255,255,255,0.12); }
+    .scan-img { width: 80px; height: 80px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: rgba(0,0,0,0.3); }
+    .scan-info { flex: 1; min-width: 0; }
+    .scan-info h4 { margin: 0 0 0.3rem; color: var(--lighter); font-size: 1rem; }
+    .scan-info p { margin: 0 0 0.3rem; color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+    .scan-meta { display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap; }
+
+    /* Home Tab - Action Grid */
+    .action-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+    .action-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.5rem; text-align: center; transition: all 0.3s ease; }
+    .action-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+    .action-card i { font-size: 1.8rem; color: var(--accent); margin-bottom: 0.75rem; display: block; }
+    .action-card h4 { color: var(--lighter); margin:  0 0 0.4rem; font-size: 1rem; }
+    .action-card p { color: rgba(255,255,255,0.55); font-size: 0.85rem; margin: 0 0 1rem; }
+    .action-card a { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.2rem; background: rgba(201,162,39,0.12); border: 1px solid rgba(201,162,39,0.25); border-radius: 8px; color: var(--accent); font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: all 0.3s ease; }
+    .action-card a:hover { background: rgba(201,162,39,0.2); border-color: rgba(201,162,39,0.4); }
+
+    /* Sidebar Logout */
+    .admin-logout { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
+    .admin-logout a { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; color: rgba(239,68,68,0.9); font-size: 0.92rem; text-decoration: none; border-radius: 10px; transition: all 0.3s ease; }
+    .admin-logout a:hover { background: rgba(239,68,68,0.1); }
   </style>
 </head>
 <body>
-  <!-- Background Slideshow -->
-  <div class="page-slideshow">
-    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
-    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
-    <div class="page-slide" style="background-image: url('../assets/images/background3.png');"></div>
-    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
-    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
-  </div>
-
-  <header class="site-header" id="site-header">
-    <div class="header-container">
-      <a href="../index.html" class="logo">
-        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
-        <span class="logo-text">WildGuard Society</span>
-      </a>
-      <nav class="desktop-nav" id="desktop-nav">
-        <a href="../index.html"><i class="fas fa-home"></i> Home</a>
-        <a href="../library/library.html"><i class="fas fa-book"></i> Library</a>
-        <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
-        <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
-        <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a>
+  <div class="admin-app">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-brand">
+        <img src="../assets/images/logo.png" alt="WildGuard">
+        <span>Admin Portal</span>
+      </div>
+      <nav class="admin-nav">
+        <button class="admin-nav-item active" data-tab="dashboard" onclick="switchTab(this, 'dashboard')">
+          <i class="fas fa-chart-pie"></i> Dashboard
+        </button>
+        <button class="admin-nav-item" data-tab="scans" onclick="switchTab(this, 'scans')">
+          <i class="fas fa-camera"></i> Pending Scans <span class="admin-nav-badge" id="navBadgeScans" style="display:none;"></span>
+        </button>
+        <button class="admin-nav-item" data-tab="messages" onclick="switchTab(this, 'messages')">
+          <i class="fas fa-envelope"></i> Messages <span class="admin-nav-badge" id="navBadgeMessages" style="display:none;"></span>
+        </button>
+        <button class="admin-nav-item" data-tab="notifications" onclick="switchTab(this, 'notifications')">
+          <i class="fas fa-bell"></i> Notifications <span class="admin-nav-badge" id="navBadgeNotifs" style="display:none;"></span>
+        </button>
+        <button class="admin-nav-item" data-tab="users" onclick="switchTab(this, 'users')">
+          <i class="fas fa-users"></i> Users
+        </button>
       </nav>
-      <div class="header-actions">
-        <div class="auth-buttons" id="auth-buttons">
-          <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
-          <div class="user-menu" id="user-menu" style="display:none;">
-            <button class="user-menu-toggle" id="user-menu-toggle">
-              <i class="fas fa-user-circle"></i>
-              <span id="user-email">User</span>
-              <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="user-dropdown" id="user-dropdown">
-              <a href="../user/Profile.html"><i class="fas fa-user"></i> Profile</a>
-              <a href="../user/History.html"><i class="fas fa-history"></i> History</a>
-              <a href="../user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
-              <div class="dropdown-divider"></div>
-              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      <div class="admin-logout">
+        <a href="#" id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+      <div class="admin-topbar">
+        <div style="display:flex; align-items:center; gap:1rem;">
+          <button class="mobile-toggle-sidebar" id="mobileToggleSidebar"><i class="fas fa-bars"></i></button>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
+        <div class="admin-topbar-right">
+          <button class="admin-notif-btn" id="headerNotifBtn" title="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="admin-notif-badge" id="headerNotifBadge" style="display:none;"></span>
+          </button>
+          <span id="adminEmail" style="font-size:0.85rem; color:rgba(255,255,255,0.6);">Admin</span>
+        </div>
+      </div>
+
+      <div class="admin-content">
+
+        <!-- Dashboard (Home) Tab -->
+        <div id="tab-dashboard" class="tab-content active">
+          <!-- Stats -->
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon"><i class="fas fa-clock" style="color:#f59e0b;"></i></div><h3 id="statPending">0</h3><p>Pending Scans</p></div>
+            <div class="stat-card"><div class="stat-icon"><i class="fas fa-database" style="color:#3b82f6;"></i></div><h3 id="statTotal">0</h3><p>Total Catalog</p></div>
+            <div class="stat-card"><div class="stat-icon"><i class="fas fa-camera" style="color:#a855f7;"></i></div><h3 id="statToday">0</h3><p>Scans Today</p></div>
+            <div class="stat-card"><div class="stat-icon"><i class="fas fa-users" style="color:#22c55e;"></i></div><h3 id="statUsers">0</h3><p>Active Users</p></div>
+            <div class="stat-card"><div class="stat-icon"><i class="fas fa-envelope" style="color:#ef4444;"></i></div><h3 id="statMessages">0</h3><p>New Messages</p></div>
+          </div>
+
+          <!-- Quick Access -->
+          <div class="admin-section-header"><h2><i class="fas fa-bolt" style="color:var(--accent);"></i> Quick Access</h2></div>
+          <div class="action-grid">
+            <div class="action-card">
+              <i class="fas fa-paw"></i>
+              <h4>Manage Animals</h4>
+              <p>Edit species entries, add organisms.</p>
+              <a href="manage-animals.html"><i class="fas fa-arrow-right"></i> Open</a>
+            </div>
+            <div class="action-card">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <h4>Upload Species</h4>
+              <p>Add new wildlife data with images.</p>
+              <a href="upload.html"><i class="fas fa-arrow-right"></i> Upload</a>
+            </div>
+            <div class="action-card">
+              <i class="fas fa-chart-bar"></i>
+              <h4>Analytics</h4>
+              <p>View scans, trends, users.</p>
+              <a href="#" onclick="alert('Coming soon'); return false;"><i class="fas fa-arrow-right"></i> View</a>
+            </div>
+            <div class="action-card">
+              <i class="fas fa-gear"></i>
+              <h4>Settings</h4>
+              <p>Configure parameters.</p>
+              <a href="#" onclick="alert('Coming soon'); return false;"><i class="fas fa-arrow-right"></i> Manage</a>
             </div>
           </div>
         </div>
-      </div>
-      <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
-    </div>
-  </header>
 
-  <main class="admin-dashboard">
-    <div class="admin-header">
-      <span class="eyebrow">Administration</span>
-      <h1>Dashboard Overview</h1>
-      <p>Track content, review species submissions, and manage the wildlife catalog.</p>
-    </div>
+        <!-- Pending Scans Tab -->
+        <div id="tab-scans" class="tab-content">
+          <div class="admin-section-header"><h2><i class="fas fa-camera" style="color:var(--accent);"></i> Pending Scan Approvals</h2></div>
+          <div id="pendingScansList"></div>
+        </div>
 
-    <!-- Stats Overview -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-clock"></i></div>
-        <h3 id="statPending">0</h3>
-        <p>Pending Scan Approvals</p>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-database"></i></div>
-        <h3 id="statTotal">0</h3>
-        <p>Total Catalog Entries</p>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-camera"></i></div>
-        <h3 id="statToday">0</h3>
-        <p>Scans Today</p>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-users"></i></div>
-        <h3 id="statUsers">1</h3>
-        <p>Active Users</p>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-bell"></i></div>
-        <h3 id="statNotifications">0</h3>
-        <p>Notifications</p>
+        <!-- Messages Tab -->
+        <div id="tab-messages" class="tab-content">
+          <div class="admin-section-header"><h2><i class="fas fa-envelope" style="color:var(--accent);"></i> Contact Messages</h2></div>
+          <div id="messagesList"></div>
+        </div>
+
+        <!-- Notifications Tab -->
+        <div id="tab-notifications" class="tab-content">
+          <div class="admin-section-header"><h2><i class="fas fa-bell" style="color:var(--accent);"></i> System Notifications</h2></div>
+          <div id="notificationsList"></div>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="tab-users" class="tab-content">
+          <div class="admin-section-header"><h2><i class="fas fa-users" style="color:var(--accent);"></i> Registered Users</h2></div>
+          <div id="usersList"></div>
+        </div>
+
       </div>
     </div>
-
-    <!-- Pending Scan Approvals -->
-    <section class="admin-section">
-      <div class="admin-section-header">
-        <div>
-          <h2><i class="fas fa-user-shield"></i> Pending Scan Approvals</h2>
-          <p>Review and approve species submitted by users through the AI scan feature.</p>
-        </div>
-        <span class="status-tag online"><i class="fas fa-circle" style="font-size:0.5rem;"></i> System Online</span>
-      </div>
-      <div id="pendingAdminContainer"></div>
-    </section>
-
-    <!-- Notifications Panel -->
-    <section class="admin-section">
-      <div class="admin-section-header">
-        <div>
-          <h2><i class="fas fa-bell"></i> Notifications</h2>
-          <p>New users, scan submissions, and system alerts.</p>
-        </div>
-      </div>
-      <div id="notificationsContainer" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1.5rem;">
-        <div style="text-align:center; padding:2rem; color:rgba(255,255,255,0.4);"><i class="fas fa-bell" style="font-size:2rem; display:block; margin-bottom:0.5rem;"></i>No new notifications.</div>
-      </div>
-    </section>
-
-    <!-- Recent Activity -->
-    <section class="admin-section">
-      <div class="admin-section-header">
-        <div>
-          <h2><i class="fas fa-list-ul"></i> Recent Activity</h2>
-          <p>Latest system events, logins, and security events.</p>
-        </div>
-      </div>
-      <div id="activityContainer" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1.5rem;">
-        <div style="text-align:center; padding:2rem; color:rgba(255,255,255,0.4);"><i class="fas fa-clock-rotate-left" style="font-size:2rem; display:block; margin-bottom:0.5rem;"></i>No recent activity.</div>
-      </div>
-    </section>
-
-    <!-- Quick Actions -->
-    <section class="admin-section">
-      <div class="admin-section-header">
-        <h2><i class="fas fa-bolt"></i> Quick Access</h2>
-      </div>
-      <div class="admin-actions-grid">
-        <div class="admin-action-card">
-          <i class="fas fa-paw"></i>
-          <h4>Manage Animals</h4>
-          <p>Edit species entries, add new organisms to the catalog.</p>
-          <a href="manage-animals.html"><i class="fas fa-arrow-right"></i> Go to Animals</a>
-        </div>
-        <div class="admin-action-card">
-          <i class="fas fa-cloud-upload-alt"></i>
-          <h4>Upload Species</h4>
-          <p>Add new wildlife data with images and descriptions.</p>
-          <a href="upload.html"><i class="fas fa-arrow-right"></i> Upload</a>
-        </div>
-        <div class="admin-action-card">
-          <i class="fas fa-chart-bar"></i>
-          <h4>View Analytics</h4>
-          <p>Check scan trends, most identified species, user stats.</p>
-          <a href="#" onclick="alert('Analytics coming soon.'); return false;"><i class="fas fa-arrow-right"></i> View Reports</a>
-        </div>
-        <div class="admin-action-card">
-          <i class="fas fa-gear"></i>
-          <h4>Settings</h4>
-          <p>Configure system parameters, users, and permissions.</p>
-          <a href="#" onclick="alert('Settings coming soon.'); return false;"><i class="fas fa-arrow-right"></i> Manage</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-content">
-      <div class="footer-brand">
-        <h3>WildGuard Society</h3>
-        <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
-        <div class="footer-social">
-          <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
-          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-          <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
-          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
-        </div>
-      </div>
-      <div class="footer-links">
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../library/library.html">Library</a></li>
-          <li><a href="../scan.html">Scan</a></li>
-          <li><a href="../about.html">About</a></li>
-          <li><a href="../contact.html">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-links">
-        <h4>Get Involved</h4>
-        <ul>
-          <li><a href="#">Donate</a></li>
-          <li><a href="#">Adopt an Animal</a></li>
-          <li><a href="#">Volunteer</a></li>
-          <li><a href="#">Partner with Us</a></li>
-        </ul>
-      </div>
-      <div class="footer-contact">
-        <h4>Contact</h4>
-        <p><i class="fas fa-envelope"></i> info@wildguardsociety.com</p>
-        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
-        <p><i class="fas fa-map-marker-alt"></i> Global</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
-    </div>
-  </footer>
+  </div>
 
   <script defer src="../js/main.js"></script>
   <script defer src="../js/auth.js"></script>
-  <script defer src="../js/scan-integration.js"></script>
   <script defer src="../js/admin-auth-guard.js"></script>
   <script defer src="../js/admin.js"></script>
+  <script>
+    // Admin Tab Switching
+    window.switchTab = function(el, tabName) {
+      document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('tab-' + tabName).classList.add('active');
+      document.getElementById('pageTitle').textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+    };
+
+    // Mobile sidebar toggle
+    document.getElementById('mobileToggleSidebar')?.addEventListener('click', () => {
+      document.getElementById('adminSidebar').classList.toggle('open');
+    });
+
+    // Admin logout
+    document.getElementById('adminLogoutBtn')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('wildguard_user');
+      window.location.href = '../admin-login.html';
+    });
+  </script>
 </body>
 </html>

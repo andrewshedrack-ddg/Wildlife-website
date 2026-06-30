@@ -17,7 +17,7 @@
   }
 
   function isValidEmail(email) {
-    return /^[^\s@]+@[\s@]+\.[^\s@]+$/.test(email);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
   function isStrongPassword(password) {
@@ -557,6 +557,38 @@
     } catch (e) {}
   }
 
+  // --- User Notifications (Admin -> User) ---
+  const USER_NOTIFICATIONS_KEY = 'wildguard_user_notifications';
+  function getUserNotifications() {
+    try { const data = localStorage.getItem(USER_NOTIFICATIONS_KEY); return data ? JSON.parse(data) : []; } catch (e) { return []; }
+  }
+  window.getUserNotifications = getUserNotifications;
+  window.addUserNotification = function(notification) {
+    const notifs = getUserNotifications();
+    notifs.unshift({ id: 'unotif_' + Date.now(), timestamp: new Date().toISOString(), read: false, ...notification });
+    if (notifs.length > 50) notifs.pop();
+    localStorage.setItem(USER_NOTIFICATIONS_KEY, JSON.stringify(notifs));
+    renderUserNotificationBadge();
+  };
+  function renderUserNotificationBadge() {
+    const notifs = getUserNotifications();
+    const unreadCount = notifs.filter(n => !n.read).length;
+    let badge = document.getElementById('userNotificationBadge');
+    if (!badge && unreadCount > 0) {
+      // Create badge next to user menu or signin button
+      const userMenu = document.getElementById('user-menu');
+      const authBtns = document.getElementById('auth-buttons');
+      const target = userMenu?.style?.display !== 'none' ? userMenu : (authBtns || document.querySelector('.header-actions'));
+      if (target) {
+        badge = document.createElement('span');
+        badge.id = 'userNotificationBadge';
+        badge.style.cssText = 'position:absolute;top:4px;right:4px;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1000;';
+        target.appendChild(badge);
+      }
+    }
+    if (badge) { badge.textContent = unreadCount; badge.style.display = unreadCount > 0 ? 'flex' : 'none'; }
+  }
+
   // --- Init ---
   document.addEventListener('DOMContentLoaded', () => {
     updateAuthUI();
@@ -566,6 +598,7 @@
     initRegisterForm();
     initNavLinks();
     initMobileMenu();
+    renderUserNotificationBadge();
   });
 
   window.isLoggedIn = function() {

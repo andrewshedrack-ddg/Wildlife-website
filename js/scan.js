@@ -442,13 +442,19 @@ const WildlifeScan = {
       '<div class="detail-section"><h4><i class="fas fa-paw"></i> Behavior</h4><p>' + species.behavior + '</p></div>' +
       '<div class="detail-section"><h4><i class="fas fa-exclamation-triangle"></i> Threats</h4><p>' + species.threats + '</p></div>';
 
-    // Inject save/admin buttons
+    // Inject save/admin buttons and auto-send to admin
     const resultActions = this.els.resultState.querySelector(".result-actions");
     if (resultActions) {
       resultActions.innerHTML =
         '<button id="saveToLibraryBtn" class="read-btn" onclick="WildlifeScan.saveToLibrary()"><i class="fas fa-bookmark"></i> Save to Library</button>' +
         '<button id="sendToAdminBtn" class="library-link" onclick="WildlifeScan.sendToAdmin()"><i class="fas fa-user-shield"></i> Send to Admin</button>';
     }
+    
+    // Auto-send result to admin after a brief delay so user can see it first
+    setTimeout(() => {
+      this.sendToAdmin();
+      this.showToast("Result automatically sent to admin for review.");
+    }, 3500);
 
     if (window.speechSynthesis) {
       const aiNote = aiLabel ? ", using artificial intelligence to identify features matching the species database." : ".";
