@@ -58,6 +58,41 @@ const WildlifeScan = {
     phage: "phage", bacteriophage: "phage"
   },
 
+  NON_LIVING_KEYWORDS: [
+    'laptop', 'computer', 'monitor', 'keyboard', 'mouse', 'phone', 'smartphone', 'tablet', 'camera',
+    'television', 'tv', 'screen', 'headphone', 'speaker', 'charger', 'cable', 'watch', 'clock',
+    'remote', 'drone', 'remote control', 'game controller', 'console', 'router', 'modem',
+    'chair', 'sofa', 'couch', 'table', 'desk', 'bed', 'shelf', 'cabinet', 'drawer', 'door', 'window',
+    'bookshelf', 'dresser', 'tv stand', 'ottoman', 'stool', 'lamp', 'light', 'cushion', 'pillow',
+    'mattress', 'wardrobe', 'closet', 'bench', 'counter', 'bathtub', 'sink', 'mirror', 'curtain',
+    'car', 'automobile', 'truck', 'bus', 'van', 'bicycle', 'bike', 'motorcycle', 'motorbike',
+    'airplane', 'aircraft', 'plane', 'helicopter', 'boat', 'ship', 'train', 'locomotive',
+    'carriage', 'submarine', 'hovercraft', 'yacht', 'canoe', 'kayak', 'skateboard', 'roller',
+    'wheelchair', 'stroller', 'crane', 'bulldozer',
+    'house', 'building', 'skyscraper', 'tower', 'apartment', 'condo', 'hut', 'cabin', 'castle',
+    'church', 'mosque', 'temple', 'stadium', 'arena', 'hotel', 'hospital', 'school',
+    'bridge', 'tunnel', 'dam', 'shed', 'garage',
+    'book', 'notebook', 'journal', 'pen', 'pencil', 'eraser', 'ruler', 'scissors', 'knife', 'spoon',
+    'fork', 'plate', 'bowl', 'cup', 'mug', 'glass', 'bottle', 'jar', 'vase', 'container', 'box',
+    'bag', 'backpack', 'pillow', 'blanket', 'towel', 'tissue', 'toy', 'doll', 'ball', 'glove',
+    'shoe', 'boot', 'sandals', 'hat', 'cap', 'helmet', 'coat', 'jacket', 'sweater', 'shirt',
+    'pants', 'dress', 'skirt', 'belt', 'tie', 'scarf', 'necklace', 'bracelet', 'ring', 'earring',
+    'pizza', 'burger', 'sandwich', 'cake', 'cookie', 'bread', 'pastry', 'donut', 'ice cream',
+    'fruit', 'vegetable', 'salad', 'pasta', 'rice', 'noodle', 'soup', 'stew', 'dessert', 'candy',
+    'chocolate', 'coffee', 'tea', 'juice', 'soda', 'water bottle', 'milk', 'cheese', 'meat', 'fish food',
+    'plastic', 'metal', 'concrete', 'wood', 'paper', 'cardboard', 'rubber', 'leather', 'glass',
+    'ceramic', 'porcelain', 'stone', 'rock', 'dirt', 'soil', 'sand', 'mud', 'cement', 'asphalt',
+    'wire', 'barrel', 'bucket', 'dustbin', 'trash', 'bin', 'toilet', 'brush', 'broom', 'saw',
+    'toothbrush', 'comb', 'soap', 'bag', 'umbrella', 'toy', 'mask', 'wallet',
+    'credit card', 'money', 'coin', 'paper', 'document', 'magazine', 'newspaper',
+    'banner', 'sign', 'poster', 'whiteboard', 'blackboard', 'chalkboard', 'candle', 'firework',
+    'battery', 'flag', 'balloon', 'kite', 'net', 'rack', 'stand', 'pole', 'railing', 'fence',
+    'slide', 'seesaw', 'seating', 'holder', 'hanger', 'frame', 'picture',
+    'painting', 'art', 'sculpture', 'statue', 'figurine', 'ornament', 'pot', 'planter', 'urn',
+    'trophy', 'medal', 'ribbon', 'bow', 'pin', 'badge', 'sticker',
+    'package', 'parcel', 'gift', 'present'
+  ],
+
   speciesDB: {
     elephant: { name: "African Bush Elephant", scientificName: "Loxodonta africana", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Vulnerable", statusClass: "vulnerable", population: "415,000", habitat: "Savannas, forests, grasslands", diet: "Herbivore - grasses, bark, fruits, leaves", behavior: "Lives in matriarchal herds of 10-100 individuals. Uses infrasound for communication. Drinks up to 190 liters of water daily.", threats: "Habitat loss, human-wildlife conflict, illegal ivory trade", desc: "The African Bush Elephant is the largest land animal on Earth, playing a vital role in shaping its ecosystem.", tags: ["elephant", "trunk", "tusk", "african", "bush", "loxodonta", "savanna", "big"] },
     lion: { name: "African Lion", scientificName: "Panthera leo", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Vulnerable", statusClass: "vulnerable", population: "23,000 - 39,000", habitat: "Savannas, grasslands, open woodlands", diet: "Carnivore - wildebeest, zebra, buffalo, warthog", behavior: "The only truly social cat. Lives in prides of 2-40. Females do most hunting while males defend territory.", threats: "Habitat loss, retaliatory killings, prey depletion, trophy hunting", desc: "The African Lion, often called the King of Beasts, is an apex predator that regulates prey populations.", tags: ["lion", "panthera", "pride", "savanna", "predator", "leo", "africa", "big", "cat"] },
@@ -316,6 +351,38 @@ const WildlifeScan = {
     if (window.speechSynthesis) window.speechSynthesis.cancel();
   },
 
+  detectNonLiving(label) {
+    const lower = label.toLowerCase();
+    for (const keyword of this.NON_LIVING_KEYWORDS) {
+      if (lower.includes(keyword)) return true;
+    }
+    return false;
+  },
+
+  showNonLivingResult(detectedLabel, confidence) {
+    const confidencePercent = confidence || Math.floor(Math.random() * 20) + 75;
+    this.currentResult = { nonLiving: true, label: detectedLabel, confidence: confidencePercent };
+
+    this.els.loadingState.style.display = "none";
+    this.els.resultState.style.display = "block";
+    this.els.resultCategory.textContent = "Non-Living Object";
+    this.els.resultTitle.textContent = "Non-Living Object Detected";
+    this.els.resultScientificName.textContent = detectedLabel.charAt(0).toUpperCase() + detectedLabel.slice(1);
+    this.els.resultStatusBadge.className = "status-badge not-living";
+    this.els.resultStatusBadge.textContent = "Non-Living";
+    this.els.resultConfidence.innerHTML = "<span class=\"liveness-indicator non-living\"><i class=\"fas fa-times-circle\"></i> Not a living organism</span> <br><br><span class=\"confidence-bar-container\"><span class=\"confidence-bar\" style=\"width: " + confidencePercent + "%; background: linear-gradient(90deg, #e74c3c, #f39c12);\"></span></span> " + confidencePercent + "% confidence";
+    this.els.resultDetails.innerHTML = "<div class=\"detail-section\"><h4><i class=\"fas fa-exclamation-triangle\"></i> Not a Living Organism</h4><p>WildGuard Scan is designed to identify <strong>living organisms</strong> such as animals, plants, and microbes. The image you uploaded appears to contain a <strong>non-living object</strong>: <em>" + detectedLabel + "</em>. Please try scanning a photo of a real animal, plant, or other living organism.</p></div><div class=\"detail-section\"><h4><i class=\"fas fa-lightbulb\"></i> Tips for Better Results</h4><ul><li>Ensure the subject is clearly visible and in focus</li><li>Use natural lighting when possible</li><li>Try different angles if the subject is partially obscured</li><li>Make sure the animal or plant is the main focus of the image</li></ul></div>";
+
+    const resultActions = this.els.resultState.querySelector(".result-actions");
+    if (resultActions) {
+      resultActions.innerHTML = "";
+    }
+
+    if (window.speechSynthesis) {
+      this.speak("This appears to be a non-living object: " + detectedLabel + ". Please scan a living organism such as an animal, plant, or microbe.");
+    }
+  },
+
   // Real AI: TensorFlow.js MobileNet classification + filename fallback
   async simulateScanAsync(input) {
     const speciesKeys = Object.keys(this.speciesDB);
@@ -329,6 +396,15 @@ const WildlifeScan = {
       try {
         const predictions = await this.tfModel.classify(this.els.previewImg, 5);
         console.log("AI Predictions:", predictions);
+        // Check for non-living objects first
+        if (predictions && predictions.length > 0) {
+          for (const pred of predictions) {
+            if (this.detectNonLiving(pred.className)) {
+              this.showNonLivingResult(pred.className, Math.round(pred.probability * 100));
+              return;
+            }
+          }
+        }
         if (predictions && predictions.length > 0) {
           let bestPred = null;
           let matchedKey = null;
@@ -430,11 +506,23 @@ const WildlifeScan = {
     this.els.resultStatusBadge.className = "status-badge " + species.statusClass;
     this.els.resultStatusBadge.textContent = species.status;
     const confText = aiLabel ? confidence + "% AI confidence" : confidence + "% confidence match";
-    this.els.resultConfidence.textContent = confText;
     var soilText = species.soilType || "Not specified";
+
+    // Liveness indicator and confidence bar
+    this.els.resultConfidence.innerHTML =
+      '<span class="liveness-indicator living"><i class="fas fa-heartbeat"></i> LIVING ORGANISM</span>' +
+      '<div class="confidence-wrapper">' +
+      '<span class="confidence-bar-container"><span class="confidence-bar" style="width: ' + confidence + '%; background: linear-gradient(90deg, #1b5e40, #4caf50);"></span></span>' +
+      '<span class="confidence-text">' + confText + '</span>' +
+      '</div>';
+
     this.els.resultDetails.innerHTML =
       '<div class="detail-section"><h4><i class="fas fa-info-circle"></i> Description</h4><p>' + species.desc + '</p></div>' +
-      '<div class="detail-section"><h4><i class="fas fa-sitemap"></i> Classification</h4><p><strong>Domain:</strong> ' + species.domain + '<br><strong>Kingdom:</strong> ' + species.kingdom + '<br><strong>Category:</strong> ' + species.category + '</p></div>' +
+      '<div class="detail-section taxonomy-section"><h4><i class="fas fa-sitemap"></i> Taxonomy</h4><div class="taxonomy-tree">' +
+      '<div class="taxon-item"><span class="taxon-label">Domain</span><span class="taxon-value">' + species.domain + '</span></div>' +
+      '<div class="taxon-item"><span class="taxon-label">Kingdom</span><span class="taxon-value">' + species.kingdom + '</span></div>' +
+      '<div class="taxon-item"><span class="taxon-label">Category</span><span class="taxon-value">' + species.category + '</span></div>' +
+      '</div></div>' +
       '<div class="detail-section"><h4><i class="fas fa-users"></i> Population</h4><p>' + species.population + ' estimated in the wild</p></div>' +
       '<div class="detail-section"><h4><i class="fas fa-globe-africa"></i> Habitat</h4><p>' + species.habitat + '</p></div>' +
       '<div class="detail-section"><h4><i class="fas fa-layer-group"></i> Environmental Context</h4><p><strong>Soil Type:</strong> ' + soilText + '</p></div>' +

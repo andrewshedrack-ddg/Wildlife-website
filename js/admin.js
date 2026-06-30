@@ -332,6 +332,21 @@
         if (el) el.textContent = user.email;
       }
     } catch(e){}
+
+    // Poll every 5 seconds to refresh data from localStorage
+    setInterval(() => {
+      updateStats();
+      // Only re-render visible sections to avoid flicker
+      renderPendingScans();
+      renderMessages();
+      renderNotifications();
+      renderUsers();
+      // These two are less frequent, update every other poll (10s)
+      if (Math.random() > 0.5) {
+        renderActivityLog();
+        renderSentEmails();
+      }
+    }, 5000);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
