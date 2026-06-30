@@ -348,6 +348,7 @@ const WildlifeScan = {
     this.els.fileInput.value = "";
     this.currentResult = null;
     this.lastInputSource = null;
+    this._sentToAdmin = false;
     if (window.speechSynthesis) window.speechSynthesis.cancel();
   },
 
@@ -540,8 +541,10 @@ const WildlifeScan = {
     
     // Auto-send result to admin after a brief delay so user can see it first
     setTimeout(() => {
-      this.sendToAdmin();
-      this.showToast("Result automatically sent to admin for review.");
+      if (!this._sentToAdmin && this.currentResult && !this.currentResult.nonLiving) {
+        this.sendToAdmin();
+        this.showToast("Result automatically sent to admin for review.");
+      }
     }, 3500);
 
     if (window.speechSynthesis) {
@@ -585,9 +588,15 @@ const WildlifeScan = {
     this.showToast("Saved to Library!");
   },
 
-  async sendToAdmin() {
-    if (!this.currentResult) return;
+  _sentToAdmin: false,
+
+  sendToAdmin() {
+    if (!this.currentResult || this._sentToAdmin) return;
     const pending = JSON.parse(localStorage.getItem(this.PENDING_ADMIN_KEY) || "[]");
+    // Prevent duplicate based on species + timestamp in last 30 seconds
+    const now = Date.now();
+    const isDuplicate = pending.some(p => p.species && p.species.name === this.currentResult.species.name && (now - new Date(p.timestamp).getTime()) < 30000);
+    if (isDuplicate) return;
     const scanRecord = {
       id: "pending_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9),
       timestamp: new Date().toISOString(),
@@ -599,24 +608,7 @@ const WildlifeScan = {
     };
     pending.unshift(scanRecord);
     localStorage.setItem(this.PENDING_ADMIN_KEY, JSON.stringify(pending));
-
-    // Also save to backend if available
-    try {
-      const API_BASE = window.location.origin.includes('localhost') ? 'http://localhost:5000' : '';
-      if (API_BASE) {
-        await fetch(API_BASE + '/api/user/scans', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({
-            species_name: this.currentResult.species.name,
-            confidence: this.currentResult.confidence,
-            image_data: this.els.previewImg ? this.els.previewImg.src : ""
-          })
-        });
-      }
-    } catch (e) {}
-
+    this._sentToAdmin = true;
     this.showToast("Sent to Admin for approval!");
   },
 

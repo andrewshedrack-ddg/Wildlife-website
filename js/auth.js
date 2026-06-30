@@ -361,6 +361,19 @@
       const demoUsers = getDemoUsers();
       const demoUser = demoUsers[email];
       if (demoUser && (demoUser.passwordHash === simpleHash(password) || demoUser.password === password)) {
+        // Check if user is verified
+        if (demoUser.verified === false) {
+          if (errorMessage) {
+            errorMessage.innerHTML = '<strong>Account Not Verified</strong><br>Your email has not been verified. Please check your email for the verification message and enter the code below.<br><br><strong>Verification Code: ' + demoUser.verificationCode + '</strong><br><br>';
+            errorMessage.style.display = 'block';
+          }
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = submitBtn.originalHTML || 'Sign In';
+          }
+          logActivity('login_failed_unverified', rawEmail, 'Login blocked - account not verified');
+          return;
+        }
         saveUser({ email: rawEmail, role: demoUser.role, name: demoUser.name || rawEmail.split('@')[0] });
         setAuthCookie(rawEmail);
         setSessionTimeout();
@@ -442,8 +455,9 @@
         return;
       }
 
-      // Register new user
-      demoUsers[email] = { passwordHash: simpleHash(password), role: 'user', name: email.split('@')[0] };
+      // Register new user with email verification
+      var verificationCode = Math.random().toString(36).substr(2, 8).toUpperCase();
+      demoUsers[email] = { passwordHash: simpleHash(password), role: 'user', name: email.split('@')[0], verified: false, verificationCode: verificationCode, registeredAt: new Date().toISOString() };
       saveDemoUsers(demoUsers);
 
       // Add admin notification for new user registration
@@ -478,7 +492,7 @@
       securityMonitor('register_success', { email: email.substring(0, 3) + '***' });
 
       if (successMessage) {
-        successMessage.textContent = 'Registration successful! Redirecting to login...';
+        successMessage.innerHTML = '<strong>Registration successful!</strong><br>A verification email has been sent to <strong>' + email + '</strong>.<br>Your verification code is: <strong>' + demoUsers[email].verificationCode + '</strong><br>Please enter this code on the login page to verify your account before logging in.';
         successMessage.style.display = 'block';
       }
       registerForm.reset();
@@ -716,5 +730,35 @@
   window.getUnreadEmailCountForUser = getUnreadEmailCountForUser;
   window.sendWelcomeEmail = sendWelcomeEmail;
   window.sendVerificationEmail = sendVerificationEmail;
+
+  // --- Clear All Storage (Fresh Start) ---
+  window.clearAllStorage = function(confirmBeforeClear) {
+    if (confirmBeforeClear !== false && !window.confirm('This will clear ALL local data including users, scans, messages, and settings. This action cannot be undone.')) {
+      return false;
+    }
+    var keys = Object.keys(localStorage).filter(function(k) { return k.startsWith('wildguard_') || k.startsWith('wildlife_'); });
+    keys.forEach(function(key) { try { localStorage.removeItem(key); } catch(e) {} });
+    console.log('[WildGuard] All storage cleared. Keys removed:', keys.join(', '));
+    return true;
+  };
+
+  // --- Verify User by Code ---
+  window.verifyUser = function(email, code) {
+    try {
+      var emailLower = email.toLowerCase();
+      var demoUsers = getDemoUsers();
+      var user = demoUsers[emailLower];
+      if (!user) return { success: false, message: 'User not found.' };
+      if (user.verified === true) return { success: true, message: 'Account already verified.' };
+      if (user.verificationCode && user.verificationCode.toUpperCase() === code.toUpperCase()) {
+        user.verified = true;
+        demoUsers[emailLower] = user;
+        saveDemoUsers(demoUsers);
+        logActivity('verify_account', emailLower, 'Account verified');
+        return { success: true, message: 'Account verified successfully! You can now log in.' };
+      }
+      return { success: false, message: 'Invalid verification code. Please try again.' };
+    } catch(e) { return { success: false, message: 'Verification failed.' }; }
+  };
 
 })();

@@ -95,7 +95,8 @@
       html += '<div><strong>' + (msg.name || 'Anonymous') + '</strong> &lt;' + (msg.email || 'no-email') + '&gt; <span class="badge badge-new">' + (msg.subject || 'Contact') + '</span></div>';
       html += '<span>' + new Date(msg.createdAt).toLocaleString() + '</span>';
       html += '</div>';
-      html += '<div class="message-body">' + (msg.body || msg.message || '').substring(0, 250) + (msg.body.length > 250 || msg.message.length > 250 ? '...' : '') + '</div>';
+      var msgBody = msg.body || msg.message || '';
+      html += '<div class="message-body">' + msgBody.substring(0, 250) + (msgBody.length > 250 ? '...' : '') + '</div>';
       html += '<div class="message-actions">';
       if (isUnread) html += '<button class="btn-sm btn-mark-read" onclick="markMessageRead(this.dataset.id)" data-id="' + msg.id + '"><i class="fas fa-check"></i> Mark Read</button>';
       html += '<a href="mailto:' + (msg.email || '') + '" class="btn-sm btn-view"><i class="fas fa-reply"></i> Reply</a>';
