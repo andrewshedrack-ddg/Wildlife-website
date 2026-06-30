@@ -124,4 +124,93 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // === Compact Card Expansion ===
+    document.querySelectorAll('.wildlife-card').forEach((card) => {
+        const expandBtn = document.createElement('button');
+        expandBtn.className = 'expand-card-btn';
+        expandBtn.textContent = 'Read More';
+        expandBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            card.classList.toggle('expanded');
+            expandBtn.textContent = card.classList.contains('expanded') ? 'Read Less' : 'Read More';
+        });
+        // Append button after the full-details div or at the end of card info
+        const info = card.querySelector('.wildlife-info') || card;
+        info.appendChild(expandBtn);
+    });
+
+    // === Books & Resources ===
+    const books = [
+        {
+            id: 1,
+            title: "African Wildlife Conservation Guide",
+            author: "Dr. Jane Mbatha",
+            desc: "Comprehensive guide to African wildlife conservation techniques, case studies, and best practices for protecting endangered species.",
+            color: "#1b5e40"
+        },
+        {
+            id: 2,
+            title: "Safari Photography Essentials",
+            author: "John Mwangi",
+            desc: "Master the art of wildlife photography with tips on equipment, composition, and ethics of capturing animals in their natural habitat.",
+            color: "#0ea5e9"
+        },
+        {
+            id: 3,
+            title: "Big Cats of Africa",
+            author: "Sarah Odhiambo",
+            desc: "An in-depth study of lions, leopards, and cheetahs—their behavior, habitats, and the threats they face in the modern world.",
+            color: "#f59e0b"
+        },
+        {
+            id: 4,
+            title: "Marine Life of the Indian Ocean",
+            author: "Prof. David Kimani",
+            desc: "Explore the rich marine biodiversity along the East African coast, from coral reefs to deep-sea creatures.",
+            color: "#0d9488"
+        },
+        {
+            id: 5,
+            title: "Birds of East Africa",
+            author: "Alice Wanjiku",
+            desc: "A detailed field guide to over 500 bird species found in East Africa, with illustrations and conservation status.",
+            color: "#84cc16"
+        }
+    ];
+
+    const booksGrid = document.getElementById('booksGrid');
+    if (booksGrid) {
+        books.forEach((book) => {
+            const card = document.createElement('div');
+            card.className = 'book-card';
+            card.innerHTML =
+                '<div class="book-cover" style="background:' + book.color + '20;"><i class="fas fa-book" style="color:' + book.color + ';"></i></div>' +
+                '<h4>' + book.title + '</h4>' +
+                '<div class="author">by ' + book.author + '</div>' +
+                '<div class="desc">' + book.desc + '</div>' +
+                '<button class="btn-download" data-book-id="' + book.id + '"><i class="fas fa-download"></i> Download</button>';
+            booksGrid.appendChild(card);
+        });
+
+        booksGrid.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-download')) {
+                const id = parseInt(e.target.getAttribute('data-book-id'));
+                downloadBook(id);
+            }
+        });
+    }
+
+    function downloadBook(bookId) {
+        const book = books.find(b => b.id === bookId);
+        if (!book) return;
+        const content = 'Title: ' + book.title + '\nAuthor: ' + book.author + '\n\n' + book.desc + '\n\n---\nThis is a sample book from WildGuard Society Library.\nFor educational purposes only.';
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = book.title.replace(/\s+/g, '_') + '.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
 });

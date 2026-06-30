@@ -31,6 +31,8 @@
     set('statToday', scansToday);
     set('statUsers', users.length);
     set('statMessages', messages.filter(m => m.status === 'unread').length);
+    set('statEmails', (typeof getAllEmails === 'function' ? getAllEmails() : []).length);
+    set('statActivity', (typeof getActivityLog === 'function' ? getActivityLog() : []).length);
 
     // Badges
     const setBadge = (id, count) => {
@@ -159,6 +161,56 @@
     container.innerHTML = html;
   }
 
+  // --- Activity Log (Traffic) ---
+  function getActivityLog() { return getItem('wildguard_activity_log', []); }
+  function renderActivityLog() {
+    var container = document.getElementById('activityLogList');
+    if (!container) return;
+    var logs = getActivityLog();
+    if (logs.length === 0) {
+      container.innerHTML = '<div class="empty-state"><i class="fas fa-clipboard-list"></i><h3>No Activity Yet</h3><p>User registrations, logins, and other events will appear here.</p></div>';
+      return;
+    }
+    var html = '<table class="data-table"><thead><tr><th>Timestamp</th><th>Event</th><th>User</th><th>Details</th><th>Page</th></tr></thead><tbody>';
+    logs.forEach(function(log) {
+      var eventIcon = log.event === 'login' ? 'fas fa-sign-in-alt' : log.event === 'register' ? 'fas fa-user-plus' : log.event === 'logout' ? 'fas fa-sign-out-alt' : log.event === 'email_sent' ? 'fas fa-envelope' : 'fas fa-circle';
+      var eventColor = log.event === 'login' ? '#22c55e' : log.event === 'register' ? '#3b82f6' : log.event === 'logout' ? '#f59e0b' : log.event === 'login_failed' ? '#ef4444' : '#a855f7';
+      html += '<tr>';
+      html += '<td style="white-space:nowrap;font-size:0.82rem;">' + new Date(log.timestamp).toLocaleString() + '</td>';
+      html += '<td><span style="color:' + eventColor + ';font-weight:600;font-size:0.85rem;"><i class="' + eventIcon + '" style="margin-right:0.3rem;"></i>' + log.event + '</span></td>';
+      html += '<td style="font-size:0.85rem;">' + (log.user || 'guest') + '</td>';
+      html += '<td style="font-size:0.85rem;">' + (log.details || '') + '</td>';
+      html += '<td style="font-size:0.78rem;opacity:0.6;max-width:200px;overflow:hidden;text-overflow:ellipsis;">' + (log.page || '') + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  }
+
+  // --- Email Campaign ---
+  function getAllEmails() { return getItem('wildguard_emails', []); }
+  function renderSentEmails() {
+    var container = document.getElementById('sentEmailsList');
+    if (!container) return;
+    var emails = getAllEmails().sort(function(a, b) { return new Date(b.timestamp) - new Date(a.timestamp); });
+    if (emails.length === 0) {
+      container.innerHTML = '<div class="empty-state"><i class="fas fa-envelope"></i><h3>No Emails Sent</h3><p>Emails sent by the system or admin will appear here.</p></div>';
+      return;
+    }
+    var html = '<table class="data-table"><thead><tr><th>To</th><th>Subject</th><th>Type</th><th>Sent</th><th>Status</th></tr></thead><tbody>';
+    emails.forEach(function(e) {
+      html += '<tr>';
+      html += '<td style="font-size:0.85rem;">' + e.to + '</td>';
+      html += '<td style="font-size:0.85rem;">' + e.subject + '</td>';
+      html += '<td><span class="badge ' + (e.type === 'welcome' ? 'badge-approved' : e.type === 'verification' ? 'badge-pending' : 'badge-new') + '">' + (e.type || 'general') + '</span></td>';
+      html += '<td style="font-size:0.82rem;">' + new Date(e.timestamp).toLocaleString() + '</td>';
+      html += '<td style="font-size:0.82rem;">' + (e.read ? '<span style="color:#22c55e;">Read</span>' : '<span style="color:#f59e0b;">Unread</span>') + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  }
+
   // --- Action Handlers ---
   window.approveScan = function(id) {
     const pending = getPendingScans();
@@ -218,6 +270,51 @@
     setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 2500);
   }
 
+  // --- Admin Email Campaign ---
+  window.sendAdminEmailCampaign = function() {
+    var subject = document.getElementById('emailSubject')?.value.trim();
+    var body = document.getElementById('emailBody')?.value.trim();
+    var type = document.getElementById('emailType')?.value || 'update';
+    if (!subject || !body) {
+      alert('Please fill in both subject and body.');
+      return;
+    }
+    var users = getUserList();
+    var sentCount = 0;
+    if (typeof window.sendEmail === 'function') {
+      users.forEach(function(u) {
+        window.sendEmail(u.email, subject, body, type);
+        sentCount++;
+      });
+    } else {
+      // Fallback: use localStorage directly
+      var emails = getAllEmails();
+      users.forEach(function(u) {
+        emails.unshift({
+          id: 'email_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+          from: 'info@wildguard.org',
+          to: u.email,
+          subject: subject,
+          body: body,
+          timestamp: new Date().toISOString(),
+          read: false,
+          type: type
+        });
+        sentCount++;
+      });
+      localStorage.setItem('wildguard_emails', JSON.stringify(emails));
+    }
+    // Log activity
+    if (typeof window.logActivity === 'function') {
+      window.logActivity('email_campaign', 'admin', 'Admin sent email campaign to ' + sentCount + ' users');
+    }
+    alert('Email campaign sent to ' + sentCount + ' users!');
+    document.getElementById('emailSubject').value = '';
+    document.getElementById('emailBody').value = '';
+    renderSentEmails();
+    updateStats();
+  };
+
   // --- Init ---
   function init() {
     updateStats();
@@ -225,6 +322,8 @@
     renderMessages();
     renderNotifications();
     renderUsers();
+    renderActivityLog();
+    renderSentEmails();
     // Show admin email
     try {
       const user = getItem('wildguard_user', null);
@@ -237,4 +336,9 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+
+  // Expose renderers for tab switching
+  window.renderActivityLog = renderActivityLog;
+  window.renderSentEmails = renderSentEmails;
+  window.getAllEmails = getAllEmails;
 })();

@@ -267,6 +267,10 @@
       const logoutBtn = e.target.closest('#logout-btn');
       if (!logoutBtn) return;
       e.preventDefault();
+      var user = getUser();
+      if (user && user.email && typeof logActivity !== 'undefined') {
+        try { logActivity('logout', user.email, 'User logged out'); } catch(e) {}
+      }
       clearUser();
       clearAuthCookie();
       window.location.href = getBasePath() + 'index.html';
@@ -361,6 +365,7 @@
         setAuthCookie(rawEmail);
         setSessionTimeout();
         securityMonitor('login_success', { email: email.substring(0, 3) + '***' });
+        logActivity('login', rawEmail, 'User logged in');
         window.location.href = 'index.html';
         return;
       } else if (email === 'admin@wildguardsociety.org' && password === 'admin123') {
@@ -369,7 +374,8 @@
         setAuthCookie(rawEmail);
         setSessionTimeout();
         securityMonitor('admin_login_success', { email: 'admin@***' });
-        window.location.href = 'admin.html';
+        logActivity('login', rawEmail, 'Admin logged in');
+        window.location.href = 'admin/Dashboard.html';
         return;
       } else {
         if (errorMessage) {
@@ -381,6 +387,7 @@
           submitBtn.innerHTML = submitBtn.originalHTML || 'Sign In';
         }
         securityMonitor('login_failed', { email: email.substring(0, 3) + '***' });
+        logActivity('login_failed', rawEmail, 'Failed login attempt');
         return;
       }
     });
@@ -447,6 +454,13 @@
         email: email,
         name: email.split('@')[0]
       });
+
+      // Send welcome and verification emails
+      if (typeof sendWelcomeEmail !== 'undefined') { try { sendWelcomeEmail(email); } catch(e) {} }
+      if (typeof sendVerificationEmail !== 'undefined') { try { sendVerificationEmail(email); } catch(e) {} }
+
+      // Log activity
+      if (typeof logActivity !== 'undefined') { try { logActivity('register', email, 'New user registered'); } catch(e) {} }
 
       // Track user for admin stats
       const userList = JSON.parse(localStorage.getItem('wildguard_user_list') || '[]');
@@ -589,6 +603,74 @@
     if (badge) { badge.textContent = unreadCount; badge.style.display = unreadCount > 0 ? 'flex' : 'none'; }
   }
 
+  // --- Activity Log (Admin Traffic) ---
+  const ACTIVITY_LOG_KEY = 'wildguard_activity_log';
+  function logActivity(eventName, user, details) {
+    try {
+      const log = JSON.parse(localStorage.getItem(ACTIVITY_LOG_KEY) || '[]');
+      log.unshift({
+        id: 'act_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        timestamp: new Date().toISOString(),
+        event: eventName,
+        user: user || 'guest',
+        details: details || '',
+        userAgent: navigator.userAgent.substring(0, 150),
+        page: window.location.href
+      });
+      if (log.length > 500) log.pop();
+      localStorage.setItem(ACTIVITY_LOG_KEY, JSON.stringify(log));
+    } catch (e) {}
+  }
+  function getActivityLog() {
+    try { return JSON.parse(localStorage.getItem(ACTIVITY_LOG_KEY) || '[]'); } catch(e) { return []; }
+  }
+  function clearActivityLog() {
+    try { localStorage.removeItem(ACTIVITY_LOG_KEY); } catch(e) {}
+  }
+
+  // --- Email System (info@wildguard.org) ---
+  const EMAILS_KEY = 'wildguard_emails';
+  function getAllEmails() { try { return JSON.parse(localStorage.getItem(EMAILS_KEY) || '[]'); } catch(e) { return []; } }
+  function saveEmails(emails) { try { localStorage.setItem(EMAILS_KEY, JSON.stringify(emails)); } catch(e) {} }
+  function sendEmail(to, subject, body, type) {
+    try {
+      const emails = getAllEmails();
+      emails.unshift({
+        id: 'email_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        from: 'info@wildguard.org',
+        to: to,
+        subject: subject,
+        body: body,
+        timestamp: new Date().toISOString(),
+        read: false,
+        type: type || 'general'
+      });
+      if (emails.length > 100) emails.pop();
+      saveEmails(emails);
+      logActivity('email_sent', to, 'Email: ' + subject);
+    } catch (e) {}
+  }
+  function getEmails(email) { return getAllEmails().filter(function(e) { return e.to === email; }); }
+  function getUnreadEmailCountForUser(email) { return getEmails(email).filter(function(e) { return !e.read; }).length; }
+  function markEmailRead(id) {
+    var emails = getAllEmails();
+    var email = emails.find(function(e) { return e.id === id; });
+    if (email) { email.read = true; saveEmails(emails); }
+  }
+  function markAllEmailsRead() {
+    var emails = getAllEmails();
+    emails.forEach(function(e) { e.read = true; });
+    saveEmails(emails);
+  }
+  function sendWelcomeEmail(userEmail) {
+    sendEmail(userEmail, 'Welcome to WildGuard Society!', 'Dear wildlife enthusiast,\n\nWelcome to WildGuard Society! Your account has been successfully created. You can now explore our wildlife library, go on virtual safaris, and report conservation issues.\n\nIf you did not create this account, please contact us at info@wildguard.org.\n\nBest regards,\nThe WildGuard Team', 'welcome');
+  }
+  function sendVerificationEmail(userEmail) {
+    var code = Math.random().toString(36).substr(2, 8).toUpperCase();
+    sendEmail(userEmail, 'Verify Your WildGuard Account', 'Dear user,\n\nThank you for registering with WildGuard Society. To complete your registration, please use the following verification code:\n\nVerification Code: ' + code + '\n\nEnter this code on the verification page to activate your account.\n\nBest regards,\nThe WildGuard Team', 'verification');
+    return code;
+  }
+
   // --- Init ---
   document.addEventListener('DOMContentLoaded', () => {
     updateAuthUI();
@@ -599,6 +681,11 @@
     initNavLinks();
     initMobileMenu();
     renderUserNotificationBadge();
+    // Log page view
+    try {
+      var currUser = getUser();
+      logActivity('page_view', currUser && currUser.email || 'guest', 'Page visited: ' + window.location.pathname);
+    } catch(e) {}
   });
 
   window.isLoggedIn = function() {
@@ -616,5 +703,18 @@
   window.getAdminNotifications = getAdminNotifications;
   window.addAdminNotification = addAdminNotification;
   window.saveAdminNotifications = saveAdminNotifications;
+
+  // Activity log & email exports
+  window.logActivity = logActivity;
+  window.getActivityLog = getActivityLog;
+  window.clearActivityLog = clearActivityLog;
+  window.sendEmail = sendEmail;
+  window.getAllEmails = getAllEmails;
+  window.getEmails = getEmails;
+  window.markEmailRead = markEmailRead;
+  window.markAllEmailsRead = markAllEmailsRead;
+  window.getUnreadEmailCountForUser = getUnreadEmailCountForUser;
+  window.sendWelcomeEmail = sendWelcomeEmail;
+  window.sendVerificationEmail = sendVerificationEmail;
 
 })();
