@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
             el.className = 'lib-book';
             el.innerHTML = `
                 <div class="lib-book-cover" style="background: linear-gradient(135deg, ${book.color} 0%, ${darken(book.color, 40)} 100%);">
+                    <div class="lib-book-top-edge"></div>
                     <div class="lib-book-pages"></div>
                     <div class="lib-book-front">
                         <i class="${book.icon}"></i>
