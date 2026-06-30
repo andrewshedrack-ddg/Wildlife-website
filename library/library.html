@@ -127,13 +127,13 @@
     </section>
 
     <!-- Books & Resources Section -->
-    <section class="content-overlay" style="padding-top:3rem; padding-bottom:3rem;">
+    <section class="lib-books">
       <div class="container">
-        <div class="section-header">
-          <h2><i class="fas fa-book"></i> Books & Resources</h2>
-          <p>Explore our collection of wildlife conservation books, research papers, and educational materials.</p>
+        <div class="lib-books-header">
+          <h2 class="lib-section-title">Books &amp; Resources</h2>
+          <p class="lib-section-desc">Download or read our collection of wildlife guides, conservation reports, and natural histories.</p>
         </div>
-        <div class="books-grid" id="booksGrid">
+        <div class="lib-books-grid" id="booksGrid">
           <!-- Populated by JS -->
         </div>
       </div>
@@ -182,6 +182,15 @@
       <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
     </div>
   </footer>
+
+  <!-- Book Reader Modal -->
+  <div id="bookModal" class="book-modal" role="dialog" aria-modal="true" aria-labelledby="bookModalTitle" hidden>
+    <div class="book-modal-backdrop" data-modal-close></div>
+    <div class="book-modal-inner">
+      <button class="book-modal-close" data-modal-close aria-label="Close book reader"><i class="fas fa-times"></i></button>
+      <div class="book-modal-content" id="bookModalContent"></div>
+    </div>
+  </div>
 
   <script defer src="../js/main.js"></script>
   <script defer src="../js/auth.js"></script>
