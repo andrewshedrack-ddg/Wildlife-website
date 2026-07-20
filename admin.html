@@ -8,8 +8,216 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="stylesheet" href="css/style.css?v=5">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <style>
+    /* Admin Portal Enhanced Styles */
+    .portal-root { min-height: 100vh; background: var(--darker); color: var(--lighter); }
+    .portal-root * { box-sizing: border-box; }
+    .portal-header { position: sticky; top: 0; z-index: 100; background: linear-gradient(180deg, rgba(10,21,16,0.98) 0%, rgba(10,21,16,0.9) 100%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .portal-header-logo { display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; }
+    .portal-header-logo img { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--accent); box-shadow: 0 0 12px rgba(201,162,39,0.3); }
+    .portal-header-actions { display: flex; align-items: center; gap: 1rem; }
+    .portal-header-actions span { font-size: 0.85rem; opacity: 0.7; }
+    .portal-header-actions button { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #ef4444; padding: 0.45rem 1rem; border-radius: var(--radius); cursor: pointer; font-size: 0.8rem; transition: var(--transition); }
+    .portal-header-actions button:hover { background: rgba(239,68,68,0.2); }
+    
+    /* Realtime Status Indicator */
+    .realtime-indicator { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; padding: 0.25rem 0.75rem; border-radius: 100px; }
+    .realtime-indicator.connected { background: rgba(34,197,94,0.2); color: #22c55e; }
+    .realtime-indicator.disconnected { background: rgba(239,68,68,0.2); color: #ef4444; }
+    .realtime-indicator .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .realtime-indicator.connected .dot { background: #22c55e; animation: pulse 2s infinite; }
+    .realtime-indicator.disconnected .dot { background: #ef4444; animation: none; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+    /* Notification Bell */
+    .notification-bell { position: relative; width: 40px; height: 40px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 50%; color: var(--lighter); cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; }
+    .notification-bell:hover { background: rgba(201,162,39,0.2); border-color: var(--accent); color: var(--accent); }
+    .notification-badge { position: absolute; top: 4px; right: 4px; min-width: 18px; height: 18px; background: #ef4444; color: var(--lighter); font-size: 0.65rem; font-weight: 700; border-radius: 100px; display: flex; align-items: center; justify-content: center; padding: 0 5px; animation: pulse 2s infinite; }
+    .notification-dropdown { position: absolute; top: calc(100% + 0.5rem); right: 0; width: 360px; max-height: 400px; background: var(--dark); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; box-shadow: var(--shadow-lg); overflow: hidden; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: var(--transition); z-index: 2000; display: flex; flex-direction: column; }
+    .notification-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
+    .notification-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .notification-header h4 { margin: 0; font-size: 0.9rem; font-weight: 600; }
+    .notification-header button { background: none; border: none; color: rgba(255,255,255,0.5); font-size: 0.75rem; cursor: pointer; }
+    .notification-header button:hover { color: var(--accent); }
+    .notification-list { flex: 1; overflow-y: auto; padding: 0.5rem; }
+    .notification-item { display: flex; gap: 0.75rem; padding: 0.85rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.04); border-radius: 10px; margin-bottom: 0.5rem; transition: var(--transition); cursor: pointer; }
+    .notification-item:hover { background: rgba(201,162,39,0.08); border-color: rgba(201,162,39,0.2); }
+    .notification-item.unread { background: rgba(201,162,39,0.05); border-left: 3px solid var(--accent); }
+    .notification-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; color: var(--dark); font-size: 0.9rem; flex-shrink: 0; }
+    .notification-content { flex: 1; min-width: 0; }
+    .notification-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .notification-message { font-size: 0.78rem; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .notification-time { font-size: 0.7rem; opacity: 0.5; margin-top: 0.3rem; }
+    .notification-empty { text-align: center; padding: 2rem; color: rgba(255,255,255,0.4); }
+    .notification-empty i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; display: block; }
+    .notification-footer { padding: 0.75rem 1rem; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; }
+    .notification-footer a { color: var(--accent); font-size: 0.8rem; font-weight: 500; }
+
+    .portal-layout { display: flex; min-height: calc(100vh - 64px); }
+    .portal-sidebar { width: 280px; background: linear-gradient(180deg, rgba(10,21,16,0.95) 0%, rgba(10,21,16,0.9) 100%); border-right: 1px solid rgba(255,255,255,0.06); padding: 1.5rem; display: flex; flex-direction: column; gap: 0.4rem; flex-shrink: 0; }
+    .portal-nav-item { position: relative; display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1rem; border-radius: 12px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: var(--transition); cursor: pointer; border: none; background: none; width: 100%; text-align: left; overflow: hidden; }
+    .portal-nav-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); transform: scaleY(0); transform-origin: bottom; transition: transform 0.3s ease; }
+    .portal-nav-item:hover { background: rgba(255,255,255,0.05); color: var(--lighter); padding-left: 1.25rem; }
+    .portal-nav-item:hover::before { transform: scaleY(1); }
+    .portal-nav-item.active { background: linear-gradient(90deg, rgba(201,162,39,0.12), rgba(201,162,39,0.03)); color: var(--accent); border: 1px solid rgba(201,162,39,0.2); padding-left: 1.25rem; }
+    .portal-nav-item.active::before { transform: scaleY(1); }
+    .portal-nav-item i { width: 22px; text-align: center; font-size: 1rem; transition: var(--transition); }
+    .portal-nav-item:hover i, .portal-nav-item.active i { color: var(--accent); transform: translateX(2px); }
+    .portal-nav-badge { margin-left: auto; background: var(--accent); color: var(--dark); font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 100px; min-width: 20px; text-align: center; animation: pulse 2s infinite; }
+    
+    .portal-main { flex: 1; padding: 2.5rem; overflow-y: auto; background: radial-gradient(ellipse at top right, rgba(27,94,64,0.08) 0%, transparent 50%), var(--darker); }
+    .portal-section { animation: fadeInUp 0.5s ease-out; }
+    .portal-section h2 { font-family: var(--font-heading); margin-bottom: 1.5rem; font-size: 1.6rem; display: flex; align-items: center; gap: 0.75rem; }
+    .portal-section h2 i { color: var(--accent); background: rgba(201,162,39,0.1); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    
+    /* Stats Grid */
+    .portal-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+    .portal-stat-card { position: relative; background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; padding: 2rem 1.5rem; text-align: center; transition: var(--transition); overflow: hidden; }
+    .portal-stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary)); opacity: 0; transition: var(--transition); }
+    .portal-stat-card:hover { transform: translateY(-4px); border-color: rgba(201,162,39,0.3); box-shadow: 0 12px 40px rgba(27,94,64,0.2); }
+    .portal-stat-card:hover::before { opacity: 1; }
+    .portal-stat-icon { font-size: 2.2rem; margin-bottom: 0.75rem; display: flex; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .portal-stat-value { font-size: 2.5rem; font-weight: 700; font-family: var(--font-heading); margin-bottom: 0.25rem; color: var(--lighter); line-height: 1; }
+    .portal-stat-label { font-size: 0.85rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; }
+    .portal-stat-trend { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; font-weight: 600; margin-top: 0.5rem; padding: 0.25rem 0.75rem; border-radius: 100px; }
+    .portal-stat-trend.up { background: rgba(34,197,94,0.2); color: #22c55e; }
+    .portal-stat-trend.down { background: rgba(239,68,68,0.2); color: #ef4444; }
+    
+    /* Grid & Cards */
+    .portal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1.5rem; }
+    .portal-card { position: relative; background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 1.75rem; transition: var(--transition); overflow: hidden; }
+    .portal-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0; transition: var(--transition); }
+    .portal-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.12); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+    .portal-card:hover::before { opacity: 1; }
+    .portal-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .portal-card-header h3 { margin: 0; font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+    .portal-card-header h3 i { color: var(--accent); font-size: 1.1rem; }
+    .portal-badge { padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .badge-primary { background: rgba(59,130,246,0.2); color: #3b82f6; }
+    .badge-warning { background: rgba(245,158,11,0.2); color: #f59e0b; }
+    .badge-danger { background: rgba(239,68,68,0.2); color: #ef4444; }
+    .badge-success { background: rgba(34,197,94,0.2); color: #22c55e; }
+    .badge-accent { background: rgba(201,162,39,0.2); color: var(--accent); }
+    
+    .portal-list-item { position: relative; padding: 1rem 1.25rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; margin-bottom: 0.75rem; transition: var(--transition); }
+    .portal-list-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: transparent; transition: var(--transition); border-radius: 3px 0 0 3px; }
+    .portal-list-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); padding-left: 1.5rem; }
+    .portal-list-item:hover::before { background: var(--accent); width: 4px; }
+    .portal-list-item.unread { background: rgba(201,162,39,0.05); border-left: 3px solid var(--accent); }
+    .portal-list-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .portal-list-meta { font-size: 0.78rem; opacity: 0.5; display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .portal-list-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+    
+    /* Buttons */
+    .portal-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.2rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: var(--transition); border: none; }
+    .portal-btn-primary { background: linear-gradient(135deg, #1b5e40, #143d2a); color: #fff; }
+    .portal-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(27,94,64,0.4); }
+    .portal-btn-accent { background: var(--accent); color: var(--dark); }
+    .portal-btn-accent:hover { background: var(--accent-hover); }
+    .portal-btn-secondary { background: rgba(255,255,255,0.08); color: var(--lighter); border: 1px solid rgba(255,255,255,0.15); }
+    .portal-btn-secondary:hover { background: rgba(255,255,255,0.12); }
+    .portal-btn-danger { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; }
+    .portal-btn-danger:hover { background: rgba(239,68,68,0.2); }
+    .portal-btn-success { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); color: #22c55e; }
+    .portal-btn-success:hover { background: rgba(34,197,94,0.2); }
+    .portal-btn-sm { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
+    .portal-btn-ghost { background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.1); }
+    .portal-btn-ghost:hover { background: rgba(255,255,255,0.05); color: var(--lighter); }
+    
+    /* Tables */
+    .portal-table { width: 100%; border-collapse: collapse; }
+    .portal-table th { text-align: left; padding: 0.85rem 1rem; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.5; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .portal-table td { padding: 1rem; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+    .portal-table tr { transition: var(--transition); }
+    .portal-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .portal-table .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; margin-right: 0.75rem; }
+    .role-badge { display: inline-flex; align-items: center; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+    .role-admin { background: rgba(239,68,68,0.2); color: #ef4444; }
+    .role-moderator { background: rgba(245,158,11,0.2); color: #f59e0b; }
+    .role-user { background: rgba(59,130,246,0.2); color: #3b82f6; }
+    .role-super_admin { background: rgba(124,58,237,0.2); color: #7c3aed; }
+    
+    /* Empty State */
+    .portal-empty { text-align: center; padding: 4rem 2rem; color: rgba(255,255,255,0.4); }
+    .portal-empty i { font-size: 3.5rem; margin-bottom: 1rem; opacity: 0.3; display: block; }
+    .portal-empty p { font-size: 1rem; margin-bottom: 1.5rem; }
+    .portal-empty .portal-btn { margin-top: 0.5rem; }
+    
+    /* Modals */
+    .portal-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); padding: 1rem; }
+    .portal-modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .portal-modal { background: var(--dark); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2rem; max-width: 600px; width: 100%; max-height: 85vh; overflow-y: auto; position: relative; animation: slideUp 0.3s ease; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .portal-modal.large { max-width: 800px; }
+    .portal-modal h3 { margin: 0 0 1.5rem; font-family: var(--font-heading); font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem; }
+    .portal-modal h3 i { color: var(--accent); }
+    .portal-modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--lighter); font-size: 1.5rem; cursor: pointer; opacity: 0.5; transition: var(--transition); }
+    .portal-modal-close:hover { opacity: 1; color: var(--accent); }
+    .portal-field { margin-bottom: 1.25rem; }
+    .portal-field label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 500; opacity: 0.8; }
+    .portal-field input, .portal-field textarea, .portal-field select { width: 100%; padding: 0.85rem 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: var(--lighter); font-size: 0.95rem; font-family: var(--font-body); transition: var(--transition); }
+    .portal-field input:focus, .portal-field textarea:focus, .portal-field select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,162,39,0.15); }
+    .portal-field textarea { min-height: 120px; resize: vertical; }
+    .portal-field select { cursor: pointer; }
+    .portal-field small { display: block; margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.5; }
+    .portal-field .checkbox-group { display: flex; align-items: flex-start; gap: 0.75rem; }
+    .portal-field .checkbox-group input { width: auto; margin-top: 0.25rem; accent-color: var(--accent); }
+    .portal-modal-footer { display: flex; justify-content: flex-end; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); margin-top: 1rem; }
+    
+    /* Tabs */
+    .portal-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.5rem; flex-wrap: wrap; }
+    .portal-tab { padding: 0.75rem 1.25rem; background: none; border: none; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; cursor: pointer; border-radius: 8px 8px 0 0; transition: var(--transition); position: relative; }
+    .portal-tab:hover { color: var(--lighter); background: rgba(255,255,255,0.03); }
+    .portal-tab.active { color: var(--accent); }
+    .portal-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--accent); }
+    .portal-tab .badge { margin-left: 0.5rem; font-size: 0.65rem; padding: 0.15rem 0.4rem; border-radius: 100px; }
+    
+    /* Scan Preview */
+    .scan-preview { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); }
+    .scan-preview.large { width: 80px; height: 80px; }
+    
+    /* Recipient Selector */
+    .recipient-selector { max-height: 300px; overflow-y: auto; }
+    .recipient-option { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; margin-bottom: 0.5rem; cursor: pointer; transition: var(--transition); }
+    .recipient-option:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+    .recipient-option.selected { background: rgba(201,162,39,0.1); border-color: var(--accent); }
+    .recipient-option input { accent-color: var(--accent); width: 18px; height: 18px; }
+    .recipient-option .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: var(--dark); }
+    .recipient-info { flex: 1; min-width: 0; }
+    .recipient-name { font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .recipient-email { font-size: 0.78rem; opacity: 0.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    
+    /* Realtime Status */
+    .realtime-indicator { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; padding: 0.25rem 0.75rem; border-radius: 100px; }
+    .realtime-indicator.connected { background: rgba(34,197,94,0.2); color: #22c55e; }
+    .realtime-indicator.disconnected { background: rgba(239,68,68,0.2); color: #ef4444; }
+    .realtime-indicator .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .realtime-indicator.connected .dot { background: #22c55e; animation: pulse 2s infinite; }
+    .realtime-indicator.disconnected .dot { background: #ef4444; animation: none; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    
+    /* Notification Bell in Admin Header */
+    .portal-header-actions .notification-bell { width: 40px; height: 40px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 50%; color: var(--lighter); cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; }
+    .portal-header-actions .notification-bell:hover { background: rgba(201,162,39,0.2); border-color: var(--accent); color: var(--accent); }
+    .portal-header-actions .notification-badge { position: absolute; top: 4px; right: 4px; min-width: 18px; height: 18px; background: #ef4444; color: var(--lighter); font-size: 0.65rem; font-weight: 700; border-radius: 100px; display: flex; align-items: center; justify-content: center; padding: 0 5px; animation: pulse 2s infinite; }
+    
+    /* Mobile */
+    @media (max-width: 768px) {
+      .portal-sidebar { display: none; position: fixed; inset: 0; z-index: 99; width: 100%; background: var(--darker); padding-top: 5rem; }
+      .portal-sidebar.open { display: flex; }
+      .portal-main { padding: 1.5rem; }
+      .portal-stats { grid-template-columns: repeat(2, 1fr); }
+      .portal-grid { grid-template-columns: 1fr; }
+      .portal-header { padding: 0 1rem; }
+      .portal-header-logo span { display: none; }
+      .portal-tabs { overflow-x: auto; padding-bottom: 0.5rem; }
+      .portal-table { font-size: 0.8rem; }
+    }
+  </style>
 </head>
 <body class="portal-root">
   <header class="portal-header">
@@ -19,34 +227,56 @@
     </div>
     <div class="portal-header-actions">
       <span id="admin-email-display">Loading...</span>
+      <span id="realtime-status" class="realtime-indicator disconnected"><span class="dot"></span>Offline</span>
+      <div class="notification-bell" id="notification-bell" aria-label="Notifications" tabindex="0">
+        <i class="fas fa-bell"></i>
+        <span class="notification-badge" id="notification-badge" style="display:none">0</span>
+      </div>
+      <div class="notification-dropdown" id="notification-dropdown" role="menu">
+        <div class="notification-header">
+          <h4><i class="fas fa-bell"></i> <span data-i18n="notifications.title">Notifications</span></h4>
+          <button id="mark-all-read" data-i18n="notifications.markAllRead">Mark all read</button>
+        </div>
+        <div class="notification-list" id="notification-list">
+          <div class="notification-empty" data-i18n="notifications.empty">No notifications yet</div>
+        </div>
+        <div class="notification-footer">
+          <a href="#" id="view-all-notifications" data-i18n="notifications.viewAll">View all notifications</a>
+        </div>
+      </div>
       <button onclick="portalLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </header>
   <div class="portal-layout">
-    <aside class="portal-sidebar">
+    <aside class="portal-sidebar" id="portal-sidebar">
       <nav>
-        <button class="portal-nav-item active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
-        <button class="portal-nav-item" data-section="messages"><i class="fas fa-envelope"></i> Messages</button>
-        <button class="portal-nav-item" data-section="scans"><i class="fas fa-image"></i> Scan Review</button>
-        <button class="portal-nav-item" data-section="users"><i class="fas fa-users"></i> Users &amp; Roles</button>
+        <button class="portal-nav-item active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard <span class="portal-nav-badge" id="badge-dashboard"></span></button>
+        <button class="portal-nav-item" data-section="messages"><i class="fas fa-envelope"></i> Messages <span class="portal-nav-badge" id="badge-messages">0</span></button>
+        <button class="portal-nav-item" data-section="compose"><i class="fas fa-pen"></i> Compose</button>
+        <button class="portal-nav-item" data-section="scans"><i class="fas fa-image"></i> Scan Review <span class="portal-nav-badge" id="badge-scans">0</span></button>
+        <button class="portal-nav-item" data-section="users"><i class="fas fa-users"></i> Users & Roles <span class="portal-nav-badge" id="badge-users">0</span></button>
         <button class="portal-nav-item" data-section="admins"><i class="fas fa-shield-halved"></i> Admins</button>
         <button class="portal-nav-item" data-section="logs"><i class="fas fa-clipboard-list"></i> Activity Log</button>
+        <button class="portal-nav-item" data-section="settings"><i class="fas fa-cog"></i> Settings</button>
       </nav>
     </aside>
     <main class="portal-main" id="portal-content">
-      <div style="text-align:center;padding:4rem;color:rgba(255,255,255,0.4)">
-        <i class="fas fa-circle-notch fa-spin" style="font-size:2.5rem;margin-bottom:1rem"></i>
-        <p>Loading admin portal...</p>
-      </div>
+      <div class="portal-loading"><i class="fas fa-circle-notch fa-spin" style="font-size:2.5rem;margin-bottom:1rem"></i><p>Loading admin portal...</p></div>
     </main>
   </div>
-  <script defer src="js/auth.js?v=4"></script>
-  <script defer src="js/admin-portal.js?v=4"></script>
+  
+  <!-- Modal Overlay -->
+  <div class="portal-modal-overlay" id="portal-modal-overlay">
+    <div class="portal-modal" id="portal-modal"></div>
+  </div>
+  
+  <script defer src="js/auth.js?v=5"></script>
+  <script defer src="js/admin-portal.js?v=5"></script>
   <script>
     (function(){
       var user = null;
       try { user = JSON.parse(localStorage.getItem('wildguard_user') || 'null'); } catch(e){}
-      if (!user || (user.role !== 'admin' && user.role !== 'super_admin' && user.email !== 'admin@wildguardsociety.org')) {
+      if (!user || (user.role !== 'admin' && user.role !== 'super_admin' && user.email !== 'admin@wildguardsociety.org' && user.email !== 'wildguardsociety@gmail.com' && user.email !== 'shedrackanderson576@gmail.com')) {
         window.location.href = 'admin-login.html';
       }
     })();

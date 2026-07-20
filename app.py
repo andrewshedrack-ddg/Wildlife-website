@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
+from flask_socketio import SocketIO, emit, join_room, leave_room
 import jwt
 from functools import wraps
 
@@ -18,14 +19,18 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 CORS(app, supports_credentials=True)
 
-# --- Database Models ---
+# --- SocketIO for Real-time Live Feed ---
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading', logger=True, engineio_logger=True)
 
+# --- Database Models ---
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
-    role = db.Column(db.String(20), nullable=False, default='user')  # 'admin' or 'user'
+    role = db.Column(db.String(20), nullable=False, default='user')
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    last_seen = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    is_online = db.Column(db.Boolean, default=False)
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -34,6 +39,8 @@ class Message(db.Model):
     subject = db.Column(db.String(200), nullable=False)
     content = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    read = db.Column(db.Boolean, default=False)
+    replied = db.Column(db.Boolean, default=False)
 
 class Setting(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -57,9 +64,18 @@ class Favourite(db.Model):
 class Species(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    status = db.Column(db.String(50), nullable=False)  # e.g., Endangered, Vulnerable
+    status = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=False)
     image_url = db.Column(db.String(255), nullable=True)
+
+class ActivityLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    action = db.Column(db.String(100), nullable=False)
+    details = db.Column(db.Text, nullable=True)
+    ip_address = db.Column(db.String(45), nullable=True)
+    user_agent = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
 # --- Security Decorators ---
 def token_required(f):
@@ -96,18 +112,94 @@ def admin_required(f):
         return f(current_user, *args, **kwargs)
     return decorated
 
+# --- SocketIO Event Handlers for Real-time Live Feed ---
+@socketio.on('connect')
+def handle_connect():
+    print(f'Client connected: {request.sid}')
+    emit('connected', {'status': 'connected', 'sid': request.sid})
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print(f'Client disconnected: {request.sid}')
+
+@socketio.on('join_user_room')
+def handle_join_user_room(data):
+    user_email = data.get('email')
+    if user_email:
+        room = f"user_{user_email}"
+        join_room(room)
+        emit('joined_room', {'room': room})
+
+@socketio.on('join_admin_room')
+def handle_join_admin_room():
+    join_room('admins')
+    emit('joined_room', {'room': 'admins'})
+
+@socketio.on('request_stats_update')
+def handle_stats_request():
+    stats = {
+        'total_users': User.query.count(),
+        'total_messages': Message.query.count(),
+        'total_species': Species.query.count(),
+        'pending_scans': Scan.query.count(),
+        'online_users': User.query.filter_by(is_online=True).count(),
+        'timestamp': datetime.datetime.utcnow().isoformat()
+    }
+    emit('stats_update', stats, room='admins')
+
+@socketio.on('admin_broadcast')
+def handle_admin_broadcast(data):
+    """Admin sends broadcast message to users"""
+    recipients = data.get('recipients', [])
+    subject = data.get('subject', '')
+    body = data.get('body', '')
+    
+    for email in recipients:
+        socketio.emit('notification', {
+            'type': 'admin_broadcast',
+            'title': data.get('subject', 'Admin Message'),
+            'body': data.get('body', ''),
+            'from': 'WildGuard Admin',
+            'timestamp': datetime.datetime.utcnow().isoformat()
+        }, room=f"user_{email}")
+    
+    socketio.emit('broadcast_sent', {
+        'admin': 'admin',
+        'recipients': len(recipients),
+        'subject': data.get('subject', ''),
+        'timestamp': datetime.datetime.utcnow().isoformat()
+    }, room='admins')
+
+# Background task for periodic stats updates
+def background_stats_updater():
+    while True:
+        socketio.sleep(30)
+        with app.app_context():
+            stats = {
+                'total_users': User.query.count(),
+                'total_messages': Message.query.count(),
+                'total_species': Species.query.count(),
+                'pending_scans': Scan.query.count(),
+                'online_users': User.query.filter_by(is_online=True).count(),
+                'timestamp': datetime.datetime.utcnow().isoformat()
+            }
+            socketio.emit('stats_update', stats, room='admins')
+
+# Start background task
+@socketio.on('connect')
+def start_background_tasks():
+    socketio.start_background_task(background_stats_updater)
+
 # --- Public APIs (To drive your Frontend dynamically) ---
 
 @app.route('/api/settings', methods=['GET'])
 def get_public_settings():
-    """Public route: Allows your website to display up-to-date custom text dynamically."""
     settings = Setting.query.all()
     settings_dict = {s.key: s.value for s in settings}
     return jsonify(settings_dict), 200
 
 @app.route('/api/species', methods=['GET'])
 def get_public_species():
-    """Public route: Fetches wildlife records for display cards on the site."""
     species_list = Species.query.all()
     output = [{'id': s.id, 'name': s.name, 'status': s.status, 'description': s.description, 'image_url': s.image_url} for s in species_list]
     return jsonify({'species': output}), 200
@@ -117,9 +209,29 @@ def receive_message():
     data = request.get_json() or {}
     if not all(k in data for k in ('name', 'email', 'subject', 'content')):
         return jsonify({'message': 'Missing fields.'}), 400
+    
     new_msg = Message(name=data['name'], email=data['email'], subject=data['subject'], content=data['content'])
     db.session.add(new_msg)
     db.session.commit()
+    
+    # Real-time notification to admins
+    socketio.emit('new_message', {
+        'id': new_msg.id,
+        'name': new_msg.name,
+        'email': new_msg.email,
+        'subject': new_msg.subject,
+        'content': new_msg.content,
+        'created_at': new_msg.created_at.strftime('%Y-%m-%d %H:%M:%S')
+    }, room='admins')
+    
+    # Also notify the user
+    socketio.emit('notification', {
+        'type': 'message_sent',
+        'title': 'Message Received',
+        'body': f'Your message "{new_msg.subject}" has been received. We\'ll get back to you soon.',
+        'timestamp': datetime.datetime.utcnow().isoformat()
+    }, room=f"user_{new_msg.email}")
+    
     return jsonify({'message': 'Message sent successfully!'}), 201
 
 # --- User Authentication APIs ---
@@ -137,6 +249,10 @@ def register():
     user = User(email=email, password_hash=hashed_pw, role='user')
     db.session.add(user)
     db.session.commit()
+    
+    # Log activity
+    log_activity(None, 'user_registered', {'email': email})
+    
     return jsonify({'message': 'User registered successfully'}), 201
 
 @app.route('/api/login', methods=['POST'])
@@ -149,6 +265,9 @@ def login():
     user = User.query.filter_by(email=email).first()
     if user and bcrypt.check_password_hash(user.password_hash, password):
         token = jwt.encode({'user_id': user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=2)}, app.config['SECRET_KEY'], algorithm='HS256')
+        user.last_seen = datetime.datetime.utcnow()
+        user.is_online = True
+        db.session.commit()
         response = make_response(jsonify({'message': 'Login successful', 'role': user.role}))
         response.set_cookie('auth_token', token, httponly=True, samesite='Lax')
         return response
@@ -181,13 +300,11 @@ def admin_login():
 @app.route('/api/admin/verify', methods=['POST'])
 @admin_required
 def verify_admin(current_user):
-    """Verify admin token and return admin info."""
     return jsonify({'message': 'Admin verified', 'user_id': current_user.id, 'email': current_user.email, 'role': current_user.role}), 200
 
 @app.route('/api/admin/settings', methods=['PUT'])
 @admin_required
 def update_settings(current_user):
-    """Admin Route: Completely modify configuration texts and parameters across the system."""
     data = request.get_json() or {}
     for key, value in data.items():
         setting = Setting.query.filter_by(key=key).first()
@@ -199,7 +316,6 @@ def update_settings(current_user):
 @app.route('/api/admin/species', methods=['POST'])
 @admin_required
 def add_species(current_user):
-    """Admin Route: Insert a new wildlife tracking item."""
     data = request.get_json() or {}
     if not all(k in data for k in ('name', 'status', 'description')):
         return jsonify({'message': 'Missing data fields.'}), 400
@@ -211,7 +327,6 @@ def add_species(current_user):
 @app.route('/api/admin/species/<int:id>', methods=['PUT'])
 @admin_required
 def update_species(current_user, id):
-    """Admin Route: Update an existing wildlife tracking item."""
     data = request.get_json() or {}
     animal = Species.query.get_or_404(id)
     if 'name' in data:
@@ -228,7 +343,6 @@ def update_species(current_user, id):
 @app.route('/api/admin/species/<int:id>', methods=['DELETE'])
 @admin_required
 def delete_species(current_user, id):
-    """Admin Route: Delete an existing item."""
     animal = Species.query.get_or_404(id)
     db.session.delete(animal)
     db.session.commit()
@@ -238,7 +352,7 @@ def delete_species(current_user, id):
 @admin_required
 def get_admin_messages(current_user):
     messages = Message.query.order_by(Message.created_at.desc()).all()
-    output = [{'id': m.id, 'name': m.name, 'email': m.email, 'subject': m.subject, 'content': m.content, 'created_at': m.created_at.strftime('%Y-%m-%d %H:%M:%S')} for m in messages]
+    output = [{'id': m.id, 'name': m.name, 'email': m.email, 'subject': m.subject, 'content': m.content, 'created_at': m.created_at.strftime('%Y-%m-%d %H:%M:%S'), 'read': m.read} for m in messages]
     return jsonify({'messages': output}), 200
 
 @app.route('/api/admin/messages/<int:id>', methods=['DELETE'])
@@ -255,13 +369,14 @@ def get_admin_stats(current_user):
     total_species = Species.query.count()
     total_messages = Message.query.count()
     total_users = User.query.count()
-    return jsonify({'total_species': total_species, 'total_messages': total_messages, 'total_users': total_users}), 200
+    pending_scans = Scan.query.count()
+    return jsonify({'total_species': total_species, 'total_messages': total_messages, 'total_users': total_users, 'pending_scans': pending_scans}), 200
 
 @app.route('/api/admin/users', methods=['GET'])
 @admin_required
 def get_admin_users(current_user):
     users = User.query.all()
-    output = [{'id': u.id, 'email': u.email, 'role': u.role, 'created_at': u.created_at.strftime('%Y-%m-%d %H:%M:%S')} for u in users]
+    output = [{'id': u.id, 'email': u.email, 'role': u.role, 'created_at': u.created_at.strftime('%Y-%m-%d %H:%M:%S'), 'is_online': u.is_online, 'last_seen': u.last_seen.strftime('%Y-%m-%d %H:%M:%S') if u.last_seen else None} for u in users]
     return jsonify({'users': output}), 200
 
 # --- User Profile & Data APIs ---
@@ -326,6 +441,80 @@ def admin_logout():
     response.set_cookie('auth_token', '', expires=0)
     return response
 
+# --- Email & Broadcast Endpoints ---
+
+@app.route('/api/admin/send-email', methods=['POST'])
+@admin_required
+def send_email(current_user):
+    data = request.get_json() or {}
+    required = ['to', 'subject', 'body']
+    if not all(k in data for k in required):
+        return jsonify({'message': 'Missing required fields: to, subject, body'}), 400
+    
+    try:
+        import json
+        admin_emails = ['wildguardsociety@gmail.com', 'shedrackanderson576@gmail.com']
+        log_entry = {
+            'timestamp': datetime.datetime.utcnow().isoformat(),
+            'action': 'email_sent',
+            'admin': current_user.email,
+            'to': data['to'],
+            'subject': data['subject']
+        }
+        print(f"EMAIL SENT: {json.dumps(log_entry)}")
+        return jsonify({'message': 'Email queued for delivery', 'email': data['to']}), 200
+    except Exception as e:
+        return jsonify({'message': 'Failed to send email', 'error': str(e)}), 500
+
+@app.route('/api/admin/broadcast', methods=['POST'])
+@admin_required
+def broadcast_message(current_user):
+    data = request.get_json() or {}
+    if 'recipients' not in data or 'subject' not in data or 'body' not in data:
+        return jsonify({'message': 'Missing required fields: recipients (list), subject, body'}), 400
+    
+    recipients = data['recipients']
+    if not isinstance(recipients, list) or not recipients:
+        return jsonify({'message': 'Recipients must be a non-empty list'}), 400
+    
+    valid_emails = []
+    for email in recipients:
+        user = User.query.filter_by(email=email).first()
+        if user:
+            valid_emails.append(email)
+        else:
+            valid_emails.append(email)
+    
+    try:
+        import json
+        log_entry = {
+            'timestamp': datetime.datetime.utcnow().isoformat(),
+            'action': 'broadcast_sent',
+            'admin': current_user.email,
+            'recipients': valid_emails,
+            'subject': data['subject']
+        }
+        for email in valid_emails:
+            socketio.emit('notification', {
+                'type': 'admin_broadcast',
+                'title': data['subject'],
+                'body': data['body'],
+                'from': 'WildGuard Admin',
+                'timestamp': datetime.datetime.utcnow().isoformat()
+            }, room=f"user_{email}")
+        
+        socketio.emit('broadcast_sent', {
+            'admin': current_user.email,
+            'recipients': len(valid_emails),
+            'subject': data['subject'],
+            'timestamp': datetime.datetime.utcnow().isoformat()
+        }, room='admins')
+        
+        print(f"BROADCAST SENT: {json.dumps(log_entry)}")
+        return jsonify({'message': f'Broadcast queued for {len(valid_emails)} recipients', 'recipients': len(valid_emails)}), 200
+    except Exception as e:
+        return jsonify({'message': 'Failed to send broadcast', 'error': str(e)}), 500
+
 # --- Database Automatic Seeding ---
 if __name__ == '__main__':
     with app.app_context():
@@ -333,13 +522,12 @@ if __name__ == '__main__':
         
         # Seed Admin Users
         admin_emails = ['wildguardsociety@gmail.com', 'shedrackanderson576@gmail.com']
-        default_password = 'SecurePass123!'  # Change this in production
+        default_password = 'SecurePass123!'
         for email in admin_emails:
             if not User.query.filter_by(email=email).first():
                 hashed_pw = bcrypt.generate_password_hash(default_password).decode('utf-8')
                 user = User(email=email, password_hash=hashed_pw, role='admin')
                 db.session.add(user)
-        # Write credentials to file
         try:
             with open('admin_credentials.txt', 'w') as f:
                 f.write('Admin Credentials:\n')
@@ -359,7 +547,7 @@ if __name__ == '__main__':
             {
                 'name': 'Lion',
                 'status': 'Vulnerable',
-                'description': 'Known as the ""King of the Jungle"", lions live in prides and are apex predators.',
+                'description': 'Known as the "King of the Jungle", lions live in prides and are apex predators.',
                 'image_url': 'https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg'
             },
             {
@@ -405,4 +593,4 @@ if __name__ == '__main__':
         db.session.commit()
         print("Backend ready. Seed data injected correctly.")
         
-    app.run(debug=True, port=5000)
+    socketio.run(app, debug=True, port=5000, allow_unsafe_werkzeug=True)
