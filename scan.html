@@ -18,6 +18,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0/dist/mobilenet.min.js"></script>
 </head>
 <body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
   <!-- Background Slideshow -->
   <div class="page-slideshow">
     <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
@@ -35,14 +38,14 @@
         <span class="logo-text">WildGuard Society</span>
       </a>
       <nav class="desktop-nav" id="desktop-nav">
-        <a href="index.html"><i class="fas fa-home"></i> Home</a>
-        <a href="library/library.html"><i class="fas fa-book"></i> Library</a>
-        <a href="scan.html" class="active"><i class="fas fa-barcode"></i> Scan</a>
-        <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
-        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></nav>
+        <a href="index.html"><i class="fas fa-home"></i> <span data-i18n="header.nav.home">Home</span></a>
+        <a href="library/library.html"><i class="fas fa-book"></i> <span data-i18n="header.nav.library">Library</span></a>
+        <a href="scan.html" class="active"><i class="fas fa-barcode"></i> <span data-i18n="header.nav.scan">Scan</span></a>
+        <a href="about.html"><i class="fas fa-info-circle"></i> <span data-i18n="header.nav.about">About</span></a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> <span data-i18n="header.nav.contact">Contact</span></a></nav>
       <div class="header-actions">
         <div class="auth-buttons" id="auth-buttons">
-          <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> <span data-i18n="header.auth.signIn">Sign In</span></a>
           <div class="user-menu" id="user-menu" style="display:none;">
             <button class="user-menu-toggle" id="user-menu-toggle">
               <i class="fas fa-user-circle"></i>
@@ -50,26 +53,31 @@
               <i class="fas fa-chevron-down"></i>
             </button>
             <div class="user-dropdown" id="user-dropdown">
-              <a href="user/Profile.html"><i class="fas fa-user"></i> Profile</a>
-              <a href="user/History.html"><i class="fas fa-history"></i> History</a>
-              <a href="user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+              <a href="user/Profile.html"><i class="fas fa-user"></i> <span data-i18n="header.auth.profile">Profile</span></a>
+              <a href="user/History.html"><i class="fas fa-history"></i> <span data-i18n="header.auth.history">History</span></a>
+              <a href="user/Favourite.html"><i class="fas fa-heart"></i> <span data-i18n="header.auth.favorites">Favourites</span></a>
               <div class="dropdown-divider"></div>
-              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> <span data-i18n="header.auth.logout">Logout</span></a>
             </div>
           </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-btn" data-lang="en" aria-label="English"><span class="flag">🇺🇸</span> EN</button>
+          <button class="lang-btn" data-lang="fr" aria-label="French"><span class="flag">🇫🇷</span> FR</button>
+          <button class="lang-btn" data-lang="sw" aria-label="Swahili"><span class="flag">🇹🇿</span> SW</button>
         </div>
       </div>
       <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
     </div>
   </header>
 
-  <main>
+<main>
     <!-- Hero / Scanner Section -->
     <section class="scan-hero">
       <div class="scan-hero-content">
-        <span class="scan-eyebrow"><i class="fas fa-scanner"></i> Scanner</span>
-        <h1>What did you find?</h1>
-        <p class="scan-subtitle">Capture an animal, plant, insect, or even a leaf. AI identifies it and reads the field guide aloud.</p>
+        <span class="scan-eyebrow"><i class="fas fa-scanner"></i> <span data-i18n="scan.header">Scanner</span></span>
+        <h1 data-i18n="scan.title">What did you find?</h1>
+        <p class="scan-subtitle" data-i18n="scan.subtitle">Capture an animal, plant, insect, or even a leaf. AI identifies it and reads the field guide aloud.</p>
       </div>
     </section>
 
@@ -77,14 +85,14 @@
     <section class="scan-action-area">
       <div class="scan-container">
         <div id="scanInputView">
-          <p class="action-label">Ready when you are</p>
-          <p class="action-hint">Use your camera or upload a photo.</p>
+          <p class="action-label" data-i18n="scan.ready">Ready when you are</p>
+          <p class="action-hint" data-i18n="scan.hint">Use your camera or upload a photo.</          </p>
           <div class="action-buttons">
-            <button id="cameraBtn" class="action-btn camera-btn">
+            <button id="cameraBtn" class="action-btn camera-btn" data-i18n="scan.actions.camera">
               <i class="fas fa-camera"></i>
               <span>Open camera</span>
             </button>
-            <button id="uploadBtn" class="action-btn upload-btn">
+            <button id="uploadBtn" class="action-btn upload-btn" data-i18n="scan.actions.upload">
               <i class="fas fa-cloud-upload-alt"></i>
               <span>Upload photo</span>
             </button>
@@ -97,7 +105,7 @@
           <div class="result-layout">
             <div class="preview-panel">
               <img id="previewImg" src="" alt="Captured image" />
-              <button id="retakeBtn" class="retake-btn">
+              <button id="retakeBtn" class="retake-btn" data-i18n="scan.actions.retake">
                 <i class="fas fa-redo"></i> Scan another
               </button>
             </div>
@@ -107,20 +115,20 @@
                   <div class="scanner-line"></div>
                   <div class="scan-grid"></div>
                 </div>
-                <p id="loadingText">Analyzing image with neural network...</p>
+                <p id="loadingText" data-i18n="scan.loading">Analyzing image with neural network...</p>
               </div>
               <div id="resultState" class="result-state" style="display:none;" role="region" aria-live="polite" aria-atomic="true" aria-label="Scan results">
-                <span id="resultCategory" class="result-category"></span>
+                <span id="resultCategory" class="result-category" data-i18n="scan.results.category"></span>
                 <h2 id="resultTitle"></h2>
-                <p id="resultScientificName" class="scientific-name"></p>
+                <p id="resultScientificName" class="scientific-name" data-i18n="scan.results.scientificName"></p>
                 <div id="resultStatusBadge" class="status-badge"></div>
-                <p id="resultConfidence" class="confidence"></p>
+                <p id="resultConfidence" class="confidence" data-i18n="scan.results.confidence"></p>
                 <div id="resultDetails" class="result-details"></div>
                 <div class="result-actions">
-                  <button id="readAloudBtn" class="read-btn">
+                  <button id="readAloudBtn" class="read-btn" data-i18n="scan.actions.readAloud">
                     <i class="fas fa-volume-up"></i> Read field guide aloud
                   </button>
-                  <a href="library/library.html" class="library-link">
+                  <a href="library/library.html" class="library-link" data-i18n="scan.actions.library">
                     <i class="fas fa-book-open"></i> Open species library
                   </a>
                 </div>
@@ -134,11 +142,11 @@
     <!-- Voice Controls -->
     <section class="voice-section">
       <div class="scan-container">
-        <button id="voiceBtn" class="voice-btn">
+        <button id="voiceBtn" class="voice-btn" data-i18n="scan.voice.title">
           <i class="fas fa-microphone"></i>
           <span id="voiceBtnText">Voice Command</span>
         </button>
-        <p class="voice-hint">Say: "scan", "take photo", "upload image", or "clear"</p>
+        <p class="voice-hint" data-i18n="scan.voice.hint">Say: "scan", "take photo", "upload image", or "clear"</p>
         <p id="voiceStatus" class="voice-status"></p>
       </div>
     </section>
@@ -189,6 +197,7 @@
   </footer>
 
   <!-- Scripts -->
+  <script defer src="js/i18n.js"></script>
   <script defer src="js/main.js?v=2"></script>
   <script defer src="js/scan.js?v=2"></script>
   <script defer src="js/auth.js?v=2"></script>

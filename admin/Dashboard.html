@@ -8,26 +8,39 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    /* Admin Layout */
-    .admin-app { display: flex; min-height: 100vh; background: var(--darker, #0a1510); }
-    .admin-sidebar { width: 260px; background: rgba(10,21,16,0.95); border-right: 1px solid rgba(255,255,255,0.06); padding: 1.5rem; position: fixed; top: 0; bottom: 0; left: 0; overflow-y: auto; z-index: 900; transition: transform 0.3s ease; }
-    @media (max-width: 768px) { .admin-sidebar { transform: translateX(-100%); } .admin-sidebar.open { transform: translateX(0); } }
-    .admin-brand { display: flex; align-items: center; gap: 0.75rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 1.5rem; }
-    .admin-brand img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--accent); }
-    .admin-brand span { font-family: var(--font-heading); font-weight: 700; color: var(--lighter); font-size: 1rem; }
-    .admin-nav { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 2rem; }
-    .admin-nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; border-radius: 10px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.92rem; font-weight: 500; transition: all 0.3s ease; cursor: pointer; border: none; background: none; width: 100%; text-align: left; }
-    .admin-nav-item:hover { background: rgba(255,255,255,0.06); color: var(--lighter); }
-    .admin-nav-item.active { background: rgba(201,162,39,0.1); color: var(--accent); border: 1px solid rgba(201arh,162,39,0.2); }
-    .admin-nav-item i { width: 20px; text-align: center; font-size: 0.95rem; }
-    .admin-nav-badge { margin-left: auto; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700; padding: 1px 6px; border-radius: 10px; min-width: 18px; text-align: center; }
-    .admin-main { flex: 1; margin-left: 260px; min-height: 100vh; }
-    @media (max-width: 768px) { .admin-main { margin-left: 0; } }
-    .admin-topbar { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; background: rgba(10,21,16,0.95); backdrop-filter: blur(10px); z-index: 800; }
-    .admin-topbar h1 { font-family: var(--font-heading); font-size: 1.4rem; margin: 0; }
+  <script defer src="../js/i18n.js"></script>
+</head>
+<body>
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background3.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
+  </div>
+
+  <div class="admin-app">
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-brand">
+        <img src="../assets/images/logo.png" alt="WildGuard">
+        <span>Admin Portal</span>
+      </div>
+      <nav class="admin-nav">
+        <button class="admin-nav-item active" data-tab="dashboard" onclick="switchTab(this, 'dashboard')" data-i18n="admin.dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
+        <button class="admin-nav-item" data-tab="scans" onclick="switchTab(this, 'scans')" data-i18n="admin.scans"><i class="fas fa-camera"></i> Scan Reviews</button>
+        <button class="admin-nav-item" data-tab="messages" onclick="switchTab(this, 'messages')" data-i18n="admin.messages"><i class="fas fa-envelope"></i> Messages</button>
+        <button class="admin-nav-item" data-tab="notifications" onclick="switchTab(this, 'notifications')" data-i18n="admin.notifications"><i class="fas fa-bell"></i> Notifications</button>
+        <button class="admin-nav-item" data-tab="users" onclick="switchTab(this, 'users')" data-i18n="admin.users"><i class="fas fa-users"></i> Users</button>
+        <button class="admin-nav-item" data-tab="admins" onclick="switchTab(this, 'admins')" data-i18n="admin.admins"><i class="fas fa-shield-halved"></i> Admins</button>
+        <button class="admin-nav-item" data-tab="logs" onclick="switchTab(this, 'logs')" data-i18n="admin.logs"><i class="fas fa-clipboard-list"></i> Activity Log</button>
+        <button class="admin-nav-item" data-tab="settings" onclick="switchTab(this, 'settings')" data-i18n="admin.settings"><i class="fas fa-cog"></i> Settings</button>
+      </nav>
+      <div class="admin-logout">
+        <a href="#" onclick="portalLogout()" data-i18n="admin.logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </aside>
     .admin-topbar-right { display: flex; align-items: center; gap: 1rem; }
     .admin-notif-btn { position: relative; background: none; border: none; color: rgba(255,255,255,0.7); font-size: 1.1rem; cursor: pointer; padding: 0.5rem; transition: all 0.3s ease; }
     .admin-notif-btn:hover { color: var(--accent); }

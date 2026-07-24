@@ -14,8 +14,9 @@
   <link rel="icon" type="image/png" href="assets/images/logo.png">
   <title>WildGuard Society | Youth-Led Environmental Conservation</title>
   <link rel="stylesheet" href="css/style.css?v=2">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <script defer src="js/i18n.js"></script>
 </head>
 <body>
   <!-- Background Slideshow -->
@@ -35,15 +36,14 @@
         <span class="logo-text">WildGuard Society</span>
       </a>
       <nav class="desktop-nav" id="desktop-nav">
-        <a href="index.html" class="active"><i class="fas fa-home"></i> Home</a>
-        <a href="library/library.html"><i class="fas fa-book"></i> Library</a>
-        <a href="scan.html"><i class="fas fa-barcode"></i> Scan</a>
-        <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
-        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
-      </nav>
+        <a href="index.html" class="active"><i class="fas fa-home"></i> <span data-i18n="header.nav.home">Home</span></a>
+        <a href="library/library.html"><i class="fas fa-book"></i> <span data-i18n="header.nav.library">Library</span></a>
+        <a href="scan.html"><i class="fas fa-barcode"></i> <span data-i18n="header.nav.scan">Scan</span></a>
+        <a href="about.html"><i class="fas fa-info-circle"></i> <span data-i18n="header.nav.about">About</span></a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> <span data-i18n="header.nav.contact">Contact</span></a>      </nav>
       <div class="header-actions">
         <div class="auth-buttons" id="auth-buttons">
-          <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> <span data-i18n="header.auth.signIn">Sign In</span></a>
           <div class="user-menu" id="user-menu" style="display:none">
             <button class="user-menu-toggle" id="user-menu-toggle">
               <i class="fas fa-user-circle"></i>
@@ -51,13 +51,73 @@
               <i class="fas fa-chevron-down"></i>
             </button>
             <div class="user-dropdown" id="user-dropdown">
-              <a href="user/Profile.html"><i class="fas fa-user"></i> Profile</a>
-              <a href="user/History.html"><i class="fas fa-history"></i> History</a>
-              <a href="user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+              <a href="user/Profile.html"><i class="fas fa-user"></i> <span data-i18n="header.auth.profile">Profile</span></a>
+              <a href="user/History.html"><i class="fas fa-history"></i> <span data-i18n="header.auth.history">History</span></a>
+              <a href="user/Favourite.html"><i class="fas fa-heart"></i> <span data-i18n="header.auth.favorites">Favourites</span></a>
               <div class="dropdown-divider"></div>
-              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> <span data-i18n="header.auth.logout">Logout</span></a>
             </div>
           </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-btn" data-lang="en" aria-label="English"><span class="flag">🇺🇸</span> EN</button>
+          <button class="lang-btn" data-lang="fr" aria-label="French"><span class="flag">🇫🇷</span> FR</button>
+          <button class="lang-btn" data-lang="sw" aria-label="Swahili"><span class="flag">🇹🇿</span> SW</button>
+        </div>
+      </div>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <script defer src="js/i18n.js"></script>
+</head>
+<body>
+  <!-- Background Slideshow -->
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background3.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
+  </div>
+
+  <!-- Unified Header -->
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="index.html" class="active"><i class="fas fa-home"></i> <span data-i18n="header.nav.home">Home</span></a>
+        <a href="library/library.html"><i class="fas fa-book"></i> <span data-i18n="header.nav.library">Library</span></a>
+        <a href="scan.html"><i class="fas fa-barcode"></i> <span data-i18n="header.nav.scan">Scan</span></a>
+        <a href="about.html"><i class="fas fa-info-circle"></i> <span data-i18n="header.nav.about">About</span></a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> <span data-i18n="header.nav.contact">Contact</span></a>      </nav>
+      <div class="header-actions">
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> <span data-i18n="header.auth.signIn">Sign In</span></a>
+          <div class="user-menu" id="user-menu" style="display:none">
+            <button class="user-menu-toggle" id="user-menu-toggle">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-email">User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="user/Profile.html"><i class="fas fa-user"></i> <span data-i18n="header.auth.profile">Profile</span></a>
+              <a href="user/History.html"><i class="fas fa-history"></i> <span data-i18n="header.auth.history">History</span></a>
+              <a href="user/Favourite.html"><i class="fas fa-heart"></i> <span data-i18n="header.auth.favorites">Favourites</span></a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> <span data-i18n="header.auth.logout">Logout</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-btn" data-lang="en" aria-label="English"><span class="flag">🇺🇸</span> EN</button>
+          <button class="lang-btn" data-lang="fr" aria-label="French"><span class="flag">🇫🇷</span> FR</button>
+          <button class="lang-btn" data-lang="sw" aria-label="Swahili"><span class="flag">🇹🇿</span> SW</button>
         </div>
       </div>
       <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
@@ -68,10 +128,10 @@
     <!-- Hero Section -->
     <section class="hero">
       <div class="hero-content">
-        <span class="eyebrow">Youth-Led Environmental Conservation</span>
-        <h1>We Are The Guardians of Nature</h1>
-        <p>WildGuard Society brings together young people to understand environmental changes and take meaningful action for a healthier planet.</p>
-        <a href="about.html" class="cta-button">Discover Our Mission <i class="fas fa-arrow-right"></i></a>
+        <span class="eyebrow" data-i18n="hero.eyebrow">Youth-Led Environmental Conservation</span>
+        <h1 data-i18n="hero.title">We Are The Guardians of Nature</h1>
+        <p data-i18n="hero.subtitle">WildGuard Society brings together young people to understand environmental changes and take meaningful action for a healthier planet.</p>
+        <a href="about.html" class="cta-button" data-i18n="hero.cta">Discover Our Mission <i class="fas fa-arrow-right"></i></a>
       </div>
     </section>
 
@@ -79,24 +139,24 @@
     <section class="content-overlay">
       <div class="container">
         <div class="section-header">
-          <h2>Who We Are</h2>
-          <p>A youth led environmental conservation movement responding to environmental changes that affect nature and the balance of ecosystems.</p>
+          <h2 data-i18n="sections.whoWeAre">Who We Are</h2>
+          <p data-i18n="sections.whoWeAreDesc">A youth led environmental conservation movement responding to environmental changes that affect nature and the balance of ecosystems.</p>
         </div>
         <div class="card-grid">
           <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
-            <h3>Our Purpose</h3>
-            <p>As the world experiences increasing challenges such as pollution, habitat degradation, biodiversity loss, climate change, unsustainable resource use, and ecosystem disturbances, we bring young people together to understand these changes and take meaningful action.</p>
+            <h3 data-i18n="features.purpose.title">Our Purpose</h3>
+            <p data-i18n="features.purpose.desc">As the world experiences increasing challenges such as pollution, habitat degradation, biodiversity loss, climate change, unsustainable resource use, and ecosystem disturbances, we bring young people together to understand these changes and take meaningful action.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-users"></i></div>
-            <h3>Youth Collaboration</h3>
-            <p>We empower individuals to become active guardians of nature and contributors to a healthier planet through conservation, environmental education, sustainability initiatives, and innovation.</p>
+            <h3 data-i18n="features.youth.title">Youth Collaboration</h3>
+            <p data-i18n="features.youth.desc">We empower individuals to become active guardians of nature and contributors to a healthier planet through conservation, environmental education, sustainability initiatives, and innovation.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-leaf"></i></div>
-            <h3>Our Belief</h3>
-            <p>Protecting nature requires more than awareness; it requires observation, adaptation, action, and collective effort. We transform passion into action for a sustainable future.</p>
+            <h3 data-i18n="features.belief.title">Our Belief</h3>
+            <p data-i18n="features.belief.desc">Protecting nature requires more than awareness; it requires observation, adaptation, action, and collective effort. We transform passion into action for a sustainable future.</p>
           </div>
         </div>
       </div>
@@ -106,8 +166,8 @@
     <section class="content-overlay">
       <div class="container">
         <div class="section-header">
-          <h2>Magnificent Wildlife</h2>
-          <p>Home to some of Africa's most incredible species</p>
+          <h2 data-i18n="sections.magnificentWildlife">Magnificent Wildlife</h2>
+          <p data-i18n="sections.wildlifeDesc">Home to some of Africa's most incredible species</p>
         </div>
         <div class="card-grid">
           <div class="card">
@@ -163,8 +223,8 @@
     <section class="content-overlay">
       <div class="container">
         <div class="section-header">
-          <h2>National Parks</h2>
-          <p>Explore protected wilderness areas around the world</p>
+          <h2 data-i18n="sections.nationalParks">National Parks</h2>
+          <p data-i18n="sections.parksDesc">Explore protected wilderness areas around the world</p>
         </div>
         <div class="card-grid">
           <div class="card">
@@ -220,29 +280,29 @@
     <section class="content-overlay">
       <div class="container">
         <div class="section-header">
-          <h2>Conservation Efforts</h2>
-          <p>Protecting wildlife through technology and community action</p>
+          <h2 data-i18n="sections.conservationEfforts">Conservation Efforts</h2>
+          <p data-i18n="sections.conservationDesc">Protecting wildlife through technology and community action</p>
         </div>
         <div class="card-grid">
           <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-            <h3>Anti-Poaching</h3>
-            <p>Advanced monitoring systems and real-time alerts help protect endangered species.</p>
+            <h3 data-i18n="conservation.antiPoaching.title">Anti-Poaching</h3>
+            <p data-i18n="conservation.antiPoaching.desc">Advanced monitoring systems and real-time alerts help protect endangered species.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-users"></i></div>
-            <h3>Community</h3>
-            <p>Local communities participate in conservation through education and sustainable practices.</p>
+            <h3 data-i18n="conservation.community.title">Community</h3>
+            <p data-i18n="conservation.community.desc">Local communities participate in conservation through education and sustainable practices.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-leaf"></i></div>
-            <h3>Habitat</h3>
-            <p>Protecting and restoring natural habitats so wildlife have space and resources to thrive.</p>
+            <h3 data-i18n="conservation.habitat.title">Habitat</h3>
+            <p data-i18n="conservation.habitat.desc">Protecting and restoring natural habitats so wildlife have space and resources to thrive.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
-            <h3>Education</h3>
-            <p>Scientific research and educational programs help us understand wildlife better.</p>
+            <h3 data-i18n="conservation.education.title">Education</h3>
+            <p data-i18n="conservation.education.desc">Scientific research and educational programs help us understand wildlife better.</p>
           </div>
         </div>
       </div>
@@ -252,29 +312,29 @@
     <section class="content-overlay">
       <div class="container">
         <div class="section-header">
-          <h2>Get Involved</h2>
-          <p>Join us in our mission</p>
+          <h2 data-i18n="sections.getInvolved">Get Involved</h2>
+          <p data-i18n="sections.getInvolvedDesc">Join us in our mission</p>
         </div>
         <div class="card-grid">
           <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-heart"></i></div>
-            <h3>Donate</h3>
-            <p>Fund critical conservation work, from anti-poaching patrols to habitat restoration.</p>
+            <h3 data-i18n="getInvolved.donate.title">Donate</h3>
+            <p data-i18n="getInvolved.donate.desc">Fund critical conservation work, from anti-poaching patrols to habitat restoration.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-hand-holding-usd"></i></div>
-            <h3>Adopt</h3>
-            <p>Symbolically adopt a wildlife animal and receive updates on their well-being.</p>
+            <h3 data-i18n="getInvolved.adopt.title">Adopt</h3>
+            <p data-i18n="getInvolved.adopt.desc">Symbolically adopt a wildlife animal and receive updates on their well-being.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-school"></i></div>
-            <h3>Programs</h3>
-            <p>Participate in or sponsor educational initiatives about wildlife conservation.</p>
+            <h3 data-i18n="getInvolved.programs.title">Programs</h3>
+            <p data-i18n="getInvolved.programs.desc">Participate in or sponsor educational initiatives about wildlife conservation.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-volume-up"></i></div>
-            <h3>Share</h3>
-            <p>Share information about wildlife and conservation with your network.</p>
+            <h3 data-i18n="getInvolved.share.title">Share</h3>
+            <p data-i18n="getInvolved.share.desc">Share information about wildlife and conservation with your network.</p>
           </div>
         </div>
       </div>
@@ -286,7 +346,7 @@
     <div class="footer-content">
       <div class="footer-brand">
         <h3>WildGuard Society</h3>
-        <p>A youth-led environmental conservation movement. Our motto: <strong>Protect Nature - Protect Life</strong>.</p>
+        <p data-i18n="footer.tagline">A youth-led environmental conservation movement. Our motto: <strong>Protect Nature - Protect Life</strong>.</p>
         <div class="footer-social">
           <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
           <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -296,37 +356,38 @@
         </div>
       </div>
       <div class="footer-links">
-        <h4>Explore</h4>
+        <h4 data-i18n="footer.explore">Explore</h4>
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="library/library.html">Library</a></li>
-          <li><a href="scan.html">Scan</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="index.html" data-i18n="footer.nav.home">Home</a></li>
+          <li><a href="library/library.html" data-i18n="footer.nav.library">Library</a></li>
+          <li><a href="scan.html" data-i18n="footer.nav.scan">Scan</a></li>
+          <li><a href="about.html" data-i18n="footer.nav.about">About</a></li>
+          <li><a href="contact.html" data-i18n="footer.nav.contact">Contact</a></li>
         </ul>
       </div>
       <div class="footer-links">
-        <h4>Get Involved</h4>
+        <h4 data-i18n="footer.getInvolved">Get Involved</h4>
         <ul>
-          <li><a href="#">Donate</a></li>
-          <li><a href="library/library.html">Adopt an Animal</a></li>
-          <li><a href="#">Volunteer</a></li>
-          <li><a href="#">Partner with Us</a></li>
+          <li><a href="#" data-i18n="footer.donate">Donate</a></li>
+          <li><a href="library/library.html" data-i18n="footer.adopt">Adopt an Animal</a></li>
+          <li><a href="#" data-i18n="footer.volunteer">Volunteer</a></li>
+          <li><a href="#" data-i18n="footer.partner">Partner with Us</a></li>
         </ul>
       </div>
       <div class="footer-contact">
-        <h4>Contact</h4>
+        <h4 data-i18n="footer.contact">Contact</h4>
         <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
         <p><i class="fas fa-phone"></i> +255 700 123 456</p>
-        <p><i class="fas fa-map-marker-alt"></i> Global</p>
+        <p><i class="fas fa-map-marker-alt"></i> <span data-i18n="common.global">Global</span></p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p> Protect Nature - Protect Life</p>
-      <p>&copy; <span data-current-year></span> WildGuard Society. All rights reserved.</p>
+      <p data-i18n="footer.motto">Protect Nature - Protect Life</p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. <span data-i18n="footer.rights">All rights reserved.</span></p>
     </div>
   </footer>
 
+  <script defer src="js/i18n.js"></script>
   <script defer src="js/main.js?v=2"></script>
   <script defer src="js/auth.js?v=2"></script>
   <script defer src="js/system-monitor.js?v=2"></script>
