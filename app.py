@@ -1,6 +1,6 @@
 import os
 import datetime
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
@@ -9,6 +9,26 @@ import jwt
 from functools import wraps
 
 app = Flask(__name__)
+
+# Add root route BEFORE static folder setup to take precedence
+@app.route('/')
+def serve_index():
+    from flask import send_from_directory
+    return send_from_directory('.', 'index.html')
+
+# Serve static files from root
+app.static_folder = '.'
+app.static_url_path = ''
+
+# Explicitly serve all HTML files and assets
+@app.route('/<path:filename>')
+def serve_static(filename):
+    from flask import send_from_directory
+    try:
+        return send_from_directory('.', filename)
+    except:
+        from flask import send_from_directory
+        return send_from_directory('.', 'index.html'), 404
 
 # --- Configuration & Security ---
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'super-secret-wildguard-key-2026')
@@ -592,5 +612,18 @@ if __name__ == '__main__':
         
         db.session.commit()
         print("Backend ready. Seed data injected correctly.")
-        
-    socketio.run(app, debug=True, port=5000, allow_unsafe_werkzeug=True)
+    
+    # Serve static HTML files - must be outside main block for test_client to work
+    @app.route('/')
+    def serve_index():
+        return send_from_directory('.', 'index.html')
+
+    @app.route('/<path:path>')
+    def serve_static(path):
+        try:
+            return send_from_directory('.', path)
+        except:
+            return send_from_directory('.', 'index.html'), 404
+
+    if __name__ == '__main__':
+        socketio.run(app, debug=True, port=5000, allow_unsafe_werkzeug=True)
