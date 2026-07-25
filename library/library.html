@@ -100,6 +100,12 @@
             </select>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Category Grid with Real Images -->
+    <section class="content-overlay">
+      <div class="container">
         <div class="card-grid" id="categoryGrid">
           <!-- Mammals -->
           <a href="mammals.html" class="card" data-category="mammals" data-name="Mammals">
@@ -108,7 +114,8 @@
             </div>
             <div class="card-body">
               <h3 data-i18n="categories.mammals">Mammals</h3>
-              <p data-i18n="categories.mammalsDesc">Large predators, herbivores and more across national parks worldwide.</p>
+              <p data-i18n="categories.mammalsDesc">Large predators, herbivores and more across national parks worldwide.
+</p>
             </div>
           </a>
           <!-- Birds -->
@@ -147,7 +154,7 @@
           <!-- Aquatic Life -->
           <a href="aquatic.html" class="card" data-category="aquatic" data-name="Aquatic Life">
             <div class="card-image">
-              <img src="../assets/images/fish.png" alt="Fish" loading="lazy">
+              <img src="../assets/images/shark.png" alt="Shark" loading="lazy">
             </div>
             <div class="card-body">
               <h3 data-i18n="categories.aquatic">Aquatic Life</h3>
@@ -169,7 +176,7 @@
           <!-- Fungi -->
           <a href="fungi.html" class="card" data-category="fungi" data-name="Fungi">
             <div class="card-image">
-              <img src="../assets/images/mushroom.png" alt="Mushroom" loading="lazy">
+              <img src="../assets/images/mushroom.png" alt="Mushroom" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
             <div class="card-body">
               <h3 data-i18n="categories.fungi">Fungi</h3>
@@ -180,7 +187,7 @@
           <!-- Bacteria -->
           <a href="bacteria.html" class="card" data-category="bacteria" data-name="Bacteria">
             <div class="card-image">
-              <img src="../assets/images/bacteria.png" alt="Bacteria" loading="lazy">
+              <img src="../assets/images/bacteria.png" alt="Bacteria" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
             <div class="card-body">
               <h3 data-i18n="categories.bacteria">Bacteria</h3>
@@ -191,7 +198,7 @@
           <!-- Viruses -->
           <a href="viruses.html" class="card" data-category="viruses" data-name="Viruses">
             <div class="card-image">
-              <img src="../assets/images/virus.png" alt="Virus" loading="lazy">
+              <img src="../assets/images/virus.png" alt="Virus" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
             <div class="card-body">
               <h3 data-i18n="categories.viruses">Viruses</h3>
@@ -203,7 +210,41 @@
       </div>
     </section>
 
-    <!-- Filter/Search Bar for Scanned Species -->
+    <!-- Filter/Search Bar -->
+    <section class="content-overlay">
+      <div class="container">
+        <div class="filter-bar" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; align-items: center;">
+          <div class="search-box" style="flex: 1; min-width: 250px; position: relative;">
+            <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.5);"></i>
+            <input type="text" id="categorySearch" placeholder="Search categories..." aria-label="Search species" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: var(--lighter); font-size: 0.95rem;">
+          </div>
+          <div class="filter-select">
+            <label for="statusFilter" style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">Status:</label>
+            <select id="statusFilter" style="margin-left: 0.5rem; padding: 0.5rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: var(--lighter); font-size: 0.9rem;">
+              <option value="">All Statuses</option>
+              <option value="Critically Endangered">Critically Endangered</option>
+              <option value="Endangered">Endangered</option>
+              <option value="Vulnerable">Vulnerable</option>
+              <option value="Near Threatened">Near Threatened</option>
+              <option value="Least Concern">Least Concern</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scanned Species Section - Collapsible -->
+    <section class="content-overlay" id="scannedSection" class="collapsed">
+      <div class="container">
+        <div class="section-header" id="scannedSectionHeader" style="cursor: pointer;" onclick="toggleScannedSection()">
+          <h2><i class="fas fa-camera"></i> <span data-i18n="sections.scannedSpecies">Scanned Species</span> <i class="fas fa-chevron-down" id="scannedChevron" style="margin-left: 0.5rem; transition: transform 0.3s;"></i></h2>
+          <p>Species identified by users through the AI scan feature</p>
+        </div>
+        <div id="scannedLibraryContainer" class="scanned-content" style="display: none;"></div>
+      </div>
+    </section>
+
+    <!-- Scanned Species Filter/Search Bar -->
     <section class="content-overlay" id="scannedSection" style="display: none;">
       <div class="container">
         <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
@@ -253,7 +294,8 @@
     <div class="footer-content">
       <div class="footer-brand">
         <h3>WildGuard Society</h3>
-        <p data-i18n="footer.tagline">Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</</p>
+        <p data-i18n="footer.tagline">Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.
+</p>
         <div class="footer-social">
           <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
           <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -302,6 +344,7 @@
     </div>
   </div>
 
+  <!-- Scripts -->
   <script defer src="../js/i18n.js"></script>
   <script defer src="../js/main.js"></script>
   <script defer src="../js/auth.js"></script>
