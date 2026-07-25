@@ -1,0 +1,18 @@
+.\about.html: {'🇫🇷', '🇺🇸', '🇹🇿'}
+.\admin-login.html: {'🇫🇷', '🇺🇸', '🇹🇿'}
+.\contact.html: {'🇫🇷', '🇺🇸', '🇹🇿'}
+.\index.html: {'🇫🇷', '🇺🇸', '🇹🇿'}
+.\login.html: {'🇫🇷', '🇺🇸', '🇹🇿'}
+.\register.html: {'🇫🇷', '🇺🇸', '🇹🇿'}
+.\scan.html: {'🇫🇷', '🇺🇸', '🇹🇿'}
+.\admin\Dashboard.html: {'🇫🇷', '🇺🇸', '🇹🇿'}
+.\library\library.html: {'🇫🇷', '🇺🇸', '🇹🇿'}
+.\css\library.css: {'–', '─'}
+.\js\admin-portal.js: {'○', '·', '🐾', '●'}
+.\js\admin-ui.js: {'️', '📊', '☁', '📋', '📬', '🦁', '🐾', '👥'}
+.\js\config.js: {'🇸', 'ا', '文', '🇪', 'ç', '🇷', '🇨', 'ñ', '🇹', 'ي', '🇧', '🇬', '🇿', 'ة', 'ب', '🇦', '🇫', '🇵', 'ل', 'ر', '🇳', 'ê', '中', 'ع'}
+.\js\library.js: {'—'}
+.\node_modules\chokidar\index.js: {'’'}
+.\node_modules\source-map\dist\source-map.debug.js: {'”', '“'}
+.\node_modules\source-map\dist\source-map.js: {'”', '“'}
+.\node_modules\source-map\lib\util.js: {'”', '“'}

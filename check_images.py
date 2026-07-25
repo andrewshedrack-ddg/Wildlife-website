@@ -4,7 +4,8 @@ import re
 with app.test_client() as c:
     rv = c.get('/library/library.html')
     content = rv.data.decode('utf-8')
-    images = re.findall(r'src=[\'"]([^\'"]+)', content)
-    for img in images:
+    # Find all img tags
+    img_tags = re.findall(r'<img[^>]*>', content)
+    for img in img_tags:
         if 'assets/images' in img:
-            print(f'Image: {img}')
+            print(img[:200])

@@ -16,6 +16,7 @@
   <script defer src="../js/i18n.js"></script>
 </head>
 <body>
+  <!-- Background Slideshow -->
   <div class="page-slideshow">
     <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
     <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
@@ -24,6 +25,7 @@
     <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
   </div>
 
+  <!-- Unified Header -->
   <header class="site-header" id="site-header">
     <div class="header-container">
       <a href="../index.html" class="logo">
@@ -56,13 +58,13 @@
         </div>
         <div class="language-selector" data-language-selector>
           <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
-            <span class="flag">🇺🇸</span> <span class="lang-name">English</span>
+            <span class="flag"><svg class="flag-icon" viewBox="0 0 4 3" aria-hidden="true"><rect width="4" height="3" fill="#fff"/><rect width="4" height="1" fill="#b22234"/><rect y="1" width="4" height="1" fill="#fff"/><rect y="2" width="4" height="1" fill="#b22234"/><polygon points="0,0 1.4,0 1.4,1 0,1 0,2 1.4,2 1.4,3 0,3" fill="#3c3b6e"/><polygon points="0,1 0.7,1 0.7,2 0,2" fill="#fff"/><polygon points="1.4,1 2.1,1 2.1,2 1.4,2" fill="#fff"/></svg></span> <span class="lang-name">English</span>
             <i class="fas fa-chevron-down"></i>
           </button>
           <div class="lang-dropdown" role="menu" hidden>
-            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag">🇺🇸</span> <span class="lang-native">English</span></button>
-            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag">🇫🇷</span> <span class="lang-native">Français</span></button>
-            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag">🇹🇿</span> <span class="lang-native">Kiswahili</span></button>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><svg class="flag-icon" viewBox="0 0 4 3" aria-hidden="true"><rect width="4" height="3" fill="#fff"/><rect width="4" height="1" fill="#b22234"/><rect y="1" width="4" height="1" fill="#fff"/><rect y="2" width="4" height="1" fill="#b22234"/><polygon points="0,0 1.4,0 1.4,1 0,1 0,2 1.4,2 1.4,3 0,3" fill="#3c3b6e"/><polygon points="0,1 0.7,1 0.7,2 0,2" fill="#fff"/><polygon points="1.4,1 2.1,1 2.1,2 1.4,2" fill="#fff"/></svg></span> <span class="lang-native">English</span></button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><svg class="flag-icon" viewBox="0 0 3 2" aria-hidden="true"><rect width="3" height="2" fill="#0055a4"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ef4135"/></svg></span> <span class="lang-native">Français</span></button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><svg class="flag-icon" viewBox="0 0 3 2" aria-hidden="true"><rect width="3" height="2" fill="#00a859"/><rect x="1" width="1" height="2" fill="#000"/><rect x="2" width="1" height="2" fill="#00a859"/></svg></span> <span class="lang-native">Kiswahili</span></button>
           </div>
         </div>
       </div>
@@ -76,12 +78,14 @@
       <h1 data-i18n="library.title">Explore Global Biodiversity</h1>
       <p class="lede" data-i18n="library.subtitle">Discover mammals, birds, reptiles, amphibians, aquatic life, plants, fungi and bacteria.</p>
     </section>
+
     <section class="content-overlay">
       <div class="container">
         <div class="section-header">
           <h2 data-i18n="library.categories">Categories</h2>
           <p data-i18n="library.categoriesDesc">Choose a category to explore species</p>
         </div>
+        
         <!-- Filter/Search Bar -->
         <div class="filter-bar" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; align-items: center;">
           <div class="search-box" style="flex: 1; min-width: 250px; position: relative;">
@@ -114,8 +118,7 @@
             </div>
             <div class="card-body">
               <h3 data-i18n="categories.mammals">Mammals</h3>
-              <p data-i18n="categories.mammalsDesc">Large predators, herbivores and more across national parks worldwide.
-</p>
+              <p data-i18n="categories.mammalsDesc">Large predators, herbivores and more across national parks worldwide.</p>
             </div>
           </a>
           <!-- Birds -->
@@ -132,7 +135,7 @@
           <!-- Reptiles -->
           <a href="reptile.html" class="card" data-category="reptiles" data-name="Reptiles">
             <div class="card-image">
-              <img src="../assets/images/leopard.png" alt="Leopard" loading="lazy">
+              <img src="../assets/images/leopard.png" alt="Leopard" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
             <div class="card-body">
               <h3 data-i18n="categories.reptiles">Reptiles</h3>
@@ -143,7 +146,7 @@
           <!-- Amphibians -->
           <a href="amphibian.html" class="card" data-category="amphibians" data-name="Amphibians">
             <div class="card-image">
-              <img src="../assets/images/butterfly.png" alt="Butterfly" loading="lazy">
+              <img src="../assets/images/butterfly.png" alt="Butterfly" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
             <div class="card-body">
               <h3 data-i18n="categories.amphibians">Amphibians</h3>
@@ -154,7 +157,7 @@
           <!-- Aquatic Life -->
           <a href="aquatic.html" class="card" data-category="aquatic" data-name="Aquatic Life">
             <div class="card-image">
-              <img src="../assets/images/shark.png" alt="Shark" loading="lazy">
+              <img src="../assets/images/shark.png" alt="Shark" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
             <div class="card-body">
               <h3 data-i18n="categories.aquatic">Aquatic Life</h3>
@@ -165,7 +168,7 @@
           <!-- Plants -->
           <a href="plants.html" class="card" data-category="plants" data-name="Plants">
             <div class="card-image">
-              <img src="../assets/images/elephant.jpg" alt="Baobab Tree" loading="lazy">
+              <img src="../assets/images/elephant.jpg" alt="Baobab Tree" loading="lazy" onerror="this.src='../assets/images/background.png'">
             </div>
             <div class="card-body">
               <h3 data-i18n="categories.plants">Plants</h3>
@@ -176,7 +179,7 @@
           <!-- Fungi -->
           <a href="fungi.html" class="card" data-category="fungi" data-name="Fungi">
             <div class="card-image">
-              <img src="../assets/images/mushroom.png" alt="Mushroom" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+              <img src="../assets/images/bee.png" alt="Fungi" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
             <div class="card-body">
               <h3 data-i18n="categories.fungi">Fungi</h3>
@@ -281,7 +284,7 @@
       <div class="container">
         <div class="lib-books-header">
           <h2 class="lib-section-title" data-i18n="library.booksTitle">Books & Resources</h2>
-          <p class="lib-section-desc" data-i18n="library.booksDesc">Download or read our collection of wildlife guides, conservation reports, and natural histories.</p>
+          <p class="lib-section-desc" data-i18n="library.booksDesc">Download or read our collection of wildlife guides, conservation reports, and natural histories.</</p>
         </div>
         <div class="lib-books-grid" id="booksGrid">
           <!-- Populated by JS -->
@@ -311,7 +314,8 @@
           <li><a href="library.html" data-i18n="footer.nav.library">Library</a></li>
           <li><a href="../scan.html" data-i18n="footer.nav.scan">Scan</a></li>
           <li><a href="../about.html" data-i18n="footer.nav.about">About</a></li>
-          <li><a href="../contact.html" data-i18n="footer.nav.contact">Contact</a></li></ul>
+          <li><a href="../contact.html" data-i18n="footer.nav.contact">Contact</a></li>
+        </ul>
       </div>
       <div class="footer-links">
         <h4 data-i18n="footer.getInvolved">Get Involved</h4>
