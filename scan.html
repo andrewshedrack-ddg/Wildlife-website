@@ -62,9 +62,15 @@
           </div>
         </div>
         <div class="language-selector" data-language-selector>
-          <button class="lang-btn" data-lang="en" aria-label="English"><span class="flag">🇺🇸</span> EN</button>
-          <button class="lang-btn" data-lang="fr" aria-label="French"><span class="flag">🇫🇷</span> FR</button>
-          <button class="lang-btn" data-lang="sw" aria-label="Swahili"><span class="flag">🇹🇿</span> SW</button>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag">🇺🇸</span> <span class="lang-name">English</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag">🇺🇸</span> <span class="lang-native">English</span></button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag">🇫🇷</span> <span class="lang-native">Français</span></button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag">🇹🇿</span> <span class="lang-native">Kiswahili</span></button>
+          </div>
         </div>
       </div>
       <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>

@@ -32,6 +32,9 @@
       // Update language selector UI
       this.updateLanguageSelector();
       
+      // Bind dropdown events
+      this.bindLanguageDropdown();
+      
       console.log('[I18n] Initialized with language:', this.currentLang);
     },
 
@@ -157,15 +160,86 @@
 
     // Update language selector UI
     updateLanguageSelector() {
-      const selectors = document.querySelectorAll('[data-language-selector]');
-      selectors.forEach(sel => {
-        if (sel.tagName === 'SELECT') {
-          sel.value = this.currentLang;
-        } else {
-          // For button groups or custom selectors
-          sel.querySelectorAll('[data-lang]').forEach(btn => {
-            btn.classList.toggle('active', btn.getAttribute('data-lang') === this.currentLang);
-            btn.setAttribute('aria-pressed', btn.getAttribute('data-lang') === this.currentLang);
+      // Update button group
+      const toggles = document.querySelectorAll('.lang-toggle');
+      toggles.forEach(btn => {
+        const isActive = btn.getAttribute('data-lang') === this.currentLang;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-expanded', isActive);
+      });
+      
+      // Update dropdown options
+      const options = document.querySelectorAll('.lang-option');
+      options.forEach(opt => {
+        const isActive = opt.getAttribute('data-lang') === this.currentLang;
+        opt.classList.toggle('active', isActive);
+        opt.setAttribute('aria-selected', isActive);
+      });
+    },
+
+    // Bind language dropdown events
+    bindLanguageDropdown() {
+      const toggles = document.querySelectorAll('.lang-toggle');
+      const dropdowns = document.querySelectorAll('.lang-dropdown');
+      
+      toggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+          
+          // Close all dropdowns first
+          document.querySelectorAll('.lang-dropdown').forEach(dd => {
+            dd.classList.remove('open');
+            dd.hidden = true;
+          });
+          document.querySelectorAll('.lang-toggle').forEach(t => {
+            t.setAttribute('aria-expanded', 'false');
+          });
+          
+          if (!isOpen) {
+            const dropdown = toggle.nextElementSibling;
+            if (dropdown && dropdown.classList.contains('lang-dropdown')) {
+              dropdown.classList.add('open');
+              dropdown.hidden = false;
+              toggle.setAttribute('aria-expanded', 'true');
+            }
+          }
+        });
+      });
+      
+      // Handle dropdown option clicks
+      document.querySelectorAll('.lang-option').forEach(option => {
+        option.addEventListener('click', () => {
+          const lang = option.getAttribute('data-lang');
+          if (lang) {
+            this.setLanguage(lang);
+          }
+        });
+      });
+      
+      // Close dropdown on outside click
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.language-selector')) {
+          document.querySelectorAll('.lang-dropdown').forEach(dd => {
+            dd.classList.remove('open');
+            dd.hidden = true;
+          });
+          document.querySelectorAll('.lang-toggle').forEach(t => {
+            t.setAttribute('aria-expanded', 'false');
+          });
+        }
+      });
+      
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.lang-dropdown').forEach(dd => {
+            dd.classList.remove('open');
+            dd.hidden = true;
+          });
+          document.querySelectorAll('.lang-toggle').forEach(t => {
+            t.setAttribute('aria-expanded', 'false');
+            t.focus();
           });
         }
       });
