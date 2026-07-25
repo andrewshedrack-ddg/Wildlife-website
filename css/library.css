@@ -305,6 +305,115 @@
 }
 .lib-scans .wildlife-card h3, .lib-scans .scan-card h4 { font-size:1rem; margin:0; }
 
+/* ── Filter/Scan Bar Styles ────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+.search-box {
+  flex: 1;
+  min-width: 250px;
+  position: relative;
+}
+.search-box i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.5);
+}
+.search-box input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  color: var(--lighter);
+  font-size: 0.95rem;
+}
+.search-box input:focus {
+  outline: none;
+  border-color: var(--lib-accent);
+  box-shadow: 0 0 0 3px rgba(201,162,39,0.2);
+}
+.filter-select label {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+}
+.filter-select select {
+  margin-left: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  color: var(--lighter);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.filter-bar select:focus {
+  outline: none;
+  border-color: var(--lib-accent);
+  box-shadow: 0 0 0 3px rgba(201,162,39,0.2);
+}
+
+/* Collapsible Scanned Section */
+#scannedSection.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+#scannedSection:not(.collapsed) {
+  max-height: 5000px;
+  opacity: 1;
+}
+#toggleScanned {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.3s ease;
+}
+#toggleScanned[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}
+.chevron {
+  transition: transform 0.3s ease;
+}
+
+/* Scanned Species Filter Bar */
+#scannedSection .filter-bar {
+  margin-top: 1rem;
+}
+
+/* Collapsible Scanned Section */
+#scannedSection.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+#scannedSection:not(.collapsed) {
+  max-height: 5000px;
+  opacity: 1;
+}
+#toggleScanned {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.3s ease;
+}
+#toggleScanned[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}
+.chevron {
+  transition: transform 0.3s ease;
+}
+
 /* ── 8. Responsive breakpoints ────────────────────────────── */
 @media (max-width:768px) {
   .lib-section    { padding:3rem 1.5rem; }

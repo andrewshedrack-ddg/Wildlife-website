@@ -1,4 +1,4 @@
-// library.js - spacious library with real digital books
+// library.js - spacious library with real digital books + filters + collapsible scans
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Book Content ---
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
             icon: "fas fa-crown",
             chapters: [
                 { title: "Chapter 1: The Pride", text: "Under the golden embrace of the African sun, the lion stands as the undisputed sovereign of the savannah. Their roars, echoing across the plains, are not mere sounds but declarations of territory, warnings to rivals, and reunions of pride members. A lion's mane, flowing like a crown of fire, speaks volumes about its health, genetics, and social standing among the pride." },
-                { title: "Chapter 2: The Hunt", text: "When dusk falls, the lionesses emerge. Working in silent synchrony, they flank herds of wildebeest and zebra. The hunt is not a solitary affairâ€”it is ballet of patience, timing, and explosive power. One in four hunts succeeds, yet this is enough to sustain the pride and shape the ecosystem, as lions cull the weak and maintain the balance of the savannah." },
+                { title: "Chapter 2: The Hunt", text: "When dusk falls, the lionesses emerge. Working in silent synchrony, they flank herds of wildebeest and zebra. The hunt is not a solitary affair—it is ballet of patience, timing, and explosive power. One in four hunts succeeds, yet this is enough to sustain the pride and shape the ecosystem, as lions cull the weak and maintain the balance of the savannah." },
                 { title: "Chapter 3: Legacy", text: "A male lion's reign lasts but a few short years. Defeated by younger rivals, he retreats to the shadows, his legacy carried on by the cubs he sired. Yet within the pride, his genes persist, and the cycle of the savannah continues, painted in gold and shadow." }
             ]
         },
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             color: "#0ea5e9",
             icon: "fas fa-water",
             chapters: [
-                { title: "Chapter 1: The Signal", text: "The rains arrive like a drumroll across the Serengeti. From the southern plains, a pulse beginsâ€”the great migration. Over two million wildebeest, zebra, and gazelels answer an ancient call, driven by the rhythm of the seasons and the promise of green pastures." },
+                { title: "Chapter 1: The Signal", text: "The rains arrive like a drumroll across the Serengeti. From the southern plains, a pulse begins—the great migration. Over two million wildebeest, zebra, and gazelles answer an ancient call, driven by the rhythm of the seasons and the promise of green pastures." },
                 { title: "Chapter 2: River of Shadows", text: "The Grumeti and Mara rivers lie in their path. Beneath the murky waters, Nile crocodiles, some over fifteen feet long, wait in prehistoric patience. The crossing is chaos: hooves thunder, currents sweep away the young and weak, and the air fills with dust and desperation." },
                 { title: "Chapter 3: Circle Unbroken", text: "Those who reach the northern Serengeti find renewal. Calves are born on these rich lands. But the rains will shift again, and the great column will turn south, completing a cycle that has turned for millennia, a living pulse that sustains Africa's heart." }
             ]
@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
             color: "#78350f",
             icon: "fas fa-elephant",
             chapters: [
-                { title: "Chapter 1: Giants of Memory", text: "An elephant never forgetsâ€”a phrase rooted in truth. These matriarchs carry maps of ancient waterholes in their minds, passed from mother to daughter across generations. Their trunks, capable of detecting the footsteps of a friend miles away, are both tools and hands, caressing a calf or toppling a tree with equal grace." },
-                { title: "Chapter 2: The Tusk War", text: "Ivory has been a curse. In the 1970s and 80s, poachers slaughtered half of Africa's elephants. Today, guarded sanctuaries and brave rangers fight a different warâ€”one of education, technology, and community. Where elephants thrive, ecosystems flourish; where they vanish, the land grows silent." },
+                { title: "Chapter 1: Giants of Memory", text: "An elephant never forgets—a phrase rooted in truth. These matriarchs carry maps of ancient waterholes in their minds, passed from mother to daughter across generations. Their trunks, capable of detecting the footsteps of a friend miles away, are both tools and hands, caressing a calf or toppling a tree with equal grace." },
+                { title: "Chapter 2: The Tusk War", text: "Ivory has been a curse. In the 1970s and 80s, poachers slaughtered half of Africa's elephants. Today, guarded sanctuaries and brave rangers fight a different war—one of education, technology, and community. Where elephants thrive, ecosystems flourish; where they vanish, the land grows silent." },
                 { title: "Chapter 3: Sanctuary", text: "In Amboseli, researchers have named every elephant. They celebrate births, mourn deaths, and track lineages. Tourists come not to gawk but to bear witness, their entry fees funding the very survival of the herds. Here, the ivory ghosts are becoming spirits of hope." }
             ]
         },
@@ -58,12 +58,102 @@ document.addEventListener('DOMContentLoaded', () => {
             color: "#b45309",
             icon: "fas fa-feather",
             chapters: [
-                { title: "Chapter 1: Sky Nomads", text: "The African fish eagle, wings spread like a herald's banner, glides above the great lakes. Below, flamingos paint the water pink. Secretary birds stride through the grass, stamping on snakes with surgical precision. Africa's skies are not emptyâ€”they are highways of migration, spanning continents." },
+                { title: "Chapter 1: Sky Nomads", text: "The African fish eagle, wings spread like a herald's banner, glides above the great lakes. Below, flamingos paint the water pink. Secretary birds stride through the grass, stamping on snakes with surgical precision. Africa's skies are not empty—they are highways of migration, spanning continents." },
                 { title: "Chapter 2: The Vulture's Bargain", text: "Misunderstood and maligned, vultures are the sanitation crew of the savannah. A single flock can reduce a carcass to bones in hours, preventing disease. When vulture populations crash due to poisoning, rabies and anthrax spike. They are ugly, perhaps, but utterly irreplaceable." },
                 { title: "Chapter 3: Songlines", text: "From the lilac-breasted roller's rainbow flash to the bee-eater's iridescent dart, African birds are color made flesh. In the miombo woodlands, the dawn chorus is a symphony of a hundred species, each note a territorial claim, a love song, or a warning. To know Africa, one must listen to its wings." }
             ]
         }
     ];
+
+    // --- Category Filter/Search ---
+    const categoryGrid = document.getElementById('categoryGrid');
+    const categorySearch = document.getElementById('categorySearch');
+    const statusFilter = document.getElementById('statusFilter');
+    let allCategoryCards = [];
+
+    // --- Scanned Species Collapsible Section ---
+    const scannedSection = document.getElementById('scannedSection');
+    const scannedContainer = document.getElementById('scannedLibraryContainer');
+    const toggleScannedBtn = document.getElementById('toggleScanned');
+    const scanSearch = document.getElementById('scanSearch');
+    const scanStatusFilter = document.getElementById('scanStatusFilter');
+
+    let scannedCollapsed = true;
+
+    // Initialize scanned section as collapsed
+    if (scannedSection) {
+        scannedSection.classList.add('collapsed');
+    }
+
+    // Toggle scanned section
+    if (toggleScannedBtn) {
+        toggleScannedBtn.addEventListener('click', () => {
+            scannedCollapsed = !scannedCollapsed;
+            if (scannedSection) {
+                scannedSection.classList.toggle('collapsed', scannedCollapsed);
+            }
+            if (toggleScannedBtn) {
+                toggleScannedBtn.setAttribute('aria-expanded', !scannedCollapsed);
+            }
+        });
+    }
+
+    // --- Category Filter/Search ---
+    if (categoryGrid) {
+        allCategoryCards = Array.from(categoryGrid.querySelectorAll('.card[data-category]'));
+        
+        if (categorySearch) {
+            categorySearch.addEventListener('input', filterCategories);
+        }
+        if (statusFilter) {
+            statusFilter.addEventListener('change', filterCategories);
+        }
+    }
+
+    function filterCategories() {
+        const searchTerm = categorySearch ? categorySearch.value.toLowerCase() : '';
+        const status = statusFilter ? statusFilter.value : '';
+        
+        allCategoryCards.forEach(card => {
+            const name = (card.getAttribute('data-name') || '').toLowerCase();
+            const category = (card.getAttribute('data-category') || '').toLowerCase();
+            const matchesSearch = searchTerm === '' || name.includes(searchTerm) || category.includes(searchTerm);
+            const matchesStatus = status === '' || card.getAttribute('data-status') === status;
+            
+            if (matchesSearch && matchesStatus) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    // --- Scan Filter/Search ---
+    if (scanSearch) {
+        scanSearch.addEventListener('input', filterScans);
+    }
+    if (scanStatusFilter) {
+        scanStatusFilter.addEventListener('change', filterScans);
+    }
+
+    function filterScans() {
+        const searchTerm = scanSearch ? scanSearch.value.toLowerCase() : '';
+        const status = scanStatusFilter ? scanStatusFilter.value : '';
+        
+        const scanCards = scannedContainer ? scannedContainer.querySelectorAll('.wildlife-card, .scan-card') : [];
+        scanCards.forEach(card => {
+            const name = (card.querySelector('h2, h3, h4')?.textContent || '').toLowerCase();
+            const cardStatus = card.getAttribute('data-status') || '';
+            const matchesSearch = searchTerm === '' || name.includes(searchTerm);
+            const matchesStatus = status === '' || cardStatus === status;
+            
+            if (matchesSearch && matchesStatus) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
 
     // --- Render Books ---
     const booksGrid = document.getElementById('booksGrid');
@@ -113,7 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         });
 
+        const content = document.getElementById('bookModalContent');
         content.innerHTML = html;
+        const modal = document.getElementById('bookModal');
         modal.hidden = false;
         document.body.style.overflow = 'hidden';
     }
