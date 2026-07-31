@@ -3,140 +3,319 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reptiles | WildGuard Explorer</title>
+  <meta name="description" content="Explore reptiles of East Africa - crocodiles, chameleons, tortoises, and more with conservation status and detailed facts.">
+  <meta name="author" content="WildGuard Society">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <title>Reptiles | WildGuard Society Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/library.css">
-  <script defer src="../js/main.js"></script>
-  <script defer src="../js/library.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script defer src="../js/i18n.js"></script>
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">WildGuard Explorer</div>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="reptile.html" class="active">Library</a></li>
-        <li><a href="../scan.html">Scan</a></li>
-        <li><a href="../about.html">About</a></li>
-        <li><a href="../contact.html">Contact</a></li>
-      </ul>
-    </nav>
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/Background3.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
+  </div>
+
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="../index.html"><i class="fas fa-home"></i> <span data-i18n="header.nav.home">Home</span></a>
+        <a href="library.html" class="active"><i class="fas fa-book"></i> <span data-i18n="header.nav.library">Library</span></a>
+        <a href="../scan.html"><i class="fas fa-barcode"></i> <span data-i18n="header.nav.scan">Scan</span></a>
+        <a href="../about.html"><i class="fas fa-info-circle"></i> <span data-i18n="header.nav.about">About</span></a>
+        <a href="../contact.html"><i class="fas fa-envelope"></i> <span data-i18n="header.nav.contact">Contact</span></a></nav>
+      <div class="header-actions">
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> <span data-i18n="header.auth.signIn">Sign In</span></a>
+          <div class="user-menu" id="user-menu" style="display:none;">
+            <button class="user-menu-toggle" id="user-menu-toggle">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-email">User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="../user/Profile.html"><i class="fas fa-user"></i> <span data-i18n="header.auth.profile">Profile</span></a>
+              <a href="../user/History.html"><i class="fas fa-history"></i> <span data-i18n="header.auth.history">History</span></a>
+              <a href="../user/Favourite.html"><i class="fas fa-heart"></i> <span data-i18n="header.auth.favorites">Favourites</span></a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> <span data-i18n="header.auth.logout">Logout</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+          </div>
+        </div>
+      </div>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
   </header>
 
   <main>
-    <section class="wildlife-section">
+    <section class="page-banner">
+      <span class="eyebrow" data-i18n="library.eyebrow">Wildlife Library</span>
+      <h1 data-i18n="categories.reptiles">Reptiles</h1>
+      <p class="lede" data-i18n="categories.reptilesDesc">Sun-loving lizards, secretive snakes and ancient crocodilians.</p>
+    </section>
+
+    <section class="content-overlay">
       <div class="container">
-        <h2 class="section-title">Reptiles & Amphibians</h2>
-        <p class="section-subtitle">Cold-blooded wonders of Africa's diverse ecosystems.</p>
-        
-        <div class="wildlife-grid">
-          <!-- Nile Crocodile (Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cocodrilo_del_Nilo_%28Crocodylus_niloticus%29%2C_parque_nacional_de_Chobe%2C_Botsuana%2C_2018-07-28%2C_DD_86.jpg" alt="Nile Crocodile">
+        <div class="section-header">
+          <h2>Reptiles of East Africa</h2>
+          <p>Ancient survivors from crocodiles to chameleons across diverse habitats.</p>
+        </div>
+        <div class="card-grid wildlife-grid">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/chameleon.png" alt="Flap-necked Chameleon" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
-            <div class="wildlife-info">
+            <div class="card-body wildlife-info">
+              <h3>Flap-necked Chameleon</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Chamaeleo dilepis</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 0.5 - 1 oz (15 - 30 g)</p>
+                <p><strong>Key Detail:</strong> Can move eyes independently and change color for communication, temperature regulation, and camouflage.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/Tortoise.png" alt="Leopard Tortoise" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Leopard Tortoise</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Stigmochelys pardalis</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 29 - 88 lbs (13 - 40 kg)</p>
+                <p><strong>Key Detail:</strong> Fourth largest tortoise species; beautiful leopard-like spots on domed shell fade with age.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Nile_crocodile_%28Crocodylus_niloticus%29.jpg" alt="Nile Crocodile" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
               <h3>Nile Crocodile</h3>
               <p class="brief">Least Concern</p>
               <div class="full-details">
                 <p><strong>Scientific Name:</strong> Crocodylus niloticus</p>
                 <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 500 - 1,650 lbs (227 - 750 kg)</p>
-                <p><strong>Key Detail:</strong> Large aquatic predator frequenting rivers, lakes and wetlands across Africa, known for its powerful jaws and ambush hunting tactics.</p>
+                <p><strong>Weight Range:</strong> 500 - 1,650 lbs (225 - 750 kg)</p>
+                <p><strong>Key Detail:</strong> Africa's largest freshwater predator; can hold breath underwater for up to 2 hours.</p>
               </div>
             </div>
           </div>
-          
-          <!-- African Rock Python (Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Albertus_Seba_Python_sebae.jpg" alt="African Rock Python">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Black_mamba_%28Dendroaspis_polylepis%29.jpg" alt="Black Mamba" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
-            <div class="wildlife-info">
-              <h3>African Rock Python</h3>
+            <div class="card-body wildlife-info">
+              <h3>Black Mamba</h3>
               <p class="brief">Least Concern</p>
               <div class="full-details">
-                <p><strong>Scientific Name:</strong> Python sebae</p>
+                <p><strong>Scientific Name:</strong> Dendroaspis polylepis</p>
                 <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 70 - 120 lbs (32 - 55 kg)</p>
-                <p><strong>Key Detail:</strong> Large non-venomous constrictor found in a variety of habitats from savannah to woodland, killing prey through constriction.</p>
+                <p><strong>Weight Range:</strong> 2.2 - 3.5 lbs (1 - 1.6 kg)</p>
+                <p><strong>Key Detail:</strong> Africa's longest venomous snake; highly aggressive when cornered with neurotoxic venom.</p>
               </div>
             </div>
           </div>
-          
-          <!-- Puff Adder (Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Bitis_arietans.jpg" alt="Puff Adder">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Puff_adder_%28Bitis_arietans%29.jpg" alt="Puff Adder" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
-            <div class="wildlife-info">
+            <div class="card-body wildlife-info">
               <h3>Puff Adder</h3>
               <p class="brief">Least Concern</p>
               <div class="full-details">
                 <p><strong>Scientific Name:</strong> Bitis arietans</p>
                 <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 2.2 - 4.4 lbs (1.0 - 2.0 kg)</p>
-                <p><strong>Key Detail:</strong> Common and widely distributed venomous viper that relies on camouflage and ambush hunting, responsible for more snakebite fatalities in Africa than any other species.</p>
+                <p><strong>Weight Range:</strong> 2.2 - 4.4 lbs (1 - 2 kg)</p>
+                <p><strong>Key Detail:</strong> Responsible for most snakebite fatalities in Africa; relies on camouflage rather than fleeing.</p>
               </div>
             </div>
           </div>
-          
-          <!-- Nile Monitor (Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Nile_monitor_lizard_%28Varanus_niloticus%29_head.jpg" alt="Nile Monitor">
-            </div
-            <div class="wildlife-info">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Bitis_nasicornis.jpg" alt="Rhino Viper" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Rhino Viper</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Bitis nasicornis</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 2 - 3 lbs (0.9 - 1.4 kg)</p>
+                <p><strong>Key Detail:</strong> Striking geometric patterns with horn-like scales on snout; potent hemotoxic venom.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Nile_monitor_%28Varanus_niloticus%29.jpg" alt="Nile Monitor" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
               <h3>Nile Monitor</h3>
               <p class="brief">Least Concern</p>
               <div class="full-details">
                 <p><strong>Scientific Name:</strong> Varanus niloticus</p>
                 <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 13 - 20 lbs (6 - 9 kg)</p>
-                <p><strong>Key Detail:</strong> Large agile lizard often seen near water, feeding on a wide range of prey and known for its aquatic foraging abilities and climbing skills.</p>
+                <p><strong>Weight Range:</strong> 13 - 26 lbs (6 - 12 kg)</p>
+                <p><strong>Key Detail:</strong> Africa's longest lizard; excellent swimmer and climber, raids crocodile nests for eggs.</p>
               </div>
             </div>
           </div>
-          
-          <!-- Chameleon (Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="../assets/images/chameleon.png" alt="Chameleon">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Savannah_monitor_%28Varanus_exanthematicus%29.jpg" alt="Savannah Monitor" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
-            <div class="wildlife-info">
-              <h3>Chameleon</h3>
+            <div class="card-body wildlife-info">
+              <h3>Savannah Monitor</h3>
               <p class="brief">Least Concern</p>
               <div class="full-details">
-                <p><strong>Scientific Name:</strong> Chamaeleo calyptratus (Veiled Chameleon example)</p>
+                <p><strong>Scientific Name:</strong> Varanus exanthematicus</p>
                 <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 0.15 - 0.26 lbs (70 - 120 g)</p>
-                <p><strong>Key Detail:</strong> Chameleons can move each eye independently and have tongues that can be longer than their bodies to catch prey, with specialized feet for gripping branches.</p>
+                <p><strong>Weight Range:</strong> 10 - 15 lbs (4.5 - 6.8 kg)</p>
+                <p><strong>Key Detail:</strong> Popular in pet trade; powerful limbs and tail for digging burrows and defense.</p>
               </div>
             </div>
           </div>
-          
-          <!-- Tortoise (Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="../assets/images/Tortoise.png" alt="Tortoise">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Agama_agama.jpg" alt="Rainbow Agama" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
-            <div class="wildlife-info">
-              <h3>Tortoise</h3>
+            <div class="card-body wildlife-info">
+              <h3>Rainbow Agama</h3>
               <p class="brief">Least Concern</p>
               <div class="full-details">
-                <p><strong>Scientific Name:</strong> Geochelone sulcata (African Spurred Tortoise example)</p>
+                <p><strong>Scientific Name:</strong> Agama agama</p>
                 <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 70 - 100 lbs (32 - 45 kg)</p>
-                <p><strong>Key Detail:</strong> Some tortoise species can live over 100 years and are known for their slow but steady pace of life, with the African spurred tortoise being the third-largest tortoise species in the world.</p>
+                <p><strong>Weight Range:</strong> 0.3 - 0.5 oz (8 - 15 g)</p>
+                <p><strong>Key Detail:</strong> Males display brilliant blue heads and red-orange bodies during breeding season.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Boaedon_fuliginosus.jpg" alt="Brown House Snake" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Brown House Snake</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Boaedon fuliginosus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 0.5 - 1.5 lbs (0.2 - 0.7 kg)</p>
+                <p><strong>Key Detail:</strong> Non-venomous constrictor commonly found around human settlements hunting rodents.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Python_sebae.jpg" alt="African Rock Python" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>African Rock Python</h3>
+              <p class="brief">Near Threatened</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Python sebae</p>
+                <p><strong>Conservation Status:</strong> Near Threatened</p>
+                <p><strong>Weight Range:</strong> 70 - 120 lbs (32 - 55 kg)</p>
+                <p><strong>Key Detail:</strong> Africa's largest snake; non-venomous constrictor capable of swallowing antelope whole.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Geochelone_elegans.jpg" alt="Speke's Hinged Tortoise" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Speke's Hinged Tortoise</h3>
+              <p class="brief">Vulnerable</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Kinixys spekii</p>
+                <p><strong>Conservation Status:</strong> Vulnerable</p>
+                <p><strong>Weight Range:</strong> 2 - 4 lbs (1 - 2 kg)</p>
+                <p><strong>Key Detail:</strong> Unique hinge in shell allows it to close the rear portion for protection against predators.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </main>
-    
-    <footer>
-      <p>&copy; <span data-current-year></span> WildGuard Explorer | Reptiles</p>
-    </footer>
-  </body>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p data-i18n="footer.tagline">Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <div class="footer-social">
+          <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer.explore">Explore</h4>
+        <ul>
+          <li><a href="../index.html" data-i18n="footer.nav.home">Home</a></li>
+          <li><a href="library.html" data-i18n="footer.nav.library">Library</a></li>
+          <li><a href="../scan.html" data-i18n="footer.nav.scan">Scan</a></li>
+          <li><a href="../about.html" data-i18n="footer.nav.about">About</a></li>
+          <li><a href="../contact.html" data-i18n="footer.nav.contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer.getInvolved">Get Involved</h4>
+        <ul>
+          <li><a href="#" data-i18n="footer.donate">Donate</a></li>
+          <li><a href="library.html" data-i18n="footer.adopt">Adopt an Animal</a></li>
+          <li><a href="#" data-i18n="footer.volunteer">Volunteer</a></li>
+          <li><a href="#" data-i18n="footer.partner">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="footer.contact">Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> <span data-i18n="common.global">Global</span></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="footer.motto">Protect Nature - Protect Life</p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. <span data-i18n="footer.rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <script defer src="../js/main.js"></script>
+  <script defer src="../js/auth.js"></script>
+  <script defer src="../js/library.js"></script>
+</body>
 </html>

@@ -1,59 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Amphibians | WildGuard Explorer</title>
-	<link rel="stylesheet" href="../css/style.css">
-	<link rel="stylesheet" href="../css/library.css">
-	<script defer src="../js/main.js"></script>
-	<script defer src="../js/library.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore amphibians of East Africa - frogs, toads, and more with conservation status and detailed facts.">
+  <meta name="author" content="WildGuard Society">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <title>Amphibians | WildGuard Society Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/library.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script defer src="../js/i18n.js"></script>
 </head>
 <body>
-	<header class="navbar">
-		<div class="logo">WildGuard Explorer</div>
-		<nav>
-			<ul>
-				<li><a href="../index.html">Home</a></li>
-				<li><a href="amphibian.html" class="active">Library</a></li>
-				<li><a href="../scan.html">Scan</a></li>
-				<li><a href="../about.html">About</a></li>
-				<li><a href="../contact.html">Contact</a></li>
-			</ul>
-		</nav>
-	</header>
-	<main>
-		<section class="page-banner">
-			<span class="eyebrow">Library</span>
-			<h1>Amphibians</h1>
-			<p class="lede">Representative amphibians with notes on life cycle and habitat.</p>
-		</section>
-		<section class="section-shell">
-			<div class="species-grid">
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Pyxicephalus_adspersus.jpg" alt="African Bullfrog">
-					<div class="content">
-						<div class="meta-row"><span>Pyxicephalus adspersus</span><span>Adult</span></div>
-						<h3>African Bullfrog</h3>
-						<p>Large burrowing frog that estivates during dry seasons and emerges to breed in temporary pools.</p>
-						<p><em>Image credit: Dezidor, CC BY 3.0, via Wikimedia Commons</em></p>
-						<ul class="facts"><li>Explosive breeder</li><li>Large tadpoles</li></ul>
-					</div>
-				</article>
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/Background3.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
+  </div>
 
-				<article class="species-card">
-					<div class="content">
-						<div class="meta-row"><span>Various</span><span>Frog groups</span></div>
-						<h3>Other amphibians</h3>
-						<p>Reed frogs and tree frogs are common in wetlands and forest edges; images may vary by species and region.</p>
-						<ul class="facts"><li>Amphibians indicate healthy wetlands</li><li>Many species undergo aquatic larval stages</li></ul>
-					</div>
-				</article>
-			</div>
-		</section>
-	</main>
-	<footer>
-		<p>&copy; <span data-current-year></span> WildGuard Explorer | Amphibians</p>
-	</footer>
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="../index.html"><i class="fas fa-home"></i> <span data-i18n="header.nav.home">Home</span></a>
+        <a href="library.html" class="active"><i class="fas fa-book"></i> <span data-i18n="header.nav.library">Library</span></a>
+        <a href="../scan.html"><i class="fas fa-barcode"></i> <span data-i18n="header.nav.scan">Scan</span></a>
+        <a href="../about.html"><i class="fas fa-info-circle"></i> <span data-i18n="header.nav.about">About</span></a>
+        <a href="../contact.html"><i class="fas fa-envelope"></i> <span data-i18n="header.nav.contact">Contact</span></a></nav>
+      <div class="header-actions">
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> <span data-i18n="header.auth.signIn">Sign In</span></a>
+          <div class="user-menu" id="user-menu" style="display:none;">
+            <button class="user-menu-toggle" id="user-menu-toggle">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-email">User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="../user/Profile.html"><i class="fas fa-user"></i> <span data-i18n="header.auth.profile">Profile</span></a>
+              <a href="../user/History.html"><i class="fas fa-history"></i> <span data-i18n="header.auth.history">History</span></a>
+              <a href="../user/Favourite.html"><i class="fas fa-heart"></i> <span data-i18n="header.auth.favorites">Favourites</span></a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> <span data-i18n="header.auth.logout">Logout</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+          </div>
+        </div>
+      </div>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-banner">
+      <span class="eyebrow" data-i18n="library.eyebrow">Wildlife Library</span>
+      <h1 data-i18n="categories.amphibians">Amphibians</h1>
+      <p class="lede" data-i18n="categories.amphibiansDesc">Frogs and toads adapted to varied habitats from rainforests to deserts.</p>
+    </section>
+
+    <section class="content-overlay">
+      <div class="container">
+        <div class="section-header">
+          <h2>Amphibians of East Africa</h2>
+          <p>Remarkable adaptations from rainforest streams to seasonal savanna pools.</p>
+        </div>
+        <div class="card-grid wildlife-grid">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/African_bullfrog_%28Pyxicephalus_adspersus%29.jpg" alt="African Bullfrog" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>African Bullfrog</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Pyxicephalus adspersus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 1.5 - 3.3 lbs (0.7 - 1.5 kg)</p>
+                <p><strong>Key Detail:</strong> One of Africa's largest frogs; males guard tadpoles and dig channels to connect pools.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Red-eyed_tree_frog.jpg" alt="Red-eyed Tree Frog" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Red-eyed Tree Frog</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Leptopelis vermiculatus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 0.2 - 0.4 oz (6 - 12 g)</p>
+                <p><strong>Key Detail:</strong> Striking red eyes and bright green body; nocturnal canopy dweller in Eastern Arc Mountains.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Xenopus_laevis.jpg" alt="African Clawed Frog" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>African Clawed Frog</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Xenopus laevis</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 2 - 8 oz (60 - 230 g)</p>
+                <p><strong>Key Detail:</strong> Fully aquatic with clawed hind feet; used worldwide in pregnancy tests historically.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Reed_frog.jpg" alt="Painted Reed Frog" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Painted Reed Frog</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Hyperolius marmoratus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 0.1 - 0.2 oz (3 - 6 g)</p>
+                <p><strong>Key Detail:</strong> Incredibly variable colors and patterns; males call from reeds at night with distinctive trills.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Kassina_senegalensis.jpg" alt="Bubbling Kassina" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Bubbling Kassina</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Kassina senegalensis</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 0.3 - 0.5 oz (8 - 15 g)</p>
+                <p><strong>Key Detail:</strong> Distinctive bubbling call like water droplets; runs rather than hops across savanna.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Amietia_angolensis.jpg" alt="Angola River Frog" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Angola River Frog</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Amietia angolensis</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 0.5 - 1.5 oz (15 - 45 g)</p>
+                <p><strong>Key Detail:</strong> Fast-flowing stream specialist; tadpoles have large oral suckers to cling to rocks.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Sclerophrys_regularis.jpg" alt="Common African Toad" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Common African Toad</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Sclerophrys regularis</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 1 - 3 oz (30 - 85 g)</p>
+                <p><strong>Key Detail:</strong> Widespread across savannas; parotoid glands secrete bufotoxins for defense.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/8/8d/Phrynobatrachus_natalensis.jpg" alt="Natal Puddle Frog" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Natal Puddle Frog</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Phrynobatrachus natalensis</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 0.05 - 0.1 oz (1.5 - 3 g)</p>
+                <p><strong>Key Detail:</strong> Tiny frog breeding in temporary puddles; explosive breeders after rains.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Strongylopus_grayii.jpg" alt="Clicking Stream Frog" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Clicking Stream Frog</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Strongylopus grayii</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 0.1 - 0.3 oz (3 - 8 g)</p>
+                <p><strong>Key Detail:</strong> Distinctive clicking call like pebbles struck together; endemic to eastern and southern Africa.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Hyperolius_pusillus.jpg" alt="Waterlily Reed Frog" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Waterlily Reed Frog</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Hyperolius pusillus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 0.05 - 0.1 oz (1.5 - 3 g)</p>
+                <p><strong>Key Detail:</strong> Translucent green skin; spends days sleeping on waterlily leaves, nights calling.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Ptychadena_mascareniensis.jpg" alt="Mascarene Grass Frog" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Mascarene Grass Frog</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Ptychadena mascareniensis</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 0.3 - 0.7 oz (8 - 20 g)</p>
+                <p><strong>Key Detail:</strong> Long-legged jumper of open grasslands; explosive leaps escape predators.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Afrixalus_fornasinii.jpg" alt="Greater Leaf-folding Frog" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Greater Leaf-folding Frog</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Afrixalus fornasinii</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 0.1 - 0.2 oz (3 - 6 g)</p>
+                <p><strong>Key Detail:</strong> Females fold leaves with silk to create nest chambers for eggs above water.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p data-i18n="footer.tagline">Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <div class="footer-social">
+          <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer.explore">Explore</h4>
+        <ul>
+          <li><a href="../index.html" data-i18n="footer.nav.home">Home</a></li>
+          <li><a href="library.html" data-i18n="footer.nav.library">Library</a></li>
+          <li><a href="../scan.html" data-i18n="footer.nav.scan">Scan</a></li>
+          <li><a href="../about.html" data-i18n="footer.nav.about">About</a></li>
+          <li><a href="../contact.html" data-i18n="footer.nav.contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer.getInvolved">Get Involved</h4>
+        <ul>
+          <li><a href="#" data-i18n="footer.donate">Donate</a></li>
+          <li><a href="library.html" data-i18n="footer.adopt">Adopt an Animal</a></li>
+          <li><a href="#" data-i18n="footer.volunteer">Volunteer</a></li>
+          <li><a href="#" data-i18n="footer.partner">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="footer.contact">Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> <span data-i18n="common.global">Global</span></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="footer.motto">Protect Nature - Protect Life</p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. <span data-i18n="footer.rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <script defer src="../js/main.js"></script>
+  <script defer src="../js/auth.js"></script>
+  <script defer src="../js/library.js"></script>
 </body>
 </html>

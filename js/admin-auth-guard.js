@@ -47,7 +47,7 @@
       return false;
     }
 
-    if (user.role !== 'admin' && user.email !== 'admin@wildguardsociety.org' && user.email !== 'admin@wildguard.org') {
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
       redirectToAdminLogin();
       return false;
     }

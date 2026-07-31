@@ -540,21 +540,14 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         
-        # Seed Admin Users
-        admin_emails = ['wildguardsociety@gmail.com', 'shedrackanderson576@gmail.com']
-        default_password = 'SecurePass123!'
-        for email in admin_emails:
-            if not User.query.filter_by(email=email).first():
-                hashed_pw = bcrypt.generate_password_hash(default_password).decode('utf-8')
-                user = User(email=email, password_hash=hashed_pw, role='admin')
+        # Seed Admin Users - only if ADMIN_EMAIL and ADMIN_PASSWORD env vars are set
+        admin_email = os.environ.get('ADMIN_EMAIL')
+        admin_password = os.environ.get('ADMIN_PASSWORD')
+        if admin_email and admin_password:
+            if not User.query.filter_by(email=admin_email).first():
+                hashed_pw = bcrypt.generate_password_hash(admin_password).decode('utf-8')
+                user = User(email=admin_email, password_hash=hashed_pw, role='admin')
                 db.session.add(user)
-        try:
-            with open('admin_credentials.txt', 'w') as f:
-                f.write('Admin Credentials:\n')
-                for email in admin_emails:
-                    f.write(f'Email: {email}, Password: {default_password}\n')
-        except Exception as e:
-            print(f'Could not write credentials file: {e}')
         
         # Seed Sample Species Data
         sample_species = [

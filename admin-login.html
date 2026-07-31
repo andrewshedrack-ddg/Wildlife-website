@@ -31,7 +31,7 @@
   <div class="page-slideshow">
     <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
     <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
-    <div class="page-slide" style="background-image: url('assets/images/background3.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/Background3.png');"></div>
     <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
     <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
   </div>
@@ -56,13 +56,13 @@
         </div>
         <div class="language-selector" data-language-selector>
           <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
-            <span class="flag">🇺🇸</span> <span class="lang-name">English</span>
+            <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
             <i class="fas fa-chevron-down"></i>
           </button>
           <div class="lang-dropdown" role="menu" hidden>
-            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag">🇺🇸</span> <span class="lang-native">English</span></button>
-            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag">🇫🇷</span> <span class="lang-native">Français</span></button>
-            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag">🇹🇿</span> <span class="lang-native">Kiswahili</span></button>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@
           <div id="error-message" class="error-message"></div>
           <div class="form-group">
             <label for="email" class="form-label" data-i18n="auth.login.email">Email</label>
-            <input type="email" id="email" name="email" class="form-input" placeholder="admin@wildguardsociety.org" required>
+            <input type="email" id="email" name="email" class="form-input" placeholder="Enter your admin email" required>
           </div>
           <div class="form-group">
             <label for="password" class="form-label" data-i18n="auth.login.password">Password</label>
@@ -193,26 +193,6 @@
           window.securityMonitor('admin_login_attempt', { email: email.substring(0, 3) + '***' });
         }
 
-        // Static/demo mode: validate admin credentials locally
-        const isStatic = window.location.origin.includes('github.io') || window.location.protocol === 'file:';
-        if (isStatic) {
-          // Demo admin credentials check
-          if (email === 'admin@wildguardsociety.org' && password === 'admin123') {
-            // Clear failed attempts on success
-            if (window.clearFailedAttempts) window.clearFailedAttempts(email);
-            // Store admin session
-            const adminUser = { email: email, role: 'admin', name: 'Administrator' };
-            localStorage.setItem('wildguard_user', JSON.stringify(adminUser));
-            if (window.setSessionTimeout) window.setSessionTimeout();
-            window.location.href = 'admin.html';
-          } else {
-            if (window.recordFailedAttempt) window.recordFailedAttempt(email);
-            if (window.securityMonitor) window.securityMonitor('admin_login_failed', { email: email.substring(0, 3) + '***' });
-            showError('Invalid admin credentials. Use admin@wildguardsociety.org / admin123');
-          }
-          return;
-        }
-        
         // Backend mode (if API exists)
         try {
           const response = await fetch('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }), credentials: 'include' });

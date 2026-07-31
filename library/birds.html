@@ -3,225 +3,319 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Birds | WildGuard Explorer</title>
+  <meta name="description" content="Explore birds of East Africa - eagles, flamingos, ostriches, and more with conservation status and detailed facts.">
+  <meta name="author" content="WildGuard Society">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <title>Birds | WildGuard Society Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/library.css">
-  <script defer src="../js/main.js"></script>
-  <script defer src="../js/library.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script defer src="../js/i18n.js"></script>
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">WildGuard Explorer</div>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="birds.html" class="active">Library</a></li>
-        <li><a href="../scan.html">Scan</a></li>
-        <li><a href="../about.html">About</a></li>
-        <li><a href="../contact.html">Contact</a></li>
-      </ul>
-    </nav>
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/Background3.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
+  </div>
+
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="../index.html"><i class="fas fa-home"></i> <span data-i18n="header.nav.home">Home</span></a>
+        <a href="library.html" class="active"><i class="fas fa-book"></i> <span data-i18n="header.nav.library">Library</span></a>
+        <a href="../scan.html"><i class="fas fa-barcode"></i> <span data-i18n="header.nav.scan">Scan</span></a>
+        <a href="../about.html"><i class="fas fa-info-circle"></i> <span data-i18n="header.nav.about">About</span></a>
+        <a href="../contact.html"><i class="fas fa-envelope"></i> <span data-i18n="header.nav.contact">Contact</span></a></nav>
+      <div class="header-actions">
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> <span data-i18n="header.auth.signIn">Sign In</span></a>
+          <div class="user-menu" id="user-menu" style="display:none;">
+            <button class="user-menu-toggle" id="user-menu-toggle">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-email">User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="../user/Profile.html"><i class="fas fa-user"></i> <span data-i18n="header.auth.profile">Profile</span></a>
+              <a href="../user/History.html"><i class="fas fa-history"></i> <span data-i18n="header.auth.history">History</span></a>
+              <a href="../user/Favourite.html"><i class="fas fa-heart"></i> <span data-i18n="header.auth.favorites">Favourites</span></a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> <span data-i18n="header.auth.logout">Logout</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+          </div>
+        </div>
+      </div>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
   </header>
 
   <main>
-    <section class="wildlife-section">
+    <section class="page-banner">
+      <span class="eyebrow" data-i18n="library.eyebrow">Wildlife Library</span>
+      <h1 data-i18n="categories.birds">Birds</h1>
+      <p class="lede" data-i18n="categories.birdsDesc">Over 1,100 bird species thrive in diverse ecosystems worldwide.</p>
+    </section>
+
+    <section class="content-overlay">
       <div class="container">
-        <h2 class="section-title">Birds of the Skies</h2>
-        <p class="section-subtitle">A selection of notable bird species found across Africa with quick facts and habitat notes.</p>
-        
-        <div class="wildlife-grid">
-          <!-- Secretarybird (Vulnerable) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Secretario_%28Sagittarius_serpentarius%29%2C_parque_nacional_de_Amboseli%2C_Kenia%2C_2024-05-23%2C_DD_13.jpg" alt="Secretarybird">
+        <div class="section-header">
+          <h2>Birds of East Africa</h2>
+          <p>Diverse avian species from raptors to waterbirds across savannas, wetlands, and forests.</p>
+        </div>
+        <div class="card-grid wildlife-grid">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/Eagle.png" alt="African Fish Eagle" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
-            <div class="wildlife-info">
-              <h3>Secretarybird</h3>
-              <p class="brief">Vulnerable</p>
-              <div class="full-details">
-                <p><strong>Scientific Name:</strong> Sagittarius serpentarius</p>
-                <p><strong>Conservation Status:</strong> Vulnerable</p>
-                <p><strong>Weight Range:</strong> 4.9 - 7.3 lbs (2.2 - 3.3 kg)</p>
-                <p><strong>Key Detail:</strong> Long-legged terrestrial bird of prey known for hunting snakes and other small vertebrates.</p>
-              </div>
-            </div>
-          </div>
-          
-          <!-- African Fish Eagle (Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/African_fish_eagle_%28Haliaeetus_vocifer%29_Ethiopia.jpg" alt="African Fish Eagle">
-            </div>
-            <div class="wildlife-info">
+            <div class="card-body wildlife-info">
               <h3>African Fish Eagle</h3>
               <p class="brief">Least Concern</p>
               <div class="full-details">
                 <p><strong>Scientific Name:</strong> Haliaeetus vocifer</p>
                 <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 4.4 - 7.9 lbs (2.0 - 3.6 kg)</p>
-                <p><strong>Key Detail:</strong> Frequently seen perched near large water bodies where it hunts fish and small waterbirds.</p>
+                <p><strong>Weight Range:</strong> 4.4 - 7.7 lbs (2 - 3.5 kg)</p>
+                <p><strong>Key Detail:</strong> Known for its iconic call that echoes across African waterways, often called the 'voice of Africa'.</p>
               </div>
             </div>
           </div>
-          
-          <!-- Lilac-breasted Roller (Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg" alt="Lilac-breasted Roller">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/White Head Eagle.png" alt="White-headed Vulture" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
-            <div class="wildlife-info">
-              <h3>Lilac-breasted Roller</h3>
+            <div class="card-body wildlife-info">
+              <h3>White-headed Vulture</h3>
+              <p class="brief">Critically Endangered</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Trigonoceps occipitalis</p>
+                <p><strong>Conservation Status:</strong> Critically Endangered</p>
+                <p><strong>Weight Range:</strong> 8.8 - 15.4 lbs (4 - 7 kg)</p>
+                <p><strong>Key Detail:</strong> Distinctive white head and pink face; populations declining rapidly due to poisoning and habitat loss.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/flamingo.png" alt="Lesser Flamingo" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Lesser Flamingo</h3>
+              <p class="brief">Near Threatened</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Phoeniconaias minor</p>
+                <p><strong>Conservation Status:</strong> Near Threatened</p>
+                <p><strong>Weight Range:</strong> 2.6 - 4.4 lbs (1.2 - 2 kg)</p>
+                <p><strong>Key Detail:</strong> Millions gather at East African soda lakes, creating one of nature's most spectacular pink horizons.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/peacock.png" alt="Peacock" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Peacock</h3>
               <p class="brief">Least Concern</p>
               <div class="full-details">
-                <p><strong>Scientific Name:</strong> Coracias caudatus</p>
+                <p><strong>Scientific Name:</strong> Pavo cristatus</p>
                 <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 0.24 - 0.28 lbs (110 - 130 g)</p>
-                <p><strong>Key Detail:</strong> Colorful insectivore often seen perched in open country before swooping on prey.</p>
+                <p><strong>Weight Range:</strong> 8.8 - 13.2 lbs (4 - 6 kg)</p>
+                <p><strong>Key Detail:</strong> Male's iridescent tail feathers can span 5 feet, used in elaborate courtship displays.</p>
               </div>
             </div>
           </div>
-          
-          <!-- Greater Flamingo (Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="../assets/images/flamingo.png" alt="Greater Flamingo">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/owl.png" alt="Verreaux's Eagle-owl" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
-            <div class="wildlife-info">
-              <h3>Greater Flamingo</h3>
+            <div class="card-body wildlife-info">
+              <h3>Verreaux's Eagle-owl</h3>
               <p class="brief">Least Concern</p>
               <div class="full-details">
-                <p><strong>Scientific Name:</strong> Phoenicopterus roseus</p>
+                <p><strong>Scientific Name:</strong> Ketupa lactea</p>
                 <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 4.4 - 8.8 lbs (2.0 - 4.0 kg)</p>
-                <p><strong>Key Detail:</strong> Pink wader that feeds by filtering small invertebrates and algae from shallow waters.</p>
+                <p><strong>Weight Range:</strong> 3.5 - 6.6 lbs (1.6 - 3 kg)</p>
+                <p><strong>Key Detail:</strong> Africa's largest owl with distinctive pink eyelids and powerful talons capable of taking small antelopes.</p>
               </div>
             </div>
           </div>
-          
-          <!-- Ostrich (Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Struthio_camelus_portrait_Whipsnade_Zoo.jpg" alt="Ostrich">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/goose.png" alt="Egyptian Goose" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
-            <div class="wildlife-info">
+            <div class="card-body wildlife-info">
+              <h3>Egyptian Goose</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Alopochen aegyptiaca</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> 2.2 - 6.6 lbs (1 - 3 kg)</p>
+                <p><strong>Key Detail:</strong> Ancient Egyptians considered them sacred; now common across sub-Saharan wetlands and grasslands.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Secretary_bird_%28Sagittarius_serpentarius%29.jpg" alt="Secretary Bird" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Secretary Bird</h3>
+              <p class="brief">Endangered</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Sagittarius serpentarius</p>
+                <p><strong>Conservation Status:</strong> Endangered</p>
+                <p><strong>Weight Range:</strong> 5 - 9.5 lbs (2.3 - 4.3 kg)</p>
+                <p><strong>Key Detail:</strong> Hunts on foot, stomping snakes and rodents with powerful legs; named for quill-like head feathers resembling clerks.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Grey_crowned_crane_%28Balearica_regulorum%29.jpg" alt="Grey Crowned Crane" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Grey Crowned Crane</h3>
+              <p class="brief">Endangered</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Balearica regulorum</p>
+                <p><strong>Conservation Status:</strong> Endangered</p>
+                <p><strong>Weight Range:</strong> 6.6 - 8.8 lbs (3 - 4 kg)</p>
+                <p><strong>Key Detail:</strong> Uganda's national bird with golden crown feathers; performs elaborate dancing displays during courtship.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Ostrich_%28Struthio_camelus%29.jpg" alt="Ostrich" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
               <h3>Ostrich</h3>
               <p class="brief">Least Concern</p>
               <div class="full-details">
                 <p><strong>Scientific Name:</strong> Struthio camelus</p>
                 <p><strong>Conservation Status:</strong> Least Concern</p>
                 <p><strong>Weight Range:</strong> 139 - 320 lbs (63 - 145 kg)</p>
-                <p><strong>Key Detail:</strong> Largest living bird; adapted to open plains with strong legs for running.</p>
+                <p><strong>Key Detail:</strong> World's largest and fastest bird on land, reaching 43 mph (70 km/h); lays the largest eggs of any bird.</p>
               </div>
             </div>
           </div>
-          
-          <!-- Eagle (various species, generally Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="../assets/images/Eagle.png" alt="Eagle">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Kori_bustard_%28Ardeotis_kori%29_male.jpg" alt="Kori Bustard" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
-            <div class="wildlife-info">
-              <h3>Eagle</h3>
-              <p class="brief">Least Concern</p>
+            <div class="card-body wildlife-info">
+              <h3>Kori Bustard</h3>
+              <p class="brief">Near Threatened</p>
               <div class="full-details">
-                <p><strong>Scientific Name:</strong> Aquila chrysaetos (Golden Eagle example)</p>
-                <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 6.6 - 13.9 lbs (3.0 - 6.3 kg)</p>
-                <p><strong>Key Detail:</strong> Eagles have powerful eyesight, up to 4-8 times stronger than humans, enabling them to spot prey from great distances.</p>
+                <p><strong>Scientific Name:</strong> Ardeotis kori</p>
+                <p><strong>Conservation Status:</strong> Near Threatened</p>
+                <p><strong>Weight Range:</strong> 15 - 40 lbs (7 - 18 kg)</p>
+                <p><strong>Key Detail:</strong> Africa's heaviest flying bird; males perform spectacular balloon displays inflating their necks.</p>
               </div>
             </div>
           </div>
-          
-          <!-- Owl (Least Concern for most species) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="../assets/images/owl.png" alt="Owl">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Marabou_stork_%28Leptoptilos_crumeniferus%29.jpg" alt="Marabou Stork" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
-            <div class="wildlife-info">
-              <h3>Owl</h3>
+            <div class="card-body wildlife-info">
+              <h3>Marabou Stork</h3>
               <p class="brief">Least Concern</p>
               <div class="full-details">
-                <p><strong>Scientific Name:</strong> Bubo bubo (Eurasian Eagle-Owl example)</p>
+                <p><strong>Scientific Name:</strong> Leptoptilos crumenifer</p>
                 <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 3.2 - 8.8 lbs (1.5 - 4.0 kg)</p>
-                <p><strong>Key Detail:</strong> Owls have specialized feathers that allow them to fly almost silently, helping them sneak up on prey.</p>
+                <p><strong>Weight Range:</strong> 9 - 20 lbs (4 - 9 kg)</p>
+                <p><strong>Key Detail:</strong> Scavenger with massive bill and throat pouch; often seen near human settlements and carcasses.</p>
               </div>
             </div>
           </div>
-          
-          <!-- Goose (Least Concern for most species) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="../assets/images/goose.png" alt="Goose">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Hornbill_africain.jpg" alt="Southern Ground Hornbill" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
             </div>
-            <div class="wildlife-info">
-              <h3>Goose</h3>
-              <p class="brief">Least Concern</p>
+            <div class="card-body wildlife-info">
+              <h3>Southern Ground Hornbill</h3>
+              <p class="brief">Vulnerable</p>
               <div class="full-details">
-                <p><strong>Scientific Name:</strong> Anser anser (Greylag Goose example)</p>
-                <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 5.5 - 8.8 lbs (2.5 - 4.0 kg)</p>
-                <p><strong>Key Detail:</strong> Geese are highly social and mate for life, often forming strong family bonds within their flocks.</p>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Peacock (Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="../assets/images/peacock.png" alt="Peacock">
-            </div>
-            <div class="wildlife-info">
-              <h3>Peacock</h3>
-              <p class="brief">Least Concern</p>
-              <div class="full-details">
-                <p><strong>Scientific Name:</strong> Pavo cristatus</p>
-                <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 8.8 - 13.2 lbs (4.0 - 6.0 kg)</p>
-                <p><strong>Key Detail:</strong> The male peacock's vibrant tail feathers are used in elaborate courtship displays to attract mates.</p>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Turkey (Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="../assets/images/Turkey.png" alt="Turkey">
-            </div>
-            <div class="wildlife-info">
-              <h3>Turkey</h3>
-              <p class="brief">Least Concern</p>
-              <div class="full-details">
-                <p><strong>Scientific Name:</strong> Meleagris gallopavo</p>
-                <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 5.5 - 24.0 lbs (2.5 - 11.0 kg)</p>
-                <p><strong>Key Detail:</strong> Turkeys can run at speeds of up to 25 mph (40 km/h) and are surprisingly agile fliers for short distances.</p>
-              </div>
-            </div>
-          </div>
-          
-          <!-- White-headed Eagle (Least Concern) -->
-          <div class="wildlife-card">
-            <div class="wildlife-image">
-              <img src="../assets/images/White Head Eagle.png" alt="White-headed Eagle">
-            </div>
-            <div class="wildlife-info">
-              <h3>White-headed Eagle</h3>
-              <p class="brief">Least Concern</p>
-              <div class="full-details">
-                <p><strong>Scientific Name:</strong> Ichthyophaga ichthyaetus (Grey-headed Fish Eagle example)</p>
-                <p><strong>Conservation Status:</strong> Least Concern</p>
-                <p><strong>Weight Range:</strong> 4.4 - 6.6 lbs (2.0 - 3.0 kg)</p>
-                <p><strong>Key Detail:</strong> The white head and tail of this eagle develop as the bird matures, appearing at around 4-5 years of age.</p>
+                <p><strong>Scientific Name:</strong> Bucorvus leadbeateri</p>
+                <p><strong>Conservation Status:</strong> Vulnerable</p>
+                <p><strong>Weight Range:</strong> 5 - 13.6 lbs (2.3 - 6.2 kg)</p>
+                <p><strong>Key Detail:</strong> Cooperative breeders living in family groups; deep booming calls can be heard 3 km away.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </main>
-    
-    <footer>
-      <p>&copy; <span data-current-year></span> WildGuard Explorer | Birds</p>
-    </footer>
-  </body>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p data-i18n="footer.tagline">Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <div class="footer-social">
+          <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer.explore">Explore</h4>
+        <ul>
+          <li><a href="../index.html" data-i18n="footer.nav.home">Home</a></li>
+          <li><a href="library.html" data-i18n="footer.nav.library">Library</a></li>
+          <li><a href="../scan.html" data-i18n="footer.nav.scan">Scan</a></li>
+          <li><a href="../about.html" data-i18n="footer.nav.about">About</a></li>
+          <li><a href="../contact.html" data-i18n="footer.nav.contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer.getInvolved">Get Involved</h4>
+        <ul>
+          <li><a href="#" data-i18n="footer.donate">Donate</a></li>
+          <li><a href="library.html" data-i18n="footer.adopt">Adopt an Animal</a></li>
+          <li><a href="#" data-i18n="footer.volunteer">Volunteer</a></li>
+          <li><a href="#" data-i18n="footer.partner">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="footer.contact">Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> <span data-i18n="common.global">Global</span></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="footer.motto">Protect Nature - Protect Life</p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. <span data-i18n="footer.rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <script defer src="../js/main.js"></script>
+  <script defer src="../js/auth.js"></script>
+  <script defer src="../js/library.js"></script>
+</body>
 </html>

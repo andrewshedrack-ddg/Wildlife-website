@@ -41,7 +41,11 @@
     // Load translation file for a language
     async loadLanguage(lang) {
       try {
-        const response = await fetch(`js/i18n/${lang}.json`);
+        // Detect if we're in a subdirectory (library/, admin/, user/)
+        const path = window.location.pathname;
+        const depth = path.split('/').filter(Boolean).length;
+        const basePath = depth >= 2 ? '../js/i18n/' : 'js/i18n/';
+        const response = await fetch(`${basePath}${lang}.json`);
         if (!response.ok) throw new Error(`Failed to load ${lang}.json`);
         this.translations[lang] = await response.json();
       } catch (err) {

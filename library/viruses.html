@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bacteria | WildGuard Society</title>
+  <meta name="description" content="Explore viruses in wildlife ecosystems - microscopic infectious agents that replicate inside living cells.">
+  <meta name="author" content="WildGuard Society">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <title>Viruses | WildGuard Society Library</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -13,6 +16,7 @@
   <script defer src="../js/i18n.js"></script>
 </head>
 <body>
+  <!-- Background Slideshow -->
   <div class="page-slideshow">
     <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
     <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
@@ -21,6 +25,7 @@
     <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
   </div>
 
+  <!-- Unified Header -->
   <header class="site-header" id="site-header">
     <div class="header-container">
       <a href="../index.html" class="logo">
@@ -32,8 +37,7 @@
         <a href="library.html" class="active"><i class="fas fa-book"></i> <span data-i18n="header.nav.library">Library</span></a>
         <a href="../scan.html"><i class="fas fa-barcode"></i> <span data-i18n="header.nav.scan">Scan</span></a>
         <a href="../about.html"><i class="fas fa-info-circle"></i> <span data-i18n="header.nav.about">About</span></a>
-        <a href="../contact.html"><i class="fas fa-envelope"></i> <span data-i18n="header.nav.contact">Contact</span></a>
-      </nav>
+        <a href="../contact.html"><i class="fas fa-envelope"></i> <span data-i18n="header.nav.contact">Contact</span></a></nav>
       <div class="header-actions">
         <div class="auth-buttons" id="auth-buttons">
           <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> <span data-i18n="header.auth.signIn">Sign In</span></a>
@@ -71,17 +75,17 @@
   <main>
     <section class="page-banner">
       <span class="eyebrow" data-i18n="library.eyebrow">Wildlife Library</span>
-      <h1 data-i18n="categories.bacteria">Bacteria</h1>
-      <p class="lede" data-i18n="categories.bacteriaDesc">Microorganisms contributing to digestion, nitrogen fixation and more.</p>
+      <h1 data-i18n="categories.viruses">Viruses</h1>
+      <p class="lede" data-i18n="categories.virusesDesc">Microscopic infectious agents that replicate inside living cells.</p>
     </section>
 
     <section class="content-overlay">
       <div class="container">
         <div class="section-header">
-          <h2>Bacterial Species</h2>
-          <p>Essential microorganisms in wildlife ecosystems</p>
+          <h2>Viral Species</h2>
+          <p>Important viruses in wildlife health and ecosystems</p>
         </div>
-        <div class="card-grid" id="bacteriaGrid">
+        <div class="card-grid" id="virusesGrid">
           <!-- Populated by JS -->
         </div>
       </div>

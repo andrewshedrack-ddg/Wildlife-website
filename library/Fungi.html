@@ -1,75 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Fungi | WildGuard Explorer</title>
-	<link rel="stylesheet" href="../css/style.css">
-	<link rel="stylesheet" href="../css/library.css">
-	<script defer src="../js/main.js"></script>
-	<script defer src="../js/library.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore fungi of East Africa - mushrooms, lichens, and more with conservation status and detailed facts.">
+  <meta name="author" content="WildGuard Society">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <title>Fungi | WildGuard Society Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/library.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script defer src="../js/i18n.js"></script>
+</head>
 <body>
-	<header class="navbar">
-	<header class="navbar">
-		<div class="logo">WildGuard Explorer</div>
-		<nav>
-			<ul>
-				<li><a href="../index.html">Home</a></li>
-				<li><a href="Fungi.html" class="active">Library</a></li>
-				<li><a href="../scan.html">Scan</a></li>
-				<li><a href="../about.html">About</a></li>
-				<li><a href="../contact.html">Contact</a></li>
-			</ul>
-		</nav>
-	</header>
-	<main>
-		<section class="page-banner">
-			<span class="eyebrow">Library</span>
-			<h1>Fungi</h1>
-			<p class="lede">Edible, ecological and notable fungal species found in local ecosystems.</p>
-		</section>
-		<section class="section-shell">
-			<div class="species-grid">
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Termitomyces_titanicus.jpg" alt="Termitomyces titanicus">
-					<div class="content">
-						<div class="meta-row"><span>Termitomyces titanicus</span><span>Fungus</span></div>
-						<h3>Termitomyces</h3>
-						<p>Large termite-associated mushrooms important as a local food source and nutrient cyclers.</p>
-						<ul class="facts"><li>Associated with termite mounds</li><li>Large fruiting bodies</li></ul>
-					</div>
-				</article>
-        
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Fliegenpilz_fly_agaric_Amanita_muscaria.JPG" alt="Amanita muscaria">
-					<div class="content">
-						<div class="meta-row"><span>Amanita muscaria</span><span>Notable</span></div>
-						<h3>Amanita (Fly agaric)</h3>
-						<p>Iconic red-capped fungus; many Amanita species are toxic and play key ecological roles as mycorrhizal partners.</p>
-						<ul class="facts"><li>Mycorrhizal relationships</li><li>Bright coloration</li></ul>
-					</div>
-				</article>
-			</div>
-		</section>
-	</main>
-	<footer>
-		<p>&copy; <span data-current-year></span> WildGuard Explorer | Fungi</p>
-	</footer>
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Termite_Mushrooms_%28Termitomyces%29_harvesting_during_rainy_seasons_between_Okahandja_and_Otjiwarongo_A_source_of_nutrients.jpg" alt="Termitomyces mushrooms">
-					<div class="content">
-						<div class="meta-row"><span>Termitomyces</span><span>Edible</span></div>
-						<h3>Termitomyces</h3>
-						<p>Fungi cultivated by termites in some African systems and an important local food source.</p>
-						<ul class="facts"><li>Associated with termite mounds</li><li>Often edible</li></ul>
-					</div>
-				</article>
-			</div>
-		</section>
-	</main>
-	<footer>
-		<p>&copy; <span data-current-year></span> WildGuard Explorer | Fungi</p>
-	</footer>
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/Background3.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
+  </div>
+
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="../index.html"><i class="fas fa-home"></i> <span data-i18n="header.nav.home">Home</span></a>
+        <a href="library.html" class="active"><i class="fas fa-book"></i> <span data-i18n="header.nav.library">Library</span></a>
+        <a href="../scan.html"><i class="fas fa-barcode"></i> <span data-i18n="header.nav.scan">Scan</span></a>
+        <a href="../about.html"><i class="fas fa-info-circle"></i> <span data-i18n="header.nav.about">About</span></a>
+        <a href="../contact.html"><i class="fas fa-envelope"></i> <span data-i18n="header.nav.contact">Contact</span></a></nav>
+      <div class="header-actions">
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> <span data-i18n="header.auth.signIn">Sign In</span></a>
+          <div class="user-menu" id="user-menu" style="display:none;">
+            <button class="user-menu-toggle" id="user-menu-toggle">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-email">User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="../user/Profile.html"><i class="fas fa-user"></i> <span data-i18n="header.auth.profile">Profile</span></a>
+              <a href="../user/History.html"><i class="fas fa-history"></i> <span data-i18n="header.auth.history">History</span></a>
+              <a href="../user/Favourite.html"><i class="fas fa-heart"></i> <span data-i18n="header.auth.favorites">Favourites</span></a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> <span data-i18n="header.auth.logout">Logout</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+          </div>
+        </div>
+      </div>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-banner">
+      <span class="eyebrow" data-i18n="library.eyebrow">Wildlife Library</span>
+      <h1 data-i18n="categories.fungi">Fungi</h1>
+      <p class="lede" data-i18n="categories.fungiDesc">Decomposers that play a vital role in nutrient cycling.</p>
+    </section>
+
+    <section class="content-overlay">
+      <div class="container">
+        <div class="section-header">
+          <h2>Fungi of East Africa</h2>
+          <p>Essential decomposers and symbionts from forest floors to termite mounds.</p>
+        </div>
+        <div class="card-grid wildlife-grid">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/Termitomyces_microcarpus.jpg" alt="Termite Mushroom" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Termite Mushroom</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Termitomyces microcarpus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Cap Diameter:</strong> 2 - 8 cm</p>
+                <p><strong>Key Detail:</strong> Obligate symbiont of Macrotermes termites; cultivated in fungus gardens; highly prized edible mushroom.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Termitomyces_clypeatus.jpg" alt="Termitomyces clypeatus" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Termitomyces clypeatus</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Termitomyces clypeatus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Cap Diameter:</strong> 5 - 15 cm</p>
+                <p><strong>Key Detail:</strong> Larger termite mushroom species; appears at start of rainy season; important food source for rural communities.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Volvariella_volvacea.jpg" alt="Straw Mushroom" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Straw Mushroom</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Volvariella volvacea</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Cap Diameter:</strong> 5 - 12 cm</p>
+                <p><strong>Key Detail:</strong> Tropical cultivated mushroom; grows on rice straw and agricultural waste; popular in Asian cuisine.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Pleurotus_ostreatus.jpg" alt="Oyster Mushroom" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Oyster Mushroom</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Pleurotus ostreatus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Cap Diameter:</strong> 5 - 25 cm</p>
+                <p><strong>Key Detail:</strong> Widely cultivated globally; carnivorous - traps and digests nematodes for nitrogen.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Ganoderma_lucidum.jpg" alt="Reishi Mushroom" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Reishi Mushroom</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Ganoderma lucidum</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Cap Diameter:</strong> 5 - 20 cm</p>
+                <p><strong>Key Detail:</strong> "Mushroom of immortality" in traditional medicine; perennial woody conk on dead hardwoods.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Fomes_fomentarius.jpg" alt="Tinder Fungus" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Tinder Fungus</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Fomes fomentarius</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Cap Diameter:</strong> 10 - 40 cm</p>
+                <p><strong>Key Detail:</strong> Used for millennia as fire starter (tinder); Ötzi the Iceman carried pieces 5,300 years ago.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Trametes_versicolor.jpg" alt="Turkey Tail" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Turkey Tail</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Trametes versicolor</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Cap Diameter:</strong> 2 - 8 cm</p>
+                <p><strong>Key Detail:</strong> Colorful concentric zones; source of polysaccharide-K (PSK) used in cancer therapy in Japan.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Schizophyllum_commune.jpg" alt="Split Gill" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Split Gill</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Schizophyllum commune</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Cap Diameter:</strong> 1 - 5 cm</p>
+                <p><strong>Key Detail:</strong> Most widespread mushroom globally; gills split lengthwise; 23,000+ mating types.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Xylaria_polymorpha.jpg" alt="Dead Man's Fingers" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Dead Man's Fingers</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Xylaria polymorpha</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Height:</strong> 3 - 10 cm</p>
+                <p><strong>Key Detail:</strong> Eerie black club-shaped fruiting bodies on decaying wood; ascomycete "flask fungus."</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Clavaria_fumosa.jpg" alt="Club Fungus" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Club Fungus</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Clavaria fumosa</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Height:</strong> 5 - 15 cm</p>
+                <p><strong>Key Detail:</strong> Simple unbranched clubs; white to smoky gray; grows in troops on forest floor humus.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Usnea_longissima.jpg" alt="Old Man's Beard" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Old Man's Beard Lichen</h3>
+              <p class="brief">Near Threatened</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Usnea longissima</p>
+                <p><strong>Conservation Status:</strong> Near Threatened</p>
+                <p><strong>Length:</strong> Up to 3 m</p>
+                <p><strong>Key Detail:</strong> Pendulous lichen indicating clean air; sensitive to pollution; used traditionally for wound dressing.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Xanthoria_parietina.jpg" alt="Sunburst Lichen" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Sunburst Lichen</h3>
+              <p class="brief">Least Concern</p>
+              <p class="full-details">
+                <p><strong>Scientific Name:</strong> Xanthoria parietina</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Diameter:</strong> 2 - 8 cm</p>
+                <p><strong>Key Detail:</strong> Bright orange rosettes on rocks and bark; tolerates nitrogen pollution; bioindicator species.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p data-i18n="footer.tagline">Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <div class="footer-social">
+          <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer.explore">Explore</h4>
+        <ul>
+          <li><a href="../index.html" data-i18n="footer.nav.home">Home</a></li>
+          <li><a href="library.html" data-i18n="footer.nav.library">Library</a></li>
+          <li><a href="../scan.html" data-i18n="footer.nav.scan">Scan</a></li>
+          <li><a href="../about.html" data-i18n="footer.nav.about">About</a></li>
+          <li><a href="../contact.html" data-i18n="footer.nav.contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer.getInvolved">Get Involved</h4>
+        <ul>
+          <li><a href="#" data-i18n="footer.donate">Donate</a></li>
+          <li><a href="library.html" data-i18n="footer.adopt">Adopt an Animal</a></li>
+          <li><a href="#" data-i18n="footer.volunteer">Volunteer</a></li>
+          <li><a href="#" data-i18n="footer.partner">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="footer.contact">Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> <span data-i18n="common.global">Global</span></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="footer.motto">Protect Nature - Protect Life</p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. <span data-i18n="footer.rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <script defer src="../js/main.js"></script>
+  <script defer src="../js/auth.js"></script>
+  <script defer src="../js/library.js"></script>
 </body>
 </html>

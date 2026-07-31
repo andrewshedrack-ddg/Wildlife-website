@@ -212,7 +212,7 @@
   function injectAdminLink(user) {
     const dropdown = document.getElementById('user-dropdown');
     if (!dropdown) return;
-    const isAdmin = user && (user.role === 'admin' || user.email === 'admin@wildguardsociety.org' || user.email === 'admin@wildguard.org');
+    const isAdmin = user && (user.role === 'admin' || user.role === 'super_admin');
     if (isAdmin) {
       if (!dropdown.querySelector('[data-admin-link]')) {
         const divider = dropdown.querySelector('.dropdown-divider');
@@ -380,15 +380,6 @@
         securityMonitor('login_success', { email: email.substring(0, 3) + '***' });
         logActivity('login', rawEmail, 'User logged in');
         window.location.href = 'index.html';
-        return;
-      } else if (email === 'admin@wildguardsociety.org' && password === 'admin123') {
-        // Allow admin login even without stored user record
-        saveUser({ email: rawEmail, role: 'admin', name: 'Administrator' });
-        setAuthCookie(rawEmail);
-        setSessionTimeout();
-        securityMonitor('admin_login_success', { email: 'admin@***' });
-        logActivity('login', rawEmail, 'Admin logged in');
-        window.location.href = 'admin/Dashboard.html';
         return;
       } else {
         if (errorMessage) {

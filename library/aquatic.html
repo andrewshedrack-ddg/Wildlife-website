@@ -1,79 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Aquatic | WildGuard Explorer</title>
-	<link rel="stylesheet" href="../css/style.css">
-	<link rel="stylesheet" href="../css/library.css">
-	<script defer src="../js/main.js"></script>
-	<script defer src="../js/library.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore aquatic life of East Africa - fish, hippos, crocodiles, and more with conservation status and detailed facts.">
+  <meta name="author" content="WildGuard Society">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <title>Aquatic Life | WildGuard Society Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/library.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script defer src="../js/i18n.js"></script>
 </head>
 <body>
-	<header class="navbar">
-		<div class="logo">WildGuard Explorer</div>
-		<nav>
-			<ul>
-				<li><a href="../index.html">Home</a></li>
-				<li><a href="aquatic.html" class="active">Library</a></li>
-				<li><a href="../scan.html">Scan</a></li>
-				<li><a href="../about.html">About</a></li>
-				<li><a href="../contact.html">Contact</a></li>
-			</ul>
-		</nav>
-	</header>
-	<main>
-		<section class="page-banner">
-			<span class="eyebrow">Library</span>
-			<h1>Aquatic Life</h1>
-			<p class="lede">Fish, large semi-aquatic mammals and reef life that shape freshwater and coastal ecosystems.</p>
-		</section>
-		<section class="section-shell">
-			<div class="species-grid">
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/7/71/Hipop%C3%B3tamos_%28Hippopotamus_amphibius%29%2C_parque_nacional_de_Chobe%2C_Botsuana%2C_2018-07-28%2C_DD_79.jpg" alt="Hippopotamus">
-					<div class="content">
-						<div class="meta-row"><span>Hippopotamus amphibius</span><span>Megaherbivore</span></div>
-						<h3>Hippopotamus</h3>
-						<p>Large semi-aquatic mammal that spends much of the day submerged and feeds on grasses at night.</p>
-						<ul class="facts"><li>Key freshwater grazer</li><li>Territorial in water</li></ul>
-					</div>
-				</article>
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/Background3.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
+  </div>
 
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Oreochromis-niloticus-Nairobi.JPG" alt="Tilapia (Nile tilapia)">
-					<div class="content">
-						<div class="meta-row"><span>Oreochromis niloticus</span><span>Fish</span></div>
-						<h3>Nile Tilapia</h3>
-						<p>Important freshwater fish both ecologically and for local fisheries.</p>
-						<ul class="facts"><li>Omnivorous</li><li>Common in lakes and rivers</li></ul>
-					</div>
-				</article>
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="../index.html"><i class="fas fa-home"></i> <span data-i18n="header.nav.home">Home</span></a>
+        <a href="library.html" class="active"><i class="fas fa-book"></i> <span data-i18n="header.nav.library">Library</span></a>
+        <a href="../scan.html"><i class="fas fa-barcode"></i> <span data-i18n="header.nav.scan">Scan</span></a>
+        <a href="../about.html"><i class="fas fa-info-circle"></i> <span data-i18n="header.nav.about">About</span></a>
+        <a href="../contact.html"><i class="fas fa-envelope"></i> <span data-i18n="header.nav.contact">Contact</span></a></nav>
+      <div class="header-actions">
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> <span data-i18n="header.auth.signIn">Sign In</span></a>
+          <div class="user-menu" id="user-menu" style="display:none;">
+            <button class="user-menu-toggle" id="user-menu-toggle">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-email">User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="../user/Profile.html"><i class="fas fa-user"></i> <span data-i18n="header.auth.profile">Profile</span></a>
+              <a href="../user/History.html"><i class="fas fa-history"></i> <span data-i18n="header.auth.history">History</span></a>
+              <a href="../user/Favourite.html"><i class="fas fa-heart"></i> <span data-i18n="header.auth.favorites">Favourites</span></a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> <span data-i18n="header.auth.logout">Logout</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+          </div>
+        </div>
+      </div>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
 
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Lates_niloticus.jpg" alt="Nile perch">
-					<div class="content">
-						<div class="meta-row"><span>Lates niloticus</span><span>Predator</span></div>
-						<h3>Nile Perch</h3>
-						<p>Large freshwater predator introduced or native in some large lakes; influential in fish community dynamics.</p>
-						<ul class="facts"><li>Top freshwater predator</li><li>Important for fisheries</li></ul>
-					</div>
-				</article>
+  <main>
+    <section class="page-banner">
+      <span class="eyebrow" data-i18n="library.eyebrow">Wildlife Library</span>
+      <h1 data-i18n="categories.aquatic">Aquatic Life</h1>
+      <p class="lede" data-i18n="categories.aquaticDesc">Fish and other aquatic species residing in lakes and rivers worldwide.</p>
+    </section>
 
-				<article class="species-card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Coral_%28Acropora_hemprichii%29%2C_Ras_Katy%2C_Sharm_el-Sheij%2C_Egipto%2C_2022-03-26%2C_DD_108.jpg" alt="Coral">
-					<div class="content">
-						<div class="meta-row"><span>Various corals</span><span>Reef</span></div>
-						<h3>Coral Reefs</h3>
-						<p>Complex marine ecosystems supporting high biodiversity; sensitive to warming and local stressors.</p>
-						<ul class="facts"><li>Foundation species</li><li>Support fisheries and tourism</li></ul>
-					</div>
-				</article>
-			</div>
-		</section>
-	</main>
-	<footer>
-		<p>&copy; <span data-current-year></span> WildGuard Explorer | Aquatic</p>
-	</footer>
+    <section class="content-overlay">
+      <div class="container">
+        <div class="section-header">
+          <h2>Aquatic Life of East Africa</h2>
+          <p>Rich freshwater ecosystems from the Great Lakes to coastal rivers and wetlands.</p>
+        </div>
+        <div class="card-grid wildlife-grid">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/shark.png" alt="Nile Perch" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Nile Perch</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Lates niloticus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> Up to 440 lbs (200 kg)</p>
+                <p><strong>Key Detail:</strong> Massive predator introduced to Lake Victoria; caused extinction of hundreds of endemic cichlid species.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/Tilapia_ nilotica.jpg" alt="Nile Tilapia" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Nile Tilapia</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Oreochromis niloticus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> Up to 9.9 lbs (4.5 kg)</p>
+                <p><strong>Key Detail:</strong> One of world's most important aquaculture species; mouthbrooders protecting eggs.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Protopterus_annectens.jpg" alt="African Lungfish" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>African Lungfish</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Protopterus annectens</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> Up to 8.8 lbs (4 kg)</p>
+                <p><strong>Key Detail:</strong> Can breathe air and estivate in mud cocoons for years during drought; living fossil.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Electric_catfish_%28Malapterurus_electricus%29.jpg" alt="Electric Catfish" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Electric Catfish</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Malapterurus electricus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> Up to 44 lbs (20 kg)</p>
+                <p><strong>Key Detail:</strong> Generates up to 350 volts to stun prey and defend; ancient Egyptian depictions known.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bagrus_ubangensis.jpg" alt="Bayad Catfish" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Bayad Catfish</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Bagrus bajad</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> Up to 33 lbs (15 kg)</p>
+                <p><strong>Key Detail:</strong> Large predatory catfish with long whiskers; important food fish across Nile basin.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Hydrocynus_forsskalii.jpg" alt="African Tigerfish" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>African Tigerfish</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Hydrocynus forskahlii</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> Up to 33 lbs (15 kg)</p>
+                <p><strong>Key Detail:</strong> Ferocious predator with razor-sharp teeth; known for spectacular aerial attacks on birds.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Synodontis_nigrita.jpg" alt="Featherfin Squeaker" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Featherfin Squeaker</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Synodontis eupterus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> Up to 1.5 lbs (0.7 kg)</p>
+                <p><strong>Key Detail:</strong> Upside-down swimmer with long feathery dorsal fin; produces squeaking sounds.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Labeo_victorianus.jpg" alt="Victoria Carp" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Victoria Carp</h3>
+              <p class="brief">Critically Endangered</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Labeo victorianus</p>
+                <p><strong>Conservation Status:</strong> Critically Endangered</p>
+                <p><strong>Weight Range:</strong> Up to 11 lbs (5 kg)</p>
+                <p><strong>Key Detail:</strong> Endemic to Lake Victoria; decimated by Nile Perch introduction and habitat degradation.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Haplochromis_burtoni.jpg" alt="Burton's Haplochromis" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Burton's Haplochromis</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Astatotilapia burtoni</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> Up to 0.2 lbs (100 g)</p>
+                <p><strong>Key Detail:</strong> Model organism for cichlid evolution; mouthbrooder with complex social behaviors.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Mormyrus_canis.jpg" alt="Elephantfish" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Elephantfish</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Mormyrus kannume</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> Up to 2.2 lbs (1 kg)</p>
+                <p><strong>Key Detail:</strong> Weakly electric fish using electrolocation; elongated snout probes muddy bottoms for invertebrates.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Polypterus_bichir.jpg" alt="Nile Bichir" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Nile Bichir</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Polypterus bichir</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> Up to 7.7 lbs (3.5 kg)</p>
+                <p><strong>Key Detail:</strong> Living fossil with armor-like scales and multiple dorsal finlets; can breathe air.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Clarias_gariepinus.jpg" alt="African Sharptooth Catfish" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>African Sharptooth Catfish</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Clarias gariepinus</p>
+                <p><strong>Conservation Status:</strong> Least Concern</p>
+                <p><strong>Weight Range:</strong> Up to 130 lbs (59 kg)</p>
+                <p><strong>Key Detail:</strong> Can breathe air and "walk" on land between water bodies; incredibly hardy survivor.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p data-i18n="footer.tagline">Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <div class="footer-social">
+          <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer.explore">Explore</h4>
+        <ul>
+          <li><a href="../index.html" data-i18n="footer.nav.home">Home</a></li>
+          <li><a href="library.html" data-i18n="footer.nav.library">Library</a></li>
+          <li><a href="../scan.html" data-i18n="footer.nav.scan">Scan</a></li>
+          <li><a href="../about.html" data-i18n="footer.nav.about">About</a></li>
+          <li><a href="../contact.html" data-i18n="footer.nav.contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer.getInvolved">Get Involved</h4>
+        <ul>
+          <li><a href="#" data-i18n="footer.donate">Donate</a></li>
+          <li><a href="library.html" data-i18n="footer.adopt">Adopt an Animal</a></li>
+          <li><a href="#" data-i18n="footer.volunteer">Volunteer</a></li>
+          <li><a href="#" data-i18n="footer.partner">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="footer.contact">Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> <span data-i18n="common.global">Global</span></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="footer.motto">Protect Nature - Protect Life</p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. <span data-i18n="footer.rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <script defer src="../js/main.js"></script>
+  <script defer src="../js/auth.js"></script>
+  <script defer src="../js/library.js"></script>
 </body>
 </html>

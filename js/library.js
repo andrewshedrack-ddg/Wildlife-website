@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const book = books.find(b => b.id === id);
         if (!book) return;
         const modal = document.getElementById('bookModal');
-        const content = document.getElementById('bookModalContent');
+        const modalContent = document.getElementById('bookModalContent');
 
         let html = `<h2>${book.title}</h2>
             <div class="author">by ${book.author}</div>`;
@@ -203,9 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         });
 
-        const content = document.getElementById('bookModalContent');
-        content.innerHTML = html;
-        const modal = document.getElementById('bookModal');
+        modalContent.innerHTML = html;
         modal.hidden = false;
         document.body.style.overflow = 'hidden';
     }

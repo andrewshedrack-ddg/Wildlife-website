@@ -41,7 +41,7 @@
     .password-requirements li.met i { color: #22c55e; }
     .password-requirements li.unmet i { color: rgba(255,255,255,0.3); }
     .strength-meter { display: flex; gap: 4px; margin-top: 0.5rem; height: 4px; }
-    .strength-segment { flex: 1; background: orange(255,255,255,0.1); border-radius: 2px; transition: var(--transition); }
+    .strength-segment { flex: 1; background: rgba(255,255,255,0.1); border-radius: 2px; transition: var(--transition); }
     .strength-segment.weak { background: #ef4444; }
     .strength-segment.fair { background: #f59e0b; }
     .strength-segment.good { background: #3b82f6; }
@@ -58,7 +58,7 @@
   <div class="page-slideshow">
     <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
     <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
-    <div class="page-slide" style="background-image: url('assets/images/background3.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/Background3.png');"></div>
     <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
     <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
   </div>
@@ -96,13 +96,13 @@
       </div>
         <div class="language-selector" data-language-selector>
           <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
-            <span class="flag">🇺🇸</span> <span class="lang-name">English</span>
+            <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
             <i class="fas fa-chevron-down"></i>
           </button>
           <div class="lang-dropdown" role="menu" hidden>
-            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag">🇺🇸</span> <span class="lang-native">English</span></button>
-            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag">🇫🇷</span> <span class="lang-native">Français</span></button>
-            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag">🇹🇿</span> <span class="lang-native">Kiswahili</span></button>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
           </div>
         </div>
       </div>

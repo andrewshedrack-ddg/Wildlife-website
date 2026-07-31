@@ -20,7 +20,7 @@
     <div class="page-slideshow">
         <div class="page-slide active" style="background-image: url('../assets/images/background.png')"></div>
         <div class="page-slide" style="background-image: url('../assets/images/background2.png')"></div>
-        <div class="page-slide" style="background-image: url('../assets/images/background3.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/Background3.png')"></div>
         <div class="page-slide" style="background-image: url('../assets/images/background4.png')"></div>
         <div class="page-slide" style="background-image: url('../assets/images/background5.png')"></div>
     </div>
@@ -31,14 +31,14 @@
                 <span class="logo-text">WildGuard Society</span>
             </a>
             <nav class="desktop-nav" id="desktop-nav">
-                <a href="../index.html"><i class="fas fa-home"></i> Home</a>
-                <a href="../library/library.html"><i class="fas fa-book"></i> Library</a>
-                <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
-                <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
-                <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a></nav>
+                <a href="../index.html"><i class="fas fa-home"></i> <span data-i18n="header.nav.home">Home</span></a>
+                <a href="../library/library.html"><i class="fas fa-book"></i> <span data-i18n="header.nav.library">Library</span></a>
+                <a href="../scan.html"><i class="fas fa-barcode"></i> <span data-i18n="header.nav.scan">Scan</span></a>
+                <a href="../about.html"><i class="fas fa-info-circle"></i> <span data-i18n="header.nav.about">About</span></a>
+                <a href="../contact.html"><i class="fas fa-envelope"></i> <span data-i18n="header.nav.contact">Contact</span></a></nav>
             <div class="header-actions">
                 <div class="auth-buttons" id="auth-buttons">
-                    <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+                    <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> <span data-i18n="header.auth.signIn">Sign In</span></a>
                     <div class="user-menu" id="user-menu" style="display:none;">
                         <button class="user-menu-toggle" id="user-menu-toggle">
                             <i class="fas fa-user-circle"></i>
@@ -46,12 +46,23 @@
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="user-dropdown" id="user-dropdown">
-                            <a href="Profile.html"><i class="fas fa-user"></i> Profile</a>
-                            <a href="History.html"><i class="fas fa-history"></i> History</a>
-                            <a href="Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+                            <a href="Profile.html"><i class="fas fa-user"></i> <span data-i18n="header.auth.profile">Profile</span></a>
+                            <a href="History.html"><i class="fas fa-history"></i> <span data-i18n="header.auth.history">History</span></a>
+                            <a href="Favourite.html"><i class="fas fa-heart"></i> <span data-i18n="header.auth.favorites">Favourites</span></a>
                             <div class="dropdown-divider"></div>
-                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> <span data-i18n="header.auth.logout">Logout</span></a>
                         </div>
+                    </div>
+                </div>
+                <div class="language-selector" data-language-selector>
+                    <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+                        <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" role="menu" hidden>
+                        <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+                        <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+                        <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
                     </div>
                 </div>
             </div>
@@ -103,9 +114,9 @@
             </div>
             <div class="footer-contact">
                 <h4>Contact</h4>
-               AFFIRM <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+               <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
                 <p><i class="fas fa-phone"></i> +255 700 123 456</p>
-xml <p><i class="fas fa-map-marker-alt"></i>婊子 Global</p>
+                <p><i class="fas fa-map-marker-alt"></i> Global</p>
             </div>
         </div>
         <div class="footer-bottom">

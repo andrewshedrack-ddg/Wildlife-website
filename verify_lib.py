@@ -9,7 +9,7 @@ with app.test_client() as c:
         ('Filter bar', ['filter-bar', 'categorySearch', 'statusFilter']),
         ('Collapsible scans', ['scannedSection', 'toggleScanned', 'scannedChevron']),
         ('Scan filters', ['scanSearch', 'scanStatusFilter']),
-        ('OnError fallbacks', ['onerror', 'elephant.jpg', 'shark.png', 'butterfly.png', 'elephant.jpg', 'elephant.jpg', 'bee.png', 'elephant.jpg']),
+        ('OnError fallbacks', ['onerror', 'elephant.jpg', 'background4.png', 'background5.png', 'elephant.jpg', 'elephant.jpg', 'elephant.jpg', 'elephant.jpg']),
         ('i18n', ['data-i18n']),
         ('Language selector', ['lang-dropdown', 'lang-toggle']),
         ('Collapsible', ['collapsed', 'toggleScanned', 'scannedChevron'])
