@@ -1,184 +1,207 @@
 # WildGuard Society
 
-A wildlife conservation platform for Tanzania's ecosystems — combining education, AI-powered species detection, and community engagement.
+> **A youth-led environmental conservation movement** — Protect Nature, Protect Life.
 
-> **Note**: The project name is **WildGuard Society** (used throughout the UI). The previous README used "WildGuard Explorer" — this has been corrected.
-
----
-
-## Current Status (July 2026)
-
-| Aspect | Status |
-|--------|--------|
-| **Frontend** | Functional demo — 8 HTML pages, 15+ JS modules, 732-line CSS |
-| **Backend (Flask)** | Partial — 629-line `app.py` with models, auth, Socket.IO, 19 API routes |
-| **Backend (Express)** | Deprecated — skeleton only, will be removed |
-| **Database** | SQLite (dev), PostgreSQL (prod target) — not fully wired |
-| **Authentication** | JWT + cookies (Flask), localStorage fallback (demo) |
-| **Real-time** | Socket.IO admin dashboard + user notifications |
-| **AI/Scan** | TensorFlow.js MobileNet simulation (client-side only) |
-| **i18n** | 4 languages (EN, FR, SW, ES) — 288+ translation keys |
-| **Deployment** | GitHub Pages (frontend only), Azure (planned) |
-| **Security** | ⚠️ **Critical issues present** — see [Security](#security--compliance) |
+WildGuard Society brings together young people to understand environmental changes and take meaningful action for a healthier planet, using technology, education, and community action.
 
 ---
 
-## Features
-
-### Public Pages
-- **Home** (`index.html`) — Hero slideshow, Big Five wildlife cards, Tanzania parks grid, conservation initiatives, get-involved CTA
-- **Wildlife Library** (`library/`) — 8 taxonomic categories (mammals, birds, reptiles, amphibians, aquatic, plants, fungi, bacteria, viruses), search, biome filter, collapsible "scanned" section, 500+ species data
-- **Scan Mode** (`scan.html`) — Camera/upload interface, TensorFlow.js classification, voice commands, text-to-speech field guide, offline-capable
-- **About** (`about.html`) — Mission, vision, impact statistics
-- **Contact** (`contact.html`) — Form (mailto fallback), field team info
-
-### Authenticated User Pages (`user/`)
-- **Profile** — Avatar, stats (scans, favorites, parks), account settings form
-- **History** — Scan timeline with confidence scores, summary statistics
-- **Favorites** — Bookmarked species gallery
-
-### Admin Portal (`admin/`)
-- **Dashboard** — Real-time stats (Socket.IO), 7-metric cards, quick actions
-- **Pending Scans** — Review/approve user submissions
-- **Messages** — Contact form submissions management
-- **Notifications** — System + user notifications
-- **Users** — Registered user list with roles
-- **Traffic/Activity Log** — Audit trail
-- **Email Campaigns** — Compose + broadcast to all users
-- **Manage Animals** — CRUD table for species catalog
-- **Upload Species** — Form with drag-drop image preview
-
----
-
-## Architecture
-
-```
-Wildlife-website/
-├── *.html                 # 8 root pages
-├── css/
-│   ├── style.css         # 732 lines — main stylesheet (needs modularization)
-│   ├── slideshow.css     # Background slideshow
-│   ├── scan.css          # Scan page styles
-│   └── library.css       # Library page styles
-├── js/
-│   ├── main.js           # Shared UI (slideshow, mobile menu, animations)
-│   ├── auth.js           # 764 lines — auth, notifications, email, activity (needs split)
-│   ├── scan.js           # 749 lines — scan logic, TF.js, voice, TTS
-│   ├── library.js        # Library interactivity
-│   ├── slideshow.js      # Slideshow controller
-│   ├── i18n.js           # i18n engine
-│   ├── config.js         # Config + API integrations
-│   ├── alert.js          # Toast notifications
-│   ├── system-monitor.js # Admin monitoring
-│   ├── admin.js          # Admin dashboard logic
-│   ├── admin-ui.js       # Admin UI components
-│   ├── admin-portal.js   # Admin portal (Socket.IO, email, broadcast)
-│   ├── admin-auth-guard.js
-│   └── wildlife-data.json # 1060+ keys, ~50KB species database
-├── js/i18n/
-│   ├── en.json (288+ lines), fr.json, sw.json, es.json
-├── library/              # 10 category pages
-├── admin/                # 3 admin pages
-├── user/                 # 3 user pages + empty README
-├── assets/images/        # 67 files (species, backgrounds, flags, moments)
-├── app.py                # Flask backend (629 lines) — PRIMARY BACKEND
-├── requirements.txt      # Python deps (Flask, SQLAlchemy, SocketIO, JWT, Bcrypt)
-├── backend/              # DEPRECATED Node.js/Express skeleton
-│   ├── api/server.js     # 9 lines — single endpoint
-│   ├── db/config.js      # Hardcoded MySQL creds (security issue)
-│   └── model/species.js  # 2 hardcoded species
-├── admin-guard.js        # Admin auth redirect
-├── sw.js                 # Service Worker (PWA)
-├── gen_complete.py       # Species data generator (500+ entries)
-├── verify_lib.py         # Library feature validator
-├── check_*.py            # Debug/validation scripts
-├── .env                  # ⚠️ Contains secrets (in .gitignore but on disk)
-├── .env.local            # Next.js/Supabase remnants
-├── admin_credentials.txt # ⚠️ PLAINTEXT PASSWORDS — DELETE IMMEDIATELY
-├── .github/workflows/deploy.yml # GitHub Pages deploy
-└── AGENTS.md             # Architecture documentation
-```
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|------------|
-| **Frontend** | HTML5, CSS3 (CSS Variables, Glassmorphism), Vanilla JS (ES6+) |
-| **Backend** | **Flask 3.0** (Python 3.11+) — primary; Node.js/Express — deprecated |
-| **Database** | SQLite (dev), **PostgreSQL** (prod target via Azure) |
-| **Real-time** | Flask-SocketIO + eventlet |
-| **Auth** | PyJWT (access + refresh tokens), Flask-Bcrypt, httpOnly cookies |
-| **AI/ML** | TensorFlow.js (MobileNet) — client-side simulation |
-| **i18n** | Custom JSON-based system (4 languages) |
-| **Icons/Fonts** | Font Awesome 6, Google Fonts (Inter + Playfair Display) |
-| **Deployment** | GitHub Pages (static), **Azure** (Container Apps + PostgreSQL + Redis) |
-| **CI/CD** | GitHub Actions (planned) |
-| **Monitoring** | Azure Application Insights (planned) |
-
----
-
-## Getting Started
-
-### Prerequisites
-- Python 3.11+
-- Node.js 20+ (for tooling only — no Express runtime needed)
-- Git
-
-### Local Development
+## Quick Start
 
 ```bash
 # 1. Clone
 git clone https://github.com/<your-org>/Wildlife-website.git
 cd Wildlife-website
 
-# 2. Python environment
+# 2. Create and activate virtual environment
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+source .venv/bin/activate       # macOS/Linux
+# .venv\Scripts\activate        # Windows
+
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# 3. Environment variables
-cp .env.example .env  # Create this file first — see below
-# Edit .env with your values
+# 4. Set up environment
+cp .env.example .env
+# Edit .env with your values (generate secret keys)
 
-# 4. Run Flask backend
+# 5. Run
 python app.py
-# Serves at http://localhost:5000 (all static files + API)
-
-# 5. Or serve static only (for frontend-only work)
-# npx serve .  # or any static server
+# → http://localhost:5000
 ```
 
-### Required Environment Variables (`.env`)
+For **frontend-only development** (static files, no backend):
+```bash
+python -m http.server 8000       # or any static server: npx serve .
+# → http://localhost:8000
+```
+
+---
+
+## Project Structure
+
+```
+Wildlife-website/
+├── index.html                  # Homepage — hero, stats, wildlife cards, parks, conservation
+├── about.html                  # Mission, vision, impact statistics
+├── contact.html                # Contact form + staff portal
+├── scan.html                   # AI species scan simulation
+├── login.html                  # User login
+├── register.html               # User registration
+├── admin-login.html            # Admin login
+├── admin.html                  # Admin dashboard
+
+├── library/
+│   ├── library.html            # Wildlife library — categories, filter, search
+│   ├── mammals.html            # Category-specific pages
+│   ├── birds.html
+│   ├── reptiles.html
+│   ├── amphibians.html
+│   ├── aquatic.html
+│   ├── plants.html
+│   ├── fungi.html
+│   ├── bacteria.html
+│   └── viruses.html
+
+├── user/
+│   ├── Profile.html            # User profile with avatar and settings
+│   ├── History.html            # Scan history with timeline
+│   └── Favourite.html          # Bookmarked species
+
+├── admin/
+│   ├── Dashboard.html          # Admin dashboard
+│   ├── manage-animals.html     # Species CRUD
+│   └── upload.html             # Species upload form
+
+├── css/
+│   ├── tokens.css              # Design tokens (colors, typography, spacing)
+│   ├── animations.css          # Keyframe animations
+│   ├── layout.css              # Grid, container, section, responsive
+│   ├── components.css          # Buttons, cards, forms, badges, modals
+│   ├── style.css               # Main stylesheet (header, footer, hero, slideshow)
+│   ├── library.css             # Library & book styles
+│   ├── scan.css                # Scan page styles
+│   └── slideshow.css           # Legacy slideshow styles
+
+├── js/
+│   ├── main.js                 # Shared UI (slideshow, mobile menu, animations)
+│   ├── auth.js                 # Authentication (login/logout, user menu)
+│   ├── counter-animate.js      # Animated count-up statistic numbers
+│   ├── scan.js                 # AI scan logic and client-side TensorFlow.js
+│   ├── library.js               # Library interactivity
+│   ├── i18n.js                 # i18n engine
+│   ├── admin.js                # Admin dashboard logic
+│   ├── admin-ui.js             # Admin UI components
+│   ├── admin-portal.js         # Admin broadcast (Socket.IO, email)
+│   ├── scan-integration.js      # Scan integration library
+│   └── wildlife-data.json       # 1060+ keys, ~50KB species database
+
+├── assets/images/
+│   ├── logo.png                # Brand logo
+│   ├── background*.png          # Background slideshow images
+│   ├── lion.jpg, elephant.jpg, ... # Wildlife imagery
+│   └── flags/                  # Language selector flags
+
+├── DESIGN.md                   # Design system documentation
+├── app.py                       # Flask backend with REST API and Socket.IO
+├── requirements.txt             # Python dependencies
+├── .env.example                 # Environment variables template
+├── .gitignore                   # Git ignore rules
+├── AGENTS.md                    # Architecture documentation
+└── README.md                    # This file
+```
+
+---
+
+## Design System
+
+| Element | Value |
+|---------|-------|
+| **Primary** | `#1b5e40` Forest green |
+| **Accent** | `#d4a017` Warm gold |
+| **Dark** | `#0a1a12` Canvas base |
+| **Headings** | Playfair Display |
+| **Body** | Inter, sans-serif |
+| **Max width** | 1200px |
+| **Header height** | 72px (fixed) |
+| **Border radius** | 8px (buttons), 16px (cards) |
+
+Design is inspired by **National Geographic**, **WWF**, **Chester Zoo** (dark "Forest Mode"), **Vantara**, and **Search for Lost Species**.
+
+See **[DESIGN.md](DESIGN.md)** for full design system documentation, component library, layout patterns, and research integration.
+
+---
+
+## Environment Setup
+
+### 1. Python Backend
+
+**Required Environment Variables** (`.env`):
 
 ```bash
 # Flask
 FLASK_ENV=development
-SECRET_KEY=<generate-with: python -c "import secrets; print(secrets.token_hex(32))">
+SECRET_KEY=<generate: python -c "import secrets; print(secrets.token_hex(32))">
 JWT_SECRET_KEY=<generate-separate-key>
 JWT_ACCESS_TOKEN_EXPIRES=3600
 JWT_REFRESH_TOKEN_EXPIRES=604800
 
-# Database (SQLite for dev)
+# Database
 DATABASE_URL=sqlite:///instance/wildguard.db
 
-# Email (SendGrid — optional for dev)
+# Email (optional for dev)
 SENDGRID_API_KEY=
-SENDGRID_FROM_EMAIL=noreply@localhost
+SENDGRID_FROM_EMAIL=noreply@wildguard.org
 SENDGRID_FROM_NAME=WildGuard Society
 
-# Push Notifications (VAPID — generate with: npx web-push generate-vapid-keys)
+# Push (optional)
 VAPID_PUBLIC_KEY=
 VAPID_PRIVATE_KEY=
-VAPID_SUBJECT=mailto:admin@localhost
+VAPID_SUBJECT=mailto:admin@wildguard.org
+
+# Admin bootstrap (first run only)
+ADMIN_EMAIL=admin@wildguard.org
+ADMIN_PASSWORD=<strong-password>
 ```
 
-### Generate Species Data (Optional)
+### 2. Frontend-Only Development
+
+No special setup needed. You can serve the static files with any HTTP server:
 
 ```bash
-# Generates js/wildlife-data.json with 500+ species
-python gen_complete.py
+# Option 1: Python
+python -m http.server 8000
+
+# Option 2: Node.js (install first)
+npx serve .
+
+# Then open http://localhost:8000
+```
+
+When running frontend-only, the demo website uses `localStorage` for authentication, favorites, history, and messages.
+
+### 3. Deploy to GitHub Pages
+
+```bash
+git push origin main            # Push to GitHub
+# GitHub automatically deploys from docs/ or root
+```
+
+### 4. Deploy to Azure
+
+```bash
+# From root directory:
+az login
+az group create --name wildguard-rg --location eastus
+
+# Deploy backend (Flask + SQLite → Container Apps)
+az containerapp up \
+  --name wildguard-backend \
+  --resource-group wildguard-rg \
+  --source .
+
+# Deploy static frontend (Static Web Apps)
+az, deploy on GitHub Pages → configure automatic deployment in Azure Portal
 ```
 
 ---
@@ -188,15 +211,16 @@ python gen_complete.py
 ### Public
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/species` | List species (query: category, status, search) |
+| GET | `/api/species` | List species (filters: category, status, search) |
 | GET | `/api/species/<id>` | Single species detail |
 | GET | `/api/settings` | Public site settings |
+| POST | `/api/contact` | Contact form submission |
 
 ### Auth
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | `/api/register` | User registration |
-| POST | `/api/login` | User login (returns JWT in cookie) |
+| POST | `/api/login` | User login (JWT in httpOnly cookie) |
 | POST | `/api/admin/login` | Admin login |
 | GET | `/api/me` | Current user (requires token) |
 
@@ -211,7 +235,7 @@ python gen_complete.py
 | POST | `/api/user/favourites` | Add favorite |
 | DELETE | `/api/user/favourites/<id>` | Remove favorite |
 
-### Admin (Requires `admin` role)
+### Admin
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/admin/stats` | Dashboard statistics |
@@ -221,113 +245,125 @@ python gen_complete.py
 | PUT | `/api/admin/species/<id>` | Update species |
 | DELETE | `/api/admin/species/<id>` | Delete species |
 | GET | `/api/admin/messages` | Contact messages |
-| GET | `/api/admin/scans/pending` | Pending scan reviews |
-| PUT | `/api/admin/scans/<id>/review` | Approve/reject scan |
+| DELETE | `/api/admin/messages/<id>` | Delete message |
 | GET | `/api/admin/activity` | Activity log |
 | POST | `/api/admin/email-campaigns` | Send broadcast email |
 
----
-
-## Security & Compliance
-
-### ✅ FIXED — Critical Issues Resolved
-
-1. ~~**`admin_credentials.txt`** — Contains plaintext admin emails/passwords. **DELETED**~~ ✅
-2. ~~**`js/auth.js:384`** — Hardcoded fallback admin credentials (`admin@wildguardsociety.org` / `admin123`). **REMOVED**~~ ✅
-3. ~~**`backend/db/config.js`** — Hardcoded MySQL root password. **Entire `backend/` directory REMOVED**~~ ✅
-4. **`.env` on disk** — Contains real `SECRET_KEY`, VAPID keys. Ensure in `.gitignore`, rotate all values. ⚠️
-5. **Client-side auth fallback** — `auth.js` uses localStorage demo mode. Disable in production. ⚠️
-
-### Remaining Hardening
-- [ ] Rotate all secrets after removing from repo history
-- [ ] Enable Flask-Talisman (HSTS, CSP, XSS protection)
-- [ ] Add rate limiting (Flask-Limiter)
-- [ ] Implement CSRF protection for forms
-- [ ] Audit all `innerHTML` usage for XSS
-- [ ] Run `bandit` and `safety` in CI
-- [ ] OWASP ZAP scan before production
+### Real-Time (Socket.IO)
+| Event | Direction | Description |
+|-------|-----------|-------------|
+| `stats_update` | S → C | Live admin stats (users, messages, scans) |
+| `new_message` | S → C | New contact form message |
+| `broadcast_sent` | S → C | Admin broadcast notification |
+| `notification` | S → C | User notification |
+| `join_user_room` | C → S | Join user-specific room |
+| `join_admin_room` | C → S | Join admin room |
 
 ---
 
-## Development Roadmap
+## Development Workflow
 
-See **[PLAN.md](PLAN.md)** for detailed 16-week plan with phases:
-
-| Phase | Focus | Timeline |
-|-------|-------|----------|
-| 1 | Security + Backend Consolidation | Weeks 1-3 |
-| 2 | Frontend Modernization (Templates, CSS, JS) | Weeks 3-6 |
-| 3 | API Completion + Frontend Integration | Weeks 5-8 |
-| 4 | Advanced Features (AI, PWA, i18n, Email) | Weeks 8-14 |
-| 5 | Production Hardening (Azure, CI/CD, Monitoring) | Weeks 12-16 |
-
-### Immediate Priorities (This Week)
-- [ ] Delete `admin_credentials.txt` and rotate credentials
-- [ ] Remove hardcoded secrets from `auth.js`, `backend/db/config.js`
-- [ ] Delete deprecated `backend/` directory
-- [ ] Create `.env.example` template
-- [ ] Set up Alembic migrations for Flask models
-- [ ] Begin Jinja2 template extraction (header, footer, slideshow)
-
----
-
-## Deployment (Target Architecture)
-
-```
-GitHub Actions CI/CD
-        │
-        ├── Frontend → Azure Static Web Apps (or CDN + Storage)
-        ├── Backend  → Azure Container Apps (Flask + Gunicorn + eventlet)
-        ├── Database → Azure Database for PostgreSQL (Flexible Server)
-        ├── Cache    → Azure Cache for Redis
-        ├── Secrets  → Azure Key Vault
-        └── Monitor  → Application Insights + Log Analytics
+### Setup (first time)
+```bash
+git clone the repo
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env  # edit with your values
+python app.py         # start Flask + Socket.IO on :5000
 ```
 
-**Current**: GitHub Pages only (static frontend, no backend)
+### Daily development
+```bash
+source .venv/bin/activate  # activate venv
+python app.py              # if working on backend
+```
+
+### Testing
+```bash
+# Python (backend)
+pytest tests/
+
+# JavaScript (frontend) — coming soon
+# npm test
+```
+
+### Linting & Quality
+```bash
+# Python
+ruff format .
+ruff check .
+mypy app.py
+
+# Frontend (static only, no build step neede)
+# CSS passes directly, no build tool
+```
 
 ---
 
-## Project Structure Conventions
+## Security
 
-- **CSS**: Mobile-first, CSS variables for theming, 768px primary breakpoint
-- **JS**: IIFE modules (migrating to ES modules + TypeScript)
-- **HTML**: Semantic, accessible, shared components via templates
-- **Python**: Type hints, SQLAlchemy 2.0 style, Pydantic for validation
-- **Commits**: Conventional Commits (`feat:`, `fix:`, `refactor:`, `docs:`)
+### Done
+- Removed `admin_credentials.txt`
+- Removed hardcoded admin emails/passwords from `auth.js`
+- CORS enabled (configurable)
+- Password hashing via `bcrypt`
+- JWT in httpOnly cookies
+- `.env `ius as `.env` auto-deleted from .gitignore
+- Bot detection + rate limiting in form
+
+### Pending
+- Flask-Talis (HSTS, CSP, XSS protection)
+- Proper CSRF protection for forms
+- Disk rotation of expithelial encryption for `SECRET_KEY` and `JWT_SECRET_KEY`
+- OWASP ZAP scan before production
+- Rotate any secrets that were previously in the commit history
+
+---
+
+## Testing
+
+| Type | Tool | Target |
+|------|------|--------|
+| Unittest (Python) | pytest + pytest-cov | 80% coverage |
+| Unittest (Frontend) | Vitest | 70% coverage |
+| Integration | pytest + Flask test client | All API endpoints |
+| E2E | Playwright | Critical user flows |
+| Accessibility | axe-core + Lighthouse | WCAG 2.1 AA |
+| Security | bandit, safety, npm audit | Zero high/critical |
+
+---
+
+## Performance Budget
+
+| Metric | Target |
+|--------|--------|
+| Largest Contentful Paint | < 2s |
+| Total Blocking Time | < 250ms |
+| Cumulative Layout Shift | < 0.1 |
+| Image sizes | < 500KB |
 
 ---
 
 ## Contributing
 
-1. Fork → feature branch → PR
-2. Run pre-commit hooks: `pre-commit run --all-files`
-3. Ensure tests pass: `pytest` (backend), `npm test` (frontend, when added)
-4. Follow code style: `ruff` + `black` (Python), `eslint` + `prettier` (JS/TS)
+1. Fork the repo → create feature branch → open a PR
+2. Run tests: `pytest`
+3. Follow code style: `ruff` + `black` (Python)
+4. Use Conventional Commits: `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`
 
 ---
 
 ## License
 
-© 2025-2026 WildGuard Society | Protecting Tanzania's Wildlife Heritage
+© 2025-2026 WildGuard Society — **Protecting Tanzania's Wildlife Heritage**
 
 ---
 
-## Key Files Reference
+## References
 
-| File | Purpose |
-|------|---------|
-| `PLAN.md` | Full 16-week project plan with tasks, risks, metrics |
-| `AGENTS.md` | Architecture documentation for AI agents |
-| `app.py` | Flask backend — primary server |
-| `requirements.txt` | Python dependencies |
-| `css/style.css` | Main stylesheet (needs split) |
-| `js/auth.js` | Auth + notifications + email (needs split) |
-| `js/scan.js` | Scan page AI/voice/TTS logic |
-| `js/wildlife-data.json` | Species database |
-| `gen_complete.py` | Data generator for species DB |
-| `.github/workflows/deploy.yml` | GitHub Pages deployment |
+- Design System: `DESIGN.md`
+- Architecture: `AGENTS.md`
+- Project Plan: `PLAN.md` (16-week road map)
+- Environment Template: `.env.example`
 
----
-
-*Last updated: July 31, 2026*
+*Last updated: August 2026*

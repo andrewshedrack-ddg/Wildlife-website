@@ -1,0 +1,104 @@
+/* ============================================================
+   WildGuard Society — Keyframe Animations (css/animations.css)
+   Reusable animation classes
+   ============================================================ */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes slideOutRight {
+  from { transform: translateX(0); }
+  to   { transform: translateX(100%); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.05); opacity: 0.8; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100%  { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-8px); }
+}
+
+@keyframes reveal-line {
+  from { width: 0; }
+  to   { width: 48px; }
+}
+
+.dot-pulse {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.dot-pulse span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: dotPulse 1.4s ease-in-out infinite;
+}
+
+.dot-pulse span:nth-child(2) { animation-delay: 0.2s; }
+.dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Utility Animation Classes ── */
+.animate-fade-in     { animation: fadeIn 0.8s ease-out forwards; }
+.animate-fade-up     { animation: fadeInUp 0.8s ease-out forwards; }
+.animate-scale-in    { animation: scaleIn 0.6s ease-out forwards; }
+.animate-slideInRight { animation: slideInRight 0.4s ease-out forwards; }
+.animate-float       { animation: float 3s ease-in-out infinite; }
+.animate-pulse       { animation: pulse 2s ease-in-out infinite; }
+
+/* Stagger children */
+.stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stagger.visible > *:nth-child(1) { animation: fadeInUp 0.5s ease-out 0.1s forwards; }
+.stagger.visible > *:nth-child(2) { animation: fadeInUp 0.5s ease-out 0.2s forwards; }
+.stagger.visible > *:nth-child(3) { animation: fadeInUp 0.5s ease-out 0.3s forwards; }
+.stagger.visible > *:nth-child(4) { animation: fadeInUp 0.5s ease-out 0.4s forwards; }
+.stagger.visible > *:nth-child(5) { animation: fadeInUp 0.5s ease-out 0.5s forwards; }
+.stagger.visible > *:nth-child(6) { animation: fadeInUp 0.5s ease-out 0.6s forwards; }
+.stagger.visible > *:nth-child(7) { animation: fadeInUp 0.5s ease-out 0.7s forwards; }
+.stagger.visible > *:nth-child(8) { animation: fadeInUp 0.5s ease-out 0.8s forwards; }
+.stagger.visible > *:nth-child(9) { animation: fadeInUp 0.5s ease-out 0.9s forwards; }
+
+/* Reduced motion: disable animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -292,8 +292,10 @@
 .lib-scans { padding:3rem 2rem; text-align:center; }
 .lib-scans .section-header { margin-bottom:1.5rem; }
 .lib-scans #scannedLibraryContainer {
-  max-height:-kasumi
-3px; border-radius:6px; background:rgba(255,255,255,.03);
+  max-height: none;
+  overflow-y: auto;
+  border-radius: 6px;
+  background: rgba(255,255,255,.03);
 }
 .lib-scans .wildlife-card, .lib-scans .scan-card {
   background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06);

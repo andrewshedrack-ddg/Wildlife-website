@@ -1,4 +1,7 @@
 node_modules
+dist/
+.next/
+
 # Backup files
 *.backup
 *.bak
@@ -12,27 +15,85 @@ js/library.js.bak
 js/scan_backup.js
 library/library.html.bak
 
-# Other temporary files
+# Temporary / debug files
 button.txt
 error.txt
 log.txt
 output.txt
 update_style.ps1
 scan_backup.html
+debug.txt
+emoji_check.txt
+check_*.py
+find_section.py
+verify_lib.py
+
+# CRITICAL: NEVER commit credentials files
 admin_credentials.txt
+*.key
+*.pem
+*.p12
+secrets/
+credentials/
+
 # Python
-__pycache__
+__pycache__/
 *.py[cod]
 *.class
 *.pyo
 *.pyd
 *.cover
-*.log
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Flask
+instance/
+*.db
+*.sqlite
+
+# Environment variables
 .env
 .env.*
 !.env.example
+!.env.local.example
+
 # Logs
 *.log
+npm-debug.log*
+
 # OS
 .DS_Store
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDErsk
+.idea/
+*.sublime-project
+*.sublime-workspace
+.vscode/settings.json
+
+# Coverage
+htmlcoverage/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.pytest_cache/
+
+# Docker
+.docker/
+
+# Terraform / IaC
+.terraform/
+*.tfstate
+*.tfstate.*

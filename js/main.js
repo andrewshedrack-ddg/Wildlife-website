@@ -1,73 +1,130 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // Update year in footer
-  const yearNode = document.querySelector('[data-current-year]');
-  if (yearNode) yearNode.textContent = String(new Date().getFullYear());
+/**
+ * WildGuard Society — Main JavaScript
+ * Shared UI: scrollFX, mobile menu, user dropdown, slideshow, reveal animations, theme toggle
+ * Version 2.0 — Modular, accessible, reduced-motion aware
+ */
 
-  // Header scroll effect
-  const header = document.querySelector('.site-header');
-  if (header) {
-    window.addEventListener('scroll', () => {
+(function () {
+  'use strict';
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+
+  function getBasePath() {
+    var path = window.location.pathname;
+    var parts = path.split('/').filter(Boolean);
+    return parts.length > 1 ? '../' : '';
+  }
+
+  function query(selector) { return document.querySelector(selector); }
+  function queryAll(selector) { return document.querySelectorAll(selector); }
+
+  /* ============================================================
+     INIT
+     ============================================================ */
+  document.addEventListener('DOMContentLoaded', function () {
+    updateYear();
+    initHeaderScroll();
+    initMobileMenu();
+    initUserDropdown();
+    initSlideshow();
+    initRevealAnimations();
+    initThemeToggle();
+    initStreamingCarousels();
+  });
+
+  /* ── Footer Year ── */
+  function updateYear() {
+    var el = query('[data-current-year]');
+    if (el) el.textContent = String(new Date().getFullYear());
+  }
+
+  /* ── Header scroll effect ── */
+  function initHeaderScroll() {
+    var header = query('.site-header');
+    if (!header) return;
+
+    window.addEventListener('scroll', function () {
       header.classList.toggle('scrolled', window.scrollY > 50);
     });
   }
 
-  // Mobile menu toggle
-  const mobileToggle = document.querySelector('.mobile-toggle');
-  const desktopNav = document.querySelector('.desktop-nav');
-  if (mobileToggle && desktopNav) {
-    mobileToggle.addEventListener('click', (e) => {
+  /* ── Mobile Menu ── */
+  function initMobileMenu() {
+    var toggle = query('.mobile-toggle');
+    var nav = query('.desktop-nav');
+    if (!toggle || !nav) return;
+
+    toggle.addEventListener('click', function (e) {
       e.stopPropagation();
       e.preventDefault();
-      desktopNav.classList.toggle('open');
-      mobileToggle.classList.toggle('active');
-      const icon = mobileToggle.querySelector('i');
+      nav.classList.toggle('open');
+      toggle.classList.toggle('active');
+      var expanded = nav.classList.contains('open');
+      toggle.setAttribute('aria-expanded', String(expanded));
+      var icon = toggle.querySelector('i');
       if (icon) {
-        icon.className = desktopNav.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
+        icon.className = expanded ? 'fas fa-times' : 'fas fa-bars';
       }
     });
-    // Close mobile menu when clicking outside (but not inside the nav)
-    document.addEventListener('click', (e) => {
-      if (!desktopNav.classList.contains('open')) return;
-      // Don't close if clicking inside desktop-nav or on mobile-toggle
+
+    document.addEventListener('click', function (e) {
+      if (!nav.classList.contains('open')) return;
       if (e.target.closest('.desktop-nav') || e.target.closest('.mobile-toggle')) return;
-      desktopNav.classList.remove('open');
-      mobileToggle.classList.remove('active');
-      const icon = mobileToggle.querySelector('i');
+      nav.classList.remove('open');
+      toggle.classList.remove('active');
+      toggle.setAttribute('aria-expanded', 'false');
+      var icon = toggle.querySelector('i');
       if (icon) icon.className = 'fas fa-bars';
     });
   }
 
-  // User menu dropdown toggle
-  const userMenuToggle = document.querySelector('.user-menu-toggle');
-  const userDropdown = document.querySelector('.user-dropdown');
-  if (userMenuToggle && userDropdown) {
-    userMenuToggle.addEventListener('click', (e) => {
+  /* ── User Dropdown ── */
+  function initUserDropdown() {
+    var toggle = query('.user-menu-toggle');
+    var dropdown = query('.user-dropdown');
+    if (!toggle || !dropdown) return;
+
+    toggle.addEventListener('click', function (e) {
       e.stopPropagation();
-      userDropdown.classList.toggle('open');
+      dropdown.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(dropdown.classList.contains('open')));
     });
-    document.addEventListener('click', (e) => {
-      if (userDropdown.classList.contains('open') && !e.target.closest('.user-menu')) {
-        userDropdown.classList.remove('open');
+
+    document.addEventListener('click', function (e) {
+      if (dropdown.classList.contains('open') && !e.target.closest('.user-menu')) {
+        dropdown.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
       }
     });
   }
 
-  // Slideshow auto-cycle
-  const slides = document.querySelectorAll('.page-slide');
-  if (slides.length > 1) {
-    let current = 0;
-    setInterval(() => {
+  /* ── Slideshow ── */
+  function initSlideshow() {
+    var slides = queryAll('.page-slide');
+    if (slides.length < 2) return;
+    var current = 0;
+
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    setInterval(function () {
       slides[current].classList.remove('active');
       current = (current + 1) % slides.length;
       slides[current].classList.add('active');
     }, 5000);
   }
 
-  // Inter reveal animations
-  const revealTargets = document.querySelectorAll('.card, .feature-card');
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
+  /* ── Intersection Observer Reveal ── */
+  function initRevealAnimations() {
+    var cards = queryAll('.card, .feature-card, .stat-card');
+    if (!cards.length) return;
+
+    if (!('IntersectionObserver' in window)) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.style.opacity = '1';
           entry.target.style.transform = 'translateY(0)';
@@ -75,11 +132,67 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }, { threshold: 0.1 });
-    revealTargets.forEach((target) => {
+
+    cards.forEach(function (target) {
       target.style.opacity = '0';
       target.style.transform = 'translateY(20px)';
       target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
       observer.observe(target);
     });
+
+    // Stagger children
+    var staggerContainers = queryAll('.stagger');
+    staggerContainers.forEach(function (container) {
+      var children = container.querySelectorAll('.card, .feature-card');
+      if (!children.length) return;
+
+      var staggerObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            staggerObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      staggerObserver.observe(container);
+    });
   }
-});
+
+  /* ── Dark / Light Theme ── */
+  function initThemeToggle() {
+    var toggle = query('#theme-toggle');
+    if (!toggle) return;
+
+    var savedTheme = localStorage.getItem('wildguard_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme, toggle);
+
+    toggle.addEventListener('click', function () {
+      var current = document.documentElement.getAttribute('data-theme');
+      var next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('wildguard_theme', next);
+      updateThemeIcon(next);
+    });
+  }
+
+  function updateThemeIcon(theme, toggle) {
+    var btn = toggle || query('#theme-toggle');
+    if (!btn) return;
+    var icon = btn.querySelector('i');
+    if (!icon) return;
+    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+
+  /* ── Streaming Carousel (Chester Zoo inspired) ── */
+  function initStreamingCarousels() {
+    var carousels = queryAll('.h-scroll');
+    carousels.forEach(function (carousel) {
+      if (carousel.scrollWidth <= carousel.clientWidth) {
+        carousel.style.justifyContent = 'center';
+      }
+    });
+  }
+})();

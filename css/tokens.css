@@ -1,0 +1,138 @@
+/* ============================================================
+   WildGuard Society — Design Tokens (css/tokens.css)
+   CSS custom properties defining the entire visual language
+   ============================================================ */
+
+:root {
+  /* ── Colors: Primary ── */
+  --primary:            #1b5e40;
+  --primary-dark:       #0a2e1f;
+  --primary-light:      #2d8a5e;
+  --primary-bright:     #3cb371;
+
+  /* ── Colors: Accent ── */
+  --accent:             #d4a017;
+  --accent-hover:       #c8960c;
+  --accent-soft:        rgba(212, 160, 23, 0.12);
+  --accent-glass:       rgba(212, 160, 23, 0.20);
+
+  /* ── Colors: Dark (default theme) ── */
+  --dark:               #0a1a12;
+  --darker:             #050e09;
+  --surface:            rgba(255, 255, 255, 0.04);
+  --surface-hover:      rgba(255, 255, 255, 0.08);
+  --border-subtle:      rgba(255, 255, 255, 0.06);
+  --border-soft:        rgba(255, 255, 255, 0.10);
+  --border-medium:      rgba(255, 255, 255, 0.15);
+
+  /* ── Colors: Text ── */
+  --light:              #f5f5f0;
+  --lighter:            #ffffff;
+  --text:               #d4d4d0;
+  --text-dim:           rgba(255, 255, 255, 0.60);
+  --text-faint:         rgba(255, 255, 255, 0.35);
+
+  /* ── Colors: Semantic ── */
+  --success:            #22c55e;
+  --warning:            #f59e0b;
+  --danger:             #ef4444;
+  --info:               #3b82f6;
+
+  /* ── Typography ── */
+  --font-heading:      'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body:         'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono:         'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* fluid type scale */
+  --text-xs:            clamp(0.75rem, 0.9vw + 0.2rem, 0.88rem);
+  --text-sm:            clamp(0.85rem, 1vw + 0.25rem, 0.95rem);
+  --text-base:          clamp(0.95rem, 1.1vw + 0.3rem, 1.08rem);
+  --text-lg:            clamp(1.05rem, 1.4vw + 0.3rem, 1.25rem);
+  --text-xl:            clamp(1.2rem, 1.8vw + 0.4rem, 1.55rem);
+  --text-2xl:           clamp(1.5rem, 2.8vw + 0.5rem, 2.2rem);
+  --text-3xl:           clamp(2rem, 4.5vw + 0.5rem, 3.5rem);
+  --text-4xl:           clamp(2.5rem, 6vw + 0.5rem, 4.5rem);
+
+  /* ── Spacing ── */
+  --space-2xs:          0.25rem;
+  --space-xs:           0.5rem;
+  --space-sm:           0.75rem;
+  --space-md:           1rem;
+  --space-lg:           1.5rem;
+  --space-xl:           2rem;
+  --space-2xl:          3rem;
+  --space-3xl:          5rem;
+
+  /* ── Layout ── */
+  --max-width:          1200px;
+  --header-height:      72px;
+
+  /* ── Border Radius ── */
+  --radius:             8px;
+  --radius-lg:          16px;
+  --radius-xl:          24px;
+  --radius-full:        9999px;
+
+  /* ── Shadows ── */
+  --shadow:             0 4px 20px rgba(0, 0, 0, 0.15);
+  --shadow-lg:          0 10px 40px rgba(0, 0, 0, 0.25);
+  --shadow-card:        0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-header:      0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(212, 160, 23, 0.1);
+  --shadow-header-scrolled: 0 12px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 160, 23, 0.2);
+
+  /* ── Transitions ── */
+  --transition:         all 0.3s ease;
+  --transition-slow:    all 0.6s ease;
+  --transition-fast:    all 0.15s ease;
+
+  /* ── Z-index ── */
+  --z-header:           1000;
+  --z-dropdown:         2000;
+  --z-modal:            3000;
+  --z-toast:            4000;
+
+  /* ── Glass Morphism ── */
+  --glass-bg:           rgba(255, 255, 255, 0.04);
+  --glass-border:       rgba(255, 255, 255, 0.08);
+  --glass-blur:         4px;
+
+  /* ── Section Overlays ── */
+  --overlay-strong:     rgba(6, 13, 9, 0.92);
+  --overlay-mid:        rgba(8, 18, 12, 0.85);
+  --overlay-soft:       rgba(8, 18, 12, 0.60);
+}
+
+/* ── Forest Mode (light theme) ── */
+[data-theme="light"] {
+  --dark:               #f4f1e8;
+  --darker:             #ede8d5;
+  --surface:            rgba(0, 0, 0, 0.03);
+  --surface-hover:      rgba(0, 0, 0, 0.06);
+  --border-subtle:      rgba(0, 0, 0, 0.06);
+  --border-soft:        rgba(0, 0, 0, 0.10);
+  --border-medium:      rgba(0, 0, 0, 0.15);
+  --light:              #1a1a14;
+  --lighter:            #0a0a07;
+  --text:               #3a3a30;
+  --text-dim:           rgba(0, 0, 0, 0.50);
+  --text-faint:         rgba(0, 0, 0, 0.30);
+  --glass-bg:           rgba(0, 0, 0, 0.03);
+  --glass-border:       rgba(0, 0, 0, 0.06);
+  --overlay-strong:     rgba(244, 241, 232, 0.92);
+  --overlay-mid:        rgba(244, 241, 232, 0.85);
+  --overlay-soft:       rgba(244, 241, 232, 0.60);
+  --shadow-card:        0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition:       none;
+    --transition-slow:  none;
+    --transition-fast:  none;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
