@@ -94,6 +94,14 @@
   transform: translateY(-2px);
   box-shadow: 0 6px 28px rgba(212, 160, 23, 0.38);
 }
+.cta-outline {
+  background: transparent !important;
+  border: 2px solid var(--accent) !important;
+  color: var(--accent) !important;
+}
+.cta-outline:hover {
+  background: var(--accent-soft) !important;
+}
 
 /* ═══════════════════════════════════════════════════════════════
    CARDS
@@ -145,6 +153,32 @@
   color: var(--text-dim);
   font-size: var(--text-sm);
   line-height: 1.6;
+}
+
+/* Horizontal Card (image left + text right — used for conservation heroes) */
+.card--horizontal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.card--horizontal .card-image {
+  height: 100%;
+  min-height: 220px;
+}
+
+.card--horizontal .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .card--horizontal {
+    grid-template-columns: 1fr;
+  }
+  .card--horizontal .card-image {
+    height: 180px;
+  }
 }
 
 /* Feature Card (icon-based, no image) */
