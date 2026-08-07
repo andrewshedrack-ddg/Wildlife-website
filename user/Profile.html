@@ -15,11 +15,15 @@
     <style>
         .profile-layout { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; align-items: start; }
         @media (max-width: 768px) { .profile-layout { grid-template-columns: 1fr; } }
-        .profile-card { padding: 2rem; text-align: center; }
+        .profile-card { padding: 2rem; text-align: center; transition: transform 0.35s ease, box-shadow 0.35s ease; animation: fadeInUp 0.6s ease both; }
+        .profile-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.35); }
+        .settings-card { padding: 2rem; transition: transform 0.35s ease, box-shadow 0.35s ease; animation: fadeInUp 0.6s ease 0.1s both; }
         .profile-avatar-wrap { position: relative; width: 120px; height: 120px; margin: 0 auto 1.5rem; }
-        .profile-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); }
-        .avatar-edit-btn { position: absolute; bottom: 0; right: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); border: none; color: var(--dark); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); }
-        .avatar-edit-btn:hover { background: var(--accent-hover); transform: scale(1.1); }
+        .profile-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 8px 24px rgba(201,162,39,0.35); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .profile-avatar:hover { transform: scale(1.04); box-shadow: 0 12px 32px rgba(201,162,39,0.5); }
+        .avatar-edit-btn { position: absolute; bottom: 0; right: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); border: none; color: var(--dark); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+        .avatar-edit-btn:hover { background: var(--accent-hover); transform: scale(1.12) rotate(8deg); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
         .profile-name { color: var(--lighter); font-size: 1.5rem; margin-bottom: 0.25rem; }
         .profile-email { color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 0.5rem; }
         .profile-role { color: var(--accent); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.75rem; }
@@ -30,7 +34,6 @@
         .stat-label { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
         .profile-actions { display: flex; flex-direction: column; gap: 0.75rem; }
         .profile-actions .btn { width: 100%; justify-content: center; }
-        .settings-card { padding: 2rem; }
         .settings-card .card-header { margin-bottom: 1.5rem; }
         .settings-card .card-title { color: var(--lighter); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
         .settings-card .card-subtitle { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
@@ -91,17 +94,6 @@
                             <div class="dropdown-divider"></div>
                             <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
                         </div>
-                    </div>
-                </div>
-                <div class="language-selector" data-language-selector>
-                    <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
-                        <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="lang-dropdown" role="menu" hidden>
-                        <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
-                        <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
-                        <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
                     </div>
                 </div>
             </div>
@@ -193,11 +185,34 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="country" class="form-label">Country</label>
-                                    <select id="country" name="country" class="form-input">
+                                    <select id="country" name="country" class="form-input form-select">
                                         <option value="">Select Country</option>
                                         <option value="kenya">Kenya</option>
                                         <option value="uganda">Uganda</option>
+                                        <option value="tanzania">Tanzania</option>
+                                        <option value="rwanda">Rwanda</option>
                                         <option value="south-africa">South Africa</option>
+                                        <option value="ethiopia">Ethiopia</option>
+                                        <option value="nigeria">Nigeria</option>
+                                        <option value="ghana">Ghana</option>
+                                        <option value="egypt">Egypt</option>
+                                        <option value="morocco">Morocco</option>
+                                        <option value="botswana">Botswana</option>
+                                        <option value="namibia">Namibia</option>
+                                        <option value="zimbabwe">Zimbabwe</option>
+                                        <option value="zambia">Zambia</option>
+                                        <option value="mozambique">Mozambique</option>
+                                        <option value="madagascar">Madagascar</option>
+                                        <option value="united-states">United States</option>
+                                        <option value="united-kingdom">United Kingdom</option>
+                                        <option value="germany">Germany</option>
+                                        <option value="france">France</option>
+                                        <option value="india">India</option>
+                                        <option value="china">China</option>
+                                        <option value="australia">Australia</option>
+                                        <option value="canada">Canada</option>
+                                        <option value="brazil">Brazil</option>
+                                        <option value="japan">Japan</option>
                                         <option value="other">Other</option>
                                     </select>
                                 </div>
@@ -354,6 +369,7 @@
                 reader.onload = function() {
                     const result = window.updateUserProfile({ avatar: reader.result });
                     if (result.success && avatarImg) { avatarImg.src = reader.result; }
+                    if (typeof window.showToast === 'function') window.showToast('Avatar updated successfully!', 'success');
                     showSaveMsg('avatar-saved', 'Avatar updated successfully!');
                 };
                 reader.readAsDataURL(file);
@@ -416,8 +432,10 @@
                     const result = window.updateUserProfile(updated);
                     if (result.success) {
                         refreshHeader();
+                        if (typeof window.showToast === 'function') window.showToast('Profile updated successfully!', 'success');
                         showSaveMsg('profile-saved', 'Profile updated successfully!');
                     } else {
+                        if (typeof window.showToast === 'function') window.showToast(result.message || 'Could not save profile.', 'error');
                         showSaveMsg('profile-saved', result.message || 'Could not save profile.');
                     }
                 });
@@ -439,6 +457,7 @@
                     msgEl.textContent = res.message;
                     msgEl.className = 'form-message ' + (res.success ? 'form-message--success' : 'form-message--error');
                     msgEl.style.display = 'block';
+                    if (typeof window.showToast === 'function') window.showToast(res.message, res.success ? 'success' : 'error');
                     if (res.success) { passForm.reset(); }
                 });
             }
