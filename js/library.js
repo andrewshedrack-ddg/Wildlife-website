@@ -189,7 +189,7 @@ const books = [
                 </div>
                 <div class="lib-book-actions">
                     <button data-read="${book.id}" class="btn btn--primary btn--sm">Read</button>
-                    <button data-download="${book.id}" class="btn btn--secondary btn--sm">Download</button>
+                    <button data-download="${book.id}" class="btn btn--secondary btn--sm"><i class="fas fa-download"></i> PDF</button>
                 </div>
             `;
             booksGrid.appendChild(el);
@@ -227,18 +227,75 @@ const books = [
     function downloadBook(id) {
         const book = books.find(b => b.id === id);
         if (!book) return;
-        let text = `${book.title}\nby ${book.author}\n\n`;
-        book.chapters.forEach(ch => {
-            text += `${ch.title}\n${ch.text}\n\n`;
-        });
-        text += `---\nPublished by WildGuard Society\nFor educational purposes.`;
-        const blob = new Blob([text], { type: 'text/plain' });
+        const blob = new Blob([buildBookPdf(book)], { type: 'application/pdf' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `${book.title.replace(/\s+/g, '_')}.txt`;
+        a.download = `${book.title.replace(/\s+/g, '_')}.pdf`;
         a.click();
         URL.revokeObjectURL(url);
+    }
+
+    function buildBookPdf(book) {
+        const esc = s => s.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+        const wrap = (text, max) => {
+            const words = String(text).split(/\s+/);
+            const lines = [];
+            let cur = '';
+            for (const w of words) {
+                const t = cur ? cur + ' ' + w : w;
+                if (t.length > max && cur) { lines.push(cur); cur = w; }
+                else cur = t;
+            }
+            if (cur) lines.push(cur);
+            return lines;
+        };
+
+        const linesPerPage = 44;
+        const contentLines = [book.title, `by ${book.author}`, ''];
+        book.chapters.forEach(ch => {
+            contentLines.push(ch.title, '');
+            wrap(ch.text, 86).forEach(l => contentLines.push(l));
+            contentLines.push('');
+        });
+        const pages = [];
+        for (let i = 0; i < contentLines.length; i += linesPerPage) {
+            pages.push(contentLines.slice(i, i + linesPerPage));
+        }
+        if (pages.length === 0) pages.push(['']);
+
+        const N = pages.length;
+        const pageObjs = pages.map((_, i) => 3 + i);
+        const fontObj = 3 + N;
+        const contentObjs = pages.map((_, i) => 4 + N + i);
+
+        const objects = [null];
+        objects.push('<< /Type /Catalog /Pages 2 0 R >>');
+        objects.push(`<< /Type /Pages /Kids [${pageObjs.map(n => `${n} 0 R`).join(' ')}] /Count ${N} >>`);
+        pages.forEach((pl, i) => {
+            objects.push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 ${fontObj} 0 R >> >> /Contents ${contentObjs[i]} 0 R >>`);
+        });
+        objects.push('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
+        pages.forEach(pl => {
+            let stream = 'BT /F1 12 Tf 72 720 Td 14 TL\n';
+            pl.forEach(line => { stream += `(${esc(line)}) Tj T*\n`; });
+            stream += 'ET';
+            objects.push(`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);
+        });
+
+        let out = '%PDF-1.4\n';
+        const offsets = [0];
+        for (let i = 1; i < objects.length; i++) {
+            offsets[i] = out.length;
+            out += `${i} 0 obj\n${objects[i]}\nendobj\n`;
+        }
+        const xrefStart = out.length;
+        out += `xref\n0 ${objects.length}\n0000000000 65535 f \n`;
+        for (let i = 1; i < objects.length; i++) {
+            out += `${String(offsets[i]).padStart(10, '0')} 00000 n \n`;
+        }
+        out += `trailer\n<< /Size ${objects.length} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
+        return out;
     }
 
     // --- Modal Close ---

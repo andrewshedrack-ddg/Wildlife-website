@@ -337,6 +337,36 @@
 }
 .lib-scans .wildlife-card h3, .lib-scans .scan-card h4 { font-size:1rem; margin:0; }
 
+/* ── 8. Species cards (category pages) ─────────────────────── */
+.wildlife-card {
+  position: relative;
+  background: linear-gradient(145deg, rgba(28, 40, 31, 0.92), rgba(13, 20, 14, 0.94));
+  border: 1px solid rgba(201, 162, 39, 0.28);
+}
+.wildlife-card:hover { border-color: rgba(201, 162, 39, 0.6); }
+
+.wildlife-card .brief {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  margin: 0;
+  padding: 0.3rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(12, 24, 16, 0.78);
+  border: 1px solid rgba(201, 162, 39, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.wildlife-card .card-body { padding-bottom: 1.75rem; }
+.wildlife-card .card-body h3 { padding-right: 2.5rem; }
+.wildlife-card .full-details { margin-top: 0.75rem; }
+
 /* ── Filter/Scan Bar Styles ────────────────────────────────── */
 .filter-bar {
   display: flex;
