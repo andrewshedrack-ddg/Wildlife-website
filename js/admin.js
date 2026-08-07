@@ -223,6 +223,14 @@
       localStorage.setItem('wildlife_scans', JSON.stringify(scans));
       localStorage.setItem('wildlife_pending_admin', JSON.stringify(pending.filter(p => p.id !== id)));
       updateStats(); renderPendingScans();
+      // Notify the scan's owner
+      if (item.user && typeof window.sendUserNotification === 'function') {
+        window.sendUserNotification(item.user, {
+          type: 'scan_approved',
+          title: 'Scan Approved',
+          message: 'Your scan of ' + (item.animalName || item.animal || 'wildlife') + ' was approved and added to the library.'
+        });
+      }
       // Show toast
       showAdminToast('Scan approved and moved to catalog.');
     }
@@ -231,8 +239,16 @@
   window.rejectScan = function(id) {
     if (!confirm('Reject this scan?')) return;
     const pending = getPendingScans();
+    const item = pending.find(p => p.id === id);
     localStorage.setItem('wildlife_pending_admin', JSON.stringify(pending.filter(p => p.id !== id)));
     updateStats(); renderPendingScans();
+    if (item && item.user && typeof window.sendUserNotification === 'function') {
+      window.sendUserNotification(item.user, {
+        type: 'scan_rejected',
+        title: 'Scan Rejected',
+        message: 'Your scan of ' + (item.animalName || item.animal || 'wildlife') + ' was not approved. You can resubmit it or ask for more details.'
+      });
+    }
   };
 
   window.markMessageRead = function(id) {

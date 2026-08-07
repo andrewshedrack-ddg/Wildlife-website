@@ -99,6 +99,13 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(scans));
         localStorage.setItem(PENDING_ADMIN_KEY, JSON.stringify(pending));
         renderAdminPending(document.getElementById("pendingAdminContainer"));
+        if (item.user && typeof window.sendUserNotification === "function") {
+          window.sendUserNotification(item.user, {
+            type: "scan_approved",
+            title: "Scan Approved",
+            message: "Your scan of " + (item.species && item.species.name || "wildlife") + " was approved and added to the library."
+          });
+        }
       }
     },
     reject: function(btn) {
@@ -106,9 +113,17 @@
       var pending = JSON.parse(localStorage.getItem(PENDING_ADMIN_KEY) || "[]");
       var idx = pending.findIndex(function(s) { return s.id === id; });
       if (idx !== -1) {
+        var item = pending[idx];
         pending.splice(idx, 1);
         localStorage.setItem(PENDING_ADMIN_KEY, JSON.stringify(pending));
         renderAdminPending(document.getElementById("pendingAdminContainer"));
+        if (item.user && typeof window.sendUserNotification === "function") {
+          window.sendUserNotification(item.user, {
+            type: "scan_rejected",
+            title: "Scan Rejected",
+            message: "Your scan of " + (item.species && item.species.name || "wildlife") + " was not approved. You can resubmit it or ask for details."
+          });
+        }
       }
     }
   };

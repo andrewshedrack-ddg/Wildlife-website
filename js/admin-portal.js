@@ -98,7 +98,7 @@
       showNotification('New Message', data.subject, 'message');
       loadMessages();
       updateUnreadBadge();
-    }
+    });
 
     // Broadcast sent confirmation
     socket.on('broadcast_sent', function(data) {
@@ -275,15 +275,19 @@
         '<div><div style="font-weight:600;font-size:1rem">' + esc(s.animalName || 'Unknown Animal') + '</div>' +
         '<div style="font-size:0.82rem;opacity:0.6">By: ' + esc(s.submittedBy || 'Unknown') + ' · ' + (s.confidence ? s.confidence + '% match' : '') + ' · ' + fmtShort(s.timestamp) + '</div></div></div>' +
         '<div class="portal-list-actions"><button class="portal-btn portal-btn-success portal-btn-sm" onclick="window._approveScan(' + i + ')"><i class="fas fa-check"></i> Approve</button><button class="portal-btn portal-btn-danger portal-btn-sm" onclick="window._rejectScan(' + i + ')"><i class="fas fa-xmark"></i> Reject</button></div></div>';
-    }).join('') : '<div class="portal-empty"><i class="fas fa-image"></i><p>No pending scans</p></div>';
+    }).join('') : '<div class="portal-empty"><i class="fas fa-image"></i><p>No pending scans</p></div>');
   }
   window._approveScan = function(idx) {
     var scans = get('SCANS'), approved = get('APPROVED');
-    if (scans[idx]) { var s = scans.splice(idx, 1)[0]; s.approvedAt = new Date().toISOString(); approved.unshift(s); set('SCANS', scans); set('APPROVED', approved); logAct('scan_approved', { animal: s.animalName }); notify('Scan approved and added to library', 'success'); loadScans(); }
+    if (scans[idx]) { var s = scans.splice(idx, 1)[0]; s.approvedAt = new Date().toISOString(); approved.unshift(s); set('SCANS', scans); set('APPROVED', approved); logAct('scan_approved', { animal: s.animalName }); notify('Scan approved and added to library', 'success'); loadScans();
+      if (s.user && typeof window.sendUserNotification === 'function') { window.sendUserNotification(s.user, { type: 'scan_approved', title: 'Scan Approved', message: 'Your scan of ' + (s.animalName || 'wildlife') + ' was approved and added to the library.' }); }
+    }
   };
   window._rejectScan = function(idx) {
     var scans = get('SCANS');
-    if (scans[idx]) { var s = scans.splice(idx, 1)[0]; set('SCANS', scans); logAct('scan_rejected', { animal: s.animalName }); notify('Scan rejected', 'success'); loadScans(); }
+    if (scans[idx]) { var s = scans.splice(idx, 1)[0]; set('SCANS', scans); logAct('scan_rejected', { animal: s.animalName }); notify('Scan rejected', 'success'); loadScans();
+      if (s.user && typeof window.sendUserNotification === 'function') { window.sendUserNotification(s.user, { type: 'scan_rejected', title: 'Scan Rejected', message: 'Your scan of ' + (s.animalName || 'wildlife') + ' was not approved.' }); }
+    }
   };
 
   // ============ USERS & ROLES ============
@@ -508,6 +512,7 @@
           try { el.innerHTML = sections[currentSection](); attach(currentSection); } 
           catch(e) { console.error('Section render error:', e); }
         }, 50);
+      }
     }
     updateUnreadBadge();
   }

@@ -629,7 +629,8 @@ const WildlifeScan = {
       confidence: this.currentResult.confidence,
       imageData: this.els.previewImg ? this.els.previewImg.src : "",
       status: "pending",
-      source: "user_scan"
+      source: "user_scan",
+      user: (typeof window.getCurrentUser === "function" && window.getCurrentUser() && window.getCurrentUser().email) || ""
     };
     pending.unshift(scanRecord);
     localStorage.setItem(this.PENDING_ADMIN_KEY, JSON.stringify(pending));

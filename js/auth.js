@@ -196,19 +196,52 @@
 
     if (isLoggedIn()) {
       const user = getUser();
-      const displayName = user.email ? sanitizeInput(user.email.split('@')[0]) : 'User';
       signinBtn.style.display = 'none';
       userMenu.style.display = 'block';
-      const emailSpan = userMenu.querySelector('#user-email');
-      if (emailSpan) emailSpan.textContent = displayName;
+      renderUserAvatar(user);
+      initNotificationBell();
       injectAdminLink(user);
+      injectSettingsLink();
     } else {
       signinBtn.style.display = '';
       userMenu.style.display = 'none';
+      removeNotificationBell();
     }
   }
 
-  // Inject admin dashboard link into user dropdown for admin users
+  // Render a compact circular avatar (uploaded image or first letter of username/name)
+  function renderUserAvatar(user) {
+    const toggle = userMenuToggle();
+    if (!toggle) return;
+    const name = (user && (user.username || user.name)) || (user && user.email ? user.email.split('@')[0] : 'U');
+    const letter = String(name).charAt(0).toUpperCase();
+    let avatar = toggle.querySelector('.user-avatar');
+    if (!avatar) {
+      const icon = toggle.querySelector('i');
+      if (icon) icon.style.display = 'none';
+      avatar = document.createElement('span');
+      avatar.className = 'user-avatar';
+      avatar.id = 'user-avatar';
+      toggle.insertBefore(avatar, toggle.firstChild);
+    }
+    if (user && user.avatar) {
+      avatar.innerHTML = '<img src="' + escapeHtml(user.avatar) + '" alt="' + escapeHtml(name) + '">';
+    } else {
+      avatar.textContent = letter;
+    }
+    const emailSpan = document.getElementById('user-email');
+    if (emailSpan) emailSpan.style.display = 'none';
+  }
+
+  function userMenuToggle() {
+    return document.getElementById('user-menu-toggle');
+  }
+
+  function userMenuEl() {
+    return document.getElementById('user-menu');
+  }
+
+  // Inject dashboard link into user dropdown for admin users
   function injectAdminLink(user) {
     const dropdown = document.getElementById('user-dropdown');
     if (!dropdown) return;
@@ -228,6 +261,23 @@
           dropdown.appendChild(adminLink);
         }
       }
+    }
+  }
+
+  // Inject Settings link into the user dropdown (before the divider)
+  function injectSettingsLink() {
+    const dropdown = document.getElementById('user-dropdown');
+    if (!dropdown) return;
+    if (dropdown.querySelector('[data-settings-link]')) return;
+    const divider = dropdown.querySelector('.dropdown-divider');
+    const settingsLink = document.createElement('a');
+    settingsLink.href = getBasePath() + 'user/Profile.html#settings';
+    settingsLink.setAttribute('data-settings-link', 'true');
+    settingsLink.innerHTML = '<i class="fas fa-cog"></i> Settings';
+    if (divider) {
+      dropdown.insertBefore(settingsLink, divider);
+    } else {
+      dropdown.appendChild(settingsLink);
     }
   }
 
@@ -252,6 +302,10 @@
     if (!toggleBtn) return;
     toggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
+      const panel = document.getElementById('notification-panel');
+      if (panel) panel.classList.remove('open');
+      const bell = document.getElementById('notification-bell');
+      if (bell) bell.setAttribute('aria-expanded', 'false');
       userMenu.classList.toggle('open');
     });
     document.addEventListener('click', (e) => {
@@ -480,6 +534,14 @@
         name: displayName
       });
 
+      // Welcome notification for the new user (seen after they sign in)
+      window.addUserNotification({
+        user: email,
+        type: 'welcome',
+        title: 'Welcome to WildGuard Society!',
+        message: `Hi ${displayName}, your account is ready. Explore the library and try a wildlife scan.`
+      });
+
       // Send welcome email (informational, no verification required)
       if (typeof sendWelcomeEmail !== 'undefined') { try { sendWelcomeEmail(email); } catch(e) {} }
 
@@ -597,34 +659,131 @@
 
   // --- User Notifications (Admin -> User) ---
   const USER_NOTIFICATIONS_KEY = 'wildguard_user_notifications';
-  function getUserNotifications() {
+  function getAllNotifications() {
     try { const data = localStorage.getItem(USER_NOTIFICATIONS_KEY); return data ? JSON.parse(data) : []; } catch (e) { return []; }
+  }
+  // Returns notifications for the signed-in user (or global ones without a user target)
+  function getUserNotifications() {
+    const session = currentSessionUser();
+    const all = getAllNotifications();
+    if (!session || !session.email) return all;
+    const email = session.email.toLowerCase();
+    const mine = all.filter(n => !n.user || String(n.user).toLowerCase() === email);
+    return mine.length ? mine : all;
   }
   window.getUserNotifications = getUserNotifications;
   window.addUserNotification = function(notification) {
-    const notifs = getUserNotifications();
-    notifs.unshift({ id: 'unotif_' + Date.now(), timestamp: new Date().toISOString(), read: false, ...notification });
+    const session = currentSessionUser();
+    const notifs = getAllNotifications();
+    const targetUser = (notification.user || (session && session.email) || '').toLowerCase();
+    notifs.unshift({ id: 'unotif_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5), timestamp: new Date().toISOString(), read: false, user: targetUser, ...notification });
     if (notifs.length > 50) notifs.pop();
     localStorage.setItem(USER_NOTIFICATIONS_KEY, JSON.stringify(notifs));
     renderUserNotificationBadge();
   };
+  window.sendUserNotification = function(email, notification) {
+    if (!email) return;
+    window.addUserNotification(Object.assign({}, notification, { user: email }));
+  };
+  window.markAllUserNotificationsRead = function() {
+    const notifs = getAllNotifications();
+    notifs.forEach(function(n) { n.read = true; });
+    localStorage.setItem(USER_NOTIFICATIONS_KEY, JSON.stringify(notifs));
+    renderUserNotificationBadge();
+    renderNotificationPanel();
+  };
+
+  // Notification bell in the header
+  function initNotificationBell() {
+    if (!isLoggedIn()) return;
+    const authBtns = document.getElementById('auth-buttons');
+    if (!authBtns) return;
+    let bell = document.getElementById('notification-bell');
+    if (bell) { bell.style.display = 'flex'; return; }
+    bell = document.createElement('button');
+    bell.id = 'notification-bell';
+    bell.className = 'notification-bell';
+    bell.setAttribute('aria-label', 'Notifications');
+    bell.setAttribute('aria-expanded', 'false');
+    bell.innerHTML = '<i class="fas fa-bell"></i><span class="bell-badge" id="userNotificationBadge"></span>';
+    const panel = document.createElement('div');
+    panel.id = 'notification-panel';
+    panel.className = 'notification-panel';
+    bell.appendChild(panel);
+    const themeToggle = authBtns.querySelector('.theme-toggle');
+    authBtns.insertBefore(bell, themeToggle || authBtns.firstChild);
+    bell.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const open = panel.classList.contains('open');
+      document.querySelectorAll('.user-dropdown.open, .lang-dropdown.open, .notification-panel.open').forEach(function(d) { d.classList.remove('open'); });
+      panel.classList.toggle('open', !open);
+      bell.setAttribute('aria-expanded', String(!open));
+      if (!open) { renderNotificationPanel(); }
+    });
+    document.addEventListener('click', function(e) {
+      if (panel.classList.contains('open') && !e.target.closest('.notification-bell')) {
+        panel.classList.remove('open');
+        bell.setAttribute('aria-expanded', 'false');
+      }
+    });
+    renderUserNotificationBadge();
+  }
+
+  function removeNotificationBell() {
+    const bell = document.getElementById('notification-bell');
+    if (bell) bell.style.display = 'none';
+  }
+
+  function renderNotificationPanel() {
+    const panel = document.getElementById('notification-panel');
+    if (!panel) return;
+    const notifs = getUserNotifications();
+    if (!notifs.length) {
+      panel.innerHTML = '<div class="notification-header"><strong>Notifications</strong></div><div class="notification-empty"><i class="fas fa-bell-slash"></i><p>No notifications yet</p><span>Admin updates about your scans and account will appear here.</span></div>';
+      return;
+    }
+    const unread = notifs.filter(n => !n.read).length;
+    let html = '<div class="notification-header"><strong>Notifications</strong>' +
+      (unread > 0 ? '<button type="button" class="notification-mark-read" onclick="window.markAllUserNotificationsRead()">Mark all read</button>' : '') +
+      '</div><div class="notification-list">';
+    notifs.forEach(function(n) {
+      const icon = n.type === 'scan_approved' ? 'fas fa-check-circle' : n.type === 'scan_rejected' ? 'fas fa-times-circle' : n.type === 'welcome' ? 'fas fa-hands-helping' : n.type === 'message' ? 'fas fa-envelope' : 'fas fa-bell';
+      html += '<div class="notification-item' + (n.read ? '' : ' unread') + '">' +
+        '<div class="notification-item-icon"><i class="' + icon + '"></i></div>' +
+        '<div class="notification-item-body"><strong>' + escapeHtml(n.title || 'Notification') + '</strong>' +
+        (n.message ? '<p>' + escapeHtml(n.message) + '</p>' : '') +
+        '<time>' + formatNotifTime(n.timestamp) + '</time></div></div>';
+    });
+    html += '</div>';
+    panel.innerHTML = html;
+  }
+
+  function formatNotifTime(ts) {
+    try {
+      const d = new Date(ts);
+      const now = new Date();
+      const diff = Math.floor((now - d) / 1000);
+      if (diff < 60) return 'Just now';
+      if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+      if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+      return d.toLocaleDateString();
+    } catch (e) { return ''; }
+  }
+
   function renderUserNotificationBadge() {
     const notifs = getUserNotifications();
     const unreadCount = notifs.filter(n => !n.read).length;
     let badge = document.getElementById('userNotificationBadge');
-    if (!badge && unreadCount > 0) {
-      // Create badge next to user menu or signin button
-      const userMenu = document.getElementById('user-menu');
-      const authBtns = document.getElementById('auth-buttons');
-      const target = userMenu?.style?.display !== 'none' ? userMenu : (authBtns || document.querySelector('.header-actions'));
-      if (target) {
-        badge = document.createElement('span');
-        badge.id = 'userNotificationBadge';
-        badge.style.cssText = 'position:absolute;top:4px;right:4px;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1000;';
-        target.appendChild(badge);
-      }
+    if (!badge) {
+      const bell = document.getElementById('notification-bell');
+      if (!bell) return;
+      badge = document.createElement('span');
+      badge.id = 'userNotificationBadge';
+      badge.className = 'bell-badge';
+      bell.querySelector('.fa-bell').after(badge);
     }
-    if (badge) { badge.textContent = unreadCount; badge.style.display = unreadCount > 0 ? 'flex' : 'none'; }
+    badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+    badge.style.display = unreadCount > 0 ? 'flex' : 'none';
   }
 
   // --- Activity Log (Admin Traffic) ---
@@ -704,6 +863,7 @@
     initRegisterForm();
     initNavLinks();
     initMobileMenu();
+    initNotificationBell();
     renderUserNotificationBadge();
     // Log page view
     try {
