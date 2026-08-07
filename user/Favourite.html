@@ -14,6 +14,9 @@
         .favourite-card .card-body { padding: 1rem; text-align: center; }
         .favourite-card .card-body h3 { font-size: 1rem; }
         .favourite-card .card-body p { font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+        .favourite-card .sci-name { font-style: italic; margin-bottom: 0.4rem; }
+        .status-pill { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; background: rgba(201,162,39,0.15); border: 1px solid rgba(201,162,39,0.5); color: #e3c65c; margin-bottom: 0.75rem; }
+        .remove-fav { margin-top: 0.5rem; }
     </style>
 </head>
 <body>
@@ -133,31 +136,54 @@
             }
         })();
 
-        // Load favourites from backend
-        (async function loadFavourites() {
+        function renderFavourites() {
             const grid = document.getElementById('favourites-grid');
             if (!grid) return;
-            const API_BASE = window.location.origin.includes('localhost') ? 'http://localhost:5000' : '';
-            try {
-                const resp = await fetch(API_BASE + '/api/user/favourites', { credentials: 'include' });
-                if (resp.ok) {
-                    const data = await resp.json();
-                    if (data.favourites && data.favourites.length > 0) {
-                        grid.innerHTML = '';
-                        data.favourites.forEach(fav => {
-                            const card = document.createElement('div');
-                            card.className = 'card favourite-card';
-                            card.innerHTML = '<div class="card-image"><img src="../assets/images/' + fav.species_name.toLowerCase().replace(/ /g, '_') + '.jpg" alt="' + fav.species_name + '" onerror="this.src=\'../assets/images/background.png\'"></div>' +
-                                '<div class="card-body"><h3>' + fav.species_name + '</h3><p>Added: ' + fav.created_at + '</p></div>';
-                            grid.appendChild(card);
-                        });
-                        return;
-                    }
-                }
-            } catch (e) {}
-            grid.innerHTML = '<div class="card favourite-card" style="grid-column:1/-1;text-align:center;padding:2rem;">' +
-                '<div class="card-body"><h3>No favourites yet</h3><p>Start scanning and save species to your favourites!</p></div></div>';
-        })();
+            const favs = (window.getUserFavourites ? window.getUserFavourites() : []) || [];
+
+            if (favs.length === 0) {
+                grid.innerHTML = '<div class="card favourite-card" style="grid-column:1/-1;text-align:center;padding:3rem 2rem;">' +
+                    '<div class="feature-icon" style="width:64px;height:64px;margin:0 auto 1.2rem;background:rgba(27,94,64,0.2);color:#1b5e40;"><i class="fas fa-heart" style="font-size:1.5rem;"></i></div>' +
+                    '<div class="card-body"><h3>No favourites yet</h3>' +
+                    '<p>Scan wildlife or browse the library, then save species to your favourites.</p>' +
+                    '<div style="display:flex;gap:0.75rem;justify-content:center;margin-top:1.25rem;">' +
+                    '<a href="../scan.html" class="btn btn--primary"><i class="fas fa-barcode"></i> Start Scanning</a>' +
+                    '<a href="../library/library.html" class="btn btn--secondary"><i class="fas fa-book-open"></i> Browse Library</a>' +
+                    '</div></div></div>';
+                return;
+            }
+
+            grid.innerHTML = '';
+            favs.forEach(function(fav) {
+                const card = document.createElement('div');
+                card.className = 'card favourite-card';
+                const imgSrc = fav.image || ('../assets/images/' + (fav.speciesKey || '') + '.jpg');
+                const statusBadge = fav.status ? '<span class="status-pill">' + fav.status + '</span>' : '';
+                card.innerHTML = '<div class="card-image" style="position:relative;">' +
+                    '<img src="' + imgSrc + '" alt="' + fav.name + '" onerror="this.src=\'../assets/images/background.png\'">' +
+                    '</div>' +
+                    '<div class="card-body">' +
+                    '<h3>' + fav.name + '</h3>' +
+                    (fav.scientificName ? '<p class="sci-name">' + fav.scientificName + '</p>' : '') +
+                    statusBadge +
+                    '<button class="btn btn--ghost btn--sm remove-fav" data-key="' + fav.speciesKey + '" aria-label="Remove ' + fav.name + ' from favourites"><i class="fas fa-heart-broken"></i> Remove</button>' +
+                    '</div>';
+                grid.appendChild(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderFavourites();
+            document.getElementById('favourites-grid').addEventListener('click', function(e) {
+                const btn = e.target.closest('.remove-fav');
+                if (!btn) return;
+                const key = btn.getAttribute('data-key');
+                const session = (window.getCurrentUser ? window.getCurrentUser() : null) || {};
+                const all = JSON.parse(localStorage.getItem('wildguard_favourites') || '[]');
+                localStorage.setItem('wildguard_favourites', JSON.stringify(all.filter(f => !(f.user === (session.email || '').toLowerCase() && f.speciesKey === key))));
+                renderFavourites();
+            });
+        });
     </script>
 </body>
 </html>

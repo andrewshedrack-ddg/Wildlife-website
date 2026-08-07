@@ -49,6 +49,9 @@
         .toggle-switch input:checked + .toggle-slider::before { transform: translateX(22px); }
         .form-group.toggle-group { flex-direction: row !important; align-items: center; justify-content: space-between; }
         .form-group.toggle-group .form-label { margin-bottom: 0; font-size: 0.9rem; }
+        .form-message { padding: 0.75rem 1rem; border-radius: var(--radius); font-size: 0.9rem; }
+        .form-message--success { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.4); color: #4ade80; }
+        .form-message--error { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.4); color: #f87171; }
     </style>
 </head>
 <body>
@@ -222,6 +225,33 @@
                                 <button type="submit" class="btn btn-primary">Save Changes</button>
                             </div>
                         </form>
+
+                        <div class="card-header" style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);">
+                            <h3 class="card-title"><i class="fas fa-key"></i> Change Password</h3>
+                            <p class="card-subtitle">Keep your account secure with a strong password</p>
+                        </div>
+                        <form id="password-form" class="settings-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="current-password" class="form-label">Current Password</label>
+                                    <input type="password" id="current-password" name="current-password" class="form-input" placeholder="Enter current password" autocomplete="current-password">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="new-password" class="form-label">New Password</label>
+                                    <input type="password" id="new-password" name="new-password" class="form-input" placeholder="At least 8 characters" autocomplete="new-password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm-password" class="form-label">Confirm New Password</label>
+                                    <input type="password" id="confirm-password" name="confirm-password" class="form-input" placeholder="Repeat new password" autocomplete="new-password">
+                                </div>
+                            </div>
+                            <div id="password-message" class="form-message" style="display:none;"></div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-key"></i> Update Password</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -281,92 +311,149 @@
             }
         })();
 
-        // Bind user data to profile page
         document.addEventListener('DOMContentLoaded', function() {
-            try {
-                const raw = localStorage.getItem('wildguard_user');
-                if (!raw || raw === 'null') return;
-                const user = JSON.parse(raw);
-                if (!user || !user.email) return;
+            const user = window.getCurrentUser ? window.getCurrentUser() : (function(){ try { return JSON.parse(localStorage.getItem('wildguard_user')); } catch(e) { return null; } })();
+            if (!user || !user.email) return;
 
-                // Name
-                const displayNameEl = document.getElementById('profile-display-name');
-                if (displayNameEl) {
-                    displayNameEl.textContent = user.name || (user.email ? user.email.split('@')[0] : 'User');
-                }
+            // ---- Header card ----
+            const displayNameEl = document.getElementById('profile-display-name');
+            const displayEmailEl = document.getElementById('profile-display-email');
+            const displayRoleEl = document.getElementById('profile-role-display');
+            const displayBioEl = document.getElementById('profile-bio-display');
+            const avatarImg = document.getElementById('profile-avatar-img');
 
-                // Email
-                const displayEmailEl = document.getElementById('profile-display-email');
-                if (displayEmailEl) {
-                    displayEmailEl.textContent = user.email;
-                }
-
-                // Role
-                const displayRoleEl = document.getElementById('profile-role-display');
-                if (displayRoleEl && user.role) {
-                    const roleText = user.role === 'admin' ? 'Administrator' : 'Conservationist';
+            function refreshHeader() {
+                const u = window.getCurrentUser ? window.getCurrentUser() : (function(){ try { return JSON.parse(localStorage.getItem('wildguard_user')); } catch(e) { return null; } })();
+                if (!u) return;
+                const name = u.name || [u.firstName, u.lastName].filter(Boolean).join(' ') || (u.email ? u.email.split('@')[0] : 'User');
+                if (displayNameEl) displayNameEl.textContent = name;
+                if (displayEmailEl) displayEmailEl.textContent = u.email;
+                if (displayRoleEl) {
+                    const roleText = u.role === 'admin' ? 'Administrator' : 'Conservationist';
                     displayRoleEl.innerHTML = '<i class="fas fa-shield-alt"></i> ' + roleText;
                 }
-
-                // Bind to form fields
-                const firstNameInput = document.getElementById('firstName');
-                const lastNameInput = document.getElementById('lastName');
-                const emailInput = document.getElementById('email');
-                const usernameInput = document.getElementById('username');
-
-                if (firstNameInput && user.firstName) firstNameInput.value = user.firstName;
-                if (lastNameInput && user.lastName) lastNameInput.value = user.lastName;
-                if (emailInput) emailInput.value = user.email;
-                if (usernameInput) {
-                    usernameInput.value = user.username || (user.email ? user.email.split('@')[0] : 'user');
-                }
-
-                // Load stats from backend or localStorage
-                (async function loadStats() {
-                    const scansEl = document.getElementById('stat-scans');
-                    const favsEl = document.getElementById('stat-favourites');
-                    const parksEl = document.getElementById('stat-parks');
-                    try {
-                        const API_BASE = window.location.origin.includes('localhost') ? 'http://localhost:5000' : '';
-                        const resp = await fetch(API_BASE + '/api/user/profile', { credentials: 'include' });
-                        if (resp.ok) {
-                            const data = await resp.json();
-                            if (scansEl) scansEl.textContent = data.scans_count || 0;
-                            if (favsEl) favsEl.textContent = data.favourites_count || 0;
-                            if (parksEl) parksEl.textContent = data.scans_count || 0;
-                            return;
-                        }
-                    } catch (e) {}
-                    // Fallback to localStorage
-                    const stats = JSON.parse(localStorage.getItem('wildguard_user_stats') || '{}');
-                    if (scansEl) scansEl.textContent = stats.scans || 0;
-                    if (favsEl) favsEl.textContent = stats.favourites || 0;
-                    if (parksEl) parksEl.textContent = stats.parks || 0;
-                })();
-
-                // Handle profile form save
-                const form = document.getElementById('profileForm');
-                if (form) {
-                    form.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        // Update user object
-                        const updated = { ...user };
-                        updated.firstName = document.getElementById('firstName').value.trim();
-                        updated.lastName = document.getElementById('lastName').value.trim();
-                        updated.username = document.getElementById('username').value.trim();
-                        updated.phone = document.getElementById('phone').value.trim();
-                        updated.country = document.getElementById('country').value;
-                        updated.bio = document.getElementById('bio').value.trim();
-                        updated.name = ((updated.firstName + ' ' + updated.lastName)).trim() || updated.username || updated.email.split('@')[0];
-                        // Save back
-                        localStorage.setItem('wildguard_user', JSON.stringify(updated));
-                        // Show simple confirmation
-                        alert('Profile updated successfully!');
-                    });
-                }
-            } catch (e) {
-                console.error('Profile data binding error:', e);
+                if (displayBioEl) displayBioEl.textContent = u.bio || 'Wildlife enthusiast documenting species and supporting conservation efforts around the globe.';
+                if (avatarImg && u.avatar) { avatarImg.src = u.avatar; }
             }
+            refreshHeader();
+
+            // ---- Avatar upload ----
+            const avatarBtn = document.querySelector('.avatar-edit-btn');
+            const avatarInput = document.createElement('input');
+            avatarInput.type = 'file';
+            avatarInput.accept = 'image/*';
+            avatarInput.style.display = 'none';
+            document.body.appendChild(avatarInput);
+            if (avatarBtn) {
+                avatarBtn.addEventListener('click', function() { avatarInput.click(); });
+            }
+            avatarInput.addEventListener('change', function() {
+                const file = avatarInput.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function() {
+                    const result = window.updateUserProfile({ avatar: reader.result });
+                    if (result.success && avatarImg) { avatarImg.src = reader.result; }
+                    showSaveMsg('avatar-saved', 'Avatar updated successfully!');
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // ---- Bind form fields from session ----
+            const firstNameInput = document.getElementById('firstName');
+            const lastNameInput = document.getElementById('lastName');
+            const emailInput = document.getElementById('email');
+            const usernameInput = document.getElementById('username');
+            const bioInput = document.getElementById('bio');
+            const phoneInput = document.getElementById('phone');
+            const countryInput = document.getElementById('country');
+
+            if (firstNameInput) firstNameInput.value = user.firstName || '';
+            if (lastNameInput) lastNameInput.value = user.lastName || '';
+            if (emailInput) { emailInput.value = user.email; emailInput.disabled = true; }
+            if (usernameInput) usernameInput.value = user.username || (user.email ? user.email.split('@')[0] : 'user');
+            if (bioInput) bioInput.value = user.bio || '';
+            if (phoneInput) phoneInput.value = user.phone || '';
+            if (countryInput) countryInput.value = user.country || '';
+
+            const notifToggle = document.querySelector('.toggle-group input[type="checkbox"]');
+            const publicToggle = document.querySelectorAll('.toggle-group input[type="checkbox"]')[1];
+            const prefs = user.prefs || { emailNotifications: true, publicProfile: true };
+            if (notifToggle) notifToggle.checked = prefs.emailNotifications !== false;
+            if (publicToggle) publicToggle.checked = prefs.publicProfile !== false;
+
+            // ---- Save profile ----
+            const form = document.getElementById('profileForm');
+            function showSaveMsg(id, text) {
+                let el = document.getElementById(id);
+                if (!el) {
+                    el = document.createElement('div');
+                    el.id = id;
+                    el.style.cssText = 'margin-top:1rem;padding:0.75rem 1rem;border-radius:8px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.4);color:#4ade80;font-size:0.9rem;';
+                    form.appendChild(el);
+                }
+                el.textContent = text;
+                el.style.display = 'block';
+                setTimeout(function() { el.style.display = 'none'; }, 4000);
+            }
+
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const updated = {
+                        firstName: firstNameInput.value.trim(),
+                        lastName: lastNameInput.value.trim(),
+                        username: usernameInput.value.trim(),
+                        bio: bioInput.value.trim(),
+                        phone: phoneInput.value.trim(),
+                        country: countryInput.value,
+                        prefs: {
+                            emailNotifications: notifToggle ? notifToggle.checked : true,
+                            publicProfile: publicToggle ? publicToggle.checked : true
+                        }
+                    };
+                    updated.name = [updated.firstName, updated.lastName].filter(Boolean).join(' ') || updated.username || user.email.split('@')[0];
+                    const result = window.updateUserProfile(updated);
+                    if (result.success) {
+                        refreshHeader();
+                        showSaveMsg('profile-saved', 'Profile updated successfully!');
+                    } else {
+                        showSaveMsg('profile-saved', result.message || 'Could not save profile.');
+                    }
+                });
+            }
+
+            // ---- Change password ----
+            const passForm = document.getElementById('password-form');
+            if (passForm) {
+                passForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const cur = document.getElementById('current-password').value;
+                    const npw = document.getElementById('new-password').value;
+                    const cnf = document.getElementById('confirm-password').value;
+                    const msgEl = document.getElementById('password-message');
+                    if (!cur || !npw || !cnf) { msgEl.textContent = 'Please fill in all password fields.'; msgEl.className = 'form-message form-message--error'; msgEl.style.display = 'block'; return; }
+                    if (npw !== cnf) { msgEl.textContent = 'New passwords do not match.'; msgEl.className = 'form-message form-message--error'; msgEl.style.display = 'block'; return; }
+                    if (npw.length < 8) { msgEl.textContent = 'New password must be at least 8 characters.'; msgEl.className = 'form-message form-message--error'; msgEl.style.display = 'block'; return; }
+                    const res = window.changeUserPassword(cur, npw);
+                    msgEl.textContent = res.message;
+                    msgEl.className = 'form-message ' + (res.success ? 'form-message--success' : 'form-message--error');
+                    msgEl.style.display = 'block';
+                    if (res.success) { passForm.reset(); }
+                });
+            }
+
+            // ---- Stats ----
+            (function loadStats() {
+                const scansEl = document.getElementById('stat-scans');
+                const favsEl = document.getElementById('stat-favourites');
+                const parksEl = document.getElementById('stat-parks');
+                const scans = (window.getUserScans ? window.getUserScans() : []) || [];
+                const favs = (window.getUserFavourites ? window.getUserFavourites() : []) || [];
+                if (scansEl) scansEl.textContent = scans.length;
+                if (favsEl) favsEl.textContent = favs.length;
+                if (parksEl) parksEl.textContent = new Set(scans.map(s => s.species && s.species.habitat).filter(Boolean)).size || '0';
+            })();
         });
     </script>
 </body>

@@ -347,7 +347,7 @@
           });
           const data = await response.json().catch(() => ({}));
           if (!response.ok) { throw new Error(data.message || 'Login failed'); }
-          saveUser({ email: rawEmail, role: data.role || 'user', name: rawEmail.split('@')[0] });
+          saveUser({ email: rawEmail, role: data.role || 'user', name: data.name || rawEmail.split('@')[0], firstName: data.firstName || '', lastName: data.lastName || '', username: data.username || rawEmail.split('@')[0], phone: data.phone || '', country: data.country || '', bio: data.bio || '', avatar: data.avatar || '', prefs: data.prefs || { emailNotifications: true, publicProfile: true }, verified: true });
           setAuthCookie(rawEmail);
           setSessionTimeout();
           window.location.href = 'index.html';
@@ -361,20 +361,23 @@
       const demoUsers = getDemoUsers();
       const demoUser = demoUsers[email];
       if (demoUser && (demoUser.passwordHash === simpleHash(password) || demoUser.password === password)) {
-        // Check if user is verified
-        if (demoUser.verified === false) {
-          if (errorMessage) {
-            errorMessage.innerHTML = '<strong>Account Not Verified</strong><br>Your email has not been verified. Please check your email for the verification message and enter the code below.<br><br><strong>Verification Code: ' + demoUser.verificationCode + '</strong><br><br>';
-            errorMessage.style.display = 'block';
-          }
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = submitBtn.originalHTML || 'Sign In';
-          }
-          logActivity('login_failed_unverified', rawEmail, 'Login blocked - account not verified');
-          return;
-        }
-        saveUser({ email: rawEmail, role: demoUser.role, name: demoUser.name || rawEmail.split('@')[0] });
+        // Merge stored profile into the session so the full account loads after login
+        const sessionProfile = {
+          email: rawEmail,
+          role: demoUser.role,
+          name: demoUser.name || [demoUser.firstName, demoUser.lastName].filter(Boolean).join(' ') || rawEmail.split('@')[0],
+          firstName: demoUser.firstName || '',
+          lastName: demoUser.lastName || '',
+          username: demoUser.username || rawEmail.split('@')[0],
+          phone: demoUser.phone || '',
+          country: demoUser.country || '',
+          bio: demoUser.bio || '',
+          avatar: demoUser.avatar || '',
+          prefs: demoUser.prefs || { emailNotifications: true, publicProfile: true },
+          registeredAt: demoUser.registeredAt || '',
+          verified: true
+        };
+        saveUser(sessionProfile);
         setAuthCookie(rawEmail);
         setSessionTimeout();
         securityMonitor('login_success', { email: email.substring(0, 3) + '***' });
@@ -410,6 +413,9 @@
       const rawEmail = document.getElementById('email')?.value.trim();
       const password = document.getElementById('password')?.value;
       const confirmPassword = document.getElementById('confirm-password')?.value;
+      const firstName = document.getElementById('firstName')?.value.trim();
+      const lastName = document.getElementById('lastName')?.value.trim();
+      const username = document.getElementById('username')?.value.trim();
 
       if (errorMessage) { errorMessage.style.display = 'none'; errorMessage.textContent = ''; }
       if (successMessage) { successMessage.style.display = 'none'; successMessage.textContent = ''; }
@@ -446,9 +452,23 @@
         return;
       }
 
-      // Register new user with email verification
-      var verificationCode = Math.random().toString(36).substr(2, 8).toUpperCase();
-      demoUsers[email] = { passwordHash: simpleHash(password), role: 'user', name: email.split('@')[0], verified: false, verificationCode: verificationCode, registeredAt: new Date().toISOString() };
+      // Register new user - automatically verified (no email verification required)
+      const displayName = [firstName, lastName].filter(Boolean).join(' ') || username || email.split('@')[0];
+      demoUsers[email] = {
+        passwordHash: simpleHash(password),
+        role: 'user',
+        name: displayName,
+        firstName: firstName,
+        lastName: lastName,
+        username: username,
+        phone: '',
+        country: '',
+        bio: '',
+        avatar: '',
+        prefs: { emailNotifications: true, publicProfile: true },
+        verified: true,
+        registeredAt: new Date().toISOString()
+      };
       saveDemoUsers(demoUsers);
 
       // Add admin notification for new user registration
@@ -457,12 +477,11 @@
         title: 'New User Registered',
         message: `User ${email} has registered.`,
         email: email,
-        name: email.split('@')[0]
+        name: displayName
       });
 
-      // Send welcome and verification emails
+      // Send welcome email (informational, no verification required)
       if (typeof sendWelcomeEmail !== 'undefined') { try { sendWelcomeEmail(email); } catch(e) {} }
-      if (typeof sendVerificationEmail !== 'undefined') { try { sendVerificationEmail(email); } catch(e) {} }
 
       // Log activity
       if (typeof logActivity !== 'undefined') { try { logActivity('register', email, 'New user registered'); } catch(e) {} }
@@ -471,7 +490,7 @@
       const userList = JSON.parse(localStorage.getItem('wildguard_user_list') || '[]');
       userList.push({
         email: email,
-        name: email.split('@')[0],
+        name: displayName,
         registeredAt: new Date().toISOString(),
         lastLogin: new Date().toISOString(),
         loginCount: 1,
@@ -483,7 +502,7 @@
       securityMonitor('register_success', { email: email.substring(0, 3) + '***' });
 
       if (successMessage) {
-        successMessage.innerHTML = '<strong>Registration successful!</strong><br>A verification email has been sent to <strong>' + email + '</strong>.<br>Your verification code is: <strong>' + demoUsers[email].verificationCode + '</strong><br>Please enter this code on the login page to verify your account before logging in.';
+        successMessage.innerHTML = '<strong>Account created successfully!</strong><br>Welcome to WildGuard Society, <strong>' + escapeHtml(displayName) + '</strong>.<br>Your account is ready — sign in now to explore the wildlife library and start scanning.';
         successMessage.style.display = 'block';
       }
       registerForm.reset();
@@ -750,6 +769,101 @@
       }
       return { success: false, message: 'Invalid verification code. Please try again.' };
     } catch(e) { return { success: false, message: 'Verification failed.' }; }
+  };
+
+  // --- User Profile & Data API (used by Profile/History/Favourite pages) ---
+  const FAVOURITES_KEY = 'wildguard_favourites';
+
+  function currentSessionUser() {
+    try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch(e) { return null; }
+  }
+
+  function getStoredUserRecord(email) {
+    if (!email) return null;
+    return getDemoUsers()[email.toLowerCase()] || null;
+  }
+
+  // Persist an updated profile to the demo-users store AND refresh the live session.
+  window.updateUserProfile = function(profile) {
+    const session = currentSessionUser();
+    if (!session || !session.email) return { success: false, message: 'Not signed in.' };
+    const email = session.email.toLowerCase();
+    const users = getDemoUsers();
+    const record = users[email] || {};
+    users[email] = Object.assign({}, record, profile, { email: session.email });
+    saveDemoUsers(users);
+    const merged = Object.assign({}, session, users[email], { email: session.email });
+    saveUser(merged);
+    return { success: true, user: merged };
+  };
+
+  // Change password for the signed-in user.
+  window.changeUserPassword = function(currentPassword, newPassword) {
+    const session = currentSessionUser();
+    if (!session || !session.email) return { success: false, message: 'Not signed in.' };
+    const email = session.email.toLowerCase();
+    const users = getDemoUsers();
+    const record = users[email];
+    if (!record) return { success: false, message: 'Account not found.' };
+    if (record.passwordHash !== simpleHash(currentPassword) && record.password !== currentPassword) {
+      return { success: false, message: 'Current password is incorrect.' };
+    }
+    record.passwordHash = simpleHash(newPassword);
+    users[email] = record;
+    saveDemoUsers(users);
+    return { success: true, message: 'Password updated successfully.' };
+  };
+
+  // Favourites (per-user)
+  window.getUserFavourites = function() {
+    const session = currentSessionUser();
+    if (!session || !session.email) return [];
+    const all = JSON.parse(localStorage.getItem(FAVOURITES_KEY) || '[]');
+    return all.filter(f => (f.user || '').toLowerCase() === session.email.toLowerCase());
+  };
+
+  window.toggleFavourite = function(speciesKey, speciesData) {
+    const session = currentSessionUser();
+    if (!session || !session.email) return { success: false, message: 'Please sign in to save favourites.' };
+    const all = JSON.parse(localStorage.getItem(FAVOURITES_KEY) || '[]');
+    const email = session.email.toLowerCase();
+    const existing = all.find(f => f.user === email && f.speciesKey === speciesKey);
+    if (existing) {
+      localStorage.setItem(FAVOURITES_KEY, JSON.stringify(all.filter(f => f !== existing)));
+      return { success: true, favourited: false };
+    }
+    all.unshift({
+      user: email,
+      speciesKey: speciesKey,
+      name: speciesData.name || speciesKey,
+      scientificName: speciesData.scientificName || '',
+      status: speciesData.status || '',
+      image: speciesData.image || '',
+      addedAt: new Date().toISOString()
+    });
+    localStorage.setItem(FAVOURITES_KEY, JSON.stringify(all));
+    return { success: true, favourited: true };
+  };
+
+  window.isFavourite = function(speciesKey) {
+    const session = currentSessionUser();
+    if (!session || !session.email) return false;
+    const all = JSON.parse(localStorage.getItem(FAVOURITES_KEY) || '[]');
+    return all.some(f => f.user === session.email.toLowerCase() && f.speciesKey === speciesKey);
+  };
+
+  // Scans (per-user), reading the shared wildlife_scans store
+  window.getUserScans = function() {
+    const session = currentSessionUser();
+    const scans = JSON.parse(localStorage.getItem('wildlife_scans') || '[]');
+    if (!session || !session.email) return scans;
+    const email = session.email.toLowerCase();
+    const mine = scans.filter(s => !s.user || s.user === email);
+    return mine.length ? mine : scans;
+  };
+
+  window.getCurrentUser = function() {
+    return currentSessionUser();
   };
 
 })();

@@ -534,9 +534,12 @@ const WildlifeScan = {
     // Inject save/admin buttons and auto-send to admin
     const resultActions = this.els.resultState.querySelector(".result-actions");
     if (resultActions) {
+      const isFav = (typeof window.isFavourite === "function") && window.isFavourite(bestMatch);
       resultActions.innerHTML =
         '<button id="saveToLibraryBtn" class="read-btn" onclick="WildlifeScan.saveToLibrary()"><i class="fas fa-bookmark"></i> Save to Library</button>' +
-        '<button id="sendToAdminBtn" class="library-link" onclick="WildlifeScan.sendToAdmin()"><i class="fas fa-user-shield"></i> Send to Admin</button>';
+        '<button id="favouriteBtn" class="library-link" onclick="WildlifeScan.toggleFavourite()"><i class="fas fa-' + (isFav ? 'heart' : 'heart') + '"></i> <span id="favouriteBtnLabel">' + (isFav ? 'Remove from Favourites' : 'Add to Favourites') + '</span></button>';
+      this._favouriteKey = bestMatch;
+      this._favouriteSpecies = { name: species.name, scientificName: species.scientificName, status: species.status, image: "" };
     }
     
     // Auto-send result to admin after a brief delay so user can see it first
@@ -556,6 +559,7 @@ const WildlifeScan = {
   async saveToLibrary() {
     if (!this.currentResult) return;
     const scans = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || "[]");
+    const currentUser = (typeof window.getCurrentUser === "function") ? window.getCurrentUser() : null;
     const scanRecord = {
       id: "scan_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9),
       timestamp: new Date().toISOString(),
@@ -563,7 +567,8 @@ const WildlifeScan = {
       confidence: this.currentResult.confidence,
       imageData: this.els.previewImg ? this.els.previewImg.src : "",
       approved: true,
-      source: "user_scan"
+      source: "user_scan",
+      user: currentUser && currentUser.email ? currentUser.email : ""
     };
     scans.unshift(scanRecord);
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(scans));
@@ -586,6 +591,26 @@ const WildlifeScan = {
     } catch (e) {}
 
     this.showToast("Saved to Library!");
+  },
+
+  toggleFavourite() {
+    if (!this.currentResult || !this._favouriteKey) return;
+    const key = this._favouriteKey;
+    const species = this._favouriteSpecies || { name: this.currentResult.species.name, scientificName: this.currentResult.species.scientificName, status: this.currentResult.species.status, image: "" };
+    if (typeof window.toggleFavourite === "function") {
+      const result = window.toggleFavourite(key, species);
+      const label = document.getElementById("favouriteBtnLabel");
+      if (result.favourited) {
+        this.showToast("Added to Favourites");
+        if (label) label.textContent = "Remove from Favourites";
+      } else if (result.success) {
+        this.showToast("Removed from Favourites");
+        if (label) label.textContent = "Add to Favourites";
+      } else {
+        this.showToast(result.message || "Please sign in to save favourites");
+        setTimeout(() => { window.location.href = "login.html"; }, 1200);
+      }
+    }
   },
 
   _sentToAdmin: false,
