@@ -26,7 +26,6 @@
   document.addEventListener('DOMContentLoaded', function () {
     updateYear();
     initHeaderScroll();
-    initMobileMenu();
     initUserDropdown();
     initSlideshow();
     initRevealAnimations();
@@ -47,36 +46,6 @@
 
     window.addEventListener('scroll', function () {
       header.classList.toggle('scrolled', window.scrollY > 50);
-    });
-  }
-
-  /* ── Mobile Menu ── */
-  function initMobileMenu() {
-    var toggle = query('.mobile-toggle');
-    var nav = query('.desktop-nav');
-    if (!toggle || !nav) return;
-
-    toggle.addEventListener('click', function (e) {
-      e.stopPropagation();
-      e.preventDefault();
-      nav.classList.toggle('open');
-      toggle.classList.toggle('active');
-      var expanded = nav.classList.contains('open');
-      toggle.setAttribute('aria-expanded', String(expanded));
-      var icon = toggle.querySelector('i');
-      if (icon) {
-        icon.className = expanded ? 'fas fa-times' : 'fas fa-bars';
-      }
-    });
-
-    document.addEventListener('click', function (e) {
-      if (!nav.classList.contains('open')) return;
-      if (e.target.closest('.desktop-nav') || e.target.closest('.mobile-toggle')) return;
-      nav.classList.remove('open');
-      toggle.classList.remove('active');
-      toggle.setAttribute('aria-expanded', 'false');
-      var icon = toggle.querySelector('i');
-      if (icon) icon.className = 'fas fa-bars';
     });
   }
 

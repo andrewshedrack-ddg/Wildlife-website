@@ -281,17 +281,6 @@
     }
   }
 
-  // Wire mobile menu toggle
-  function initMobileMenu() {
-    const mobileToggle = document.getElementById('mobile-toggle');
-    const desktopNav = document.getElementById('desktop-nav');
-    if (mobileToggle && desktopNav) {
-      mobileToggle.addEventListener('click', () => {
-        desktopNav.classList.toggle('open');
-      });
-    }
-  }
-
   // Wire dropdown toggle
   function initUserMenu() {
     const userMenu = document.getElementById('user-menu');
@@ -862,7 +851,6 @@
     initLoginForm();
     initRegisterForm();
     initNavLinks();
-    initMobileMenu();
     initNotificationBell();
     renderUserNotificationBadge();
     // Log page view
