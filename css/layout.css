@@ -10,6 +10,11 @@
   padding: 0 var(--space-xl);
 }
 
+/* ── Page content clears the fixed floating header ── */
+main:not(.portal-main) {
+  padding-top: calc(var(--header-height) + 1rem);
+}
+
 .container--narrow { max-width: 800px; }
 .container--wide { max-width: 1400px; }
 
@@ -81,7 +86,7 @@
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--space-xl);
   margin-top: var(--space-xl);
 }

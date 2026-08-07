@@ -12,7 +12,13 @@
     if (!container) return;
     var items = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
     if (!items.length) {
-      container.innerHTML = '<p style="color:rgba(255,255,255,0.5);text-align:center;padding:2rem 0;">No scanned species yet. Head to <a href="../scan.html" style="color:var(--accent);">Scan</a> to identify wildlife.</p>';
+      container.innerHTML =
+        '<div class="scanned-empty" role="status">' +
+          '<i class="fas fa-paw scanned-empty-icon"></i>' +
+          '<h3>No scanned species yet</h3>' +
+          '<p>Use the AI scanner to identify wildlife and grow your personal collection.</p>' +
+          '<a href="../scan.html" class="btn btn-primary"><i class="fas fa-barcode"></i> Start Scanning</a>' +
+        '</div>';
       return;
     }
     var html = '<div class="scanned-grid">';

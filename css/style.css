@@ -53,8 +53,8 @@ img { max-width: 100%; height: auto; display: block; }
   position: fixed; top: 1rem; left: 50%; transform: translateX(-50%);
   width: calc(100% - 2rem); max-width: var(--max-width);
   height: auto; min-height: 64px;
-  background: linear-gradient(135deg, rgba(10, 21, 16, 0.95) 0%, rgba(15, 25, 20, 0.9) 100%);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  background: rgba(18, 26, 19, 0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(201, 162, 39, 0.15);
   border-radius: 16px;
   z-index: 1000; transition: var(--transition);
@@ -143,7 +143,7 @@ img { max-width: 100%; height: auto; display: block; }
 .page-slideshow::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.65) 100%); z-index: 1; }
 
 /* ============================================================ HERO ============================================================ */
-.hero { position: relative; min-height: calc(100vh - var(--header-height)); display: flex; align-items: center; justify-content: center; text-align: center; color: var(--lighter); padding: 4rem 2rem; margin-top: var(--header-height); overflow: hidden; }
+.hero { position: relative; min-height: calc(100vh - var(--header-height)); display: flex; align-items: center; justify-content: center; text-align: center; color: var(--lighter); padding: 4rem 2rem; overflow: hidden; }
 .hero-content { position: relative; z-index: 2; max-width: 800px; animation: fadeInUp 1.2s ease-out; }
 .hero-content h1 { font-family: var(--font-heading); font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 700; color: var(--lighter); margin-bottom: 1.2rem; text-shadow: 0 2px 20px rgba(0,0,0,0.5); line-height: 1.15; }
 .hero-content p { font-size: 1.15rem; max-width: 560px; margin: 0 auto 2rem; opacity: 0.88; line-height: 1.75; font-weight: 300; }
@@ -159,10 +159,10 @@ section { padding: 5rem 0; position: relative; }
 .content-overlay { background: rgba(8, 18, 12, 0.86); backdrop-filter: blur(6px); }
 
 /* ============================================================ CARDS ============================================================ */
-.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; margin-top: 2rem; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
 .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); overflow: hidden; transition: var(--transition); backdrop-filter: blur(4px); }
 .card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: rgba(255,255,255,0.18); }
-.card-image { height: 190px; overflow: hidden; }
+.card-image { aspect-ratio: 16/9; overflow: hidden; background: rgba(255,255,255,0.04); }
 .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .card:hover .card-image img { transform: scale(1.06); }
 .card-body { padding: 1.5rem; }
@@ -277,7 +277,7 @@ section { padding: 5rem 0; position: relative; }
 .security-badge i { font-size: 0.75rem; }
 
 /* ============================================================ PAGE BANNER ============================================================ */
-.page-banner { text-align: center; padding: 6rem 2rem 4rem; margin-top: var(--header-height); color: var(--lighter); position: relative; }
+.page-banner { text-align: center; padding: 6rem 2rem 4rem; color: var(--lighter); position: relative; }
 .page-banner .eyebrow { display: inline-block; padding: 0.3rem 1rem; background: rgba(201,162,39,0.15); border: 1px solid rgba(201,162,39,0.25); border-radius: 100px; color: var(--accent); font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.8rem; }
 .page-banner h1 { font-family: var(--font-heading); color: var(--lighter); margin-bottom: 0.8rem; font-size: clamp(2rem, 5vw, 3rem); }
 .page-banner .lede { font-size: 1.08rem; max-width: 560px; margin: 0 auto; opacity: 0.82; line-height: 1.7; }

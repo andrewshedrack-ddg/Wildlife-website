@@ -184,7 +184,7 @@ const books = [
                 </div>
                 <div class="lib-book-info">
                     <p class="lib-book-pages">${book.pages} pages &mdash; ${book.published}</p>
-                    <p class="lib-book-chapter">${book.chapter}</p>
+                    <p class="lib-book-desc">${book.chapter || book.desc}</p>
                 </div>
                 <div class="lib-book-actions">
                     <button data-read="${book.id}" class="btn btn--primary btn--sm">Read</button>

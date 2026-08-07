@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script defer src="../js/i18n.js"></script>
 </head>
 <body>
@@ -270,11 +270,11 @@
           <div class="admin-section-header"><h2><i class="fas fa-paper-plane" style="color:var(--accent);"></i> Email Campaign</h2></div>
           <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.5rem;margin-bottom:2rem;">
             <div style="margin-bottom:1rem;">
-              <label style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Subject</label>
+              <label for="emailSubject" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Subject</label>
               <input id="emailSubject" type="text" placeholder="Enter email subject..." style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;">
             </div>
             <div style="margin-bottom:1rem;">
-              <label style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Email Type</label>
+              <label for="emailType" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Email Type</label>
               <select id="emailType" style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;">
                 <option value="update">Feature Update</option>
                 <option value="newsletter">Newsletter</option>
@@ -283,7 +283,7 @@
               </select>
             </div>
             <div style="margin-bottom:1rem;">
-              <label style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Body</label>
+              <label for="emailBody" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Body</label>
               <textarea id="emailBody" rows="6" placeholder="Write your message here..." style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;resize:vertical;"></textarea>
             </div>
             <button onclick="sendAdminEmailCampaign()" class="btn-sm btn-approve" style="padding:0.65rem 1.5rem;font-size:0.9rem;"><i class="fas fa-paper-plane" style="margin-right:0.4rem;"></i> Send to All Users</button>

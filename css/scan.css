@@ -6,7 +6,6 @@
 .scan-hero {
   text-align: center;
   padding: 5rem 2rem 2rem;
-  margin-top: var(--header-height, 72px);
   color: var(--lighter, #ffffff);
   position: relative;
 }

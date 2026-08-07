@@ -446,6 +446,36 @@
   transition: transform 0.3s ease;
 }
 
+/* Scanned Species Empty State */
+.scanned-empty {
+  text-align: center;
+  padding: 3.5rem 2rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+.scanned-empty-icon {
+  font-size: 2.5rem;
+  color: var(--accent, #c9a227);
+  opacity: 0.85;
+  margin-bottom: 0.25rem;
+}
+.scanned-empty h3 {
+  color: var(--lighter, #fff);
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  margin: 0;
+}
+.scanned-empty p {
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 420px;
+  margin: 0 0 0.5rem;
+}
+
 /* ── 8. Responsive breakpoints ────────────────────────────── */
 @media (max-width:768px) {
   .lib-section    { padding:3rem 1.5rem; }
