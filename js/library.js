@@ -118,6 +118,7 @@ const books = [
         if (statusFilter) {
             statusFilter.addEventListener('change', filterCategories);
         }
+        filterCategories();
     }
 
     function filterCategories() {
