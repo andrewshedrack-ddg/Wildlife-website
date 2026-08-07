@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Explore the wildlife library of WildGuard Society. Mammals, birds, reptiles, amphibians, aquatic life, plants, fungi, bacteria and more.">
+  <meta name="description" content="Explore the wildlife library of WildGuard Society. Mammals, birds, reptiles, amphibians, aquatic life, plants, fungi, bacteria, and viruses.">
+  <meta name="keywords" content="wildlife library, species database, mammals, birds, reptiles, amphibians, fungi, bacteria, viruses">
   <meta name="author" content="WildGuard Society">
+  <meta property="og:title" content="Library | WildGuard Society">
+  <meta property="og:description" content="Explore global biodiversity. Discover mammals, birds, reptiles, amphibians, and more.">
+  <meta property="og:image" content="../assets/images/lion.jpg">
   <link rel="icon" type="image/png" href="../assets/images/logo.png">
   <title>Library | WildGuard Society</title>
-
-  <!-- Styles -->
   <link rel="stylesheet" href="../css/tokens.css">
   <link rel="stylesheet" href="../css/animations.css">
   <link rel="stylesheet" href="../css/layout.css">
@@ -19,23 +21,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <script defer src="../js/i18n.js"></script>
-
-  <style>
-    .lib-scans #scannedLibraryContainer {
-      max-height: none;
-      overflow-y: auto;
-      border-radius: 6px;
-      background: rgba(255,255,255,.03);
-    }
-  </style>
 </head>
 <body>
-  <!-- Skip to Content -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- Background Slideshow -->
   <div class="page-slideshow" aria-hidden="true">
     <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
     <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
@@ -44,11 +33,10 @@
     <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
   </div>
 
-  <!-- Unified Header -->
   <header class="site-header" id="site-header" role="banner">
     <div class="header-container">
       <a href="../index.html" class="logo" aria-label="WildGuard Society Home">
-        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img" loading="lazy">
+        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
         <span class="logo-text">WildGuard Society</span>
       </a>
       <nav class="desktop-nav" id="desktop-nav" role="navigation" aria-label="Main navigation">
@@ -59,18 +47,12 @@
         <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a>
       </nav>
       <div class="header-actions">
-        <!-- Theme Toggle -->
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark or light mode" title="Toggle theme">
-          <i class="fas fa-moon"></i>
-        </button>
-
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
         <div class="auth-buttons" id="auth-buttons">
           <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
-          <div class="user-menu" id="user-menu" style="display:none;">
+          <div class="user-menu" id="user-menu" style="display:none">
             <button class="user-menu-toggle" id="user-menu-toggle" aria-expanded="false" aria-haspopup="true">
-              <i class="fas fa-user-circle"></i>
-              <span id="user-email">User</span>
-              <i class="fas fa-chevron-down"></i>
+              <i class="fas fa-user-circle"></i> <span id="user-email">User</span> <i class="fas fa-chevron-down"></i>
             </button>
             <div class="user-dropdown" id="user-dropdown" role="menu">
               <a href="../user/Profile.html" role="menuitem"><i class="fas fa-user"></i> Profile</a>
@@ -83,13 +65,12 @@
         </div>
         <div class="language-selector" data-language-selector>
           <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
-            <span class="flag"><img src="../assets/images/flags/us.svg" alt="English" class="flag-icon" loading="lazy"></span> <span class="lang-name">English</span>
-            <i class="fas fa-chevron-down"></i>
+            <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span> <i class="fas fa-chevron-down"></i>
           </button>
           <div class="lang-dropdown" role="menu" hidden>
-            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="English" class="flag-icon" loading="lazy"></span> <span class="lang-native">English</span></button>
-            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="French" class="flag-icon" loading="lazy"></span> <span class="lang-native">Français</span></button>
-            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="Swahili" class="flag-icon" loading="lazy"></span> <span class="lang-native">Kiswahili</span></button>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> English</button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> Français</button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> Kiswahili</button>
           </div>
         </div>
       </div>
@@ -102,7 +83,7 @@
     <section class="page-banner">
       <span class="eyebrow">Wildlife Library</span>
       <h1>Explore Global Biodiversity</h1>
-      <p class="lede">Discover mammals, birds, reptiles, amphibians, aquatic life, plants, fungi and bacteria.</p>
+      <p class="lede">Discover mammals, birds, reptiles, amphibians, aquatic life, plants, fungi, bacteria, and viruses.</p>
     </section>
 
     <!-- ══════════════ CATEGORIES ══════════════ -->
@@ -147,7 +128,7 @@
               </div>
               <div class="card-body">
                 <h3>Mammals</h3>
-                <p>Large predators, herbivores and more across national parks worldwide.</p>
+                <p>Warm-blooded vertebrates from mighty elephants to tiny bats, inhabiting every continent.</p>
               </div>
             </a>
           </article>
@@ -159,7 +140,7 @@
               </div>
               <div class="card-body">
                 <h3>Birds</h3>
-                <p>Over 1,100 bird species thrive in diverse ecosystems worldwide.</p>
+                <p>Feathered vertebrates ranging from tiny sunbirds to majestic eagles across every habitat.</p>
               </div>
             </a>
           </article>
@@ -167,7 +148,7 @@
           <article class="card" data-category="reptiles" data-name="Reptiles">
             <a href="reptile.html">
               <div class="card-image">
-                <img src="../assets/images/crocodile.png" alt="Crocodile" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+                <img src="../assets/images/chameleon.png" alt="Chameleon" loading="lazy">
               </div>
               <div class="card-body">
                 <h3>Reptiles</h3>
@@ -179,7 +160,7 @@
           <article class="card" data-category="amphibians" data-name="Amphibians">
             <a href="amphibian.html">
               <div class="card-image">
-                <img src="../assets/images/frog.png" alt="Frog" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+                <img src="../assets/images/Tortoise.png" alt="Amphibian" loading="lazy">
               </div>
               <div class="card-body">
                 <h3>Amphibians</h3>
@@ -191,11 +172,11 @@
           <article class="card" data-category="aquatic" data-name="Aquatic Life">
             <a href="aquatic.html">
               <div class="card-image">
-                <img src="../assets/images/shark.png" alt="Shark" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+                <img src="../assets/images/shark.png" alt="Shark" loading="lazy">
               </div>
               <div class="card-body">
                 <h3>Aquatic Life</h3>
-                <p>Fish and other aquatic species residing in lakes and rivers worldwide.</p>
+                <p>Fish and aquatic organisms inhabiting oceans, lakes, rivers, and wetlands worldwide.</p>
               </div>
             </a>
           </article>
@@ -203,7 +184,7 @@
           <article class="card" data-category="plants" data-name="Plants">
             <a href="plants.html">
               <div class="card-image">
-                <img src="../assets/images/baobab.png" alt="Baobab Tree" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+                <img src="../assets/images/moments10.png" alt="Tropical vegetation" loading="lazy">
               </div>
               <div class="card-body">
                 <h3>Plants</h3>
@@ -215,7 +196,7 @@
           <article class="card" data-category="fungi" data-name="Fungi">
             <a href="fungi.html">
               <div class="card-image">
-                <img src="../assets/images/mushroom.png" alt="Mushroom" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+                <img src="../assets/images/Butterfly.png" alt="Fungi in nature" loading="lazy">
               </div>
               <div class="card-body">
                 <h3>Fungi</h3>
@@ -227,7 +208,7 @@
           <article class="card" data-category="bacteria" data-name="Bacteria">
             <a href="bacteria.html">
               <div class="card-image">
-                <img src="../assets/images/bacteria.png" alt="Bacteria" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+                <img src="../assets/images/moments2.png" alt="Bacteria under microscope" loading="lazy">
               </div>
               <div class="card-body">
                 <h3>Bacteria</h3>
@@ -239,11 +220,11 @@
           <article class="card" data-category="viruses" data-name="Viruses">
             <a href="viruses.html">
               <div class="card-image">
-                <img src="../assets/images/virus.png" alt="Virus" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+                <img src="../assets/images/moments3.png" alt="Virus illustration" loading="lazy">
               </div>
               <div class="card-body">
                 <h3>Viruses</h3>
-                <p>Microscopic infectious bacteria that replicate inside living cells.</p>
+                <p>Microscopic infectious particles that replicate inside living cells of animals, plants, and bacteria.</p>
               </div>
             </a>
           </article>
@@ -259,21 +240,27 @@
           <p>Three simple steps to become a conservation guardian</p>
         </div>
         <div class="grid-3 stagger">
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-camera"></i></div>
-            <h3>1. Scan</h3>
-            <p>Capture any animal, plant, or ecosystem indicator using your camera or an uploaded photo. Our AI recognizes and identifies it.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-database"></i></div>
-            <h3>2. Learn</h3>
-            <p>Get instant field guide data: species details, conservation status, habitat, habits, and audible read-aloud narration.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-globe-africa"></i></div>
-            <h3>3. Protect</h3>
-            <p>Your observations help us track species sightings, detect threats, and focus conservation efforts where they're needed most.</p>
-          </div>
+          <article class="card">
+            <div class="card-image"><img src="../assets/images/moments6.png" alt="Scan wildlife" loading="lazy"></div>
+            <div class="card-body">
+              <h3>1. Scan</h3>
+              <p>Capture any animal, plant, or ecosystem indicator using your camera or an uploaded photo. Our AI recognizes and identifies it.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="../assets/images/moments11.png" alt="Learn from data" loading="lazy"></div>
+            <div class="card-body">
+              <h3>2. Learn</h3>
+              <p>Get instant field guide data: species details, conservation status, habitat, habits, and audible read-aloud narration.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="../assets/images/moments1.png" alt="Protect wildlife" loading="lazy"></div>
+            <div class="card-body">
+              <h3>3. Protect</h3>
+              <p>Your observations help us track species sightings, detect threats, and focus conservation efforts where they're needed most.</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -325,7 +312,7 @@
     <div class="footer-content">
       <div class="footer-brand">
         <h3>WildGuard Society</h3>
-        <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <p>A youth-led environmental conservation movement. <strong>Protect Nature — Protect Life</strong>.</p>
         <div class="footer-social">
           <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
           <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -357,7 +344,7 @@
         <h4>Contact</h4>
         <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
         <p><i class="fas fa-phone"></i> +255 700 123 456</p>
-        <p><i class="fas fa-map-marker-alt"></i> Global</p>
+        <p><i class="fas fa-map-marker-alt"></i> Moshi, Kilimanjaro, Tanzania</p>
       </div>
     </div>
     <div class="footer-bottom">

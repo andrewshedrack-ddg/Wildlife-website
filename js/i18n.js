@@ -71,19 +71,20 @@
             if (result && typeof result === 'object' && fk in result) {
               result = result[fk];
             } else {
-              return key; // Return key if not found
+              return ''; // Return empty string instead of raw key
             }
           }
           break;
         }
       }
       
-      if (typeof result !== 'string') return key;
-      
-      // Replace parameters
-      return result.replace(/\{\{(\w+)\}\}/g, (match, param) => {
-        return params[param] !== undefined ? params[param] : match;
-      });
+      if (typeof result === 'string') {
+        // Replace parameters
+        return result.replace(/\{\{(\w+)\}\}/g, (match, param) => {
+          return params[param] !== undefined ? params[param] : match;
+        });
+      }
+      return ''; // Return empty string for non-string values
     },
 
     // Apply translations to all elements with data-i18n attribute
@@ -92,6 +93,9 @@
         const key = el.getAttribute('data-i18n');
         const translation = this.t(key);
         
+        // Skip if translation is identical to the key (missing key)
+        if (translation === key) return;
+
         if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
           if (el.type === 'placeholder' || el.hasAttribute('placeholder')) {
             el.placeholder = translation;
@@ -101,13 +105,10 @@
         } else if (el.tagName === 'IMG') {
           el.alt = translation;
         } else {
-          // Preserve HTML elements inside
           const htmlContent = el.innerHTML;
-          // Only replace text nodes, not inner HTML
           if (!htmlContent.includes('<')) {
             el.textContent = translation;
           } else {
-            // For complex elements, only translate if no children or data-i18n-html
             if (el.hasAttribute('data-i18n-html')) {
               el.innerHTML = translation;
             }

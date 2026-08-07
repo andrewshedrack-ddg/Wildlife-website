@@ -1,14 +1,16 @@
-// library.js - spacious library with real digital books + filters + collapsible scans
+// library.js - real book covers with wildlife photography + filters + collapsible scans
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Book Content ---
-    const books = [
+const books = [
         {
             id: 1,
             title: "Kings of the Savannah",
             author: "Dr. Selene Mwangi",
-            color: "#1b5e40",
-            icon: "fas fa-crown",
+            image: "../assets/images/lion.jpg",
+            pages: 312,
+            published: "2024",
+            desc: "An intimate portrait of lion prides across the Serengeti.",
             chapters: [
                 { title: "Chapter 1: The Pride", text: "Under the golden embrace of the African sun, the lion stands as the undisputed sovereign of the savannah. Their roars, echoing across the plains, are not mere sounds but declarations of territory, warnings to rivals, and reunions of pride members. A lion's mane, flowing like a crown of fire, speaks volumes about its health, genetics, and social standing among the pride." },
                 { title: "Chapter 2: The Hunt", text: "When dusk falls, the lionesses emerge. Working in silent synchrony, they flank herds of wildebeest and zebra. The hunt is not a solitary affair—it is ballet of patience, timing, and explosive power. One in four hunts succeeds, yet this is enough to sustain the pride and shape the ecosystem, as lions cull the weak and maintain the balance of the savannah." },
@@ -19,8 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 2,
             title: "The Great Crossing",
             author: "John Okello",
-            color: "#0ea5e9",
-            icon: "fas fa-water",
+            image: "../assets/images/zebra.png",
+            pages: 256,
+            published: "2023",
+            chapter: "Witness the great wildebeest migration across the Mara.",
             chapters: [
                 { title: "Chapter 1: The Signal", text: "The rains arrive like a drumroll across the Serengeti. From the southern plains, a pulse begins—the great migration. Over two million wildebeest, zebra, and gazelles answer an ancient call, driven by the rhythm of the seasons and the promise of green pastures." },
                 { title: "Chapter 2: River of Shadows", text: "The Grumeti and Mara rivers lie in their path. Beneath the murky waters, Nile crocodiles, some over fifteen feet long, wait in prehistoric patience. The crossing is chaos: hooves thunder, currents sweep away the young and weak, and the air fills with dust and desperation." },
@@ -31,8 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 3,
             title: "Ivory Ghosts",
             author: "Dr. Amina Khoury",
-            color: "#78350f",
-            icon: "fas fa-elephant",
+            image: "../assets/images/elephant.jpg",
+            pages: 378,
+            published: "2024",
+            chapter: "Elephant conservation and the fight against poaching in East Africa.",
             chapters: [
                 { title: "Chapter 1: Giants of Memory", text: "An elephant never forgets—a phrase rooted in truth. These matriarchs carry maps of ancient waterholes in their minds, passed from mother to daughter across generations. Their trunks, capable of detecting the footsteps of a friend miles away, are both tools and hands, caressing a calf or toppling a tree with equal grace." },
                 { title: "Chapter 2: The Tusk War", text: "Ivory has been a curse. In the 1970s and 80s, poachers slaughtered half of Africa's elephants. Today, guarded sanctuaries and brave rangers fight a different war—one of education, technology, and community. Where elephants thrive, ecosystems flourish; where they vanish, the land grows silent." },
@@ -43,8 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 4,
             title: "Rainforest Guardians",
             author: "Prof. David Kimani",
-            color: "#047857",
-            icon: "fas fa-tree",
+            image: "../assets/images/Monkey.png",
+            pages: 290,
+            published: "2023",
+            chapter: "Exploring the Congo Basin's rich biodiversity and defenders.",
             chapters: [
                 { title: "Chapter 1: Canopy Secrets", text: "High above the Congo basin, where light filters through a mosaic of leaves, lives a world unknown to those below. Colobus monkeys leap between branches, their white tails flashing. Great blue turacos call from hidden perches. And in the shadows, forest elephants carve silent paths through the undergrowth." },
                 { title: "Chapter 2: The Unseen Web", text: "Beneath the soil, mycorrhizal fungi connect trees in a vast neural network, sharing nutrients and warning of pests. This wood-wide web sustains the forest more than any single species. When a gorilla family moves through, they prune, plant, and fertilize, unknowingly tending the garden that sustains them." },
@@ -55,8 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 5,
             title: "Wings Over Africa",
             author: "Sarah Odhiambo",
-            color: "#b45309",
-            icon: "fas fa-feather",
+            image: "../assets/images/Eagle.png",
+            pages: 222,
+            published: "2025",
+            chapter: "A journey through Africa's diverse bird species and migrations.",
             chapters: [
                 { title: "Chapter 1: Sky Nomads", text: "The African fish eagle, wings spread like a herald's banner, glides above the great lakes. Below, flamingos paint the water pink. Secretary birds stride through the grass, stamping on snakes with surgical precision. Africa's skies are not empty—they are highways of migration, spanning continents." },
                 { title: "Chapter 2: The Vulture's Bargain", text: "Misunderstood and maligned, vultures are the sanitation crew of the savannah. A single flock can reduce a carcass to bones in hours, preventing disease. When vulture populations crash due to poisoning, rabies and anthrax spike. They are ugly, perhaps, but utterly irreplaceable." },
@@ -162,18 +172,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const el = document.createElement('div');
             el.className = 'lib-book';
             el.innerHTML = `
-                <div class="lib-book-cover" style="background: linear-gradient(135deg, ${book.color} 0%, ${darken(book.color, 40)} 100%);">
+                <div class="lib-book-cover">
                     <div class="lib-book-top-edge"></div>
                     <div class="lib-book-pages"></div>
                     <div class="lib-book-front">
-                        <i class="${book.icon}"></i>
+                        <img class="lib-book-cover-img" src="${book.image}" alt="${book.title}" loading="lazy">
+                        <div class="lib-book-front-overlay"></div>
                         <h4>${book.title}</h4>
                         <span class="author">${book.author}</span>
                     </div>
                 </div>
+                <div class="lib-book-info">
+                    <p class="lib-book-pages">${book.pages} pages &mdash; ${book.published}</p>
+                    <p class="lib-book-chapter">${book.chapter}</p>
+                </div>
                 <div class="lib-book-actions">
-                    <button data-read="${book.id}">Read</button>
-                    <button data-download="${book.id}">Download</button>
+                    <button data-read="${book.id}" class="btn btn--primary btn--sm">Read</button>
+                    <button data-download="${book.id}" class="btn btn--secondary btn--sm">Download</button>
                 </div>
             `;
             booksGrid.appendChild(el);
@@ -236,12 +251,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Darken Helper ---
-    function darken(hex, percent) {
-        const num = parseInt(hex.replace('#', ''), 16);
-        const r = Math.max(0, (num >> 16) - percent);
-        const g = Math.max(0, ((num >> 8) & 0x00FF) - percent);
-        const b = Math.max(0, (num & 0x0000FF) - percent);
-        return `rgb(${r},${g},${b})`;
-    }
-});
+    });

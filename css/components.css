@@ -431,6 +431,7 @@
   margin-top: var(--header-height);
   color: var(--lighter);
   position: relative;
+  background: linear-gradient(180deg, rgba(8,18,12,0.5) 0%, rgba(8,18,12,0.7) 50%, rgba(8,18,12,0.85) 100%);
 }
 
 .page-banner h1 {
@@ -438,14 +439,16 @@
   color: var(--lighter);
   margin-bottom: 0.8rem;
   font-size: var(--text-3xl);
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
 }
 
 .page-banner .lede {
   font-size: var(--text-lg);
   max-width: 560px;
   margin: 0 auto;
-  opacity: 0.82;
+  opacity: 0.88;
   line-height: 1.7;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
 }
 
 /* ═══════════════════════════════════════════════════════════════

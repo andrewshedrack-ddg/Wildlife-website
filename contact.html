@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Contact the WildGuard Society team. Collaborate, report issues, or extend the site with more species and habitats.">
-  <meta name="keywords" content="contact wildlife, conservation team, collaborate, report issue">
+  <meta name="keywords" content="contact wildlife, conservation team, collaborate, report issue, Moshi Tanzania">
   <meta name="author" content="WildGuard Society">
+  <meta property="og:title" content="Contact | WildGuard Society">
+  <meta property="og:description" content="Get in touch with WildGuard Society. We'd love to hear from you.">
+  <meta property="og:image" content="assets/images/moments11.png">
   <link rel="icon" type="image/png" href="assets/images/logo.png">
   <title>Contact | WildGuard Society</title>
-
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/layout.css">
@@ -18,8 +20,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <script defer src="js/i18n.js"></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -46,16 +46,12 @@
         <a href="contact.html" class="active" aria-current="page"><i class="fas fa-envelope"></i> Contact</a>
       </nav>
       <div class="header-actions">
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark or light mode" title="Toggle theme">
-          <i class="fas fa-moon"></i>
-        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
         <div class="auth-buttons" id="auth-buttons">
           <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
-          <div class="user-menu" id="user-menu" style="display:none;">
+          <div class="user-menu" id="user-menu" style="display:none">
             <button class="user-menu-toggle" id="user-menu-toggle" aria-expanded="false" aria-haspopup="true">
-              <i class="fas fa-user-circle"></i>
-              <span id="user-email">User</span>
-              <i class="fas fa-chevron-down"></i>
+              <i class="fas fa-user-circle"></i> <span id="user-email">User</span> <i class="fas fa-chevron-down"></i>
             </button>
             <div class="user-dropdown" id="user-dropdown" role="menu">
               <a href="user/Profile.html" role="menuitem"><i class="fas fa-user"></i> Profile</a>
@@ -68,13 +64,12 @@
         </div>
         <div class="language-selector" data-language-selector>
           <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
-            <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
-            <i class="fas fa-chevron-down"></i>
+            <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span> <i class="fas fa-chevron-down"></i>
           </button>
           <div class="lang-dropdown" role="menu" hidden>
-            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
-            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
-            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> English</button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> Français</button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> Kiswahili</button>
           </div>
         </div>
       </div>
@@ -93,22 +88,28 @@
     <section class="content-overlay" aria-labelledby="contact-details-heading">
       <div class="container">
         <h2 id="contact-details-heading" class="sr-only">Contact Details</h2>
-        <div class="card-grid">
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-envelope"></i></div>
-            <h3>Email</h3>
-            <p>wildguardsociety@gmail.com</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-phone"></i></div>
-            <h3>Phone</h3>
-            <p>+255 700 123 456</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-map-marker-alt"></i></div>
-            <h3>Location</h3>
-            <p>Global</p>
-          </div>
+        <div class="grid-3 stagger">
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments1.png" alt="Email us" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Email</h3>
+              <p>wildguardsociety@gmail.com</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments6.png" alt="Call us" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Phone</h3>
+              <p>+255 700 123 456</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments11.png" alt="Our location" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Location</h3>
+              <p>Moshi, Kilimanjaro, Tanzania</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -146,7 +147,7 @@
     <div class="footer-content">
       <div class="footer-brand">
         <h3>WildGuard Society</h3>
-        <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <p>A youth-led environmental conservation movement. <strong>Protect Nature — Protect Life</strong>.</p>
         <div class="footer-social">
           <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
           <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -178,12 +179,12 @@
         <h4>Contact</h4>
         <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
         <p><i class="fas fa-phone"></i> +255 700 123 456</p>
-        <p><i class="fas fa-map-marker-alt"></i> Global</p>
+        <p><i class="fas fa-map-marker-alt"></i> Moshi, Kilimanjaro, Tanzania</p>
       </div>
     </div>
     <div class="footer-bottom">
       <p><strong>Protect Nature — Protect Life</strong></p>
-      <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. All rights reserved.</p>
     </div>
   </footer>
 
@@ -201,6 +202,7 @@
     </div>
   </div>
 
+  <script defer src="js/i18n.js"></script>
   <script defer src="js/main.js"></script>
   <script defer src="js/auth.js"></script>
 

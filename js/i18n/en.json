@@ -27,7 +27,14 @@
     "magnificentWildlife": "Magnificent Wildlife",
     "nationalParks": "National Parks",
     "conservationEfforts": "Conservation Efforts",
-    "getInvolved": "Get Involved"
+    "getInvolved": "Get Involved",
+    "howItWorks": "How It Works",
+    "howItWorksDesc": "Three steps to join the conservation movement",
+    "scan": "1. Scan",
+    "learn": "2. Learn",
+    "protect": "3. Protect",
+    "ourImpact": "Our Impact",
+    "scannedSpecies": "Scanned Species"
   },
   "features": {
     "purpose": {
@@ -80,8 +87,10 @@
     }
   },
   "scan": {
+    "header": "Scanner",
     "title": "What did you find?",
     "subtitle": "Capture an animal, plant, insect, or even a leaf. AI identifies it and reads the field guide aloud.",
+    "ready": "Ready when you are",
     "actions": {
       "camera": "Open camera",
       "upload": "Upload photo",
@@ -103,21 +112,41 @@
     }
   },
   "library": {
-    "title": "Wildlife Library",
-    "subtitle": "Discover mammals, birds, reptiles, amphibians, aquatic life, plants, fungi and bacteria.",
+    "eyebrow": "Wildlife Library",
+    "title": "Explore Global Biodiversity",
+    "subtitle": "Discover mammals, birds, reptiles, amphibians, aquatic life, plants, fungi, bacteria, and viruses.",
     "categories": "Categories",
+    "categoriesDesc": "Choose a category to explore species",
     "scanned": "Scanned Species",
+    "scannedDesc": "Species identified by users through the AI scan feature",
     "books": "Books & Resources",
+    "booksTitle": "Books & Resources",
+    "booksDesc": "Download or read our collection of wildlife guides, conservation reports, and natural histories.",
+    "howItWorks": "How It Works",
+    "howItWorksDesc": "Three simple steps to become a conservation guardian",
     "categoriesList": {
       "mammals": "Mammals",
+      "mammalsDesc": "Warm-blooded vertebrates from mighty elephants to tiny bats, inhabiting every continent.",
       "birds": "Birds",
+      "birdsDesc": "Feathered vertebrates ranging from tiny sunbirds to majestic eagles across every habitat.",
       "reptiles": "Reptiles",
+      "reptilesDesc": "Sun-loving lizards, secretive snakes and ancient crocodilians.",
       "amphibians": "Amphibians",
+      "amphibiansDesc": "Frogs and toads adapted to varied habitats from rainforests to deserts.",
       "aquatic": "Aquatic Life",
+      "aquaticDesc": "Fish and aquatic organisms inhabiting oceans, lakes, rivers, and wetlands worldwide.",
       "plants": "Plants",
+      "plantsDesc": "From savanna grasses to tropical rainforest canopies.",
       "fungi": "Fungi",
+      "fungiDesc": "Decomposers that play a vital role in nutrient cycling.",
       "bacteria": "Bacteria",
-      "viruses": "Viruses"
+      "bacteriaDesc": "Microorganisms contributing to digestion, nitrogen fixation and more.",
+      "viruses": "Viruses",
+      "virusesDesc": "Microscopic infectious particles that replicate inside living cells of animals, plants, and bacteria."
+    },
+    "bookshelf": {
+      "read": "Read",
+      "download": "Download"
     }
   },
   "about": {
@@ -188,7 +217,14 @@
     "partner": "Partner with Us",
     "contact": "Contact",
     "rights": "All rights reserved.",
-    "motto": "Protect Nature - Protect Life"
+    "motto": "Protect Nature - Protect Life",
+    "nav": {
+      "home": "Home",
+      "library": "Library",
+      "scan": "Scan",
+      "about": "About",
+      "contact": "Contact"
+    }
   },
   "species": {
     "status": {
@@ -283,6 +319,9 @@
     "of": "of",
     "results": "results",
     "noResults": "No results found",
-    "selectLanguage": "Select Language"
+    "selectLanguage": "Select Language",
+    "read": "Read",
+    "download": "Download",
+    "global": "Moshi, Kilimanjaro, Tanzania"
   }
 }

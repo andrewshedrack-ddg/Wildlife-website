@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AI-powered wildlife monitoring and identification system.">
+  <meta name="description" content="Scan and identify wildlife species instantly using AI-powered image recognition. WildGuard Society's wildlife scanner uses TensorFlow.js and MobileNet.">
+  <meta name="keywords" content="wildlife scanner, AI wildlife identification, species recognition, mobileNet, wildlife monitoring">
   <meta name="author" content="WildGuard Society">
+  <meta property="og:title" content="WildGuard Society — AI Wildlife Scanner">
+  <meta property="og:description" content="Identify wildlife species instantly with AI-powered image recognition.">
+  <meta property="og:image" content="assets/images/moments6.png">
   <link rel="icon" type="image/png" href="assets/images/logo.png">
   <title>Scan | WildGuard Society</title>
   <link rel="stylesheet" href="css/tokens.css">
@@ -17,16 +21,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- TensorFlow.js & MobileNet for real AI image recognition -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0/dist/mobilenet.min.js"></script>
 </head>
 <body>
-  <!-- Skip to main content for accessibility -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
-  
-  <!-- Background Slideshow -->
-  <div class="page-slideshow">
+
+  <div class="page-slideshow" aria-hidden="true">
     <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
     <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
     <div class="page-slide" style="background-image: url('assets/images/Background3.png');"></div>
@@ -34,66 +35,57 @@
     <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
   </div>
 
-  <!-- Header -->
-  <header class="site-header" id="site-header">
+  <header class="site-header" id="site-header" role="banner">
     <div class="header-container">
-      <a href="index.html" class="logo">
+      <a href="index.html" class="logo" aria-label="WildGuard Society Home">
         <img src="assets/images/logo.png" alt="WildGuard Society" class="logo-img">
         <span class="logo-text">WildGuard Society</span>
       </a>
-      <nav class="desktop-nav" id="desktop-nav">
+      <nav class="desktop-nav" id="desktop-nav" role="navigation" aria-label="Main navigation">
         <a href="index.html"><i class="fas fa-home"></i> Home</a>
         <a href="library/library.html"><i class="fas fa-book"></i> Library</a>
-        <a href="scan.html" class="active"><i class="fas fa-barcode"></i> Scan</a>
+        <a href="scan.html" class="active" aria-current="page"><i class="fas fa-barcode"></i> Scan</a>
         <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
-        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></nav>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+      </nav>
       <div class="header-actions">
-        <!-- Theme Toggle -->
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark or light mode" title="Toggle theme">
-          <i class="fas fa-moon"></i>
-        </button>
-
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
         <div class="auth-buttons" id="auth-buttons">
           <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
-          <div class="user-menu" id="user-menu" style="display:none;">
-            <button class="user-menu-toggle" id="user-menu-toggle">
-              <i class="fas fa-user-circle"></i>
-              <span id="user-email">User</span>
-              <i class="fas fa-chevron-down"></i>
+          <div class="user-menu" id="user-menu" style="display:none">
+            <button class="user-menu-toggle" id="user-menu-toggle" aria-expanded="false" aria-haspopup="true">
+              <i class="fas fa-user-circle"></i> <span id="user-email">User</span> <i class="fas fa-chevron-down"></i>
             </button>
-            <div class="user-dropdown" id="user-dropdown">
-              <a href="user/Profile.html"><i class="fas fa-user"></i> Profile</a>
-              <a href="user/History.html"><i class="fas fa-history"></i> History</a>
-              <a href="user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+            <div class="user-dropdown" id="user-dropdown" role="menu">
+              <a href="user/Profile.html" role="menuitem"><i class="fas fa-user"></i> Profile</a>
+              <a href="user/History.html" role="menuitem"><i class="fas fa-history"></i> History</a>
+              <a href="user/Favourite.html" role="menuitem"><i class="fas fa-heart"></i> Favourites</a>
               <div class="dropdown-divider"></div>
-              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+              <a href="#" id="logout-btn" role="menuitem"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
           </div>
         </div>
         <div class="language-selector" data-language-selector>
           <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
-            <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
-            <i class="fas fa-chevron-down"></i>
+            <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span> <i class="fas fa-chevron-down"></i>
           </button>
           <div class="lang-dropdown" role="menu" hidden>
-            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
-            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
-            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> English</button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> Français</button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> Kiswahili</button>
           </div>
         </div>
       </div>
-      <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
     </div>
   </header>
 
-<main>
-    <!-- Hero / Scanner Section -->
-    <section class="scan-hero">
-      <div class="scan-hero-content">
-        <span class="scan-eyebrow"><i class="fas fa-scanner"></i> Scanner</span>
-        <h1>What did you find?</h1>
-        <p class="scan-subtitle">Capture an animal, plant, insect, or even a leaf. AI identifies it and reads the field guide aloud.</p>
-      </div>
+<main id="main-content">
+    <!-- Page Banner -->
+    <section class="page-banner">
+      <span class="eyebrow"><i class="fas fa-scanner"></i> Scanner</span>
+      <h1>What did you find?</h1>
+      <p class="lede">Capture an animal, plant, insect, or even a leaf. AI identifies it and reads the field guide aloud.</p>
     </section>
 
     <!-- Action Area -->
@@ -165,14 +157,75 @@
         <p id="voiceStatus" class="voice-status"></p>
       </div>
     </section>
+
+    <!-- How It Works -->
+    <section class="content-overlay" aria-labelledby="scan-how-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="scan-how-heading">How It Works</h2>
+          <p>Three steps to identify and learn about wildlife</p>
+        </div>
+        <div class="grid-3 stagger">
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments6.png" alt="Capture wildlife" loading="lazy"></div>
+            <div class="card-body">
+              <h3>1. Capture</h3>
+              <p>Open your camera or upload a photo. Our AI instantly begins processing the image with MobileNet neural network technology.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments11.png" alt="Identify species" loading="lazy"></div>
+            <div class="card-body">
+              <h3>2. Identify</h3>
+              <p>Receive species identification, scientific name, conservation status, habitat details, and ecological role in seconds.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments1.png" alt="Share findings" loading="lazy"></div>
+            <div class="card-body">
+              <h3>3. Contribute</h3>
+              <p>Your scans help build our wildlife database. Every observation strengthens conservation efforts across Africa and beyond.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scan Actions Area -->
+    <section class="content-overlay" aria-labelledby="get-started-heading" style="padding-bottom:4rem;">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="get-started-heading">Get Started</h2>
+          <p>Use our AI-powered scanner to identify wildlife around you</p>
+        </div>
+        <div class="grid-2">
+          <article class="card" style="text-align:center;">
+            <div class="card-body">
+              <div class="feature-icon" style="width:56px;height:56px;margin:0 auto 1.2rem;background:rgba(27,94,64,0.2);color:#1b5e40;"><i class="fas fa-camera" style="font-size:1.4rem;"></i></div>
+              <h3>Real-time Camera</h3>
+              <p>Point your camera at any species and our AI identifies it in real time using TensorFlow.js image recognition.</p>
+              <a href="#scanInputView" class="btn btn--primary" style="margin-top:1rem;" onclick="document.getElementById('cameraBtn').click(); return false;">Open Camera <i class="fas fa-camera"></i></a>
+            </div>
+          </article>
+          <article class="card" style="text-align:center;">
+            <div class="card-body">
+              <canvas class="feature-icon" style="width:56px;height:56px;margin:0 auto 1.2rem;background:rgba(201,162,39,0.15);border-radius:50%;"><i class="fas fa-cloud-upload-alt" style="font-size:1.4rem;color:var(--accent);"></i></canvas>
+              <h3>Upload & Analyse</h3>
+              <p>Already have a photo? Upload any wildlife image and get instant identification with detailed species information.</p>
+              <a href="../library/library.html" class="btn btn--secondary" style="margin-top:1rem;">Browse Library <i class="fas fa-book-open"></i></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Footer -->
-  <footer class="site-footer">
+  <footer class="site-footer" role="contentinfo">
     <div class="footer-content">
       <div class="footer-brand">
         <h3>WildGuard Society</h3>
-        <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <p>A youth-led environmental conservation movement. <strong>Protect Nature — Protect Life</strong>.</p>
         <div class="footer-social">
           <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
           <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -201,21 +254,22 @@
       </div>
       <div class="footer-contact">
         <h4>Contact</h4>
-        <p><i class="fas fa-envelope"></i> info@wildlifeguardians.org</p>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
         <p><i class="fas fa-phone"></i> +255 700 123 456</p>
-        <p><i class="fas fa-map-marker-alt"></i> Global</p>
+        <p><i class="fas fa-map-marker-alt"></i> Moshi, Kilimanjaro, Tanzania</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
+      <p><strong>Protect Nature — Protect Life</strong></p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. All rights reserved.</p>
     </div>
   </footer>
 
   <!-- Scripts -->
   <script defer src="js/i18n.js"></script>
-  <script defer src="js/main.js?v=2"></script>
-  <script defer src="js/scan.js?v=2"></script>
-  <script defer src="js/auth.js?v=2"></script>
-  <script defer src="js/system-monitor.js?v=2"></script>
+  <script defer src="js/main.js"></script>
+  <script defer src="js/scan.js"></script>
+  <script defer src="js/auth.js"></script>
+  <script defer src="js/system-monitor.js"></script>
 </body>
 </html>

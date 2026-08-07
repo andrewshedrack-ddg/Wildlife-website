@@ -3,12 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="About WildGuard Society — Mission, Vision, and Purpose. A youth-led environmental conservation movement dedicated to protecting wildlife and ecosystems.">
-  <meta name="keywords" content="WildGuard Society, mission, vision, youth conservation, Protect Nature Protect Life">
-  <meta name="author" content="WildGuard Society">
+  <meta property="og:image" content="assets/images/moments10.png">
   <link rel="icon" type="image/png" href="assets/images/logo.png">
   <title>About | WildGuard Society</title>
-
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/layout.css">
@@ -18,8 +15,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <script defer src="js/i18n.js"></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -46,16 +41,12 @@
         <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
       </nav>
       <div class="header-actions">
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark or light mode" title="Toggle theme">
-          <i class="fas fa-moon"></i>
-        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
         <div class="auth-buttons" id="auth-buttons">
           <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
-          <div class="user-menu" id="user-menu" style="display:none;">
+          <div class="user-menu" id="user-menu" style="display:none">
             <button class="user-menu-toggle" id="user-menu-toggle" aria-expanded="false" aria-haspopup="true">
-              <i class="fas fa-user-circle"></i>
-              <span id="user-email">User</span>
-              <i class="fas fa-chevron-down"></i>
+              <i class="fas fa-user-circle"></i> <span id="user-email">User</span> <i class="fas fa-chevron-down"></i>
             </button>
             <div class="user-dropdown" id="user-dropdown" role="menu">
               <a href="user/Profile.html" role="menuitem"><i class="fas fa-user"></i> Profile</a>
@@ -68,13 +59,12 @@
         </div>
         <div class="language-selector" data-language-selector>
           <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
-            <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
-            <i class="fas fa-chevron-down"></i>
+            <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span> <i class="fas fa-chevron-down"></i>
           </button>
           <div class="lang-dropdown" role="menu" hidden>
-            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
-            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
-            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> English</button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> Français</button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> Kiswahili</button>
           </div>
         </div>
       </div>
@@ -93,22 +83,28 @@
     <section class="content-overlay" aria-labelledby="mission-heading">
       <div class="container">
         <h2 id="mission-heading" class="sr-only">Our Mission, Vision, and Motto</h2>
-        <div class="card-grid">
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
-            <h3>Our Mission</h3>
-            <p>To identify, understand, and respond to environmental changes affecting nature through conservation action, sustainability, innovation, education, and youth collaboration.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-eye"></i></div>
-            <h3>Our Vision</h3>
-            <p>To build a future where nature thrives despite environmental challenges, supported by a generation of informed, active, and innovative environmental leaders.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-flag"></i></div>
-            <h3>Our Motto</h3>
-            <p><strong>Protect Nature — Protect Life</strong></p>
-          </div>
+        <div class="grid-3 stagger">
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments10.png" alt="Conservation in action" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Our Mission</h3>
+              <p>To identify, understand, and respond to environmental changes affecting nature through conservation action, sustainability, innovation, education, and youth collaboration.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments7.png" alt="Vision for nature" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Our Vision</h3>
+              <p>To build a future where nature thrives despite environmental challenges, supported by a generation of informed, active, and innovative environmental leaders.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments9.png" alt="Conservation goals" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Our Motto</h3>
+              <p><strong>Protect Nature — Protect Life</strong></p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -140,26 +136,34 @@
           <p>Our core pillars of action</p>
         </div>
         <div class="card-grid stagger">
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-search"></i></div>
-            <h3>Observation</h3>
-            <p>We monitor and identify environmental changes affecting nature, using data-driven insights to understand ecosystem shifts and emerging threats.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-sync-alt"></i></div>
-            <h3>Adaptation</h3>
-            <p>We develop innovative, sustainable solutions to address environmental challenges, adapting our strategies to the evolving needs of nature.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-hands-helping"></i></div>
-            <h3>Action</h3>
-            <p>We turn awareness into tangible conservation efforts — from tree planting and clean-ups to advocacy and community creation.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-users"></i></div>
-            <h3>Collaboration</h3>
-            <p>We unite young people across communities, empowering them with knowledge, tools, and platforms to become active environmental leaders.</p>
-          </div>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/Butterfly.png" alt="Environmental observation" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Observation</h3>
+              <p>We monitor and identify environmental changes affecting nature, using data-driven insights to understand ecosystem shifts and emerging threats.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/chameleon.png" alt="Adaptation strategies" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Adaptation</h3>
+              <p>We develop innovative, sustainable solutions to address environmental challenges, adapting our strategies to the evolving needs of nature.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/Hippo.png" alt="Conservation action" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Action</h3>
+              <p>We turn awareness into tangible conservation efforts — from tree planting and clean-ups to advocacy and community creation.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/peacock.png" alt="Youth collaboration" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Collaboration</h3>
+              <p>We unite young people across communities, empowering them with knowledge, tools, and platforms to become active environmental leaders.</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -249,10 +253,11 @@
     </div>
     <div class="footer-bottom">
       <p><strong>Protect Nature — Protect Life</strong></p>
-      <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. All rights reserved.</p>
     </div>
   </footer>
 
+  <script defer src="js/i18n.js"></script>
   <script defer src="js/main.js"></script>
   <script defer src="js/auth.js"></script>
   <script defer src="js/counter-animate.js"></script>
