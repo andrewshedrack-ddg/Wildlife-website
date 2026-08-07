@@ -13,24 +13,42 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <style>
+        .hist-header { text-align: center; margin: 1.5rem 0 2.5rem; }
+        .hist-header .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(201,162,39,0.25), rgba(45,138,94,0.25)); border-color: rgba(201,162,39,0.4); }
+        .hist-header .page-title { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 0.5rem; }
+
         .history-layout { display: grid; grid-template-columns: 1fr 350px; gap: 2rem; align-items: start; }
         @media (max-width: 768px) { .history-layout { grid-template-columns: 1fr; } }
-        .timeline { position: relative; padding-left: 1.5rem; }
-        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.1); }
-        .timeline-item { position: relative; padding-bottom: 2rem; padding-left: 1.5rem; }
+
+        .timeline-card, .summary-card, .quick-links-card { animation: histFadeUp 0.55s ease both; }
+        .summary-card { animation-delay: 0.1s; }
+        .quick-links-card { animation-delay: 0.18s; }
+        .timeline-card:hover, .summary-card:hover, .quick-links-card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px rgba(0,0,0,0.4); }
+
+        .timeline { position: relative; padding-left: 1.75rem; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 3px; background: linear-gradient(to bottom, var(--accent), var(--primary-light), rgba(201,162,39,0.1)); box-shadow: 0 0 12px rgba(201,162,39,0.25); }
+        .timeline-item { position: relative; padding-bottom: 2rem; padding-left: 1.75rem; }
         .timeline-item:last-child { padding-bottom: 0; }
-        .timeline-icon { position: absolute; left: 0; top: 0; width: 32px; height: 32px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: var(--lighter); font-size: 0.85rem; transform: translateX(-50%); }
+        .timeline-icon { position: absolute; left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-light), var(--primary-dark)); border: 2px solid rgba(201,162,39,0.55); display: flex; align-items: center; justify-content: center; color: var(--lighter); font-size: 0.85rem; transform: translateX(-50%); box-shadow: 0 4px 14px rgba(27,94,64,0.45); }
         .timeline-date { display: block; color: var(--accent); font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; }
         .timeline-title { color: var(--lighter); font-size: 1rem; margin-bottom: 0.25rem; }
         .timeline-desc { color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.5; }
+        .timeline-content { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 0.9rem 1.1rem; transition: var(--transition); }
+        .timeline-item:hover .timeline-content { background: rgba(255,255,255,0.05); border-color: rgba(201,162,39,0.25); }
+
         .summary-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .summary-item { text-align: center; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: var(--radius); }
-        .summary-value { display: block; color: var(--lighter); font-size: 1.4rem; font-weight: 700; font-family: var(--font-heading); }
+        .summary-item { text-align: center; padding: 1.1rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); transition: var(--transition); }
+        .summary-item:hover { transform: translateY(-2px); border-color: rgba(201,162,39,0.3); background: linear-gradient(160deg, rgba(27,94,64,0.18), rgba(201,162,39,0.1)); }
+        .summary-value { display: block; color: var(--lighter); font-size: 1.5rem; font-weight: 700; font-family: var(--font-heading); }
+        .summary-value i { color: var(--accent); font-size: 1.1rem; }
         .summary-label { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+
         .quick-links { display: flex; flex-direction: column; gap: 0.75rem; }
-        .quick-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); color: rgba(255,255,255,0.75); font-size: 0.9rem; transition: var(--transition); }
-        .quick-link:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); color: var(--lighter); }
+        .quick-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.8rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); color: rgba(255,255,255,0.75); font-size: 0.9rem; transition: var(--transition); }
+        .quick-link:hover { background: linear-gradient(135deg, rgba(27,94,64,0.25), rgba(201,162,39,0.12)); border-color: rgba(201,162,39,0.35); color: var(--lighter); transform: translateX(4px); }
         .quick-link i { color: var(--accent); }
+
+        @keyframes histFadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -90,9 +108,10 @@
     <main>
         <section class="content-overlay">
             <div class="container" style="padding-bottom: 3rem;">
-                <div class="section-header" style="margin-top: 2rem; margin-bottom: 2rem;">
-                    <span class="page-eyebrow">Account</span>
-                    <h1 class="page-title">Your History</h1>
+                <div class="hist-header">
+                    <span class="page-eyebrow"><i class="fas fa-paw"></i> Your Journey</span>
+                    <h1 class="page-title">Activity History</h1>
+                    <p style="color:rgba(255,255,255,0.6); max-width:520px; margin:0 auto;">Every scan and discovery on your path to protecting wildlife.</p>
                 </div>
                 <div class="history-layout">
                     <div class="card timeline-card">
@@ -158,7 +177,7 @@
                 <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
                 <div class="footer-social">
                     <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" title="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
-                    <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i资本金="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
                     <a href="https://wa.me/255700123456" target="_blank" rel="noopener" title="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
                     <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" title="Join us on Telegram"><i class="fab fa-telegram"></i></a>
                     <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>

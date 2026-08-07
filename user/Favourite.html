@@ -11,12 +11,65 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <style>
-        .favourite-card .card-body { padding: 1rem; text-align: center; }
-        .favourite-card .card-body h3 { font-size: 1rem; }
-        .favourite-card .card-body p { font-size: 0.85rem; color: rgba(255,255,255,0.5); }
-        .favourite-card .sci-name { font-style: italic; margin-bottom: 0.4rem; }
-        .status-pill { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; background: rgba(201,162,39,0.15); border: 1px solid rgba(201,162,39,0.5); color: #e3c65c; margin-bottom: 0.75rem; }
-        .remove-fav { margin-top: 0.5rem; }
+        /* ---------- Favourites page: wildlife vibe ---------- */
+        .fav-header { text-align: center; margin: 1.5rem 0 2.5rem; }
+        .fav-header .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(201,162,39,0.25), rgba(45,138,94,0.25)); border-color: rgba(201,162,39,0.4); }
+        .fav-header .page-title { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 0.5rem; }
+
+        /* Stats strip */
+        .fav-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; max-width: 720px; margin: 0 auto 2.5rem; }
+        .fav-stat { position: relative; text-align: center; padding: 1.1rem 1rem; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(6px); overflow: hidden; transition: var(--transition); }
+        .fav-stat::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(27,94,64,0.25), rgba(201,162,39,0.18)); opacity: 0; transition: opacity 0.3s ease; }
+        .fav-stat:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
+        .fav-stat:hover::before { opacity: 1; }
+        .fav-stat-value { position: relative; display: block; font-family: var(--font-heading); font-size: 2rem; font-weight: 700; color: var(--lighter); line-height: 1.1; }
+        .fav-stat-value i { color: var(--accent); font-size: 1.2rem; margin-right: 0.25rem; }
+        .fav-stat-label { position: relative; display: block; margin-top: 0.3rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.55); }
+
+        /* Favourite cards */
+        .fav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.75rem; }
+        .favourite-card { position: relative; border-radius: var(--radius-lg); overflow: hidden; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease; animation: favFadeUp 0.55s ease both; }
+        .favourite-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,162,39,0.3); border-color: rgba(201,162,39,0.35); }
+
+        .fav-media { position: relative; aspect-ratio: 16/10; overflow: hidden; background: linear-gradient(135deg, var(--primary-dark), var(--dark)); }
+        .fav-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .favourite-card:hover .fav-media img { transform: scale(1.08); }
+        .fav-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,21,16,0.85) 0%, rgba(10,21,16,0.15) 55%, rgba(10,21,16,0.1) 100%); }
+
+        .fav-status-pill { position: absolute; top: 0.9rem; left: 0.9rem; z-index: 2; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.8rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; backdrop-filter: blur(6px); }
+        .fav-status-pill i { font-size: 0.65rem; }
+        .status-critical { background: rgba(239,68,68,0.9); color: #fff; box-shadow: 0 4px 14px rgba(239,68,68,0.4); }
+        .status-endangered { background: rgba(249,115,22,0.9); color: #fff; box-shadow: 0 4px 14px rgba(249,115,22,0.4); }
+        .status-vulnerable { background: rgba(234,179,8,0.92); color: #1c1917; box-shadow: 0 4px 14px rgba(234,179,8,0.4); }
+        .status-near-threatened { background: rgba(163,230,53,0.92); color: #1c1917; box-shadow: 0 4px 14px rgba(163,230,53,0.35); }
+        .status-least-concern { background: rgba(34,197,94,0.92); color: #052e16; box-shadow: 0 4px 14px rgba(34,197,94,0.35); }
+        .status-default { background: rgba(201,162,39,0.9); color: #1c1917; box-shadow: 0 4px 14px rgba(201,162,39,0.4); }
+
+        .fav-heart-pin { position: absolute; top: 0.9rem; right: 0.9rem; z-index: 2; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(10,21,16,0.45); border: 1px solid rgba(255,255,255,0.18); color: #ef4444; font-size: 1rem; backdrop-filter: blur(6px); }
+
+        .fav-info { position: relative; z-index: 2; margin-top: -2.2rem; padding: 0 1.5rem 1.5rem; }
+        .fav-info h3 { color: var(--lighter); font-size: 1.35rem; margin-bottom: 0.15rem; text-shadow: 0 2px 12px rgba(0,0,0,0.6); }
+        .fav-sci { font-style: italic; color: rgba(255,255,255,0.6); font-size: 0.88rem; margin-bottom: 0.9rem; }
+
+        .fav-meta { display: flex; align-items: center; gap: 0.5rem; padding-top: 0.9rem; border-top: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); font-size: 0.78rem; }
+        .fav-meta i { color: var(--accent); }
+        .remove-fav { margin-left: auto; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0.9rem; background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #f87171; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
+        .remove-fav:hover { background: rgba(239,68,68,0.22); border-color: rgba(239,68,68,0.5); transform: translateY(-1px); }
+
+        /* Empty state */
+        .fav-empty { grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; border-radius: var(--radius-lg); background: linear-gradient(160deg, rgba(27,94,64,0.15), rgba(201,162,39,0.08)); border: 1px dashed rgba(201,162,39,0.35); animation: favFadeUp 0.6s ease both; }
+        .fav-empty-icon { width: 90px; height: 90px; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; border-radius: 50%; background: linear-gradient(135deg, rgba(201,162,39,0.25), rgba(27,94,64,0.25)); border: 1px solid rgba(201,162,39,0.4); color: var(--accent); animation: favPulse 2.2s ease-in-out infinite; }
+        .fav-empty h3 { color: var(--lighter); font-size: 1.6rem; margin-bottom: 0.6rem; }
+        .fav-empty p { color: rgba(255,255,255,0.6); max-width: 440px; margin: 0 auto 1.75rem; }
+        .fav-empty .btn { margin: 0 0.35rem; }
+
+        @keyframes favFadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes favPulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(201,162,39,0.35); } 50% { transform: scale(1.05); box-shadow: 0 0 0 14px rgba(201,162,39,0); } }
+
+        @media (max-width: 768px) {
+            .fav-grid { grid-template-columns: 1fr; }
+            .fav-empty .btn { margin: 0.35rem 0; }
+        }
     </style>
 </head>
 <body>
@@ -74,11 +127,13 @@
     <main>
         <section class="content-overlay">
             <div class="container" style="padding-bottom: 3rem;">
-                <div class="section-header" style="margin-top: 2rem; margin-bottom: 2rem;">
-                    <span class="page-eyebrow">Account</span>
-                    <h1 class="page-title">Your Favourites</h1>
+                <div class="fav-header">
+                    <span class="page-eyebrow"><i class="fas fa-paw"></i> Your Collection</span>
+                    <h1 class="page-title">Favourite Wildlife</h1>
+                    <p style="color:rgba(255,255,255,0.6); max-width:520px; margin:0 auto;">Species you've saved. Keep them close, learn their stories, and help them thrive.</p>
                 </div>
-                <div class="card-grid" id="favourites-grid">
+                <div class="fav-stats" id="fav-stats"></div>
+                <div class="fav-grid" id="favourites-grid">
                     <!-- Favourites loaded dynamically -->
                 </div>
             </div>
@@ -116,7 +171,7 @@
             </div>
             <div class="footer-contact">
                 <h4>Contact</h4>
-               <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+                <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
                 <p><i class="fas fa-phone"></i> +255 700 123 456</p>
                 <p><i class="fas fa-map-marker-alt"></i> Global</p>
             </div>
@@ -136,37 +191,77 @@
             }
         })();
 
+        function statusPillClass(status) {
+            const s = (status || '').toLowerCase();
+            if (s.indexOf('critically') !== -1) return 'status-critical';
+            if (s.indexOf('endangered') !== -1) return 'status-endangered';
+            if (s.indexOf('vulnerable') !== -1) return 'status-vulnerable';
+            if (s.indexOf('near') !== -1) return 'status-near-threatened';
+            if (s.indexOf('least') !== -1) return 'status-least-concern';
+            return 'status-default';
+        }
+
+        function formatAddedDate(iso) {
+            if (!iso) return '';
+            try {
+                const d = new Date(iso);
+                return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+            } catch (e) { return ''; }
+        }
+
+        function renderStats(favs) {
+            const el = document.getElementById('fav-stats');
+            if (!el) return;
+            const atRisk = favs.filter(f => {
+                const s = (f.status || '').toLowerCase();
+                return s.indexOf('endangered') !== -1 || s.indexOf('vulnerable') !== -1 || s.indexOf('critical') !== -1 || s.indexOf('near') !== -1;
+            }).length;
+            const parks = new Set(favs.map(f => (f.habitat || '').trim()).filter(Boolean)).size;
+            el.innerHTML =
+                '<div class="fav-stat"><span class="fav-stat-value"><i class="fas fa-heart"></i>' + favs.length + '</span><span class="fav-stat-label">Saved Species</span></div>' +
+                '<div class="fav-stat"><span class="fav-stat-value"><i class="fas fa-shield-halved"></i>' + atRisk + '</span><span class="fav-stat-label">Need Protection</span></div>' +
+                '<div class="fav-stat"><span class="fav-stat-value"><i class="fas fa-tree"></i>' + parks + '</span><span class="fav-stat-label">Habitats</span></div>';
+        }
+
         function renderFavourites() {
             const grid = document.getElementById('favourites-grid');
             if (!grid) return;
             const favs = (window.getUserFavourites ? window.getUserFavourites() : []) || [];
+            renderStats(favs);
 
             if (favs.length === 0) {
-                grid.innerHTML = '<div class="card favourite-card" style="grid-column:1/-1;text-align:center;padding:3rem 2rem;">' +
-                    '<div class="feature-icon" style="width:64px;height:64px;margin:0 auto 1.2rem;background:rgba(27,94,64,0.2);color:#1b5e40;"><i class="fas fa-heart" style="font-size:1.5rem;"></i></div>' +
-                    '<div class="card-body"><h3>No favourites yet</h3>' +
-                    '<p>Scan wildlife or browse the library, then save species to your favourites.</p>' +
-                    '<div style="display:flex;gap:0.75rem;justify-content:center;margin-top:1.25rem;">' +
-                    '<a href="../scan.html" class="btn btn--primary"><i class="fas fa-barcode"></i> Start Scanning</a>' +
-                    '<a href="../library/library.html" class="btn btn--secondary"><i class="fas fa-book-open"></i> Browse Library</a>' +
-                    '</div></div></div>';
+                grid.innerHTML = '<div class="fav-empty">' +
+                    '<div class="fav-empty-icon"><i class="fas fa-heart"></i></div>' +
+                    '<h3>No favourites yet</h3>' +
+                    '<p>Scan wildlife in the field or browse the library, then save the species that inspire you most.</p>' +
+                    '<a href="../scan.html" class="btn btn-primary"><i class="fas fa-barcode"></i> Start Scanning</a>' +
+                    '<a href="../library/library.html" class="btn btn-secondary"><i class="fas fa-book-open"></i> Browse Library</a>' +
+                    '</div>';
                 return;
             }
 
             grid.innerHTML = '';
-            favs.forEach(function(fav) {
+            favs.forEach(function(fav, index) {
                 const card = document.createElement('div');
                 card.className = 'card favourite-card';
+                card.style.animationDelay = (index * 0.06) + 's';
                 const imgSrc = fav.image || ('../assets/images/' + (fav.speciesKey || '') + '.jpg');
-                const statusBadge = fav.status ? '<span class="status-pill">' + fav.status + '</span>' : '';
-                card.innerHTML = '<div class="card-image" style="position:relative;">' +
-                    '<img src="' + imgSrc + '" alt="' + fav.name + '" onerror="this.src=\'../assets/images/background.png\'">' +
+                const statusText = fav.status || 'Status Unknown';
+                const pill = '<span class="fav-status-pill ' + statusPillClass(statusText) + '"><i class="fas fa-circle"></i>' + statusText + '</span>';
+                const added = fav.addedAt ? '<div class="fav-meta"><i class="fas fa-calendar-check"></i> Added ' + formatAddedDate(fav.addedAt) + '</div>' : '';
+                card.innerHTML = '<div class="fav-media">' +
+                    '<img src="' + imgSrc + '" alt="' + fav.name + '" loading="lazy" onerror="this.src=\'../assets/images/background.png\'">' +
+                    pill +
+                    '<span class="fav-heart-pin"><i class="fas fa-heart"></i></span>' +
                     '</div>' +
-                    '<div class="card-body">' +
+                    '<div class="fav-info">' +
                     '<h3>' + fav.name + '</h3>' +
-                    (fav.scientificName ? '<p class="sci-name">' + fav.scientificName + '</p>' : '') +
-                    statusBadge +
-                    '<button class="btn btn--ghost btn--sm remove-fav" data-key="' + fav.speciesKey + '" aria-label="Remove ' + fav.name + ' from favourites"><i class="fas fa-heart-broken"></i> Remove</button>' +
+                    (fav.scientificName ? '<p class="fav-sci">' + fav.scientificName + '</p>' : '') +
+                    '<div class="fav-meta">' +
+                    '<i class="fas fa-leaf"></i><span>' + (statusText) + '</span>' +
+                    '<button class="remove-fav" data-key="' + fav.speciesKey + '" aria-label="Remove ' + fav.name + ' from favourites"><i class="fas fa-heart-broken"></i> Remove</button>' +
+                    '</div>' +
+                    added +
                     '</div>';
                 grid.appendChild(card);
             });
@@ -180,8 +275,9 @@
                 const key = btn.getAttribute('data-key');
                 const session = (window.getCurrentUser ? window.getCurrentUser() : null) || {};
                 const all = JSON.parse(localStorage.getItem('wildguard_favourites') || '[]');
+                const fav = all.find(f => (f.user || '').toLowerCase() === (session.email || '').toLowerCase() && f.speciesKey === key);
                 localStorage.setItem('wildguard_favourites', JSON.stringify(all.filter(f => !(f.user === (session.email || '').toLowerCase() && f.speciesKey === key))));
-                if (typeof window.showToast === 'function') window.showToast('Removed from favourites', 'info');
+                if (typeof window.showToast === 'function') window.showToast((fav ? fav.name : 'Species') + ' removed from favourites', 'info');
                 renderFavourites();
             });
         });
