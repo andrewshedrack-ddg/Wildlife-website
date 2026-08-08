@@ -8,7 +8,12 @@ const WildGuardConfig = {
     gbif: 'https://api.gbif.org/v1',
     inaturalist: 'https://api.inaturalist.org/v1',
     iucn: 'https://apiv3.iucnredlist.org/api/v3',
-    timeout: 10000
+    timeout: 10000,
+    // Azure AI Vision (Image Analysis) — used by the backend /api/scan proxy.
+    azureVision: {
+      endpoint: '',
+      key: ''
+    }
   },
 
   // Supported Languages

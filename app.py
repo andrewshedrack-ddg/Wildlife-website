@@ -212,6 +212,77 @@ def start_background_tasks():
 
 # --- Public APIs (To drive your Frontend dynamically) ---
 
+# Real AI vision endpoint: forwards a scanned image to Azure AI Vision (Image
+# Analysis). Requires AZURE_VISION_ENDPOINT + AZURE_VISION_KEY in the env.
+# When unconfigured it returns {"available": false} so the frontend falls
+# through to the on-device trained model. Never raises to the caller.
+@app.route('/api/scan', methods=['POST'])
+def ai_scan():
+    import base64
+    import json as _json
+    from urllib.request import Request, urlopen
+    from urllib.error import HTTPError
+
+    data = request.get_json(silent=True) or {}
+    image = data.get('image') or ''
+    if not image:
+        return jsonify({'available': False, 'error': 'No image'}), 400
+
+    endpoint = os.environ.get('AZURE_VISION_ENDPOINT')
+    key = os.environ.get('AZURE_VISION_KEY')
+    if not endpoint or not key:
+        return jsonify({'available': False, 'error': 'Azure AI Vision not configured'}), 200
+
+    # Accept a data URL ("data:image/jpeg;base64,....") or raw base64.
+    if image.startswith('data:'):
+        image = image.split(',', 1)[-1] if ',' in image else image
+    try:
+        image_bytes = base64.b64decode(image)
+    except Exception:
+        return jsonify({'available': False, 'error': 'Invalid image data'}), 400
+
+    api = endpoint.rstrip('/') + '/computervision/imageanalysis:analyze'
+    params = '?api-version=2024-02-01&features=tags,caption,denseCaptions&gender-neutral-caption=True&language=en'
+    req = Request(
+        api + params,
+        data=image_bytes,
+        headers={
+            'Content-Type': 'application/octet-stream',
+            'Ocp-Apim-Subscription-Key': key
+        },
+        method='POST'
+    )
+    try:
+        with urlopen(req, timeout=25) as resp:
+            body = _json.loads(resp.read().decode('utf-8'))
+    except HTTPError as e:
+        try:
+            err = e.read().decode('utf-8')
+        except Exception:
+            err = str(e)
+        return jsonify({'available': False, 'error': 'Vision API error', 'detail': err[:300]}), 200
+    except Exception as e:
+        return jsonify({'available': False, 'error': str(e)}), 200
+
+    tags = []
+    for t in (body.get('tagsResult', {}).get('values') or []):
+        name = t.get('name')
+        if name and t.get('confidence', 0) >= 0.5:
+            tags.append(name)
+    caption = ''
+    cap = (body.get('captionResult', {}) or {}).get('text', '')
+    if cap:
+        caption = cap
+    if not tags and caption:
+        tags = [w.strip() for w in caption.replace(',', ' ').split() if w.strip()][:8]
+
+    return jsonify({
+        'available': True,
+        'tags': tags,
+        'caption': caption,
+        'source': 'azure-ai-vision'
+    }), 200
+
 @app.route('/api/settings', methods=['GET'])
 def get_public_settings():
     settings = Setting.query.all()

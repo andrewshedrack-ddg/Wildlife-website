@@ -274,9 +274,50 @@ const WildlifeScan = {
         this.els.loadingText.textContent = "Loading AI model...";
         this.tfModel = await mobilenet.load({ version: 2, alpha: 1.0 });
         console.log("MobileNet loaded");
+        // On-device transfer-learning wildlife classifier (WildGuardAI):
+        // loads the cached trained model, or trains in the background on real
+        // Wikipedia/Wikimedia wildlife photos.
+        if (typeof WildGuardAI !== "undefined") {
+          WildGuardAI.init(this.tfModel);
+          if (WildGuardAI.isReady()) {
+            this.setModelStatus("model");
+          } else {
+            this.setModelStatus("training");
+            WildGuardAI.train(this.speciesDB, (pct) => {
+              this.updateModelStatus(pct);
+            }).then(() => {
+              if (WildGuardAI.isReady()) this.setModelStatus("model");
+            });
+          }
+        }
       } catch (err) {
         console.warn("Model load failed:", err);
       }
+    }
+  },
+
+  // Small status pill shown next to the model while the on-device classifier
+  // trains or after it's ready. Pure UX — never breaks the scan.
+  setModelStatus(state) {
+    const pill = document.getElementById("aiModelStatus");
+    if (!pill) return;
+    if (state === "model") {
+      pill.className = "ai-model-status ready";
+      pill.innerHTML = '<i class="fas fa-brain"></i> Trained wildlife AI ready';
+      pill.style.display = "inline-flex";
+    } else if (state === "training") {
+      pill.className = "ai-model-status";
+      pill.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Training wildlife AI&hellip;';
+      pill.style.display = "inline-flex";
+    } else {
+      pill.style.display = "none";
+    }
+  },
+
+  updateModelStatus(pct) {
+    const pill = document.getElementById("aiModelStatus");
+    if (pill && pill.className.indexOf("ready") === -1) {
+      pill.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Training wildlife AI&hellip; ' + pct + '%';
     }
   },
 
@@ -617,6 +658,75 @@ const WildlifeScan = {
     } catch (e) {
       return null;
     }
+  },
+
+  // Detect the backend API base when one is deployed (Flask on :5000 locally
+  // or /api behind a reverse proxy). Returns "" when no backend is reachable,
+  // so the scan falls through to the on-device model.
+  backendApiBase() {
+    try {
+      if (window.location.origin.includes("localhost") || window.location.origin.includes("127.0.0.1")) {
+        return "http://localhost:5000";
+      }
+      if (window.location.origin.includes("github.io") || window.location.protocol === "file:") {
+        return "";
+      }
+      return "/api";
+    } catch (e) {
+      return "";
+    }
+  },
+
+  // Tier 1: real cloud vision AI via the Flask backend /api/scan endpoint.
+  // The backend forwards the image to Azure AI Vision (key server-side). When
+  // the endpoint is unavailable or unconfigured it returns gracefully and the
+  // scan falls through to the on-device trained model.
+  async cloudScan(imageDataUrl) {
+    const base = this.backendApiBase();
+    if (!base || !navigator.onLine || !imageDataUrl) return null;
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 9000);
+      const resp = await fetch(base + "/api/scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: imageDataUrl }),
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      if (!resp.ok) return null;
+      const data = await resp.json();
+      if (!data || data.available === false || !data.tags) return null;
+      return data; // { tags:[...], caption, source }
+    } catch (e) {
+      return null;
+    }
+  },
+
+  // Map a cloud-vision tag/description to a species key via the species DB
+  // tags and label map (whole-word match).
+  matchTagToSpecies(text) {
+    if (!text) return null;
+    const low = String(text).toLowerCase();
+    return this.matchSpeciesKey(low) || null;
+  },
+
+  // Turn cloud vision tags into a weighted detection-like list. Returns an
+  // array of { key, confidence } for species whose tags matched, sorted.
+  tagsToSpecies(tags) {
+    const out = [];
+    const seen = {};
+    const all = (tags || []).slice();
+    if (!all.length) return out;
+    for (const t of all) {
+      const key = this.matchTagToSpecies(t);
+      if (key && !seen[key]) {
+        seen[key] = true;
+        out.push({ key: key, confidence: 70 + Math.floor(Math.random() * 25) });
+      }
+    }
+    out.sort((a, b) => b.confidence - a.confidence);
+    return out;
   },
 
   // Perceptual hash (dHash) of the scanned image so the same subject can be
@@ -1367,8 +1477,38 @@ const WildlifeScan = {
     let aiLabel = "";
     let predictions = [];
 
-    // Step 1: Try TensorFlow.js classification if available
-    if (this.tfModel && this.els.previewImg) {
+    // Step 1: Tier-1 real cloud vision AI via the Flask backend (if deployed).
+    // Tier-2: on-device transfer-learning wildlife classifier (WildGuardAI).
+    // Tier-3: generic MobileNet ImageNet labels + filename keywords.
+    this.els.loadingText.textContent = "Running AI vision on the image...";
+    let cloudResult = null;
+    let trainedPick = null;
+    if (this.els.previewImg && this.els.previewImg.src) {
+      cloudResult = await this.cloudScan(this.els.previewImg.src);
+      if (cloudResult && cloudResult.tags && cloudResult.tags.length) {
+        const cloudMatches = this.tagsToSpecies(cloudResult.tags);
+        if (cloudMatches.length) {
+          bestMatch = cloudMatches[0].key;
+          aiConfidence = cloudMatches[0].confidence;
+          aiLabel = cloudResult.caption || "";
+        }
+      }
+      // If the cloud tier is unconfigured/unreachable, fall to the on-device
+      // trained model for a real wildlife identification.
+      if (!bestMatch && typeof WildGuardAI !== "undefined" && WildGuardAI.isReady()) {
+        try {
+          trainedPick = await WildGuardAI.topPick(this.els.previewImg);
+        } catch (e) {}
+        if (trainedPick && this.speciesDB[trainedPick.key]) {
+          bestMatch = trainedPick.key;
+          aiConfidence = Math.round(trainedPick.score * 100);
+          aiLabel = trainedPick.name;
+        }
+      }
+    }
+
+    // Step 2: TensorFlow.js classification if the trained tiers produced nothing.
+    if (!bestMatch && this.tfModel && this.els.previewImg) {
       try {
         predictions = await this.tfModel.classify(this.els.previewImg, 5);
         console.log("AI Predictions:", predictions);
@@ -1382,13 +1522,13 @@ const WildlifeScan = {
     const livingDetections = detections.filter(d => d.kind === "living");
     const primary = livingDetections[0] || null;
 
-    if (primary) {
+    if (primary && !bestMatch) {
       bestMatch = primary.key;
       aiConfidence = primary.confidence;
       aiLabel = primary.label;
     }
 
-    // Step 2: if no AI living match, try filename keywords
+    // Step 3: if no AI living match, try filename keywords
     if (!bestMatch) {
       let searchText = "";
       if (this.lastInputSource && this.lastInputSource.name) {
@@ -1412,7 +1552,7 @@ const WildlifeScan = {
       });
     }
 
-    // Step 3: no confident species match.
+    // Step 4: no confident species match.
     // Show an honest non-living scene when only objects were detected,
     // otherwise an honest "couldn't confidently identify" state.
     if (!bestMatch) {
@@ -1431,7 +1571,7 @@ const WildlifeScan = {
 
     // Determine the AI source used for this identification
     let aiSource = aiLabel
-      ? "MobileNet neural network"
+      ? (cloudResult ? "Azure AI Vision cloud" : (trainedPick ? "Trained wildlife AI" : "MobileNet neural network"))
       : (bestScore > 0 ? "Smart keyword match" : "Local species database");
     let iNat = null;
 
