@@ -404,6 +404,30 @@ const WildlifeScan = {
     return map[category] || "other";
   },
 
+  // Assess whether a species is harmful to humans based on its biological
+  // profile. Returns a badge descriptor used in the Adaptations & Safety section.
+  assessHarm(species) {
+    const hay = ((species.diet || "") + " " + (species.behavior || "") + " " + (species.desc || "") + " " +
+      (species.category || "") + " " + ((species.tags || []).join(" "))).toLowerCase();
+    const dangerWords = ["venom", "poison", "deadly", "dangerous", "aggressive", "sting", "fangs", "bite",
+      "predator", "carnivor", "attack", "harmful", "toxic", "man-eat", "ferocious", "claws", "horns", "charge"];
+    let score = 0;
+    for (const w of dangerWords) {
+      if (hay.includes(w)) score++;
+    }
+    if (/carnivor|predator/.test(hay)) score += 2;
+    if (/venom|poison|toxic/.test(hay)) score += 2;
+    if (/bacteri|virus/.test((species.category || "").toLowerCase())) score += 1;
+
+    if (score >= 3) {
+      return { harmful: true, label: "Can be harmful to humans — keep a safe distance", icon: "fa-triangle-exclamation", cls: "harmful" };
+    }
+    if (score >= 1) {
+      return { harmful: false, label: "Generally safe — observe with caution", icon: "fa-shield-halved", cls: "cautious" };
+    }
+    return { harmful: false, label: "Harmless to humans — enjoy watching it", icon: "fa-circle-check", cls: "harmless" };
+  },
+
   // Try to resolve the scan's surroundings from the browser's location:
   //  1. Reverse geocode via free OpenStreetMap Nominatim (place name / country / biome)
   //  2. Nearby geographic + historic features via free Wikipedia geosearch
@@ -1171,7 +1195,6 @@ const WildlifeScan = {
     this.els.resultStatusBadge.className = "status-badge " + species.statusClass;
     this.els.resultStatusBadge.textContent = species.status;
     const confText = aiLabel ? confidence + "% AI confidence" : confidence + "% confidence match";
-    var soilText = species.soilType || "Not specified";
 
     // AI source badge
     let aiSourceHtml = '<div class="ai-source-badge"><i class="fas fa-microchip"></i> ' + this.currentResult.aiSource +
@@ -1190,19 +1213,32 @@ const WildlifeScan = {
       '<span class="confidence-text">' + confText + '</span>' +
       '</div>';
 
+    const harm = this.assessHarm(species);
+
     this.els.resultDetails.innerHTML =
-      '<div class="detail-section"><h4><i class="fas fa-info-circle"></i> Description</h4><p>' + species.desc + '</p></div>' +
-      '<div class="detail-section taxonomy-section"><h4><i class="fas fa-sitemap"></i> Taxonomy</h4><div class="taxonomy-tree">' +
-      '<div class="taxon-item"><span class="taxon-label">Domain</span><span class="taxon-value">' + species.domain + '</span></div>' +
-      '<div class="taxon-item"><span class="taxon-label">Kingdom</span><span class="taxon-value">' + species.kingdom + '</span></div>' +
-      '<div class="taxon-item"><span class="taxon-label">Category</span><span class="taxon-value">' + species.category + '</span></div>' +
+      // 1. Biological data — compact quick-facts grid
+      '<div class="detail-section detail-section--full"><h4><i class="fas fa-dna"></i> Biological Data</h4>' +
+      '<div class="bio-grid">' +
+      '<div class="bio-tile"><span class="bio-label">Kingdom</span><span class="bio-value">' + species.kingdom + '</span></div>' +
+      '<div class="bio-tile"><span class="bio-label">Domain</span><span class="bio-value">' + species.domain + '</span></div>' +
+      '<div class="bio-tile"><span class="bio-label">Category</span><span class="bio-value">' + species.category + '</span></div>' +
+      '<div class="bio-tile"><span class="bio-label">Population</span><span class="bio-value">' + species.population + '</span></div>' +
       '</div></div>' +
-      '<div class="detail-section"><h4><i class="fas fa-users"></i> Population</h4><p>' + species.population + ' estimated in the wild</p></div>' +
-      '<div class="detail-section"><h4><i class="fas fa-globe-africa"></i> Habitat</h4><p>' + species.habitat + '</p></div>' +
-      '<div class="detail-section"><h4><i class="fas fa-layer-group"></i> Environmental Context</h4><p><strong>Soil Type:</strong> ' + soilText + '</p></div>' +
-      '<div class="detail-section"><h4><i class="fas fa-utensils"></i> Diet</h4><p>' + species.diet + '</p></div>' +
-      '<div class="detail-section"><h4><i class="fas fa-paw"></i> Behavior</h4><p>' + species.behavior + '</p></div>' +
-      '<div class="detail-section"><h4><i class="fas fa-exclamation-triangle"></i> Threats</h4><p>' + species.threats + '</p></div>';
+      // 2. Feeding habit
+      '<div class="detail-section"><h4><i class="fas fa-utensils"></i> Feeding Habit</h4><p>' + species.diet + '</p></div>' +
+      // 3. Adaptations & safety (harmful or not)
+      '<div class="detail-section"><h4><i class="fas fa-shield-halved"></i> Adaptations &amp; Safety</h4>' +
+      '<p>' + species.behavior + '</p>' +
+      '<div class="safety-badge ' + harm.cls + '"><i class="fas ' + harm.icon + '"></i> ' + harm.label + '</div>' +
+      '</div>' +
+      // 4. Habitat & geography
+      '<div class="detail-section"><h4><i class="fas fa-globe-africa"></i> Habitat &amp; Geography</h4>' +
+      '<p>' + species.habitat + (species.soil ? '<br><span class="detail-dim"><i class="fas fa-layer-group"></i> Soil: ' + species.soil + '</span>' : '') + '</p>' +
+      '</div>' +
+      // 5. Threats & conservation
+      '<div class="detail-section"><h4><i class="fas fa-exclamation-triangle"></i> Threats &amp; Conservation</h4><p>' + species.threats + '</p></div>' +
+      // 6. About
+      '<div class="detail-section"><h4><i class="fas fa-info-circle"></i> About</h4><p>' + species.desc + '</p></div>';
 
     // Render the "everything detected" scene panel alongside the primary result
     this.renderSceneAnalysis(detections, bestMatch);
@@ -1233,12 +1269,20 @@ const WildlifeScan = {
 
     if (window.speechSynthesis) {
       const aiNote = aiLabel ? ", using artificial intelligence to identify features matching the species database." : ".";
+      const harmNote = harm.harmful
+        ? " Caution: this " + species.category + " can be harmful to humans, so keep a safe distance."
+        : " This " + species.category + " is not harmful to humans.";
+      const geoNote = (this.currentResult.geo && (this.currentResult.geo.place || this.currentResult.geo.region || this.currentResult.geo.country))
+        ? " It was scanned around " + this.currentResult.geo.place + ", " + this.currentResult.geo.region + ", " + this.currentResult.geo.country + "."
+        : "";
       let sceneNote = "";
       const others = (detections || []).filter(d => d.kind === "living" && d.key !== bestMatch);
       if (others.length) {
         sceneNote = " I also detected " + others.length + " other living thing" + (others.length > 1 ? "s" : "") + " in this scene, including " + others.map(d => d.species.name).join(" and ") + ".";
       }
-      this.speak("Identified " + species.name + ", a " + species.domain + " from the kingdom " + species.kingdom + ". Status: " + species.status + ". " + species.desc + aiNote + sceneNote);
+      this.speak(species.name + ", " + species.scientificName + ". Biological data: a " + species.domain + " from the kingdom " + species.kingdom +
+        ", with a wild population of about " + species.population + ". Feeding habit: " + species.diet + ". Adaptations: " + species.behavior +
+        "." + harmNote + " Habitat: " + species.habitat + ". Conservation status: " + species.status + "." + geoNote + sceneNote + aiNote);
     }
   },
 
@@ -1504,23 +1548,27 @@ const WildlifeScan = {
   readFieldGuide() {
     if (!this.currentResult || !this.currentResult.species) return;
     const { species } = this.currentResult;
+    const harm = this.assessHarm(species);
+    const harmNote = harm.harmful
+      ? " This " + species.category + " can be harmful to humans, so keep a safe distance."
+      : " This " + species.category + " is not harmful to humans.";
+    const geoNote = (this.currentResult.geo && (this.currentResult.geo.place || this.currentResult.geo.region || this.currentResult.geo.country))
+      ? " It was scanned around " + this.currentResult.geo.place + ", " + this.currentResult.geo.region + ", " + this.currentResult.geo.country + "."
+      : "";
     const text =
-      "Field guide for " + species.name + ". " +
-      "Scientific name: " + species.scientificName + ". " +
-      "Kingdom: " + species.kingdom + ". " +
-      "Status: " + species.status + ". " +
-      "Population estimate: " + species.population + ". " +
-      "Habitat: " + species.habitat + ".";
-    const text2 =
-      "Diet: " + species.diet + ". " +
-      "Behavior: " + species.behavior + ".";
+      species.name + ", " + species.scientificName + ". " +
+      "Biological data: " + species.domain + ", kingdom " + species.kingdom + ", category " + species.category + ", population about " + species.population + ". " +
+      "Feeding habit: " + species.diet + ". " +
+      "Adaptations: " + species.behavior + "." + harmNote +
+      " Habitat: " + species.habitat + (species.soil ? ", soil " + species.soil + "." : ".") +
+      " Conservation status: " + species.status + "." + geoNote;
     let sceneNote = "";
     const detections = this.currentResult.detections || [];
     const others = detections.filter(d => d.kind === "living" && d.key !== this.currentResult.key);
     if (others.length) {
       sceneNote = " Scene analysis: I also detected " + others.length + " other living thing" + (others.length > 1 ? "s" : "") + ", including " + others.map(d => d.species.name).join(" and ") + ". ";
     }
-    this.speak(text + " " + text2 + sceneNote);
+    this.speak(text + " " + sceneNote);
   }
 };
 

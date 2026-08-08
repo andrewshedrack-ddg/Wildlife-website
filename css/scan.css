@@ -339,6 +339,88 @@
   margin: 0;
 }
 
+.detail-dim {
+  display: inline-block;
+  margin-top: 0.4rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+}
+
+/* ---------- Compact Systematic Result (bio grid + safety) ---------- */
+.detail-section--full { grid-column: 1 / -1; }
+
+.bio-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.7rem;
+}
+
+.bio-tile {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius, 8px);
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.bio-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent, #c9a227);
+}
+
+.bio-value {
+  font-size: 0.9rem;
+  color: #ffffff;
+  line-height: 1.4;
+}
+
+.safety-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+  padding: 0.45rem 1rem;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.safety-badge.harmful {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.safety-badge.cautious {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.safety-badge.harmless {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+/* Two-column detail sections on wide screens so the result panel is
+   compact and doesn't force the user to scroll forever. */
+.result-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 2rem;
+  align-items: start;
+}
+
+.result-details .detail-section { break-inside: avoid; }
+
 /* ---------- Result Actions ---------- */
 .result-actions {
   display: flex;
@@ -804,6 +886,14 @@
 
 /* ---------- Responsive enhancements ---------- */
 @media (max-width: 768px) {
+  .result-details {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .bio-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .confidence-wrapper {
     flex-direction: column;
     align-items: flex-start;
