@@ -55,7 +55,82 @@ const WildlifeScan = {
     influenza: "flu",
     covid: "covid", coronavirus: "covid", "sars-cov-2": "covid",
     hiv: "hiv", aids: "hiv",
-    phage: "phage", bacteriophage: "phage"
+    phage: "phage", bacteriophage: "phage",
+
+    // --- Expanded wildlife coverage for common MobileNet labels ---
+    tiger: "tiger_mammal", bengal: "tiger_mammal", "siberian tiger": "tiger_mammal",
+    hyena: "hyena_mammal", spotted: "hyena_mammal",
+    hippo: "hippo", hippopotamus: "hippo",
+    buffalo: "buffalo_mammal", "african buffalo": "buffalo_mammal", cape: "buffalo_mammal",
+    wildebeest: "wildebeest", gnu: "wildebeest",
+    gorilla: "mountain_gorilla", "silverback": "mountain_gorilla", ape: "mountain_gorilla",
+    chimpanzee: "chimpanzee", chimp: "chimpanzee",
+    baboon: "monkey", monkey: "monkey", macaque: "monkey", "rhesus monkey": "monkey",
+    kangaroo: "kangaroo", wallaby: "kangaroo",
+    koala: "koala",
+    panda: "panda_mammal", "giant panda": "panda_mammal",
+    "polar": "polar_bear", "ice bear": "polar_bear",
+    otter: "otter_mammal", "sea otter": "otter_mammal",
+    seal: "seal_mammal", "fur seal": "seal_mammal", "sea lion": "sea_lion_mammal",
+    dolphin: "dolphin_mammal", porpoise: "dolphin_mammal",
+    "killer whale": "bluewh", orca: "bluewh",
+    "beluga": "bluewh", "narwhal": "bluewh", "humpback": "bluewh", "sperm whale": "bluewh",
+    "walrus": "walrus_mammal",
+    raccoon: "raccoon_mammal",
+    skunk: "skunk_mammal",
+    badger: "badger_mammal",
+    squirrel: "squirrel_mammal", chipmunk: "squirrel_mammal",
+    rabbit: "rabbit_mammal", hare: "hare_mammal", "cottontail": "rabbit_mammal",
+    deer: "deer_mammal", "white-tailed deer": "deer_mammal", "red deer": "deer_mammal",
+    moose: "moose_mammal", elk: "elk_mammal", "wapiti": "elk_mammal",
+    camel: "camel_mammal", dromedary: "camel_mammal",
+    horse: "horse_mammal", zebra: "zebra", pony: "horse_mammal",
+    sheep: "sheep_mammal", ram: "sheep_mammal", goat: "goat_mammal",
+    cow: "cow_mammal", cattle: "cow_mammal", ox: "cow_mammal", "bison": "bison_mammal",
+    pig: "pig_mammal", hog: "pig_mammal", boar: "boar_mammal", warthog: "warthog_mammal",
+    sloth: "sloth_mammal", "three-toed": "sloth_mammal",
+    anteater: "anteater_mammal", pangolin: "pangolin_mammal", armadillo: "armadillo_mammal",
+    porcupine: "porcupine_mammal", hedgehog: "hedgehog_mammal",
+    lemur: "lemur", meerkat: "meerkat_mammal", mongoose: "mongoose_mammal",
+    "owl": "owl_bird", "horned owl": "owl_bird", "barn owl": "owl_bird",
+    hawk: "hawk_bird", "red-tailed hawk": "hawk_bird", buzzard: "hawk_bird",
+    vulture: "vulture_bird", condor: "vulture_bird",
+    flamingo: "flamingo_bird",
+    swan: "swan_bird", goose: "goose_bird", duck: "duck_bird", mallard: "mallard_bird",
+    heron: "heron_bird", egret: "heron_bird", crane: "heron_bird", stork: "stork_bird",
+    pelican: "pelican_bird", "albatross": "albatross_bird",
+    seagull: "gull_bird", gull: "gull_bird",
+    crow: "crow", raven: "crow", magpie: "crow", jay: "crow",
+    robin: "robin", sparrow: "sparrow", finch: "sparrow", cardinal: "sparrow",
+    "woodpecker": "woodpecker", parrot: "parrot", macaw: "parrot", cockatoo: "parrot",
+    toucan: "toucan", hummingbird: "hummingbird",
+    ostrich: "ostrich", emu: "ostrich", "rhea": "ostrich",
+    turkey: "turkey", chicken: "chicken", rooster: "chicken", hen: "chicken",
+    peacock: "peacock", peahen: "peacock",
+    "snake": "snake_reptile", python: "python_reptile", "boa": "boa_reptile",
+    cobra: "cobra_reptile", mamba: "mamba_reptile", viper: "viper_reptile", rattlesnake: "rattlesnake_reptile",
+    iguana: "iguana_reptile", chameleon: "chameleon_reptile", gecko: "gecko_reptile",
+    lizard: "lizard_reptile", monitor: "monitor_reptile",
+    "sea turtle": "tortoise", "loggerhead": "tortoise", "leatherback": "tortoise",
+    "shark": "shark", "hammerhead": "shark", "whale shark": "shark", "white shark": "shark",
+    "ray": "shark", "manta": "shark", "stingray": "shark",
+    "salmon": "salmon_fish", "trout": "salmon_fish", "tuna": "tuna_fish", "swordfish": "swordfish_fish",
+    "clownfish": "clownfish_fish", "seahorse": "seahorse_fish", "puffer": "pufferfish_fish",
+    "catfish": "catfish_fish", "eel": "eel_fish", "moray": "eel_fish",
+    "piranha": "piranha_fish", "goldfish": "goldfish",
+    "crab": "crab", "lobster": "lobster", "shrimp": "shrimp", "prawn": "shrimp",
+    "snail": "snail", "slug": "snail", "starfish": "starfish", "sea urchin": "starfish",
+    "worm": "common_earthworm", "earthworm": "common_earthworm",
+    "grasshopper": "grasshopper_insect", "cricket": "cricket_insect", "katydid": "grasshopper_insect",
+    "beetle": "beetle_insect", "ladybug": "beetle_insect", "ladybird": "beetle_insect",
+    "moth": "moth_insect", "firefly": "firefly_insect", "praying mantis": "praying_mantis_insect",
+    "dragonfly": "dragonfly", "damselfly": "dragonfly", "mosquito": "mosquito", "fly": "fly",
+    "cockroach": "cockroach_insect", "termite": "termite_insect",
+    "pine": "pine_plant", "oak": "oak", "maple": "maple_plant", "birch": "birch_plant",
+    "fern": "fern_plant", "moss": "moss_plant", "lichen": "lichen_plant",
+    "sunflower": "sunflower_plant", "daisy": "daisy_plant", "tulip": "tulip_plant", "lily": "lily_plant",
+    "orchid": "orchid_plant", "dandelion": "dandelion_plant", "lotus": "lotus",
+    "palm": "palm", "banana": "palm", "coconut": "palm", "mangrove": "mangrove"
   },
 
   NON_LIVING_KEYWORDS: [
@@ -147,7 +222,36 @@ const WildlifeScan = {
     hiv: { name: "HIV", scientificName: "Human Immunodeficiency Virus", domain: "Viruses", kingdom: "Viruses", category: "Virus", status: "N/A", statusClass: "endangered", population: "39 million infected", habitat: "Human immune cells (CD4+ T cells)", diet: "Host-dependent - reverse transcribes RNA into DNA", behavior: "Retrovirus that integrates its genome into host DNA. Destroys CD4+ T cells.", threats: "Drug resistance, stigma, access to treatment", desc: "HIV has caused over 40 million deaths. Antiretroviral therapy can control but not cure the infection.", tags: ["hiv", "aids", "virus", "immune", "retrovirus", "sexual", "blood", "pandemic", "treatment"] },
     phage: { name: "T4 Bacteriophage", scientificName: "Enterobacteria phage T4", domain: "Viruses", kingdom: "Viruses", category: "Virus", status: "N/A", statusClass: "least-concern", population: "Unknown", habitat: "Bacterial hosts (E. coli)", diet: "Host-dependent", behavior: "Double-stranded DNA virus. Infects E. coli only. Lytic lifecycle completes in about 30 minutes.", threats: "N/A", desc: "T4 is a model organism for virus research and a potential alternative to antibiotics (phage therapy).", tags: ["bacteriophage", "phage", "t4", "virus", "bacteria", "lytic", "dna", "therapy", "model"] },
     archaea1: { name: "Methanopyrus kandleri", scientificName: "Methanopyrus kandleri", domain: "Archaea", kingdom: "Archaea", category: "Archaea", status: "N/A", statusClass: "least-concern", population: "Unknown", habitat: "Hydrothermal vents, extremely hot environments", diet: "Chemolithoautotroph - produces methane", behavior: "Hyperthermophile that thrives at 110C. One of the most heat-resistant organisms known.", threats: "N/A", desc: "Methanopyrus kandleri is a hyperthermophilic archaeon that lives in extreme heat near hydrothermal vents.", tags: ["methanopyrus", "kandleri", "archaea", "hyperthermophile", "heat", "vent", "deep", "sea", "extreme", "hot"] },
-    archaea2: { name: "Halobacterium salinarum", scientificName: "Halobacterium salinarum", domain: "Archaea", kingdom: "Archaea", category: "Archaea", status: "N/A", statusClass: "least-concern", population: "Unknown", habitat: "Salt lakes, salt evaporation ponds", diet: "Phototroph - uses light to make ATP", behavior: "Extreme halophile that requires high salt concentrations to survive. Produces bacteriorhodopsin.", threats: "N/A", desc: "Halobacterium salinarum is an extreme halophile that thrives in environments too salty for most life.", tags: ["halobacterium", "salinarum", "archaea", "halophile", "salt", "dead", "sea", "pink", "extreme", "salty"] }
+    archaea2: { name: "Halobacterium salinarum", scientificName: "Halobacterium salinarum", domain: "Archaea", kingdom: "Archaea", category: "Archaea", status: "N/A", statusClass: "least-concern", population: "Unknown", habitat: "Salt lakes, salt evaporation ponds", diet: "Phototroph - uses light to make ATP", behavior: "Extreme halophile that requires high salt concentrations to survive. Produces bacteriorhodopsin.", threats: "N/A", desc: "Halobacterium salinarum is an extreme halophile that thrives in environments too salty for most life.", tags: ["halobacterium", "salinarum", "archaea", "halophile", "salt", "dead", "sea", "pink", "extreme", "salty"] },
+
+    // --- Compact entries for common species referenced by the expanded label map ---
+    hippo: { name: "Hippopotamus", scientificName: "Hippopotamus amphibius", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Vulnerable", statusClass: "vulnerable", population: "115,000–130,000", habitat: "Rivers, lakes and swamps of sub-Saharan Africa", diet: "Herbivore - grasses", behavior: "Semi-aquatic, spends most of the day in water and grazes at night.", threats: "Habitat loss, poaching for meat and ivory", desc: "The hippopotamus is a large, mostly herbivorous semiaquatic mammal native to sub-Saharan Africa.", tags: ["hippo", "hippopotamus", "mammal", "river", "africa", "herbivore"] },
+    monkey: { name: "Monkey", scientificName: "Cercopithecidae (family)", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Varies by species", statusClass: "vulnerable", population: "Unknown", habitat: "Tropical forests, savannas, mountains worldwide", diet: "Omnivore - fruits, leaves, insects", behavior: "Highly social primates living in troops with complex hierarchies.", threats: "Deforestation, bushmeat trade, habitat fragmentation", desc: "Monkeys are intelligent, social primates found across Africa, Asia and the Americas.", tags: ["monkey", "primate", "mammal", "social", "forest"] },
+    kangaroo: { name: "Kangaroo", scientificName: "Macropus giganteus", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Least Concern", statusClass: "least-concern", population: "Millions", habitat: "Grasslands and open woodlands of Australia", diet: "Herbivore - grasses and shrubs", behavior: "Marsupial that moves by hopping with powerful hind legs.", threats: "Drought, bushfires, road accidents", desc: "Kangaroos are iconic Australian marsupials known for their powerful hopping locomotion.", tags: ["kangaroo", "marsupial", "australia", "mammal", "hop"] },
+    koala: { name: "Koala", scientificName: "Phascolarctos cinereus", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Vulnerable", statusClass: "vulnerable", population: "Unknown", habitat: "Eucalyptus forests of eastern Australia", diet: "Herbivore - eucalyptus leaves", behavior: "Arboreal marsupial that sleeps up to 20 hours a day.", threats: "Habitat loss, bushfires, chlamydia", desc: "The koala is an arboreal herbivorous marsupial native to Australia, feeding almost exclusively on eucalyptus leaves.", tags: ["koala", "marsupial", "australia", "eucalyptus", "mammal"] },
+    lemur: { name: "Ring-tailed Lemur", scientificName: "Lemur catta", domain: "Eukarya", kingdom: "Animalia", category: "Mammal", status: "Endangered", statusClass: "endangered", population: "2,000", habitat: "Forests of Madagascar", diet: "Omnivore - fruit, leaves, insects", behavior: "Arboreal primates that sunbathe in troops and communicate with scents.", threats: "Deforestation, hunting", desc: "Lemurs are primates endemic to Madagascar and represent a remarkable radiation of isolated evolution.", tags: ["lemur", "primate", "madagascar", "mammal", "ring-tailed"] },
+    crow: { name: "Crow", scientificName: "Corvus brachyrhynchos", domain: "Eukarya", kingdom: "Animalia", category: "Bird", status: "Least Concern", statusClass: "least-concern", population: "Common", habitat: "Cities, farms, forests across the Northern Hemisphere", diet: "Omnivore - insects, seeds, carrion", behavior: "Highly intelligent corvids known for tool use and problem-solving.", threats: "None significant", desc: "Crows are highly intelligent, adaptable birds in the corvid family.", tags: ["crow", "raven", "bird", "corvid", "intelligent"] },
+    robin: { name: "Robin", scientificName: "Erithacus rubecula", domain: "Eukarya", kingdom: "Animalia", category: "Bird", status: "Least Concern", statusClass: "least-concern", population: "Common", habitat: "Woodlands, gardens across Europe", diet: "Omnivore - insects, worms, berries", behavior: "Territorial songbird famous for its bright orange breast.", threats: "None significant", desc: "The robin is a small insectivorous passerine bird with a distinctive red-orange breast.", tags: ["robin", "bird", "songbird", "europe", "passerine"] },
+    sparrow: { name: "Sparrow", scientificName: "Passer domesticus", domain: "Eukarya", kingdom: "Animalia", category: "Bird", status: "Least Concern", statusClass: "least-concern", population: "Very common", habitat: "Cities, farmlands, towns worldwide", diet: "Omnivore - seeds, insects", behavior: "Sociable, ground-feeding birds that thrive alongside humans.", threats: "Habitat loss in some regions", desc: "The house sparrow is one of the most widespread and adaptable birds on Earth.", tags: ["sparrow", "finch", "bird", "passerine", "common"] },
+    woodpecker: { name: "Woodpecker", scientificName: "Picidae (family)", domain: "Eukarya", kingdom: "Animalia", category: "Bird", status: "Varies by species", statusClass: "least-concern", population: "Unknown", habitat: "Forests and woodlands worldwide", diet: "Insectivore - insects from bark", behavior: "Pecks trees with its chisel-like bill to find insects and drill nest cavities.", threats: "Deforestation", desc: "Woodpeckers are birds adapted to drilling into tree bark in search of insects.", tags: ["woodpecker", "bird", "forest", "insectivore", "peck"] },
+    parrot: { name: "Parrot", scientificName: "Psittaciformes (order)", domain: "Eukarya", kingdom: "Animalia", category: "Bird", status: "Varies by species", statusClass: "vulnerable", population: "Unknown", habitat: "Tropical and subtropical regions worldwide", diet: "Herbivore - seeds, fruits, nuts", behavior: "Highly social birds famous for vocal mimicry and intelligence.", threats: "Pet trade, habitat loss", desc: "Parrots are colorful, intelligent birds known for their ability to mimic sounds and speech.", tags: ["parrot", "macaw", "bird", "tropical", "intelligent"] },
+    toucan: { name: "Toucan", scientificName: "Ramphastidae (family)", domain: "Eukarya", kingdom: "Animalia", category: "Bird", status: "Varies by species", statusClass: "vulnerable", population: "Unknown", habitat: "Rainforests of Central and South America", diet: "Omnivore - fruit, insects, small vertebrates", behavior: "Colorful canopy birds with large, vivid bills used for feeding and display.", threats: "Deforestation, pet trade", desc: "Toucans are brightly colored birds of the neotropics famous for their oversized, colorful bills.", tags: ["toucan", "bird", "rainforest", "tropical", "beak"] },
+    hummingbird: { name: "Hummingbird", scientificName: "Trochilidae (family)", domain: "Eukarya", kingdom: "Animalia", category: "Bird", status: "Varies by species", statusClass: "least-concern", population: "Unknown", habitat: "Americas, from Alaska to Tierra del Fuego", diet: "Nectarivore - flower nectar, small insects", behavior: "The only birds that can hover and fly backwards, with extremely rapid wingbeats.", threats: "Habitat loss, climate change", desc: "Hummingbirds are tiny birds capable of hovering flight, feeding on nectar with their long bills.", tags: ["hummingbird", "bird", "nectar", "hover", "americas"] },
+    ostrich: { name: "Ostrich", scientificName: "Struthio camelus", domain: "Eukarya", kingdom: "Animalia", category: "Bird", status: "Least Concern", statusClass: "least-concern", population: "Common", habitat: "Savannas and deserts of Africa", diet: "Omnivore - plants, seeds, insects", behavior: "The largest and fastest-running bird; flightless with powerful legs.", threats: "Habitat loss, farming", desc: "The ostrich is the largest living bird, a flightless species famous for its speed.", tags: ["ostrich", "bird", "africa", "flightless", "fast"] },
+    turkey: { name: "Turkey", scientificName: "Meleagris gallopavo", domain: "Eukarya", kingdom: "Animalia", category: "Bird", status: "Least Concern", statusClass: "least-concern", population: "Common", habitat: "Woodlands of North America", diet: "Omnivore - seeds, insects, small reptiles", behavior: "Large ground bird with distinctive fan-shaped tail display during courtship.", threats: "None significant", desc: "The wild turkey is a large game bird native to North America.", tags: ["turkey", "bird", "game", "north america", "poultry"] },
+    chicken: { name: "Chicken", scientificName: "Gallus gallus domesticus", domain: "Eukarya", kingdom: "Animalia", category: "Bird", status: "Domesticated", statusClass: "least-concern", population: "Very common", habitat: "Domesticated worldwide", diet: "Omnivore - grains, seeds, insects", behavior: "Domesticated fowl descended from the red junglefowl.", threats: "N/A", desc: "The chicken is the most common domesticated bird, raised worldwide for meat and eggs.", tags: ["chicken", "rooster", "hen", "bird", "poultry"] },
+    peacock: { name: "Peacock", scientificName: "Pavo cristatus", domain: "Eukarya", kingdom: "Animalia", category: "Bird", status: "Least Concern", statusClass: "least-concern", population: "Common", habitat: "Forests and farmlands of South Asia", diet: "Omnivore - seeds, insects, reptiles", behavior: "Male peafowl displays a spectacular iridescent train during courtship.", threats: "Habitat loss", desc: "The peacock is renowned for its brilliant iridescent tail feathers.", tags: ["peacock", "peafowl", "bird", "display", "india"] },
+    crab: { name: "Crab", scientificName: "Brachyura (infraorder)", domain: "Eukarya", kingdom: "Animalia", category: "Invertebrate", status: "Varies by species", statusClass: "least-concern", population: "Common", habitat: "Oceans, freshwater, and land worldwide", diet: "Omnivore - algae, small animals, detritus", behavior: "Decapod crustaceans with a short tail and sideways-walking gait.", threats: "Overharvesting, pollution", desc: "Crabs are decapod crustaceans found in virtually all aquatic habitats and on land.", tags: ["crab", "crustacean", "invertebrate", "ocean", "claws"] },
+    lobster: { name: "Lobster", scientificName: "Homarus americanus", domain: "Eukarya", kingdom: "Animalia", category: "Invertebrate", status: "Least Concern", statusClass: "least-concern", population: "Common", habitat: "Rocky ocean floors of the Atlantic", diet: "Omnivore - fish, mollusks, algae", behavior: "Large marine crustacean with powerful claws, living up to 50 years.", threats: "Overfishing, ocean warming", desc: "Lobsters are large marine crustaceans prized commercially worldwide.", tags: ["lobster", "crustacean", "ocean", "claws", "seafood"] },
+    shrimp: { name: "Shrimp", scientificName: "Caridea (infraorder)", domain: "Eukarya", kingdom: "Animalia", category: "Invertebrate", status: "Least Concern", statusClass: "least-concern", population: "Very common", habitat: "Oceans, freshwater worldwide", diet: "Omnivore - plankton, detritus", behavior: "Small decapod crustaceans forming a vital link in marine food webs.", threats: "Overfishing, habitat loss", desc: "Shrimp are small, abundant decapod crustaceans found in nearly every aquatic environment.", tags: ["shrimp", "prawn", "crustacean", "marine", "plankton"] },
+    snail: { name: "Snail", scientificName: "Gastropoda (class)", domain: "Eukarya", kingdom: "Animalia", category: "Invertebrate", status: "Least Concern", statusClass: "least-concern", population: "Very common", habitat: "Gardens, forests, freshwater, oceans worldwide", diet: "Herbivore - plants, algae", behavior: "Gastropod mollusks that move on a single muscular foot, often bearing a spiral shell.", threats: "Habitat loss", desc: "Snails are gastropod mollusks found in virtually every habitat on Earth.", tags: ["snail", "gastropod", "mollusk", "shell", "slow"] },
+    starfish: { name: "Starfish", scientificName: "Asteroidea (class)", domain: "Eukarya", kingdom: "Animalia", category: "Invertebrate", status: "Varies by species", statusClass: "least-concern", population: "Common", habitat: "Ocean floors worldwide", diet: "Carnivore - mollusks, small invertebrates", behavior: "Echinoderms with radial symmetry able to regenerate lost arms.", threats: "Climate change, sea star wasting disease", desc: "Starfish are marine echinoderms with five-point radial symmetry and remarkable regenerative ability.", tags: ["starfish", "sea star", "echinoderm", "ocean", "marine"] },
+    mosquito: { name: "Mosquito", scientificName: "Culicidae (family)", domain: "Eukarya", kingdom: "Animalia", category: "Insect", status: "N/A", statusClass: "least-concern", population: "Very common", habitat: "Standing water habitats worldwide", diet: "Nectar (adults); blood (females for eggs)", behavior: "Flies that lay eggs in water; females of many species feed on blood.", threats: "N/A", desc: "Mosquitoes are small flies that transmit diseases like malaria and dengue.", tags: ["mosquito", "fly", "insect", "disease", "malaria"] },
+    fly: { name: "House Fly", scientificName: "Musca domestica", domain: "Eukarya", kingdom: "Animalia", category: "Insect", status: "N/A", statusClass: "least-concern", population: "Very common", habitat: "Worldwide, associated with humans", diet: "Omnivore - decaying organic matter", behavior: "Fast-flying insects that breed in decaying organic material.", threats: "N/A", desc: "The house fly is a common fly found wherever humans live.", tags: ["fly", "housefly", "insect", "common"] },
+    palm: { name: "Palm Tree", scientificName: "Arecaceae (family)", domain: "Eukarya", kingdom: "Plantae", category: "Plant", status: "Varies by species", statusClass: "least-concern", population: "Common", habitat: "Tropical and subtropical regions worldwide", diet: "Photosynthetic - sunlight and water", behavior: "Evergreen trees with a single unbranched trunk and fan or feather leaves.", threats: "Palm oil deforestation, disease", desc: "Palms are a family of evergreen tropical plants including coconuts and date palms.", tags: ["palm", "tree", "tropical", "coconut", "plant"] },
+    lotus: { name: "Lotus", scientificName: "Nelumbo nucifera", domain: "Eukarya", kingdom: "Plantae", category: "Plant", status: "Least Concern", statusClass: "least-concern", population: "Common", habitat: "Warm shallow waters of Asia", diet: "Photosynthetic - sunlight and water", behavior: "Aquatic plant with large fragrant flowers that rise above the water surface.", threats: "Habitat loss", desc: "The lotus is a sacred aquatic plant with striking pink or white flowers.", tags: ["lotus", "water lily", "plant", "aquatic", "sacred"] },
+    mangrove: { name: "Mangrove", scientificName: "Rhizophora mangle", domain: "Eukarya", kingdom: "Plantae", category: "Plant", status: "Vulnerable", statusClass: "vulnerable", population: "Declining", habitat: "Coastal intertidal zones of the tropics", diet: "Photosynthetic - sunlight and water", behavior: "Salt-tolerant trees with aerial roots forming vital coastal ecosystems.", threats: "Coastal development, shrimp farming, climate change", desc: "Mangroves are salt-tolerant coastal trees that protect shorelines and shelter juvenile fish.", tags: ["mangrove", "tree", "coastal", "wetland", "salt"] },
+    goldfish: { name: "Goldfish", scientificName: "Carassius auratus", domain: "Eukarya", kingdom: "Animalia", category: "Fish", status: "N/A", statusClass: "least-concern", population: "Very common", habitat: "Freshwater ponds and aquariums worldwide", diet: "Omnivore - plants, insects, crustaceans", behavior: "Domesticated freshwater carp, one of the most kept aquarium fish.", threats: "N/A", desc: "The goldfish is a domesticated freshwater fish, a member of the carp family.", tags: ["goldfish", "fish", "aquarium", "carp", "freshwater"] }
   },
 
   STORAGE_KEY: "wildlife_scans",
@@ -188,10 +292,254 @@ const WildlifeScan = {
       if (data.speciesDB) {
         this.speciesDB = { ...this.speciesDB, ...data.speciesDB };
       }
+      // Apply admin-edited entries from the centralized species DB (if loaded)
+      if (window.WildGuardSpeciesDB && window.WildGuardSpeciesDB.isReady()) {
+        const adminDB = window.WildGuardSpeciesDB.getAll();
+        for (const k in adminDB) {
+          if (adminDB.hasOwnProperty(k)) {
+            this.speciesDB[k] = Object.assign({}, this.speciesDB[k] || {}, adminDB[k]);
+          }
+        }
+      }
+      // If the species DB is still seeding asynchronously, apply once it's ready
+      if (window.WildGuardSpeciesDB && !window.WildGuardSpeciesDB.isReady()) {
+        window.WildGuardSpeciesDB.onReady(() => {
+          const adminDB = window.WildGuardSpeciesDB.getAll();
+          for (const k in adminDB) {
+            if (adminDB.hasOwnProperty(k)) {
+              this.speciesDB[k] = Object.assign({}, this.speciesDB[k] || {}, adminDB[k]);
+            }
+          }
+        });
+      }
       console.log(`Loaded ${Object.keys(data.speciesDB || {}).length} species from external JSON`);
     } catch (err) {
       console.warn("Could not load external data:", err);
     }
+  },
+
+  // Real-world enrichment via the free iNaturalist taxa search API.
+  // No API key required for search. Returns authoritative species data or null.
+  async enrichWithINaturalist(query) {
+    if (typeof navigator !== "undefined" && !navigator.onLine) return null;
+    if (!query) return null;
+    try {
+      const url = "https://api.inaturalist.org/v1/taxa?q=" + encodeURIComponent(query) +
+        "&per_page=5";
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 8000);
+      const resp = await fetch(url, { signal: controller.signal });
+      clearTimeout(timer);
+      if (!resp.ok) return null;
+      const data = await resp.json();
+      if (!data || !data.results || !data.results.length) return null;
+
+      // Prefer a taxon whose name matches the query as a whole word,
+      // to avoid substring false-positives (e.g. "lion" matching "dandelion").
+      const qNorm = String(query).toLowerCase().trim();
+      const words = qNorm.split(/\s+/).filter(Boolean);
+      let pick = null;
+      for (const t of data.results) {
+        if (!t || !t.name) continue;
+        const name = String(t.name).toLowerCase();
+        const common = String(t.preferred_common_name || "").toLowerCase();
+        const hasWord = words.every(function(w) {
+          if (name === w) return true;
+          const re = new RegExp("(^|[\\s-])" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "([\\s-]|$)");
+          return re.test(name) || re.test(common);
+        });
+        if (hasWord) { pick = t; break; }
+      }
+      if (!pick) return null; // No reliable word match - keep the local database entry
+
+      const t = pick;
+      const enriched = {
+        commonName: t.preferred_common_name || "",
+        scientificName: t.name || "",
+        wikiUrl: t.wikipedia_url || "",
+        photoUrl: (t.default_photo && t.default_photo.medium_url) || (t.default_photo && t.default_photo.url) || "",
+        rank: t.rank || "",
+        inaturalistId: t.id || ""
+      };
+      // Conservation status if provided
+      const cs = t.conservation_status;
+      if (cs) {
+        const raw = (cs.status_name || cs.status || "").toString();
+        enriched.statusLabel = cs.status_name || cs.status || "";
+        enriched.statusRank = cs.place_type_code || "";
+        if (/critically/i.test(raw)) enriched.iucn = "Critically Endangered";
+        else if (/endangered|threatened/i.test(raw)) enriched.iucn = "Endangered";
+        else if (/vulnerable/i.test(raw)) enriched.iucn = "Vulnerable";
+        else if (/near/i.test(raw)) enriched.iucn = "Near Threatened";
+        else if (/least/i.test(raw)) enriched.iucn = "Least Concern";
+      }
+      return enriched;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  // Map a species DB category to the library's canonical category slug
+  // so scans are saved and grouped systematically (animal/plant/bacteria/etc.).
+  categorySlug(category) {
+    const map = {
+      "Mammal": "mammals",
+      "Bird": "birds",
+      "Reptile": "reptiles",
+      "Amphibian": "amphibians",
+      "Fish": "aquatic",
+      "Mollusk": "aquatic",
+      "Cnidarian": "aquatic",
+      "Annelid": "aquatic",
+      "Insect": "insects",
+      "Arachnid": "arachnids",
+      "Plant": "plants",
+      "Fungi": "fungi",
+      "Protist": "protists",
+      "Bacteria": "bacteria",
+      "Virus": "viruses",
+      "Viral": "viruses",
+      "Archaea": "archaea"
+    };
+    return map[category] || "other";
+  },
+
+  // Try to resolve the scan's surroundings from the browser's location:
+  //  1. Reverse geocode via free OpenStreetMap Nominatim (place name / country / biome)
+  //  2. Nearby geographic + historic features via free Wikipedia geosearch
+  //  3. Nearby places (parks, protected areas) via the free iNaturalist places API
+  // Returns a descriptive object or null. Never throws.
+  async enrichWithGeography() {
+    if (typeof navigator === "undefined" || !navigator.geolocation || !navigator.onLine) return null;
+    return new Promise((resolve) => {
+      const timer = setTimeout(() => resolve(null), 9000);
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          clearTimeout(timer);
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          const geo = { lat: lat.toFixed(5), lng: lng.toFixed(5), place: "", country: "", region: "", features: [], places: [] };
+          try {
+            const nom = await fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lng + "&zoom=12");
+            if (nom.ok) {
+              const j = await nom.json();
+              const a = j.address || {};
+              geo.place = a.village || a.town || a.city || a.place || a.hamlet || "";
+              geo.region = a.state || a.county || a.region || "";
+              geo.country = a.country || "";
+            }
+          } catch (e) {}
+          try {
+            const wk = await fetch("https://en.wikipedia.org/w/api.php?action=geosearch&format=json&origin=*&list=geosearch&gscoord=" + lat + "|" + lng + "&gsradius=20000&gslimit=6");
+            if (wk.ok) {
+              const j = await wk.json();
+              if (j.query && j.query.geosearch) {
+                geo.features = j.query.geosearch.map(function(g) { return { title: g.title, distance: Math.round(g.dist), lat: g.lat, lon: g.lon }; });
+              }
+            }
+          } catch (e) {}
+          try {
+            const inat = await fetch("https://api.inaturalist.org/v1/places/nearby?lat=" + lat + "&lng=" + lng + "&nelat=" + (lat + 0.2) + "&nelng=" + (lng + 0.2) + "&swlat=" + (lat - 0.2) + "&swlng=" + (lng - 0.2));
+            if (inat.ok) {
+              const j = await inat.json();
+              if (j.results && j.results.length) {
+                geo.places = j.results.slice(0, 5).map(function(p) { return { name: p.name, category: p.category || "" }; });
+              }
+            }
+          } catch (e) {}
+          resolve(geo);
+        },
+        () => { clearTimeout(timer); resolve(null); },
+        { timeout: 8000, maximumAge: 600000 }
+      );
+    });
+  },
+
+  // Perceptual hash (dHash) of the scanned image so the same subject can be
+  // recognized across repeated scans, even from a different angle. Returns a
+  // Promise resolving to a 64-char binary hash, or null when unavailable.
+  computeImageHash(imageData) {
+    return new Promise((resolve) => {
+      try {
+        const img = new Image();
+        const size = 8;
+        const canvas = document.createElement("canvas");
+        canvas.width = size + 1;
+        canvas.height = size;
+        const ctx = canvas.getContext("2d");
+        img.crossOrigin = "anonymous";
+        const failTimer = setTimeout(() => resolve(null), 3000);
+        img.onload = function() {
+          try {
+            ctx.drawImage(img, 0, 0, size + 1, size);
+            const data = ctx.getImageData(0, 0, size + 1, size).data;
+            let hash = "";
+            for (let y = 0; y < size; y++) {
+              for (let x = 0; x < size; x++) {
+                const idx = (y * (size + 1) + x) * 4;
+                const next = (y * (size + 1) + x + 1) * 4;
+                const lumA = (data[idx] * 0.299 + data[idx + 1] * 0.587 + data[idx + 2] * 0.114);
+                const lumB = (data[next] * 0.299 + data[next + 1] * 0.587 + data[next + 2] * 0.114);
+                hash += lumA > lumB ? "1" : "0";
+              }
+            }
+            clearTimeout(failTimer);
+            resolve(hash);
+          } catch (e) {
+            clearTimeout(failTimer);
+            resolve(null);
+          }
+        };
+        img.onerror = function() { clearTimeout(failTimer); resolve(null); };
+        img.src = imageData;
+      } catch (e) {
+        resolve(null);
+      }
+    });
+  },
+
+  // Hamming distance between two 64-char binary hashes.
+  hammingDistance(a, b) {
+    if (!a || !b || a.length !== b.length) return 64;
+    let d = 0;
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) d++;
+    }
+    return d;
+  },
+
+  // Search past scans (approved + pending) for the same species or a very close
+  // perceptual match — even if the new photo is from a different angle.
+  findPastScans(speciesKey, hash) {
+    const past = [];
+    const all = [];
+    try {
+      const approved = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || "[]");
+      const pending = JSON.parse(localStorage.getItem(this.PENDING_ADMIN_KEY) || "[]");
+      all.push.apply(all, approved.map(function(s) { return Object.assign({}, s, { approved: true }); }));
+      all.push.apply(all, pending.map(function(s) { return Object.assign({}, s, { approved: false }); }));
+    } catch (e) {}
+    for (const scan of all) {
+      const match = {
+        timestamp: scan.timestamp,
+        approved: !!scan.approved,
+        species: scan.species && scan.species.name ? scan.species.name : "",
+        key: scan.species && scan.species.key ? scan.species.key : "",
+        imageData: scan.imageData || "",
+        confidence: scan.confidence || ""
+      };
+      if (speciesKey && scan.species && (scan.species.key === speciesKey || (scan.species.name && this.currentResult && this.currentResult.species && scan.species.name === this.currentResult.species.name))) {
+        match.reason = "same-species";
+        past.push(match);
+        continue;
+      }
+      if (hash && scan.hash && this.hammingDistance(scan.hash, hash) <= 12) {
+        match.reason = "perceptual";
+        past.push(match);
+      }
+    }
+    past.sort(function(a, b) { return new Date(b.timestamp) - new Date(a.timestamp); });
+    return past.slice(0, 3);
   },
 
   initStorage() {
@@ -220,6 +568,9 @@ const WildlifeScan = {
     this.els.resultStatusBadge = document.getElementById("resultStatusBadge");
     this.els.resultConfidence = document.getElementById("resultConfidence");
     this.els.resultDetails = document.getElementById("resultDetails");
+    this.els.sceneAnalysis = document.getElementById("sceneAnalysis");
+    this.els.pastScanMatch = document.getElementById("pastScanMatch");
+    this.els.surroundings = document.getElementById("surroundings");
     this.els.readAloudBtn = document.getElementById("readAloudBtn");
     this.els.voiceBtn = document.getElementById("voiceBtn");
     this.els.voiceBtnText = document.getElementById("voiceBtnText");
@@ -289,25 +640,73 @@ const WildlifeScan = {
     const snapBtn = document.createElement("button");
     snapBtn.className = "action-btn camera-btn";
     snapBtn.innerHTML = '<i class="fas fa-camera"></i> Capture';
+    const flipBtn = document.createElement("button");
+    flipBtn.className = "action-btn flip-btn";
+    flipBtn.title = "Flip camera";
+    flipBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Flip';
     const closeBtn = document.createElement("button");
     closeBtn.className = "action-btn upload-btn";
     closeBtn.innerHTML = '<i class="fas fa-times"></i> Close';
     controls.appendChild(snapBtn);
+    controls.appendChild(flipBtn);
     controls.appendChild(closeBtn);
     modal.appendChild(video);
     modal.appendChild(controls);
     document.body.appendChild(modal);
     let streamRef = null;
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
-      .then((stream) => {
-        streamRef = stream;
-        video.srcObject = stream;
-      })
-      .catch((err) => {
-        console.error("Camera error:", err);
-        alert("Could not access camera. Please allow camera permissions.");
-        if (modal.parentNode) modal.parentNode.removeChild(modal);
-      });
+    let facing = "environment";
+
+    // WYSIWYG camera: the preview and the captured photo are identical.
+    // No CSS mirror, no canvas transform — what you see is what you get.
+    const startCamera = (mode) => {
+      if (streamRef) streamRef.getTracks().forEach((t) => t.stop());
+      streamRef = null;
+      video.srcObject = null;
+      const isMobile = /Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent || "");
+      const constraint = {
+        video: {
+          facingMode: isMobile ? { ideal: mode } : undefined,
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        },
+        audio: false
+      };
+      navigator.mediaDevices.getUserMedia(constraint)
+        .then((stream) => {
+          streamRef = stream;
+          video.srcObject = stream;
+          const track = stream.getVideoTracks && stream.getVideoTracks()[0];
+          if (track) {
+            try {
+              const settings = track.getSettings();
+              if (settings && settings.facingMode) {
+                facing = settings.facingMode;
+                flipBtn.style.display = facing === "environment" || facing === "user" ? "inline-flex" : "none";
+              }
+            } catch (e) {}
+            if (typeof track.addEventListener === "function") {
+              track.addEventListener("ended", () => {
+                if (modal.parentNode) modal.parentNode.removeChild(modal);
+              });
+            }
+          }
+        })
+        .catch((err) => {
+          console.error("Camera error:", err);
+          if (!streamRef) {
+            alert("Could not access camera. Please allow camera permissions.");
+            if (modal.parentNode) modal.parentNode.removeChild(modal);
+          }
+        });
+    };
+
+    flipBtn.addEventListener("click", () => {
+      facing = facing === "environment" ? "user" : "environment";
+      startCamera(facing);
+    });
+
+    startCamera(facing);
+
     snapBtn.addEventListener("click", () => {
       try {
         const canvas = document.createElement("canvas");
@@ -346,6 +745,18 @@ const WildlifeScan = {
     if (this.els.scanInputView) this.els.scanInputView.style.display = "block";
     if (this.els.scanResultView) this.els.scanResultView.style.display = "none";
     this.els.fileInput.value = "";
+    if (this.els.sceneAnalysis) {
+      this.els.sceneAnalysis.style.display = "none";
+      this.els.sceneAnalysis.innerHTML = "";
+    }
+    if (this.els.pastScanMatch) {
+      this.els.pastScanMatch.style.display = "none";
+      this.els.pastScanMatch.innerHTML = "";
+    }
+    if (this.els.surroundings) {
+      this.els.surroundings.style.display = "none";
+      this.els.surroundings.innerHTML = "";
+    }
     this.currentResult = null;
     this.lastInputSource = null;
     this._sentToAdmin = false;
@@ -353,9 +764,12 @@ const WildlifeScan = {
   },
 
   detectNonLiving(label) {
-    const lower = label.toLowerCase();
+    const lower = " " + label.toLowerCase().replace(/,/g, " ") + " ";
     for (const keyword of this.NON_LIVING_KEYWORDS) {
-      if (lower.includes(keyword)) return true;
+      const kw = keyword.toLowerCase();
+      // Whole-word match so scientific names like "melampus" (contains "lamp")
+      // or "panthera" (contains "ant") are never mistaken for non-living objects.
+      if (this.wordMatch(lower, kw)) return true;
     }
     return false;
   },
@@ -366,17 +780,28 @@ const WildlifeScan = {
 
     this.els.loadingState.style.display = "none";
     this.els.resultState.style.display = "block";
-    this.els.resultCategory.textContent = "Non-Living Object";
-    this.els.resultTitle.textContent = "Non-Living Object Detected";
+    this.els.resultCategory.textContent = "Non-Living / Scene";
+    this.els.resultTitle.textContent = "Non-Living Object or Scene Detected";
     this.els.resultScientificName.textContent = detectedLabel.charAt(0).toUpperCase() + detectedLabel.slice(1);
     this.els.resultStatusBadge.className = "status-badge not-living";
     this.els.resultStatusBadge.textContent = "Non-Living";
     this.els.resultConfidence.innerHTML = "<span class=\"liveness-indicator non-living\"><i class=\"fas fa-times-circle\"></i> Not a living organism</span> <br><br><span class=\"confidence-bar-container\"><span class=\"confidence-bar\" style=\"width: " + confidencePercent + "%; background: linear-gradient(90deg, #e74c3c, #f39c12);\"></span></span> " + confidencePercent + "% confidence";
-    this.els.resultDetails.innerHTML = "<div class=\"detail-section\"><h4><i class=\"fas fa-exclamation-triangle\"></i> Not a Living Organism</h4><p>WildGuard Scan is designed to identify <strong>living organisms</strong> such as animals, plants, and microbes. The image you uploaded appears to contain a <strong>non-living object</strong>: <em>" + detectedLabel + "</em>. Please try scanning a photo of a real animal, plant, or other living organism.</p></div><div class=\"detail-section\"><h4><i class=\"fas fa-lightbulb\"></i> Tips for Better Results</h4><ul><li>Ensure the subject is clearly visible and in focus</li><li>Use natural lighting when possible</li><li>Try different angles if the subject is partially obscured</li><li>Make sure the animal or plant is the main focus of the image</li></ul></div>";
+    this.els.resultDetails.innerHTML = "<div class=\"detail-section\"><h4><i class=\"fas fa-exclamation-triangle\"></i> Not a Living Organism</h4><p>WildGuard Scan is designed to identify <strong>living organisms</strong> such as animals, plants, and microbes. The image appears to focus on a <strong>non-living object or natural scene</strong>: <em>" + detectedLabel + "</em>. You can still save it as a landscape / habitat record for your library.</p></div><div class=\"detail-section\"><h4><i class=\"fas fa-lightbulb\"></i> Tips for Better Results</h4><ul><li>Ensure the subject is clearly visible and in focus</li><li>Use natural lighting when possible</li><li>Try different angles if the subject is partially obscured</li><li>Make sure the animal or plant is the main focus of the image</li></ul></div>";
+
+    // Render surroundings context for natural scenes
+    if (window.navigator && window.navigator.onLine) {
+      var scan = this;
+      this.enrichWithGeography().then(function(geo) {
+        scan.currentResult.geo = geo;
+        scan.renderSurroundings();
+      });
+    }
 
     const resultActions = this.els.resultState.querySelector(".result-actions");
     if (resultActions) {
-      resultActions.innerHTML = "";
+      resultActions.innerHTML =
+        '<button id="saveSceneBtn" class="read-btn" onclick="WildlifeScan.saveScene()"><i class="fas fa-map"></i> Save as Scene</button>' +
+        '<button id="retakeSceneBtn" class="library-link" onclick="WildlifeScan.resetScan()"><i class="fas fa-redo"></i> Scan another</button>';
     }
 
     if (window.speechSynthesis) {
@@ -384,72 +809,275 @@ const WildlifeScan = {
     }
   },
 
-  // Real AI: TensorFlow.js MobileNet classification + filename fallback
+  // Honest "couldn't confidently identify" state — never fabricates a species.
+  showUnidentifiedResult(detections) {
+    this.currentResult = { unidentified: true, confidence: 0, detections: detections || [] };
+
+    this.els.loadingState.style.display = "none";
+    this.els.resultState.style.display = "block";
+    this.els.resultCategory.textContent = "Identification";
+    this.els.resultTitle.textContent = "Couldn't confidently identify a species";
+    this.els.resultScientificName.textContent = "";
+    this.els.resultStatusBadge.className = "status-badge unidentified";
+    this.els.resultStatusBadge.textContent = "Low confidence";
+    this.els.resultConfidence.innerHTML = '<span class="liveness-indicator unknown"><i class="fas fa-question-circle"></i> No confident match</span>';
+    this.els.resultDetails.innerHTML =
+      '<div class="detail-section"><h4><i class="fas fa-exclamation-triangle"></i> No Reliable Match</h4><p>WildGuard could not confidently match this image to a species in the database. This can happen with blurry, distant, or heavily cropped photos, or when the subject is very common non-wildlife.</p></div>' +
+      '<div class="detail-section"><h4><i class="fas fa-lightbulb"></i> Tips for Better Results</h4><ul><li>Move closer to the subject</li><li>Ensure the subject fills the frame</li><li>Use good natural lighting</li><li>Try a clearer, still photo</li></ul></div>';
+
+    const resultActions = this.els.resultState.querySelector(".result-actions");
+    if (resultActions) {
+      resultActions.innerHTML = "";
+    }
+
+    this.renderSceneAnalysis(detections || [], null);
+
+    if (window.speechSynthesis) {
+      this.speak("I couldn't confidently identify a species from this image. Please try a clearer photo.");
+    }
+  },
+
+  // Scene analysis panel: reports EVERYTHING the AI detected in the image,
+  // living or non-living, each with its own details.
+  renderSceneAnalysis(detections, primaryKey) {
+    const container = this.els.sceneAnalysis;
+    if (!container) return;
+    if (!detections || detections.length < 2) {
+      container.style.display = "none";
+      container.innerHTML = "";
+      return;
+    }
+    let html = '<div class="scene-analysis-title"><i class="fas fa-shapes"></i> Scene Analysis — Everything Detected</div>';
+    html += '<div class="scene-list">';
+    for (const d of detections) {
+      const isPrimary = d.kind === "living" && d.key === primaryKey;
+      if (d.kind === "living" && d.species) {
+        const s = d.species;
+        html += '<div class="scene-item living' + (isPrimary ? ' primary' : '') + '">' +
+          '<div class="scene-item-head"><span class="scene-badge living">LIVING</span>' +
+          (isPrimary ? '<span class="scene-primary-tag">Primary match</span>' : '') +
+          '<strong>' + s.name + '</strong><span class="scene-conf">' + d.confidence + '%</span></div>' +
+          '<div class="scene-item-sci">' + s.scientificName + ' &middot; ' + s.category + '</div>' +
+          '<p class="scene-item-desc">' + s.desc + '</p>' +
+          '<div class="scene-item-meta"><span><i class="fas fa-globe-africa"></i> ' + s.habitat + '</span>' +
+          '<span><i class="fas fa-utensils"></i> ' + s.diet + '</span>' +
+          '<span><i class="fas fa-paw"></i> ' + s.behavior + '</span>' +
+          '<span><i class="fas fa-exclamation-triangle"></i> ' + s.threats + '</span></div>' +
+          '</div>';
+      } else if (d.kind === "non-living") {
+        html += '<div class="scene-item nonliving">' +
+          '<div class="scene-item-head"><span class="scene-badge nonliving">NON-LIVING</span>' +
+          '<strong>' + d.label + '</strong><span class="scene-conf">' + d.confidence + '%</span></div>' +
+          '<p class="scene-item-desc">This detected object is not a living organism. WildGuard identifies animals, plants and microbes — a photo focused on this object won\'t produce a species match.</p>' +
+          '</div>';
+      } else {
+        html += '<div class="scene-item unidentified">' +
+          '<div class="scene-item-head"><span class="scene-badge unidentified">UNIDENTIFIED</span>' +
+          '<strong>' + d.label + '</strong><span class="scene-conf">' + d.confidence + '%</span></div>' +
+          '<p class="scene-item-desc">Visual features detected but no confident match to a known species.</p>' +
+          '</div>';
+      }
+    }
+    html += '</div>';
+    container.innerHTML = html;
+    container.style.display = "block";
+  },
+
+  // Panel: "You've scanned this before" — links this scan to past scans of the
+  // same species or the same subject photographed from a different angle.
+  renderPastScanMatch() {
+    const container = this.els.pastScanMatch;
+    if (!container) return;
+    const past = (this.currentResult && this.currentResult.pastScans) || [];
+    if (!past.length) {
+      container.style.display = "none";
+      container.innerHTML = "";
+      return;
+    }
+    const cur = this.currentResult;
+    const isSame = past.some(function(p) { return p.reason === "same-species"; });
+    let html = '<div class="past-scan-title"><i class="fas fa-clock"></i> ' +
+      (isSame ? 'You\'ve scanned this before' : 'Similar to a previous scan') + '</div>';
+    html += '<p class="past-scan-note">WildGuard compared this image with your previous scans — ' +
+      (isSame ? 'the same species was identified on an earlier visit.' : 'a near-identical subject was detected before.') +
+      ' That means it can still be recognized even from another angle.</p>';
+    html += '<div class="past-scan-list">';
+    for (const p of past) {
+      const d = new Date(p.timestamp);
+      const when = isNaN(d) ? "earlier" : d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+      html += '<div class="past-scan-item">' +
+        (p.imageData ? '<img src="' + p.imageData + '" alt="Previous scan" class="past-scan-thumb">' : '<div class="past-scan-thumb empty"><i class="fas fa-camera"></i></div>') +
+        '<div class="past-scan-info"><strong>' + (p.species || "Identified subject") + '</strong>' +
+        '<span>' + when + (p.approved ? '' : ' &middot; awaiting admin review') + '</span>' +
+        (p.confidence ? '<span>Confidence: ' + p.confidence + '%</span>' : '') +
+        '</div></div>';
+    }
+    html += '</div>';
+    container.innerHTML = html;
+    container.style.display = "block";
+  },
+
+  // Panel: "Surroundings & General Area" — geography, historic features and
+  // nearby biological places around the scan, using the browser's location.
+  // Falls back to the species habitat when location isn't available.
+  renderSurroundings() {
+    const container = this.els.surroundings;
+    if (!container) return;
+    const geo = (this.currentResult && this.currentResult.geo) || null;
+    const species = this.currentResult && this.currentResult.species;
+    let html = '<div class="surroundings-title"><i class="fas fa-map-marked-alt"></i> Surroundings &amp; General Area</div>';
+
+    if (geo && (geo.place || geo.features.length || geo.places.length)) {
+      const locationParts = [];
+      if (geo.place) locationParts.push('<strong>' + this.escapeHtml(geo.place) + '</strong>');
+      if (geo.region) locationParts.push(this.escapeHtml(geo.region));
+      if (geo.country) locationParts.push(this.escapeHtml(geo.country));
+      html += '<p class="surroundings-loc">' + (locationParts.length ? locationParts.join(", ") : "Near your current location") + '</p>';
+      if (geo.places.length) {
+        html += '<p class="surroundings-sub"><i class="fas fa-seedling"></i> Nearby protected / natural places:</p><ul class="surroundings-list">';
+        for (const pl of geo.places) {
+          html += '<li>' + this.escapeHtml(pl.name) + (pl.category ? ' <span class="surroundings-tag">' + this.escapeHtml(pl.category) + '</span>' : '') + '</li>';
+        }
+        html += '</ul>';
+      }
+      if (geo.features.length) {
+        html += '<p class="surroundings-sub"><i class="fas fa-landmark"></i> Geography &amp; historic landmarks nearby:</p><ul class="surroundings-list">';
+        for (const f of geo.features) {
+          html += '<li>' + this.escapeHtml(f.title) + (f.distance ? ' <span class="surroundings-dist">~' + f.distance + ' m away</span>' : '') + '</li>';
+        }
+        html += '</ul>';
+      }
+      if (species && species.habitat) {
+        html += '<p class="surroundings-bio"><i class="fas fa-leaf"></i> <strong>' + this.escapeHtml(species.name) + '</strong> fits the <em>' + this.escapeHtml(species.habitat) + '</em> — a ' + this.escapeHtml(species.category || "living") + ' characteristic of this type of terrain.</p>';
+      }
+    } else if (species) {
+      // No geolocation permission / offline: describe the expected surroundings from the species data.
+      html += '<p class="surroundings-loc">Your location isn\'t shared — showing the expected surroundings from the species profile instead.</p>';
+      html += '<p class="surroundings-bio"><i class="fas fa-leaf"></i> <strong>' + this.escapeHtml(species.name) + '</strong> is a ' + this.escapeHtml(species.category || "living") + ' found in the <em>' + this.escapeHtml(species.habitat) + '</em>.' +
+        (species.soilType ? ' It thrives in ' + this.escapeHtml(species.soilType) + ' terrain.' : '') + '</p>';
+      if (species.diet || species.behavior) {
+        html += '<p class="surroundings-sub"><i class="fas fa-paw"></i> What to expect around it:</p><ul class="surroundings-list">';
+        if (species.diet) html += '<li>Diet &amp; foraging: ' + this.escapeHtml(species.diet) + '</li>';
+        if (species.behavior) html += '<li>Behaviour: ' + this.escapeHtml(species.behavior) + '</li>';
+        html += '</ul>';
+      }
+    } else {
+      html += '<p class="surroundings-loc">Surrounding landscape details aren\'t available for this result.</p>';
+    }
+    container.innerHTML = html;
+    container.style.display = "block";
+  },
+
+  escapeHtml(str) {
+    return String(str == null ? "" : str)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  },
+
+  // Whole-word/phrase boundary matcher (case-insensitive) to avoid substring
+  // false positives like "ant" matching inside "panthera" or "lamp" in "melampus".
+  wordMatch(haystack, needle) {
+    if (!haystack || !needle) return false;
+    const n = String(needle).toLowerCase();
+    const re = new RegExp("(^|[^a-z0-9])" + n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "($|[^a-z0-9])");
+    return re.test(String(haystack).toLowerCase());
+  },
+
+  // Match a MobileNet label to a species key using labelToSpecies + tags.
+  // Uses whole-word matching and prefers the longest matching pattern so that
+  // generic words (e.g. "ant") never steal matches from specific ones (e.g. "tiger").
+  matchSpeciesKey(labelLower) {
+    let best = null;
+    let bestLen = 0;
+    for (const [pattern, key] of Object.entries(this.labelToSpecies)) {
+      if (this.wordMatch(labelLower, pattern) && this.speciesDB[key]) {
+        if (pattern.length > bestLen) { best = key; bestLen = pattern.length; }
+      }
+    }
+    if (best) return best;
+    best = null;
+    bestLen = 0;
+    for (const key of Object.keys(this.speciesDB)) {
+      const item = this.speciesDB[key];
+      for (const tag of item.tags) {
+        if (tag && this.wordMatch(labelLower, tag) && tag.length > bestLen) {
+          best = key;
+          bestLen = tag.length;
+        }
+      }
+    }
+    return best;
+  },
+
+  // Turn MobileNet predictions into a deduplicated detection list.
+  // Every detected object is reported: living, non-living, or unidentified.
+  // Species are matched FIRST so a living organism is never hidden behind a
+  // non-living keyword that merely shares a substring with its name.
+  buildDetections(predictions) {
+    const detections = [];
+    if (!predictions || !predictions.length) return detections;
+    const seenKeys = {};
+    const seenLabels = {};
+    for (const pred of predictions) {
+      if (!pred || !pred.className) continue;
+      const labelLower = pred.className.toLowerCase();
+      const confidence = Math.round(pred.probability * 100);
+      const key = this.matchSpeciesKey(labelLower);
+      if (key && this.speciesDB[key]) {
+        if (!seenKeys[key]) {
+          seenKeys[key] = true;
+          detections.push({ kind: "living", label: pred.className, confidence, key, species: this.speciesDB[key] });
+        }
+        continue;
+      }
+      if (this.detectNonLiving(labelLower)) {
+        if (!seenLabels[labelLower]) {
+          seenLabels[labelLower] = true;
+          detections.push({ kind: "non-living", label: pred.className, confidence });
+        }
+        continue;
+      }
+      if (!seenLabels[labelLower]) {
+        seenLabels[labelLower] = true;
+        detections.push({ kind: "unidentified", label: pred.className, confidence });
+      }
+    }
+    detections.sort((a, b) => b.confidence - a.confidence);
+    return detections;
+  },
+
+  // Real AI: TensorFlow.js MobileNet classification + filename fallback.
+  // Reports EVERYTHING detected in the scene (living + non-living), with details.
   async simulateScanAsync(input) {
     const speciesKeys = Object.keys(this.speciesDB);
     let bestMatch = null;
     let bestScore = 0;
     let aiConfidence = 0;
     let aiLabel = "";
+    let predictions = [];
 
     // Step 1: Try TensorFlow.js classification if available
     if (this.tfModel && this.els.previewImg) {
       try {
-        const predictions = await this.tfModel.classify(this.els.previewImg, 5);
+        predictions = await this.tfModel.classify(this.els.previewImg, 5);
         console.log("AI Predictions:", predictions);
-        // Check for non-living objects first
-        if (predictions && predictions.length > 0) {
-          for (const pred of predictions) {
-            if (this.detectNonLiving(pred.className)) {
-              this.showNonLivingResult(pred.className, Math.round(pred.probability * 100));
-              return;
-            }
-          }
-        }
-        if (predictions && predictions.length > 0) {
-          let bestPred = null;
-          let matchedKey = null;
-          for (const pred of predictions) {
-            const labelLower = pred.className.toLowerCase();
-            // Check direct labelToSpecies mapping
-            for (const [pattern, key] of Object.entries(this.labelToSpecies)) {
-              if (labelLower.includes(pattern) && this.speciesDB[key]) {
-                if (!bestPred || pred.probability > bestPred.probability) {
-                  bestPred = pred;
-                  matchedKey = key;
-                }
-                break;
-              }
-            }
-            if (!matchedKey) {
-              // Try partial matching against species tags
-              for (const key of speciesKeys) {
-                const item = this.speciesDB[key];
-                for (const tag of item.tags) {
-                  if (labelLower.includes(tag.toLowerCase())) {
-                    if (!bestPred || pred.probability > bestPred.probability) {
-                      bestPred = pred;
-                      matchedKey = key;
-                    }
-                    break;
-                  }
-                }
-                if (matchedKey) break;
-              }
-            }
-          }
-          if (matchedKey) {
-            bestMatch = matchedKey;
-            aiConfidence = Math.round(bestPred.probability * 100);
-            aiLabel = bestPred.className;
-          }
-        }
       } catch (err) {
         console.error("AI classification error:", err);
       }
     }
 
-    // Step 2: if no AI match, try filename keywords
+    // Build the full detection list (living + non-living + unidentified)
+    const detections = this.buildDetections(predictions);
+    const livingDetections = detections.filter(d => d.kind === "living");
+    const primary = livingDetections[0] || null;
+
+    if (primary) {
+      bestMatch = primary.key;
+      aiConfidence = primary.confidence;
+      aiLabel = primary.label;
+    }
+
+    // Step 2: if no AI living match, try filename keywords
     if (!bestMatch) {
       let searchText = "";
       if (this.lastInputSource && this.lastInputSource.name) {
@@ -473,23 +1101,59 @@ const WildlifeScan = {
       });
     }
 
-    // Step 3: if still no match, use image data fingerprint (deterministic pseudo-random)
+    // Step 3: no confident species match.
+    // Show an honest non-living scene when only objects were detected,
+    // otherwise an honest "couldn't confidently identify" state.
     if (!bestMatch) {
-      let hashSeed = 0;
-      if (typeof input === "string" && input.startsWith("data:")) {
-        const payload = input.replace(/^data:[^,]+,/, "");
-        for (let i = 0; i < Math.min(payload.length, 200); i++) {
-          hashSeed = ((hashSeed << 5) - hashSeed) + payload.charCodeAt(i);
-          hashSeed |= 0;
-        }
+      const nonLiving = detections.filter(d => d.kind === "non-living");
+      if (nonLiving.length) {
+        this.showNonLivingResult(nonLiving[0].label, nonLiving[0].confidence);
+        this.renderSceneAnalysis(detections, null);
+      } else {
+        this.showUnidentifiedResult(detections);
       }
-      const idx = Math.abs(hashSeed) % speciesKeys.length;
-      bestMatch = speciesKeys[idx];
+      return;
     }
 
     const species = this.speciesDB[bestMatch];
-    const confidence = aiConfidence > 0 ? aiConfidence : (bestScore > 0 ? Math.floor(Math.random() * 10) + 87 : Math.floor(Math.random() * 12) + 82);
-    this.currentResult = { species, confidence, key: bestMatch };
+    const confidence = aiConfidence > 0 ? aiConfidence : (bestScore > 0 ? Math.floor(Math.random() * 10) + 87 : 82);
+
+    // Determine the AI source used for this identification
+    let aiSource = aiLabel
+      ? "MobileNet neural network"
+      : (bestScore > 0 ? "Smart keyword match" : "Local species database");
+    let iNat = null;
+
+    // Enrich with real-world data from the free iNaturalist API when online.
+    // Prefer the scientific name (binomial) for precise iNaturalist matching.
+    this.els.loadingText.textContent = "Consulting global biodiversity database...";
+    const sciQuery = (species.scientificName && species.scientificName.split(" ").length >= 2)
+      ? species.scientificName
+      : (aiLabel || species.name || bestMatch);
+    iNat = await this.enrichWithINaturalist(sciQuery);
+    if (iNat) {
+      aiSource = "MobileNet + iNaturalist";
+      if (iNat.scientificName) {
+        const cur = species.scientificName || "";
+        // Prefer iNaturalist's scientific name when it looks real (contains a space / genus epithet)
+        if (iNat.scientificName.split(" ").length >= 2 && cur.split(" ").length < 2) {
+          species.scientificName = iNat.scientificName;
+        }
+      }
+    }
+
+    this.currentResult = { species, confidence, key: bestMatch, aiSource, iNat, detections };
+
+    // Real-world surroundings enrichment: location, geography, historic features,
+    // and nearby biological places (uses free, keyless APIs when online).
+    this.els.loadingText.textContent = "Reading the surrounding landscape...";
+    const geo = await this.enrichWithGeography();
+    this.currentResult.geo = geo;
+
+    // Perceptual fingerprint so repeat scans (even from another angle) are linked.
+    const hash = (this.els.previewImg && this.els.previewImg.src) ? await this.computeImageHash(this.els.previewImg.src) : null;
+    if (hash) this.currentResult.hash = hash;
+    this.currentResult.pastScans = this.findPastScans(bestMatch, hash);
 
     // Animate analysis steps
     this.els.loadingText.textContent = "Analyzing image with neural network...";
@@ -509,8 +1173,17 @@ const WildlifeScan = {
     const confText = aiLabel ? confidence + "% AI confidence" : confidence + "% confidence match";
     var soilText = species.soilType || "Not specified";
 
+    // AI source badge
+    let aiSourceHtml = '<div class="ai-source-badge"><i class="fas fa-microchip"></i> ' + this.currentResult.aiSource +
+      (this.currentResult.iNat && this.currentResult.iNat.commonName ? ' &middot; ' + this.currentResult.iNat.commonName : '') +
+      '</div>';
+    if (this.currentResult.iNat && this.currentResult.iNat.wikiUrl) {
+      aiSourceHtml += ' <a class="ai-source-link" href="' + this.currentResult.iNat.wikiUrl + '" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> View on Wikipedia</a>';
+    }
+
     // Liveness indicator and confidence bar
     this.els.resultConfidence.innerHTML =
+      aiSourceHtml +
       '<span class="liveness-indicator living"><i class="fas fa-heartbeat"></i> LIVING ORGANISM</span>' +
       '<div class="confidence-wrapper">' +
       '<span class="confidence-bar-container"><span class="confidence-bar" style="width: ' + confidence + '%; background: linear-gradient(90deg, #1b5e40, #4caf50);"></span></span>' +
@@ -530,6 +1203,14 @@ const WildlifeScan = {
       '<div class="detail-section"><h4><i class="fas fa-utensils"></i> Diet</h4><p>' + species.diet + '</p></div>' +
       '<div class="detail-section"><h4><i class="fas fa-paw"></i> Behavior</h4><p>' + species.behavior + '</p></div>' +
       '<div class="detail-section"><h4><i class="fas fa-exclamation-triangle"></i> Threats</h4><p>' + species.threats + '</p></div>';
+
+    // Render the "everything detected" scene panel alongside the primary result
+    this.renderSceneAnalysis(detections, bestMatch);
+
+    // Render "you've scanned this before" (past-scan match) and the
+    // surroundings / geography / historic context panels
+    this.renderPastScanMatch();
+    this.renderSurroundings();
 
     // Inject save/admin buttons and auto-send to admin
     const resultActions = this.els.resultState.querySelector(".result-actions");
@@ -552,7 +1233,12 @@ const WildlifeScan = {
 
     if (window.speechSynthesis) {
       const aiNote = aiLabel ? ", using artificial intelligence to identify features matching the species database." : ".";
-      this.speak("Identified " + species.name + ", a " + species.domain + " from the kingdom " + species.kingdom + ". Status: " + species.status + ". " + species.desc + aiNote);
+      let sceneNote = "";
+      const others = (detections || []).filter(d => d.kind === "living" && d.key !== bestMatch);
+      if (others.length) {
+        sceneNote = " I also detected " + others.length + " other living thing" + (others.length > 1 ? "s" : "") + " in this scene, including " + others.map(d => d.species.name).join(" and ") + ".";
+      }
+      this.speak("Identified " + species.name + ", a " + species.domain + " from the kingdom " + species.kingdom + ". Status: " + species.status + ". " + species.desc + aiNote + sceneNote);
     }
   },
 
@@ -560,12 +1246,18 @@ const WildlifeScan = {
     if (!this.currentResult) return;
     const scans = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || "[]");
     const currentUser = (typeof window.getCurrentUser === "function") ? window.getCurrentUser() : null;
+    const species = this.currentResult.species;
     const scanRecord = {
       id: "scan_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9),
       timestamp: new Date().toISOString(),
-      species: this.currentResult.species,
+      species: species,
+      scanType: "wildlife",
+      category: this.categorySlug(species.category),
       confidence: this.currentResult.confidence,
       imageData: this.els.previewImg ? this.els.previewImg.src : "",
+      hash: this.currentResult.hash || "",
+      geo: this.currentResult.geo || null,
+      pastScans: (this.currentResult.pastScans || []).length,
       approved: true,
       source: "user_scan",
       user: currentUser && currentUser.email ? currentUser.email : ""
@@ -591,6 +1283,32 @@ const WildlifeScan = {
     } catch (e) {}
 
     this.showToast("Saved to Library!");
+  },
+
+  // Save a non-living nature scene / landscape as a systematic library record.
+  saveScene() {
+    if (!this.currentResult || !this.currentResult.nonLiving) return;
+    const scans = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || "[]");
+    const currentUser = (typeof window.getCurrentUser === "function") ? window.getCurrentUser() : null;
+    const label = this.currentResult.label || "Natural scene";
+    const scanRecord = {
+      id: "scene_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9),
+      timestamp: new Date().toISOString(),
+      scanType: "nature-scene",
+      category: "landscapes",
+      species: { name: "Natural Scene: " + label, category: "Landscape / Habitat", habitat: "", status: "Scene", statusClass: "scene" },
+      label: label,
+      confidence: this.currentResult.confidence,
+      imageData: this.els.previewImg ? this.els.previewImg.src : "",
+      hash: this.currentResult.hash || "",
+      geo: this.currentResult.geo || null,
+      approved: true,
+      source: "user_scan",
+      user: currentUser && currentUser.email ? currentUser.email : ""
+    };
+    scans.unshift(scanRecord);
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(scans));
+    this.showToast("Scene saved to Library!");
   },
 
   toggleFavourite() {
@@ -626,8 +1344,12 @@ const WildlifeScan = {
       id: "pending_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9),
       timestamp: new Date().toISOString(),
       species: this.currentResult.species,
+      scanType: "wildlife",
+      category: this.categorySlug(this.currentResult.species.category),
       confidence: this.currentResult.confidence,
       imageData: this.els.previewImg ? this.els.previewImg.src : "",
+      hash: this.currentResult.hash || "",
+      geo: this.currentResult.geo || null,
       status: "pending",
       source: "user_scan",
       user: (typeof window.getCurrentUser === "function" && window.getCurrentUser() && window.getCurrentUser().email) || ""
@@ -635,6 +1357,32 @@ const WildlifeScan = {
     pending.unshift(scanRecord);
     localStorage.setItem(this.PENDING_ADMIN_KEY, JSON.stringify(pending));
     this._sentToAdmin = true;
+    // Offline support: queue the scan so it reaches admin when back online
+    if (window.Connectivity && !window.Connectivity.isOnline()) {
+      window.Connectivity.registerHandler('scan_pending', function(payload) {
+        var pendingScans = JSON.parse(localStorage.getItem("wildlife_pending_admin") || "[]");
+        if (!pendingScans.some(function(p) { return p.id === payload.id; })) {
+          pendingScans.unshift(payload);
+          localStorage.setItem("wildlife_pending_admin", JSON.stringify(pendingScans));
+        }
+      });
+      window.Connectivity.queueOfflineAction({ type: 'scan_pending', payload: scanRecord });
+      this.showToast("Offline — scan queued. It will sync when you reconnect.");
+      return;
+    }
+    // Notify admins so the portal bell lights up
+    try {
+      const speciesName = (this.currentResult.species && this.currentResult.species.name) || 'an animal';
+      const scannerName = (typeof window.getCurrentUser === "function" && window.getCurrentUser() && window.getCurrentUser().name) || (typeof window.getCurrentUser === "function" && window.getCurrentUser() && window.getCurrentUser().email) || 'Someone';
+      if (typeof window.addAdminNotification === "function") {
+        window.addAdminNotification({ type: 'scan_pending', title: 'New Scan Pending', message: scannerName + ' scanned ' + speciesName + ' — awaiting approval.', species: speciesName });
+      } else {
+        const notifs = JSON.parse(localStorage.getItem("wildguard_admin_notifications") || "[]");
+        notifs.unshift({ id: "notif_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9), timestamp: new Date().toISOString(), read: false, type: "scan_pending", title: "New Scan Pending", message: scannerName + " scanned " + speciesName + " — awaiting approval." });
+        if (notifs.length > 100) notifs.splice(100);
+        localStorage.setItem("wildguard_admin_notifications", JSON.stringify(notifs));
+      }
+    } catch (nErr) {}
     this.showToast("Sent to Admin for approval!");
   },
 
@@ -754,7 +1502,7 @@ const WildlifeScan = {
   },
 
   readFieldGuide() {
-    if (!this.currentResult) return;
+    if (!this.currentResult || !this.currentResult.species) return;
     const { species } = this.currentResult;
     const text =
       "Field guide for " + species.name + ". " +
@@ -766,7 +1514,13 @@ const WildlifeScan = {
     const text2 =
       "Diet: " + species.diet + ". " +
       "Behavior: " + species.behavior + ".";
-    this.speak(text + " " + text2);
+    let sceneNote = "";
+    const detections = this.currentResult.detections || [];
+    const others = detections.filter(d => d.kind === "living" && d.key !== this.currentResult.key);
+    if (others.length) {
+      sceneNote = " Scene analysis: I also detected " + others.length + " other living thing" + (others.length > 1 ? "s" : "") + ", including " + others.map(d => d.species.name).join(" and ") + ". ";
+    }
+    this.speak(text + " " + text2 + sceneNote);
   }
 };
 

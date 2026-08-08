@@ -784,3 +784,26 @@ select option,
 .favourite-card .card-body { padding: 1rem; text-align: center; }
 .favourite-card .card-body h3 { font-size: 1rem; }
 .favourite-card .card-body p { font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+
+/* --- Connectivity (Online/Offline) --- */
+.connectivity-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 5000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #7a1f1f, #a33c3c);
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+.connectivity-banner.visible { transform: translateY(0); }
+.connectivity-banner-icon i { color: #ffdada; }
+@media (max-width: 768px) {
+  .connectivity-banner { font-size: 0.78rem; padding: 0.5rem 0.75rem; text-align: center; }
+}

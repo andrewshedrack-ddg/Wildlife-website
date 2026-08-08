@@ -59,7 +59,9 @@
             <div class="user-dropdown" id="user-dropdown" role="menu">
               <a href="user/Profile.html" role="menuitem"><i class="fas fa-user"></i> Profile</a>
               <a href="user/History.html" role="menuitem"><i class="fas fa-history"></i> History</a>
-              <a href="user/Favourite.html" role="menuitem"><i class="fas fa-heart"></i> Favourites</a>
+              <a href="user/Inbox.html" role="menuitem"><i class="fas fa-inbox"></i> Inbox</a>
+
+                                  <a href="user/Favourite.html" role="menuitem"><i class="fas fa-heart"></i> Favourites</a>
               <div class="dropdown-divider"></div>
               <a href="#" id="logout-btn" role="menuitem"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
@@ -130,6 +132,9 @@
                 <div id="resultStatusBadge" class="status-badge"></div>
                 <p id="resultConfidence" class="confidence"></p>
                 <div id="resultDetails" class="result-details"></div>
+                <div id="sceneAnalysis" class="scene-analysis" style="display:none;"></div>
+                <div id="pastScanMatch" class="past-scan-match" style="display:none;"></div>
+                <div id="surroundings" class="surroundings" style="display:none;"></div>
                 <div class="result-actions">
                   <button id="readAloudBtn" class="read-btn">
                     <i class="fas fa-volume-up"></i> Read field guide aloud
@@ -266,7 +271,9 @@
 
   <!-- Scripts -->
   <script defer src="js/i18n.js"></script>
-  <script defer src="js/main.js"></script>
+  <script defer src="js/species-db.js?v=1"></script>
+  <script defer src="js/connectivity.js"></script>
+<script defer src="js/main.js"></script>
   <script defer src="js/scan.js"></script>
   <script defer src="js/auth.js"></script>
   <script defer src="js/system-monitor.js"></script>

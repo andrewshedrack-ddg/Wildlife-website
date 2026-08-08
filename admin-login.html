@@ -18,11 +18,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script defer src="js/i18n.js"></script>
   <style>
-    .password-field { position: relative; }
-    .password-field .form-input { padding-right: 3rem; }
-    .password-toggle { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1rem; padding: 0.25rem; transition: var(--transition); z-index: 10; }
-    .password-toggle:hover { color: var(--accent); }
-    .password-toggle:focus { outline: none; color: var(--accent); }
     .login-security { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); font-size: 0.8rem; }
     .login-security i { color: #22c55e; font-size: 0.85rem; }
     .error-message { background:#fee2e2; color:#991b1b; padding:0.75rem 1rem; border-radius:8px; border-left:4px solid #dc2626; margin-bottom: 1rem; display:none; }
@@ -87,23 +82,16 @@
 
     <section class="content-overlay">
       <div class="admin-login-wrap">
-        <form id="admin-login-form" class="login-form">
-          <div id="error-message" class="error-message"></div>
-          <div class="form-group">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" class="form-input" placeholder="Enter your admin email" required>
-          </div>
-          <div class="form-group">
-            <label for="password" class="form-label">Password</label>
-            <div class="password-field">
-              <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
-              <button type="button" class="password-toggle" id="password-toggle" aria-label="Show password">
-                <i class="fas fa-eye" id="password-toggle-icon"></i>
-              </button>
-            </div>
-          </div>
-          <button type="submit" class="btn-submit">Sign In</button>
-        </form>
+        <div id="error-message" class="error-message"></div>
+        <div style="text-align:center;padding:1.5rem 0 1rem;">
+          <i class="fas fa-shield-halved" style="font-size:3rem;color:var(--accent);opacity:0.9;margin-bottom:1rem;display:block;"></i>
+          <h2 style="font-family:var(--font-heading);margin:0 0 0.5rem;">Admin Portal</h2>
+          <p style="opacity:0.6;font-size:0.9rem;margin:0 0 1.5rem;">One click and you're in — manage users, scans, rewards, tokens, and the species database.</p>
+          <button type="button" id="enter-portal-btn" class="btn-submit" style="width:100%;font-size:1rem;padding:0.85rem 1rem;"><i class="fas fa-sign-in-alt"></i> Enter Portal</button>
+        </div>
+        <div style="margin-top:1rem;text-align:center;font-size:0.78rem;color:rgba(255,255,255,0.4);">
+          <a href="?reset=1" style="color:rgba(255,255,255,0.45);text-decoration:underline;cursor:pointer;"><i class="fas fa-broom"></i> Start fresh — clear all local data</a>
+        </div>
       </div>
     </section>
   </main>
@@ -154,83 +142,66 @@
   </footer>
 
   <script defer src="js/i18n.js"></script>
-  <script defer src="js/main.js?v=2"></script>
+  <script defer src="js/connectivity.js"></script>
+<script defer src="js/main.js?v=2"></script>
   <script defer src="js/auth.js?v=2"></script>
   <script defer src="js/system-monitor.js?v=2"></script>
   <script>
-    // Password visibility toggle for admin login
-    (function() {
-      const toggleBtn = document.getElementById('password-toggle');
-      const passwordInput = document.getElementById('password');
-      const toggleIcon = document.getElementById('password-toggle-icon');
-      if (toggleBtn && passwordInput) {
-        toggleBtn.addEventListener('click', function() {
-          const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-          passwordInput.setAttribute('type', type);
-          toggleIcon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
-          this.setAttribute('aria-label', type === 'password' ? 'Show password' : 'Hide password');
-        });
-      }
-    })();
-
     document.addEventListener('DOMContentLoaded', () => {
-      const adminForm = document.getElementById('admin-login-form');
-      const errorDiv = document.getElementById('error-message') || document.createElement('div');
-
-      function showError(msg) {
-        if (errorDiv.id) {
-          errorDiv.textContent = msg;
-          errorDiv.style.display = 'block';
-        } else {
-          alert(msg);
-        }
+      // Fresh-start reset: ?reset=1 wipes ALL site local data (users, emails, sessions, scans)
+      if (window.location && window.location.search && new URLSearchParams(window.location.search).get('reset') === '1') {
+        Object.keys(localStorage)
+          .filter((k) => k.indexOf('wildguard_') === 0 || k.indexOf('wildlife_') === 0)
+          .forEach((k) => localStorage.removeItem(k));
+        console.log('Fresh start: all WildGuard local data cleared.');
+        if (window.history && history.replaceState) history.replaceState({}, '', window.location.pathname);
       }
 
-      adminForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
+      const ADMIN_EMAIL = 'admin@wildguardsociety.org';
+      const ADMIN_NAME = 'WildGuard Administrator';
 
-        // Security checks
-        if (window.isAccountLocked && window.isAccountLocked(email)) {
-          showError('Account temporarily locked due to multiple failed attempts. Please try again in 30 minutes.');
-          return;
-        }
+      function enterPortal() {
+        // Auto-login as super admin (no credentials required for the demo/portal)
+        const session = {
+          email: ADMIN_EMAIL,
+          name: ADMIN_NAME,
+          role: 'super_admin',
+          firstName: 'WildGuard',
+          lastName: 'Administrator',
+          username: 'wildguard_admin',
+          verified: true
+        };
+        localStorage.setItem('wildguard_user', JSON.stringify(session));
 
-        if (window.securityMonitor) {
-          window.securityMonitor('admin_login_attempt', { email: email.substring(0, 3) + '***' });
-        }
-
-        // Backend mode (if API exists)
+        // Make sure the admin appears in the user store so it shows in Users & Roles
         try {
-          const response = await fetch('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }), credentials: 'include' });
-          let errorMessage = 'Admin login failed. Please check your credentials.';
-          if (!response.ok) {
-            // Safely parse error - the server might return HTML or non-JSON on failure
-            const contentType = response.headers.get('content-type') || '';
-            if (contentType.includes('application/json')) {
-              const errorData = await response.json().catch(() => ({}));
-              errorMessage = errorData.message || errorMessage;
-            } else {
-              const text = await response.text().catch(() => '');
-              console.error('Non-JSON error response from /api/admin/login:', text);
-            }
-            throw new Error(errorMessage);
+          const users = JSON.parse(localStorage.getItem('wildguard_demo_users') || '{}');
+          if (!users[ADMIN_EMAIL]) {
+            users[ADMIN_EMAIL] = {
+              role: 'super_admin',
+              name: ADMIN_NAME,
+              firstName: 'WildGuard',
+              lastName: 'Administrator',
+              username: 'wildguard_admin',
+              registeredAt: new Date().toISOString(),
+              verified: true
+            };
+            localStorage.setItem('wildguard_demo_users', JSON.stringify(users));
           }
-          // Parse successful JSON response and store admin session
-          const data = await response.json();
-          if (data && data.token) {
-            localStorage.setItem('wildguard_admin_token', data.token);
-          }
-          if (data && data.user) {
-            localStorage.setItem('wildguard_user', JSON.stringify(data.user));
-          }
-          window.location.href = 'admin.html';
-        } catch (error) {
-          console.error('Admin login error:', error);
-          alert(error.message || 'An unexpected error occurred. The server may be unavailable.');
-        }
-      });
+        } catch (err) {}
+
+        if (window.securityMonitor) { try { window.securityMonitor('admin_login_success', { email: ADMIN_EMAIL }); } catch (err) {} }
+        if (window.logActivity) { try { window.logActivity('admin_login', ADMIN_EMAIL, 'Admin entered portal'); } catch (err) {} }
+        window.location.href = 'admin.html';
+      }
+
+      const btn = document.getElementById('enter-portal-btn');
+      if (btn) {
+        btn.addEventListener('click', enterPortal);
+      } else {
+        // No button found (e.g. direct navigation) — enter automatically
+        enterPortal();
+      }
     });
   </script>
 </body>

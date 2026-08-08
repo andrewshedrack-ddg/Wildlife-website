@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your WildGuard Society inbox — emails from our team.">
+    <meta name="author" content="WildGuard Society">
+    <link rel="icon" type="image/png" href="../assets/images/logo.png">
+    <title>Inbox | WildGuard Society</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .inbox-header { text-align: center; margin: 1.5rem 0 2.5rem; }
+        .inbox-header .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(201,162,39,0.25), rgba(45,138,94,0.25)); border-color: rgba(201,162,39,0.4); }
+        .inbox-header .page-title { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 0.5rem; }
+
+        .inbox-layout { display: grid; grid-template-columns: 1fr 350px; gap: 2rem; align-items: start; }
+        @media (max-width: 768px) { .inbox-layout { grid-template-columns: 1fr; } }
+
+        .inbox-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+        .inbox-count { font-size: 0.85rem; color: rgba(255,255,255,0.55); }
+
+        .email-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .email-row { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); transition: var(--transition); cursor: pointer; }
+        .email-row:hover { background: rgba(255,255,255,0.05); border-color: rgba(201,162,39,0.3); transform: translateY(-2px); }
+        .email-row.unread { background: linear-gradient(135deg, rgba(27,94,64,0.22), rgba(45,138,94,0.08)); border-color: rgba(45,138,94,0.4); }
+        .email-avatar { flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-light), var(--primary-dark)); display: flex; align-items: center; justify-content: center; color: var(--lighter); border: 2px solid rgba(201,162,39,0.5); }
+        .email-body { flex: 1; min-width: 0; }
+        .email-subject { color: var(--lighter); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .email-row.unread .email-subject { color: #fff; }
+        .email-preview { color: rgba(255,255,255,0.5); font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .email-meta { flex-shrink: 0; text-align: right; font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+        .email-badge { display: inline-block; margin-top: 0.35rem; font-size: 0.68rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 20px; background: rgba(201,162,39,0.15); color: var(--accent); border: 1px solid rgba(201,162,39,0.35); }
+
+        .email-detail { display: none; }
+        .email-detail .email-content { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); padding: 1.5rem; margin-top: 1rem; white-space: pre-wrap; line-height: 1.7; font-size: 0.92rem; color: rgba(255,255,255,0.85); }
+        .email-detail .email-sub { color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-bottom: 0.75rem; }
+
+        .btn-small { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--lighter); font-size: 0.8rem; cursor: pointer; transition: var(--transition); }
+        .btn-small:hover { background: rgba(201,162,39,0.15); border-color: rgba(201,162,39,0.4); }
+
+        .inbox-empty { text-align: center; padding: 3rem 1rem; color: rgba(255,255,255,0.5); }
+        .inbox-empty i { font-size: 2.5rem; color: rgba(201,162,39,0.5); margin-bottom: 1rem; }
+
+        .quick-links { display: flex; flex-direction: column; gap: 0.75rem; }
+        .quick-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.8rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); color: rgba(255,255,255,0.75); font-size: 0.9rem; transition: var(--transition); }
+        .quick-link:hover { background: linear-gradient(135deg, rgba(27,94,64,0.25), rgba(201,162,39,0.12)); border-color: rgba(201,162,39,0.35); color: var(--lighter); transform: translateX(4px); }
+        .quick-link i { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="page-slideshow">
+        <div class="page-slide active" style="background-image: url('../assets/images/background.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background2.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/Background3.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background4.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background5.png')"></div>
+    </div>
+
+    <header class="site-header" id="site-header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+                <span class="logo-text">WildGuard Society</span>
+            </a>
+            <nav class="desktop-nav" id="desktop-nav">
+                <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="../library/library.html"><i class="fas fa-book"></i> Library</a>
+                <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
+                <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
+                <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a></nav>
+            <div class="header-actions">
+                <div class="auth-buttons" id="auth-buttons">
+                    <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+                    <div class="user-menu" id="user-menu" style="display:none;">
+                        <button class="user-menu-toggle" id="user-menu-toggle">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="user-email">User</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="user-dropdown" id="user-dropdown">
+                            <a href="Profile.html"><i class="fas fa-user"></i> Profile</a>
+                            <a href="Inbox.html"><i class="fas fa-inbox"></i> Inbox</a>
+                            <a href="History.html"><i class="fas fa-history"></i> History</a>
+                            <a href="Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="language-selector" data-language-selector>
+                    <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+                        <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" role="menu" hidden>
+                        <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+                        <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+                        <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="content-overlay">
+            <div class="container" style="padding-bottom: 3rem;">
+                <div class="inbox-header">
+                    <span class="page-eyebrow"><i class="fas fa-envelope-open-text"></i> From Our Team</span>
+                    <h1 class="page-title">Your Inbox</h1>
+                    <p style="color:rgba(255,255,255,0.6); max-width:520px; margin:0 auto;">Emails and updates from the WildGuard team, delivered right to you.</p>
+                </div>
+                <div class="inbox-layout">
+                    <div class="card" style="padding:0;">
+                        <div class="card-header" style="padding:1.25rem 1.5rem;">
+                            <h3 class="card-title"><i class="fas fa-inbox"></i> Messages</h3>
+                            <p class="card-subtitle" id="inbox-subtitle">Loading your emails...</p>
+                        </div>
+                        <div style="padding:0 1.5rem 1.5rem;">
+                            <div class="inbox-toolbar">
+                                <span class="inbox-count" id="inbox-count"></span>
+                                <button class="btn-small" onclick="window.markAllEmailsRead()" type="button"><i class="fas fa-check-double"></i> Mark all read</button>
+                            </div>
+                            <div class="email-list" id="email-list">
+                                <div class="inbox-empty"><i class="fas fa-envelope-open"></i><p>Loading...</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inbox-sidebar">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-link"></i> Quick Links</h3>
+                            </div>
+                            <div class="quick-links" style="padding:0 1.25rem 1.25rem;">
+                                <a href="../scan.html" class="quick-link"><i class="fas fa-camera"></i> New Scan</a>
+                                <a href="Profile.html" class="quick-link"><i class="fas fa-user"></i> My Profile</a>
+                                <a href="History.html" class="quick-link"><i class="fas fa-history"></i> Activity History</a>
+                                <a href="../contact.html" class="quick-link"><i class="fas fa-envelope"></i> Contact Support</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>WildGuard Society</h3>
+                <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+                <div class="footer-social">
+                    <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" title="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/255700123456" target="_blank" rel="noopener" title="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" title="Join us on Telegram"><i class="fab fa-telegram"></i></a>
+                    <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../library/library.html">Library</a></li>
+                    <li><a href="../scan.html">Scan</a></li>
+                    <li><a href="../about.html">About</a></li>
+                    <li><a href="../contact.html">Contact</a></li></ul>
+            </div>
+            <div class="footer-links">
+                <h4>Account</h4>
+                <ul>
+                    <li><a href="Profile.html">Profile</a></li>
+                    <li><a href="Inbox.html">Inbox</a></li>
+                    <li><a href="History.html">History</a></li>
+                    <li><a href="Favourite.html">Favourites</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+                <p><i class="fas fa-map-marker-alt"></i> Global</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
+        </div>
+    </footer>
+
+    <script defer src="../js/connectivity.js"></script>
+    <script defer src="../js/main.js"></script>
+    <script defer src="../js/i18n.js"></script>
+    <script defer src="../js/auth.js"></script>
+    <script>
+        (function() {
+            const user = localStorage.getItem('wildguard_user') || sessionStorage.getItem('wildguard_user');
+            if (!user || user === 'null') {
+                window.location.replace('../login.html');
+            }
+        })();
+
+        function fmtInbox(iso) {
+            try { return new Date(iso).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) + ' ' + new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); } catch(e) { return iso || ''; }
+        }
+        function typeLabel(t) {
+            var map = { welcome: 'Welcome', verification: 'Verification', general: 'General', news: 'Newsletter', alert: 'Alert', reward: 'Reward', scan_approved: 'Scan Approved', scan_rejected: 'Scan Rejected', contact_reply: 'Reply' };
+            return map[t] || (t ? t.charAt(0).toUpperCase() + t.slice(1) : 'Update');
+        }
+        function openEmail(id) {
+            if (typeof window.markEmailRead === 'function') window.markEmailRead(id);
+            var row = document.getElementById('email-row-' + id);
+            var detail = document.getElementById('email-detail-' + id);
+            if (row) { row.classList.remove('unread'); row.querySelector('.email-badge') && row.querySelector('.email-badge').remove(); }
+            if (detail) {
+                var open = detail.style.display === 'block';
+                document.querySelectorAll('.email-detail').forEach(function(el) { el.style.display = 'none'; });
+                document.querySelectorAll('.email-row').forEach(function(el) { el.style.borderLeft = ''; });
+                detail.style.display = open ? 'none' : 'block';
+                row && (row.style.borderLeft = open ? '' : '3px solid var(--accent)');
+            }
+            renderInboxCount();
+        }
+        function renderInboxCount() {
+            var el = document.getElementById('inbox-count');
+            var sub = document.getElementById('inbox-subtitle');
+            var user = (typeof window.getCurrentUser === 'function' && window.getCurrentUser()) || null;
+            var email = user && user.email ? user.email : '';
+            var all = (typeof window.getAllEmails === 'function' ? window.getAllEmails() : []) || [];
+            var mine = email ? all.filter(function(e) { return (e.to || '').toLowerCase() === email.toLowerCase(); }) : all;
+            var unread = mine.filter(function(e) { return !e.read; }).length;
+            if (el) el.textContent = mine.length ? unread + ' unread of ' + mine.length : 'No messages';
+            if (sub) sub.textContent = mine.length ? 'Emails sent to ' + (email || 'your account') : 'No emails yet — our team will write to you soon';
+        }
+        function renderInbox() {
+            var list = document.getElementById('email-list');
+            if (!list) return;
+            var user = (typeof window.getCurrentUser === 'function' && window.getCurrentUser()) || null;
+            var email = user && user.email ? user.email : '';
+            var all = (typeof window.getAllEmails === 'function' ? window.getAllEmails() : []) || [];
+            var mine = email ? all.filter(function(e) { return (e.to || '').toLowerCase() === email.toLowerCase(); }) : all;
+            mine.sort(function(a, b) { return new Date(b.timestamp) - new Date(a.timestamp); });
+
+            if (mine.length === 0) {
+                list.innerHTML = '<div class="inbox-empty"><i class="fas fa-envelope-open"></i><p>Your inbox is empty.</p><p style="font-size:0.8rem;margin-top:0.4rem;">When our team sends you an update it will appear here.</p></div>';
+                renderInboxCount();
+                return;
+            }
+            list.innerHTML = '';
+            mine.forEach(function(e) {
+                var row = document.createElement('div');
+                row.className = 'email-row' + (e.read ? '' : ' unread');
+                row.id = 'email-row-' + e.id;
+                row.setAttribute('role', 'button');
+                row.setAttribute('tabindex', '0');
+                row.onclick = function() { openEmail(e.id); };
+                row.onkeydown = function(ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); openEmail(e.id); } };
+                var badge = e.read ? '' : '<span class="email-badge">New</span>';
+                row.innerHTML = '<div class="email-avatar"><i class="fas fa-paw"></i></div>' +
+                    '<div class="email-body"><div class="email-subject">' + (e.subject || 'Update from WildGuard') + '</div>' +
+                    '<div class="email-preview">' + (e.body || '').replace(/\n/g, ' ').slice(0, 80) + '</div></div>' +
+                    '<div class="email-meta">' + fmtInbox(e.timestamp) + '<br>' + badge + '</div>';
+                list.appendChild(row);
+
+                var detail = document.createElement('div');
+                detail.className = 'email-detail';
+                detail.id = 'email-detail-' + e.id;
+                detail.innerHTML = '<div class="email-content"><div class="email-sub"><strong>From:</strong> ' + (e.from || 'info@wildguard.org') + ' &middot; <strong>Type:</strong> ' + typeLabel(e.type) + '</div>' + (e.body || '') + '</div>';
+                list.appendChild(detail);
+            });
+            renderInboxCount();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderInbox();
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'wildguard_emails' || e.key === null) renderInbox();
+            });
+        });
+    </script>
+</body>
+</html>

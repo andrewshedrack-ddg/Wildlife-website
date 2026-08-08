@@ -56,7 +56,9 @@
             <div class="user-dropdown" id="user-dropdown" role="menu">
               <a href="user/Profile.html" role="menuitem"><i class="fas fa-user"></i> Profile</a>
               <a href="user/History.html" role="menuitem"><i class="fas fa-history"></i> History</a>
-              <a href="user/Favourite.html" role="menuitem"><i class="fas fa-heart"></i> Favourites</a>
+              <a href="user/Inbox.html" role="menuitem"><i class="fas fa-inbox"></i> Inbox</a>
+
+                                  <a href="user/Favourite.html" role="menuitem"><i class="fas fa-heart"></i> Favourites</a>
               <div class="dropdown-divider"></div>
               <a href="#" id="logout-btn" role="menuitem"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
@@ -202,7 +204,8 @@
   </div>
 
   <script defer src="js/i18n.js"></script>
-  <script defer src="js/main.js"></script>
+  <script defer src="js/connectivity.js"></script>
+<script defer src="js/main.js"></script>
   <script defer src="js/auth.js"></script>
 
   <script>
@@ -223,13 +226,45 @@
         }
 
         var messages = JSON.parse(localStorage.getItem("wildguard_admin_messages") || "[]");
-        messages.push({
+        var newMessage = {
           id: Date.now().toString(),
           name: name, email: email, body: body,
           subject: "Contact Form", from: email,
           status: "unread", createdAt: new Date().toISOString()
-        });
+        };
+        messages.push(newMessage);
         localStorage.setItem("wildguard_admin_messages", JSON.stringify(messages));
+
+        // Notify admins so the portal bell lights up
+        try {
+          if (window.addAdminNotification) {
+            window.addAdminNotification({ type: 'contact_message', title: 'New Contact Message', message: name + ' (' + email + ') sent a message.', email: email, name: name });
+          } else {
+            var notifs = JSON.parse(localStorage.getItem('wildguard_admin_notifications') || '[]');
+            notifs.unshift({ id: 'notif_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9), timestamp: new Date().toISOString(), read: false, type: 'contact_message', title: 'New Contact Message', message: name + ' (' + email + ') sent a message.', email: email, name: name });
+            if (notifs.length > 100) notifs.splice(100);
+            localStorage.setItem('wildguard_admin_notifications', JSON.stringify(notifs));
+          }
+        } catch (nErr) {}
+
+        // Offline support: queue the message so it reaches admin when back online
+        var connected = true;
+        if (window.Connectivity) {
+          connected = window.Connectivity.isOnline();
+          window.Connectivity.registerHandler('contact_message', function(payload) {
+            var msgs = JSON.parse(localStorage.getItem("wildguard_admin_messages") || "[]");
+            if (!msgs.some(function(m) { return m.id === payload.id; })) {
+              msgs.push(payload);
+              localStorage.setItem("wildguard_admin_messages", JSON.stringify(msgs));
+            }
+          });
+        }
+        if (!connected) {
+          window.Connectivity.queueOfflineAction({ type: 'contact_message', payload: newMessage });
+          if (status) { status.textContent = "You're offline — message queued. It will be sent automatically when you reconnect."; status.style.display = "block"; status.style.background = "#fef3c7"; status.style.color = "#92400e"; }
+          form.reset();
+          return;
+        }
 
         try {
           var API_BASE = window.location.origin.includes('localhost') ? 'http://localhost:5000' : '';
@@ -253,17 +288,7 @@
       if (adminBtn) {
         adminBtn.addEventListener('click', function(e) {
           e.preventDefault();
-          var user = localStorage.getItem('wildguard_user');
-          if (user) {
-            try {
-              var parsed = JSON.parse(user);
-              if (parsed.role === 'admin' || parsed.role === 'moderator') {
-                window.location.href = 'admin.html';
-                return;
-              }
-            } catch(err) {}
-          }
-          window.location.href = 'admin-login.html';
+          window.location.href = 'admin.html';
         });
       }
     })();

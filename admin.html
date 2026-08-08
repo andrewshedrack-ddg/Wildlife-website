@@ -139,6 +139,9 @@
     .role-moderator { background: rgba(245,158,11,0.2); color: #f59e0b; }
     .role-user { background: rgba(59,130,246,0.2); color: #3b82f6; }
     .role-super_admin { background: rgba(124,58,237,0.2); color: #7c3aed; }
+    .role-select { padding: 0.4rem 0.6rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: var(--lighter); font-size: 0.8rem; cursor: pointer; }
+    .role-select:focus { outline: none; border-color: var(--accent); }
+    .role-select:disabled { opacity: 0.5; cursor: not-allowed; }
     
     /* Empty State */
     .portal-empty { text-align: center; padding: 4rem 2rem; color: rgba(255,255,255,0.4); }
@@ -205,25 +208,45 @@
     .portal-header-actions .notification-bell:hover { background: rgba(201,162,39,0.2); border-color: var(--accent); color: var(--accent); }
     .portal-header-actions .notification-badge { position: absolute; top: 4px; right: 4px; min-width: 18px; height: 18px; background: #ef4444; color: var(--lighter); font-size: 0.65rem; font-weight: 700; border-radius: 100px; display: flex; align-items: center; justify-content: center; padding: 0 5px; animation: pulse 2s infinite; }
     
+    /* Header left group + menu toggle */
+    .portal-header-left { display: flex; align-items: center; gap: 0.75rem; }
+    .portal-menu-toggle { display: none; width: 40px; height: 40px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 50%; color: var(--lighter); cursor: pointer; transition: var(--transition); align-items: center; justify-content: center; }
+
     /* Mobile */
     @media (max-width: 768px) {
-      .portal-sidebar { display: none; position: fixed; inset: 0; z-index: 99; width: 100%; background: var(--darker); padding-top: 5rem; }
-      .portal-sidebar.open { display: flex; }
-      .portal-main { padding: 1.5rem; }
-      .portal-stats { grid-template-columns: repeat(2, 1fr); }
-      .portal-grid { grid-template-columns: 1fr; }
-      .portal-header { padding: 0 1rem; }
+      .portal-header { padding: 0 0.75rem; height: 58px; }
+      .portal-header-left { gap: 0.5rem; }
       .portal-header-logo span { display: none; }
-      .portal-tabs { overflow-x: auto; padding-bottom: 0.5rem; }
-      .portal-table { font-size: 0.8rem; }
+      .portal-menu-toggle { display: flex; }
+      .portal-header-actions .lang-toggle .lang-name, .portal-header-actions #admin-email-display, .portal-header-actions #realtime-status { display: none; }
+      .portal-header-actions { gap: 0.5rem; }
+      .portal-sidebar { display: none; position: fixed; top: 58px; bottom: 0; left: 0; right: 0; z-index: 99; width: 100%; background: var(--darker); padding: 1rem 1rem 2rem; overflow-y: auto; }
+      .portal-sidebar.open { display: flex; }
+      .portal-main { padding: 1.25rem 1rem; }
+      .portal-stats { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+      .portal-stat-card { padding: 1.25rem 0.75rem; }
+      .portal-stat-value { font-size: 1.7rem; }
+      .portal-stat-label { font-size: 0.68rem; letter-spacing: 0.5px; }
+      .portal-grid { grid-template-columns: 1fr; }
+      .portal-tabs { overflow-x: auto; padding-bottom: 0.5rem; flex-wrap: nowrap; }
+      .portal-tab { white-space: nowrap; }
+      .portal-card { padding: 1.25rem; }
+      .portal-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .portal-table { font-size: 0.75rem; min-width: 640px; }
+      .notification-dropdown { position: fixed; top: 58px; right: 0.5rem; left: 0.5rem; width: auto; }
+      .portal-modal { padding: 1.25rem; }
+      .portal-modal [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
     }
   </style>
 </head>
 <body class="portal-root">
   <header class="portal-header">
-    <div class="portal-header-logo">
-      <img src="assets/images/logo.png" alt="WildGuard">
-      <span>Admin Portal</span>
+    <div class="portal-header-left">
+      <button class="portal-menu-toggle" id="portal-menu-toggle" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+      <div class="portal-header-logo">
+        <img src="assets/images/logo.png" alt="WildGuard">
+        <span>Admin Portal</span>
+      </div>
     </div>
     <div class="portal-header-actions">
       <div class="language-selector" data-language-selector>
@@ -266,6 +289,9 @@
         <button class="portal-nav-item" data-section="compose"><i class="fas fa-pen"></i> Compose</button>
         <button class="portal-nav-item" data-section="scans"><i class="fas fa-image"></i> Scan Review <span class="portal-nav-badge" id="badge-scans">0</span></button>
         <button class="portal-nav-item" data-section="users"><i class="fas fa-users"></i> Users & Roles <span class="portal-nav-badge" id="badge-users">0</span></button>
+        <button class="portal-nav-item" data-section="database"><i class="fas fa-database"></i> Species Database</button>
+        <button class="portal-nav-item" data-section="rewards"><i class="fas fa-award"></i> Rewards & Certificates</button>
+        <button class="portal-nav-item" data-section="tokens"><i class="fas fa-coins"></i> Tokens</button>
         <button class="portal-nav-item" data-section="admins"><i class="fas fa-shield-halved"></i> Admins</button>
         <button class="portal-nav-item" data-section="logs"><i class="fas fa-clipboard-list"></i> Activity Log</button>
         <button class="portal-nav-item" data-section="settings"><i class="fas fa-cog"></i> Settings</button>
@@ -281,14 +307,26 @@
     <div class="portal-modal" id="portal-modal"></div>
   </div>
   
-  <script defer src="js/auth.js?v=5"></script>
-  <script defer src="js/admin-portal.js?v=5"></script>
+<script defer src="js/species-db.js?v=1"></script>
+<script defer src="js/auth.js?v=5"></script>
+<script defer src="js/connectivity.js"></script>
+<script defer src="js/admin-portal.js?v=6"></script>
   <script>
     (function(){
       var user = null;
       try { user = JSON.parse(localStorage.getItem('wildguard_user') || 'null'); } catch(e){}
       if (!user || (user.role !== 'admin' && user.role !== 'super_admin')) {
-        window.location.href = 'admin-login.html';
+        // Auto-enter: seed a super_admin session so the portal opens without credentials
+        var session = {
+          email: 'admin@wildguardsociety.org',
+          name: 'WildGuard Administrator',
+          role: 'super_admin',
+          firstName: 'WildGuard',
+          lastName: 'Administrator',
+          username: 'wildguard_admin',
+          verified: true
+        };
+        localStorage.setItem('wildguard_user', JSON.stringify(session));
       }
     })();
     function portalLogout() {

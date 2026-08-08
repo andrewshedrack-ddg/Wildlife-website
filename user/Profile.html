@@ -98,7 +98,9 @@
                         <div class="user-dropdown" id="user-dropdown">
                             <a href="Profile.html"><i class="fas fa-user"></i> Profile</a>
                             <a href="History.html"><i class="fas fa-history"></i> History</a>
-                            <a href="Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+                            <a href="Inbox.html"><i class="fas fa-inbox"></i> Inbox</a>
+
+                                        <a href="Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
                             <div class="dropdown-divider"></div>
                             <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
                         </div>
@@ -155,6 +157,14 @@
                             <div class="stat-item">
                                 <span class="stat-value"><i class="fas fa-tree"></i> <span id="stat-parks">0</span></span>
                                 <span class="stat-label">Parks</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value"><i class="fas fa-coins"></i> <span id="stat-tokens">0</span></span>
+                                <span class="stat-label">Tokens</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value"><i class="fas fa-award"></i> <span id="stat-certs">0</span></span>
+                                <span class="stat-label">Certificates</span>
                             </div>
                         </div>
                         <div class="profile-actions">
@@ -287,6 +297,29 @@
                             </div>
                         </form>
                     </div>
+
+                    <!-- Rewards & Certificates -->
+                    <div class="card settings-card" id="rewards" style="margin-top:2rem;">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-award"></i> Rewards & Certificates</h3>
+                            <p class="card-subtitle">Achievements earned through your conservation contributions</p>
+                        </div>
+                        <div class="profile-stats" id="reward-summary" style="margin-bottom:1.5rem;">
+                            <div class="stat-item">
+                                <span class="stat-value"><i class="fas fa-coins"></i> <span id="rw-tokens">0</span></span>
+                                <span class="stat-label">Token Balance</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value"><i class="fas fa-award"></i> <span id="rw-certs">0</span></span>
+                                <span class="stat-label">Certificates</span>
+                            </div>
+                        </div>
+                        <div id="certificates-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;"></div>
+                        <div id="certificates-empty" style="text-align:center;padding:2rem;opacity:0.5;display:none;">
+                            <i class="fas fa-medal" style="font-size:2.5rem;color:var(--accent);margin-bottom:0.75rem;display:block;"></i>
+                            No certificates yet — scan wildlife and contribute to earn recognition.
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -334,7 +367,8 @@
         </div>
     </footer>
 
-    <script defer src="../js/main.js"></script>
+    <script defer src="../js/connectivity.js"></script>
+<script defer src="../js/main.js"></script>
     <script defer src="../js/i18n.js"></script>
     <script defer src="../js/auth.js"></script>
     <script>
@@ -487,11 +521,64 @@
                 const scansEl = document.getElementById('stat-scans');
                 const favsEl = document.getElementById('stat-favourites');
                 const parksEl = document.getElementById('stat-parks');
+                const tokensEl = document.getElementById('stat-tokens');
+                const certsEl = document.getElementById('stat-certs');
                 const scans = (window.getUserScans ? window.getUserScans() : []) || [];
                 const favs = (window.getUserFavourites ? window.getUserFavourites() : []) || [];
+                const user = (window.getCurrentUser ? window.getCurrentUser() : null) || (localStorage.getItem('wildguard_user') ? JSON.parse(localStorage.getItem('wildguard_user')) : null);
+                const email = user ? user.email : '';
+
+                // Tokens: sum of ledger entries for this user
+                let tokens = 0;
+                try {
+                    const ledger = JSON.parse(localStorage.getItem('wildguard_token_ledger') || '[]');
+                    ledger.forEach(t => { if (t.user === email) tokens += (t.amount || 0); });
+                } catch (e) {}
+
+                // Certificates for this user
+                let certs = 0;
+                try {
+                    const all = JSON.parse(localStorage.getItem('wildguard_certificates') || '[]');
+                    certs = all.filter(c => c.user === email).length;
+                } catch (e) {}
+
                 if (scansEl) scansEl.textContent = scans.length;
                 if (favsEl) favsEl.textContent = favs.length;
                 if (parksEl) parksEl.textContent = new Set(scans.map(s => s.species && s.species.habitat).filter(Boolean)).size || '0';
+                if (tokensEl) tokensEl.textContent = tokens;
+                if (certsEl) certsEl.textContent = certs;
+
+                // ---- Rewards & Certificates ----
+                const rwTokensEl = document.getElementById('rw-tokens');
+                const rwCertsEl = document.getElementById('rw-certs');
+                const certList = document.getElementById('certificates-list');
+                const certEmpty = document.getElementById('certificates-empty');
+                let myCerts = [];
+                try {
+                    const all = JSON.parse(localStorage.getItem('wildguard_certificates') || '[]');
+                    myCerts = all.filter(c => c.user === email);
+                } catch (e) {}
+
+                if (rwTokensEl) rwTokensEl.textContent = tokens;
+                if (rwCertsEl) rwCertsEl.textContent = myCerts.length;
+
+                if (myCerts.length) {
+                    if (certEmpty) certEmpty.style.display = 'none';
+                    if (certList) {
+                        certList.innerHTML = myCerts.map(function (c) {
+                            return '<div style="background:linear-gradient(145deg,rgba(201,162,39,0.08),rgba(27,94,64,0.08));border:1px solid rgba(201,162,39,0.3);border-radius:16px;padding:1.5rem;text-align:center;position:relative;">' +
+                                '<div style="font-size:2.2rem;color:var(--accent);margin-bottom:0.5rem;"><i class="fas fa-medal"></i></div>' +
+                                '<div style="font-family:var(--font-heading);font-size:1.05rem;font-weight:700;margin-bottom:0.35rem;">' + c.title + '</div>' +
+                                (c.message ? '<div style="font-size:0.85rem;opacity:0.8;line-height:1.5;margin-bottom:0.75rem;">' + c.message + '</div>' : '') +
+                                '<div style="font-size:0.7rem;opacity:0.5;letter-spacing:1px;text-transform:uppercase;">Issued ' + new Date(c.issuedAt).toLocaleDateString() + '</div>' +
+                                '<div style="margin-top:0.75rem;font-family:monospace;font-size:0.72rem;color:var(--accent);border-top:1px dashed rgba(201,162,39,0.3);padding-top:0.6rem;">' + (c.code || '') + '</div>' +
+                                '</div>';
+                        }).join('');
+                    }
+                } else {
+                    if (certEmpty) certEmpty.style.display = 'block';
+                    if (certList) certList.innerHTML = '';
+                }
             })();
         });
     </script>

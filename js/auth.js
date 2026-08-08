@@ -858,6 +858,16 @@
       var currUser = getUser();
       logActivity('page_view', currUser && currUser.email || 'guest', 'Page visited: ' + window.location.pathname);
     } catch(e) {}
+    // Cross-tab sync: refresh notification badge/panel when another tab changes it
+    try {
+      window.addEventListener('storage', function(e) {
+        if (e.key === USER_NOTIFICATIONS_KEY || e.key === null) {
+          renderUserNotificationBadge();
+          var panel = document.getElementById('notification-panel');
+          if (panel && panel.classList.contains('open')) renderNotificationPanel();
+        }
+      });
+    } catch(e) {}
   });
 
   window.isLoggedIn = function() {
