@@ -680,8 +680,15 @@ const WildlifeScan = {
     let streamRef = null;
     let facing = "environment";
 
-    // WYSIWYG camera: the preview and the captured photo are identical.
-    // No CSS mirror, no canvas transform — what you see is what you get.
+    // Mirror the front/user camera so the preview behaves like a normal
+    // selfie camera — move your hand right and it moves right. The rear
+    // camera stays unmirrored. The captured photo is mirrored the same way
+    // the preview is, so the saved image always matches what you saw.
+    const applyMirror = () => {
+      video.classList.toggle("camera-mirrored", facing === "user");
+    };
+    applyMirror();
+
     const startCamera = (mode) => {
       if (streamRef) streamRef.getTracks().forEach((t) => t.stop());
       streamRef = null;
@@ -708,6 +715,7 @@ const WildlifeScan = {
                 flipBtn.style.display = facing === "environment" || facing === "user" ? "inline-flex" : "none";
               }
             } catch (e) {}
+            applyMirror();
             if (typeof track.addEventListener === "function") {
               track.addEventListener("ended", () => {
                 if (modal.parentNode) modal.parentNode.removeChild(modal);
@@ -737,6 +745,10 @@ const WildlifeScan = {
         canvas.width = video.videoWidth || 640;
         canvas.height = video.videoHeight || 480;
         const ctx = canvas.getContext("2d");
+        if (facing === "user") {
+          ctx.translate(canvas.width, 0);
+          ctx.scale(-1, 1);
+        }
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         const dataUrl = canvas.toDataURL("image/png");
         this.els.previewImg.src = dataUrl;
@@ -871,8 +883,7 @@ const WildlifeScan = {
       container.innerHTML = "";
       return;
     }
-    let html = '<div class="scene-analysis-title"><i class="fas fa-shapes"></i> Scene Analysis — Everything Detected</div>';
-    html += '<div class="scene-list">';
+    let html = '<details class="scene-analysis"><summary class="scene-analysis-title"><i class="fas fa-shapes"></i> Scene Analysis — Everything Detected</summary><div class="scene-list">';
     for (const d of detections) {
       const isPrimary = d.kind === "living" && d.key === primaryKey;
       if (d.kind === "living" && d.species) {
@@ -902,7 +913,7 @@ const WildlifeScan = {
           '</div>';
       }
     }
-    html += '</div>';
+    html += '</div></details>';
     container.innerHTML = html;
     container.style.display = "block";
   },
@@ -920,8 +931,8 @@ const WildlifeScan = {
     }
     const cur = this.currentResult;
     const isSame = past.some(function(p) { return p.reason === "same-species"; });
-    let html = '<div class="past-scan-title"><i class="fas fa-clock"></i> ' +
-      (isSame ? 'You\'ve scanned this before' : 'Similar to a previous scan') + '</div>';
+    let html = '<details class="past-scan-match"><summary class="past-scan-title"><i class="fas fa-clock"></i> ' +
+      (isSame ? 'You\'ve scanned this before' : 'Similar to a previous scan') + '</summary>';
     html += '<p class="past-scan-note">WildGuard compared this image with your previous scans — ' +
       (isSame ? 'the same species was identified on an earlier visit.' : 'a near-identical subject was detected before.') +
       ' That means it can still be recognized even from another angle.</p>';
@@ -936,7 +947,7 @@ const WildlifeScan = {
         (p.confidence ? '<span>Confidence: ' + p.confidence + '%</span>' : '') +
         '</div></div>';
     }
-    html += '</div>';
+    html += '</div></details>';
     container.innerHTML = html;
     container.style.display = "block";
   },
@@ -949,7 +960,7 @@ const WildlifeScan = {
     if (!container) return;
     const geo = (this.currentResult && this.currentResult.geo) || null;
     const species = this.currentResult && this.currentResult.species;
-    let html = '<div class="surroundings-title"><i class="fas fa-map-marked-alt"></i> Surroundings &amp; General Area</div>';
+    let html = '<details class="surroundings"><summary class="surroundings-title"><i class="fas fa-map-marked-alt"></i> Surroundings &amp; General Area</summary>';
 
     if (geo && (geo.place || geo.features.length || geo.places.length)) {
       const locationParts = [];
@@ -988,6 +999,7 @@ const WildlifeScan = {
     } else {
       html += '<p class="surroundings-loc">Surrounding landscape details aren\'t available for this result.</p>';
     }
+    html += '</details>';
     container.innerHTML = html;
     container.style.display = "block";
   },
@@ -1215,8 +1227,10 @@ const WildlifeScan = {
 
     const harm = this.assessHarm(species);
 
+    // Compact result card: quick-facts grid up top, then short accordion
+    // sections so the box stays a tidy rectangle instead of a long scroll.
     this.els.resultDetails.innerHTML =
-      // 1. Biological data — compact quick-facts grid
+      // 1. Biological data — compact quick-facts grid (always visible)
       '<div class="detail-section detail-section--full"><h4><i class="fas fa-dna"></i> Biological Data</h4>' +
       '<div class="bio-grid">' +
       '<div class="bio-tile"><span class="bio-label">Kingdom</span><span class="bio-value">' + species.kingdom + '</span></div>' +
@@ -1224,21 +1238,29 @@ const WildlifeScan = {
       '<div class="bio-tile"><span class="bio-label">Category</span><span class="bio-value">' + species.category + '</span></div>' +
       '<div class="bio-tile"><span class="bio-label">Population</span><span class="bio-value">' + species.population + '</span></div>' +
       '</div></div>' +
-      // 2. Feeding habit
-      '<div class="detail-section"><h4><i class="fas fa-utensils"></i> Feeding Habit</h4><p>' + species.diet + '</p></div>' +
+      // 2. Feeding habit (accordion, open by default)
+      '<details class="detail-section" open>' +
+      '<summary><i class="fas fa-utensils"></i> Feeding Habit</summary>' +
+      '<p>' + species.diet + '</p></details>' +
       // 3. Adaptations & safety (harmful or not)
-      '<div class="detail-section"><h4><i class="fas fa-shield-halved"></i> Adaptations &amp; Safety</h4>' +
+      '<details class="detail-section">' +
+      '<summary><i class="fas fa-shield-halved"></i> Adaptations &amp; Safety</summary>' +
       '<p>' + species.behavior + '</p>' +
       '<div class="safety-badge ' + harm.cls + '"><i class="fas ' + harm.icon + '"></i> ' + harm.label + '</div>' +
-      '</div>' +
+      '</details>' +
       // 4. Habitat & geography
-      '<div class="detail-section"><h4><i class="fas fa-globe-africa"></i> Habitat &amp; Geography</h4>' +
+      '<details class="detail-section">' +
+      '<summary><i class="fas fa-globe-africa"></i> Habitat &amp; Geography</summary>' +
       '<p>' + species.habitat + (species.soil ? '<br><span class="detail-dim"><i class="fas fa-layer-group"></i> Soil: ' + species.soil + '</span>' : '') + '</p>' +
-      '</div>' +
+      '</details>' +
       // 5. Threats & conservation
-      '<div class="detail-section"><h4><i class="fas fa-exclamation-triangle"></i> Threats &amp; Conservation</h4><p>' + species.threats + '</p></div>' +
+      '<details class="detail-section">' +
+      '<summary><i class="fas fa-exclamation-triangle"></i> Threats &amp; Conservation</summary>' +
+      '<p>' + species.threats + '</p></details>' +
       // 6. About
-      '<div class="detail-section"><h4><i class="fas fa-info-circle"></i> About</h4><p>' + species.desc + '</p></div>';
+      '<details class="detail-section">' +
+      '<summary><i class="fas fa-info-circle"></i> About</summary>' +
+      '<p>' + species.desc + '</p></details>';
 
     // Render the "everything detected" scene panel alongside the primary result
     this.renderSceneAnalysis(detections, bestMatch);
@@ -1508,37 +1530,89 @@ const WildlifeScan = {
     if (!window.speechSynthesis) return;
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return;
-    // Prefer human-like voices
+    // Prefer expressive, human-like voices (native & neural when available)
     const preferred = [
-      "Google UK English Female", "Google US English", "Samantha", "Victoria",
-      "Alex", "Karen", "Moira", "Fiona", "Ashley", "Stephanie",
-      "Microsoft Zira", "Microsoft David", "Microsoft Hazel", "Microsoft Catherine"
+      "Google UK English Female", "Google US English", "Google UK English Male",
+      "Samantha", "Victoria", "Karen", "Moira", "Fiona", "Tessa", "Zira",
+      "Microsoft Aria", "Microsoft Jenny", "Microsoft Guy", "Microsoft Hazel",
+      "Microsoft Zira", "Microsoft David", "Microsoft Catherine",
+      "Alex", "Daniel", "Serena"
     ];
     for (let name of preferred) {
       const found = voices.find(v => v.name === name);
       if (found) { this.selectedVoice = found; return; }
     }
-    // Fallback to first English voice
-    const en = voices.find(v => v.lang && v.lang.startsWith("en"));
-    if (en) this.selectedVoice = en;
+    // Fallback: prefer a female English voice (usually clearer), else any English
+    const en = voices.filter(v => v.lang && v.lang.startsWith("en"));
+    const female = en.find(v => /female|woman/i.test(v.name)) || en.find(v => /samantha|zira|aria|jenny|hazel/i.test(v.name));
+    if (female) { this.selectedVoice = female; return; }
+    if (en[0]) this.selectedVoice = en[0];
   },
 
+  // Human-like narration: the pitch and rate rise and fall phrase by phrase,
+  // important facts slow down for emphasis, numbers are enunciated, and the
+  // pauses between clauses follow a natural breathing rhythm. Safety warnings
+  // are delivered in a lower, slower tone.
   speak(text) {
     if (!window.speechSynthesis) return;
     if (!this.selectedVoice) this.selectNaturalVoice();
     window.speechSynthesis.cancel();
-    // Add natural pauses for a human-like feel
-    const phrases = text.split(/\.|!|\?/).filter(s => s.trim().length > 0);
+
+    // Split into sentences, then each sentence into shorter clauses so the
+    // voice can vary its tone more naturally (like a person speaking).
+    const sentences = text.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 0);
+    const segments = [];
+    sentences.forEach((sentence, si) => {
+      const trimmed = sentence.trim();
+      const hasQuestion = /\?/.test(trimmed);
+      const hasExclaim = /!/.test(trimmed);
+      const clauses = trimmed.replace(/\s*[.!?]+\s*$/, "").split(/(?<=[,:;])\s+/);
+      clauses.forEach((clause, ci) => {
+        segments.push({ text: clause.trim(), si, ci, total: clauses.length, hasQuestion, hasExclaim });
+      });
+    });
+
     const speakNext = (index) => {
-      if (index >= phrases.length) return;
-      const phrase = phrases[index].trim() + ".";
-      const utterance = new SpeechSynthesisUtterance(phrase);
-      // Natural pitch and rate for human-like speech
-      utterance.rate = 0.88;
-      utterance.pitch = 0.96;
+      if (index >= segments.length) return;
+      const seg = segments[index];
+      const lower = seg.text.toLowerCase();
+      const utterance = new SpeechSynthesisUtterance(seg.text);
+
+      // Base: warm conversational pace
+      let rate = 0.92, pitch = 1.0, volume = 1.0;
+
+      // Enunciate numbers and scientific figures (slow + a touch of clarity)
+      if (/\d|population|percent|kilogram|meter|kilometer/.test(lower)) { rate -= 0.06; pitch += 0.03; }
+
+      // Emphasize the subject name (usually the first segment)
+      if (seg.si === 0 && seg.ci === 0) { pitch += 0.05; rate -= 0.02; }
+
+      // Scientific names (Latin two-word) spoken deliberately
+      if (/[A-Z][a-z]+ [a-z]+ [a-z]+/.test(seg.text) && /\b[A-Z][a-z]{2,}\b/.test(seg.text)) { rate -= 0.05; }
+
+      // Safety warnings: lower, slower, more serious
+      if (/harmful|dangerous|safe distance|venom|toxic|poison|caution|aggressive/.test(lower)) {
+        rate -= 0.1; pitch -= 0.09; volume = 1.05;
+      }
+
+      // Positive/cheerful facts warm up
+      if (/help|protect|thrive|remarkable|unique|play(s|ing)? a vital/.test(lower)) { pitch += 0.05; rate += 0.02; }
+
+      // Mid-sentence clauses keep moving; clause boundaries breathe briefly
+      utterance.rate = rate;
+      utterance.pitch = pitch;
+      utterance.volume = volume;
       if (this.selectedVoice) utterance.voice = this.selectedVoice;
       utterance.onend = () => {
-        setTimeout(() => speakNext(index + 1), 420);
+        // Pause rhythm: short breath at a comma, longer between sentences,
+        // a beat of reflection after questions or warnings.
+        let pause = 180;
+        if (seg.ci < seg.total - 1) pause = 220;
+        else if (seg.hasExclaim) pause = 520;
+        else if (seg.hasQuestion) pause = 580;
+        else if (/\b(safe distance|harmful|conservation status)\b/i.test(seg.text)) pause = 560;
+        else pause = 380;
+        setTimeout(() => speakNext(index + 1), pause);
       };
       window.speechSynthesis.speak(utterance);
     };
