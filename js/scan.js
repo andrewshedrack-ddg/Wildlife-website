@@ -479,6 +479,146 @@ const WildlifeScan = {
     });
   },
 
+  // Real-time conditions at the scan location via the free Open-Meteo API
+  // (no key required). Returns temperature, wind, daylight and local time,
+  // or null when unavailable. Never throws.
+  async enrichWithWeather(lat, lng) {
+    if (typeof navigator === "undefined" || !navigator.onLine || !lat || !lng) return null;
+    try {
+      const url = "https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lng +
+        "&current=temperature_2m,weather_code,wind_speed_10m,is_day&timezone=auto";
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 8000);
+      const resp = await fetch(url, { signal: controller.signal });
+      clearTimeout(timer);
+      if (!resp.ok) return null;
+      const j = await resp.json();
+      const cur = j && j.current;
+      if (!cur) return null;
+      return {
+        temperature: cur.temperature_2m,
+        weatherCode: cur.weather_code,
+        windKmh: cur.wind_speed_10m,
+        isDay: cur.is_day === 1,
+        localTime: (j && j.timezone) ? this.localTimeNow(j.timezone) : ""
+      };
+    } catch (e) {
+      return null;
+    }
+  },
+
+  // Local wall-clock time for an IANA timezone, e.g. "14:32".
+  localTimeNow(ianaZone) {
+    try {
+      const fmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: ianaZone, hour12: false });
+      return fmt.format(new Date());
+    } catch (e) {
+      return "";
+    }
+  },
+
+  // Human-readable label for an Open-Meteo weather code (WMO).
+  weatherLabel(code) {
+    const map = {
+      0: "Clear sky", 1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast",
+      45: "Fog", 48: "Depositing rime fog",
+      51: "Light drizzle", 53: "Drizzle", 55: "Dense drizzle",
+      56: "Freezing drizzle", 57: "Dense freezing drizzle",
+      61: "Slight rain", 63: "Rain", 65: "Heavy rain",
+      66: "Freezing rain", 67: "Heavy freezing rain",
+      71: "Slight snow", 73: "Snow", 75: "Heavy snow", 77: "Snow grains",
+      80: "Slight showers", 81: "Showers", 82: "Violent showers",
+      85: "Slight snow showers", 86: "Heavy snow showers",
+      95: "Thunderstorm", 96: "Thunderstorm with hail", 99: "Severe thunderstorm with hail"
+    };
+    return map[code] || "Variable conditions";
+  },
+
+  // Recent real-world observations of this species near the scan location via
+  // the free iNaturalist observations API (no key). Returns recent sighting
+  // summaries with dates and photos, or null. Never throws.
+  async enrichWithSightings(taxonId, lat, lng) {
+    if (typeof navigator === "undefined" || !navigator.onLine || !taxonId || !lat || !lng) return null;
+    try {
+      const radius = 50;
+      const url = "https://api.inaturalist.org/v1/observations?taxon_id=" + taxonId +
+        "&lat=" + lat + "&lng=" + lng + "&radius=" + radius +
+        "&order=desc&order_by=observed_on&per_page=4&photo_quality=research";
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 8000);
+      const resp = await fetch(url, { signal: controller.signal });
+      clearTimeout(timer);
+      if (!resp.ok) return null;
+      const j = await resp.json();
+      if (!j || !j.results || !j.results.length) return { total: 0, recent: [] };
+      const recent = j.results.slice(0, 4).map(function(o) {
+        return {
+          date: (o.observed_on_details && o.observed_on_details.date) || o.observed_on || "",
+          place: o.place_guess || "",
+          photoUrl: (o.photos && o.photos[0] && (o.photos[0].medium_url || o.photos[0].url)) || ""
+        };
+      });
+      return { total: j.total_results || j.results.length, recent };
+    } catch (e) {
+      return null;
+    }
+  },
+
+  // Historic / cultural background on a species via the free Wikipedia REST
+  // summary API (no key). Returns a short plain-text extract + page link.
+  async enrichWithWikipediaExtract(query) {
+    if (typeof navigator === "undefined" || !navigator.onLine || !query) return null;
+    // Try the query as-is; fall back to its first token (genus) for plants/short names.
+    const candidates = [query, String(query).split(/\s+/)[0]];
+    for (const c of candidates) {
+      if (!c) continue;
+      try {
+        const url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(c);
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 8000);
+        const resp = await fetch(url, { signal: controller.signal });
+        clearTimeout(timer);
+        if (!resp.ok) continue;
+        const j = await resp.json();
+        if (j && j.extract && !j.type) {
+          return {
+            title: j.title || c,
+            extract: String(j.extract).slice(0, 600),
+            pageUrl: (j.content_urls && j.content_urls.desktop && j.content_urls.desktop.page) || "",
+            thumbnail: (j.thumbnail && j.thumbnail.source) || ""
+          };
+        }
+      } catch (e) {}
+    }
+    return null;
+  },
+
+  // Authoritative range / occurrence data from the free GBIF species API
+  // (no key). Returns matching scientific names, common names and occurrence
+  // counts for the species. Never throws.
+  async enrichWithGBIF(query) {
+    if (typeof navigator === "undefined" || !navigator.onLine || !query) return null;
+    try {
+      const url = "https://api.gbif.org/v1/species/match?name=" + encodeURIComponent(query);
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 8000);
+      const resp = await fetch(url, { signal: controller.signal });
+      clearTimeout(timer);
+      if (!resp.ok) return null;
+      const j = await resp.json();
+      if (!j || !j.speciesKey) return null;
+      return {
+        usageKey: j.speciesKey,
+        scientificName: j.scientificName || query,
+        matchType: j.matchType || "",
+        confidence: j.confidence || 0,
+        status: j.status || ""
+      };
+    } catch (e) {
+      return null;
+    }
+  },
+
   // Perceptual hash (dHash) of the scanned image so the same subject can be
   // recognized across repeated scans, even from a different angle. Returns a
   // Promise resolving to a 64-char binary hash, or null when unavailable.
@@ -873,17 +1013,72 @@ const WildlifeScan = {
     }
   },
 
-  // Scene analysis panel: reports EVERYTHING the AI detected in the image,
-  // living or non-living, each with its own details.
-  renderSceneAnalysis(detections, primaryKey) {
-    const container = this.els.sceneAnalysis;
+  // Field-guide book: renders the result as fixed-height pages the user flips
+  // through with prev/next and page dots. No page ever scrolls — each piece of
+  // the guide gets its own page. Works as a compact rectangle on desktop and
+  // a tidy card on phones.
+  renderBook(pages) {
+    const container = this.els.resultDetails;
     if (!container) return;
-    if (!detections || detections.length < 2) {
-      container.style.display = "none";
+    if (!pages || !pages.length) {
       container.innerHTML = "";
       return;
     }
-    let html = '<details class="scene-analysis"><summary class="scene-analysis-title"><i class="fas fa-shapes"></i> Scene Analysis — Everything Detected</summary><div class="scene-list">';
+
+    let dotsHtml = "";
+    for (let i = 0; i < pages.length; i++) {
+      dotsHtml += '<button type="button" class="book-dot" data-page="' + i + '" aria-label="Go to page ' + (i + 1) + '"></button>';
+    }
+
+    container.innerHTML =
+      '<div class="field-book" role="group" aria-label="Species field guide">' +
+      '<div class="book-viewport">' +
+      pages.join('') +
+      '</div>' +
+      '<div class="book-nav">' +
+      '<button type="button" class="book-nav-btn book-prev" aria-label="Previous page"><i class="fas fa-chevron-left"></i></button>' +
+      '<div class="book-dots" role="tablist" aria-label="Pages">' + dotsHtml + '</div>' +
+      '<span class="book-counter">1 / ' + pages.length + '</span>' +
+      '<button type="button" class="book-nav-btn book-next" aria-label="Next page"><i class="fas fa-chevron-right"></i></button>' +
+      '</div>' +
+      '</div>';
+
+    const viewport = container.querySelector(".book-viewport");
+    const pagesEl = container.querySelectorAll(".book-page");
+    const dotsEl = container.querySelectorAll(".book-dot");
+    const counterEl = container.querySelector(".book-counter");
+    const prevBtn = container.querySelector(".book-prev");
+    const nextBtn = container.querySelector(".book-next");
+    let current = 0;
+
+    const show = (index) => {
+      current = Math.max(0, Math.min(index, pagesEl.length - 1));
+      for (let i = 0; i < pagesEl.length; i++) {
+        pagesEl[i].classList.toggle("active", i === current);
+      }
+      for (let i = 0; i < dotsEl.length; i++) {
+        dotsEl[i].classList.toggle("active", i === current);
+      }
+      counterEl.textContent = (current + 1) + " / " + pagesEl.length;
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === pagesEl.length - 1;
+      viewport.scrollTop = 0;
+    };
+
+    prevBtn.addEventListener("click", () => show(current - 1));
+    nextBtn.addEventListener("click", () => show(current + 1));
+    for (const dot of dotsEl) {
+      dot.addEventListener("click", () => show(parseInt(dot.dataset.page, 10)));
+    }
+    show(0);
+  },
+
+  // Scene analysis: reports EVERYTHING the AI detected in the image, living
+  // or non-living, each with its own details. Returns the inner list HTML so
+  // it can live on a book page or as a standalone panel.
+  sceneListHtml(detections, primaryKey) {
+    if (!detections || detections.length < 2) return "";
+    let html = '<div class="scene-list">';
     for (const d of detections) {
       const isPrimary = d.kind === "living" && d.key === primaryKey;
       if (d.kind === "living" && d.species) {
@@ -913,27 +1108,30 @@ const WildlifeScan = {
           '</div>';
       }
     }
-    html += '</div></details>';
-    container.innerHTML = html;
-    container.style.display = "block";
+    html += '</div>';
+    return html;
   },
 
-  // Panel: "You've scanned this before" — links this scan to past scans of the
-  // same species or the same subject photographed from a different angle.
-  renderPastScanMatch() {
-    const container = this.els.pastScanMatch;
+  renderSceneAnalysis(detections, primaryKey) {
+    const container = this.els.sceneAnalysis;
     if (!container) return;
-    const past = (this.currentResult && this.currentResult.pastScans) || [];
-    if (!past.length) {
+    const list = this.sceneListHtml(detections, primaryKey);
+    if (!list) {
       container.style.display = "none";
       container.innerHTML = "";
       return;
     }
-    const cur = this.currentResult;
+    container.innerHTML = '<details class="scene-analysis"><summary class="scene-analysis-title"><i class="fas fa-shapes"></i> Scene Analysis — Everything Detected</summary>' + list + '</details>';
+    container.style.display = "block";
+  },
+
+  // Past-scan match content: links this scan to past scans of the same species
+  // or the same subject photographed from a different angle.
+  pastScanListHtml() {
+    const past = (this.currentResult && this.currentResult.pastScans) || [];
+    if (!past.length) return "";
     const isSame = past.some(function(p) { return p.reason === "same-species"; });
-    let html = '<details class="past-scan-match"><summary class="past-scan-title"><i class="fas fa-clock"></i> ' +
-      (isSame ? 'You\'ve scanned this before' : 'Similar to a previous scan') + '</summary>';
-    html += '<p class="past-scan-note">WildGuard compared this image with your previous scans — ' +
+    let html = '<p class="past-scan-note">WildGuard compared this image with your previous scans — ' +
       (isSame ? 'the same species was identified on an earlier visit.' : 'a near-identical subject was detected before.') +
       ' That means it can still be recognized even from another angle.</p>';
     html += '<div class="past-scan-list">';
@@ -947,20 +1145,33 @@ const WildlifeScan = {
         (p.confidence ? '<span>Confidence: ' + p.confidence + '%</span>' : '') +
         '</div></div>';
     }
-    html += '</div></details>';
-    container.innerHTML = html;
+    html += '</div>';
+    return html;
+  },
+
+  renderPastScanMatch() {
+    const container = this.els.pastScanMatch;
+    if (!container) return;
+    const body = this.pastScanListHtml();
+    if (!body) {
+      container.style.display = "none";
+      container.innerHTML = "";
+      return;
+    }
+    const past = (this.currentResult && this.currentResult.pastScans) || [];
+    const isSame = past.some(function(p) { return p.reason === "same-species"; });
+    container.innerHTML = '<details class="past-scan-match"><summary class="past-scan-title"><i class="fas fa-clock"></i> ' +
+      (isSame ? 'You\'ve scanned this before' : 'Similar to a previous scan') + '</summary>' + body + '</details>';
     container.style.display = "block";
   },
 
-  // Panel: "Surroundings & General Area" — geography, historic features and
-  // nearby biological places around the scan, using the browser's location.
-  // Falls back to the species habitat when location isn't available.
-  renderSurroundings() {
-    const container = this.els.surroundings;
-    if (!container) return;
+  // Surroundings & General Area — geography, historic features and nearby
+  // biological places around the scan, using the browser's location. Falls
+  // back to the species habitat when location isn't available.
+  surroundingsBodyHtml() {
     const geo = (this.currentResult && this.currentResult.geo) || null;
     const species = this.currentResult && this.currentResult.species;
-    let html = '<details class="surroundings"><summary class="surroundings-title"><i class="fas fa-map-marked-alt"></i> Surroundings &amp; General Area</summary>';
+    let html = "";
 
     if (geo && (geo.place || geo.features.length || geo.places.length)) {
       const locationParts = [];
@@ -999,9 +1210,73 @@ const WildlifeScan = {
     } else {
       html += '<p class="surroundings-loc">Surrounding landscape details aren\'t available for this result.</p>';
     }
-    html += '</details>';
-    container.innerHTML = html;
+    return html;
+  },
+
+  renderSurroundings() {
+    const container = this.els.surroundings;
+    if (!container) return;
+    const body = this.surroundingsBodyHtml();
+    container.innerHTML = '<details class="surroundings"><summary class="surroundings-title"><i class="fas fa-map-marked-alt"></i> Surroundings &amp; General Area</summary>' + body + '</details>';
     container.style.display = "block";
+  },
+
+  // Live conditions page: real-time weather, local time and recent local
+  // sightings of the identified species (free, keyless APIs).
+  liveConditionsHtml() {
+    const w = (this.currentResult && this.currentResult.weather) || null;
+    const s = (this.currentResult && this.currentResult.sightings) || null;
+    if (!w && !s) return "";
+    let html = "";
+    if (w) {
+      html += '<div class="live-weather"><span class="live-weather-chip"><i class="fas fa-temperature-half"></i> ' +
+        Math.round(w.temperature) + '&deg;C</span>' +
+        '<span class="live-weather-chip"><i class="fas fa-wind"></i> ' + Math.round(w.windKmh) + ' km/h</span>' +
+        '<span class="live-weather-chip"><i class="fas ' + (w.isDay ? 'fa-sun' : 'fa-moon') + '"></i> ' + this.escapeHtml(this.weatherLabel(w.weatherCode)) + '</span>' +
+        (w.localTime ? '<span class="live-weather-chip"><i class="fas fa-clock"></i> Local time ' + w.localTime + '</span>' : '') +
+        '</div>';
+      html += '<p class="book-text">Live conditions right now at the scan location.</p>';
+    }
+    if (s) {
+      if (s.total > 0) {
+        html += '<p class="book-text"><i class="fas fa-binoculars"></i> <strong>' + s.total + '</strong> recent observation' + (s.total === 1 ? '' : 's') +
+          ' of this species recorded nearby on iNaturalist.</p>';
+        if (s.recent && s.recent.length) {
+          html += '<ul class="sighting-list">';
+          for (const r of s.recent) {
+            html += '<li class="sighting-item">' +
+              (r.photoUrl ? '<img src="' + r.photoUrl + '" alt="Sighting photo" class="sighting-thumb">' : '<span class="sighting-thumb empty"><i class="fas fa-paw"></i></span>') +
+              '<div class="sighting-info"><strong>' + this.escapeHtml(r.place || "Nearby location") + '</strong>' +
+              (r.date ? '<span>' + this.escapeHtml(r.date) + '</span>' : '') + '</div></li>';
+          }
+          html += '</ul>';
+        }
+      } else {
+        html += '<p class="book-text"><i class="fas fa-binoculars"></i> No recent sightings of this species are recorded within 50 km of your location.</p>';
+      }
+    }
+    return html;
+  },
+
+  // History & cultural context page: Wikipedia summary + GBIF authority data.
+  historyHtml() {
+    const h = (this.currentResult && this.currentResult.history) || null;
+    const g = (this.currentResult && this.currentResult.gbif) || null;
+    if (!h && !g) return "";
+    let html = "";
+    if (h) {
+      html += '<p class="book-text">' + this.escapeHtml(h.extract) + '</p>';
+      if (h.pageUrl) {
+        html += '<p class="book-text"><a class="ai-source-link" href="' + h.pageUrl + '" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Read more on Wikipedia</a></p>';
+      }
+    }
+    if (g) {
+      html += '<p class="book-text"><i class="fas fa-database"></i> <strong>GBIF</strong> — Global Biodiversity Information Facility confirms the accepted scientific name <em>' +
+        this.escapeHtml(g.scientificName) + '</em>' +
+        (g.status ? ' (status: ' + this.escapeHtml(g.status) + ')' : '') +
+        '.</p>';
+    }
+    return html;
   },
 
   escapeHtml(str) {
@@ -1186,6 +1461,33 @@ const WildlifeScan = {
     const geo = await this.enrichWithGeography();
     this.currentResult.geo = geo;
 
+    // Parallel real-time + wildlife-library enrichment: live weather at the
+    // scan location, recent local sightings, historic background, and GBIF
+    // authority data. All free, keyless APIs that never throw.
+    this.els.loadingText.textContent = "Checking live conditions & global records...";
+    const liveJobs = [];
+    if (geo && geo.lat && geo.lng) {
+      liveJobs.push(
+        this.enrichWithWeather(geo.lat, geo.lng).then(function(w) { if (w) this.currentResult.weather = w; }.bind(this)).catch(() => {}),
+        this.enrichWithSightings(iNat && iNat.inaturalistId, geo.lat, geo.lng).then(function(s) { if (s) this.currentResult.sightings = s; }.bind(this)).catch(() => {})
+      );
+    }
+    liveJobs.push(
+      this.enrichWithWikipediaExtract(species.scientificName || species.name).then(function(h) { if (h) this.currentResult.history = h; }.bind(this)).catch(() => {}),
+      this.enrichWithGBIF(species.scientificName || species.name).then(function(g) { if (g) this.currentResult.gbif = g; }.bind(this)).catch(() => {})
+    );
+    await Promise.all(liveJobs);
+
+    // Reflect the multi-source live enrichment in the AI source badge.
+    const liveParts = [];
+    if (this.currentResult.weather) liveParts.push("weather");
+    if (this.currentResult.sightings) liveParts.push("sightings");
+    if (this.currentResult.history) liveParts.push("Wikipedia");
+    if (this.currentResult.gbif) liveParts.push("GBIF");
+    if (liveParts.length) {
+      this.currentResult.aiSource = aiSource + " + " + liveParts.join(", ");
+    }
+
     // Perceptual fingerprint so repeat scans (even from another angle) are linked.
     const hash = (this.els.previewImg && this.els.previewImg.src) ? await this.computeImageHash(this.els.previewImg.src) : null;
     if (hash) this.currentResult.hash = hash;
@@ -1227,48 +1529,123 @@ const WildlifeScan = {
 
     const harm = this.assessHarm(species);
 
-    // Compact result card: quick-facts grid up top, then short accordion
-    // sections so the box stays a tidy rectangle instead of a long scroll.
-    this.els.resultDetails.innerHTML =
-      // 1. Biological data — compact quick-facts grid (always visible)
-      '<div class="detail-section detail-section--full"><h4><i class="fas fa-dna"></i> Biological Data</h4>' +
+    // Field-guide book: fixed-height pages you flip through (no scrolling).
+    // Page 1 opens on the cover of the guide with the key facts.
+    const pages = [];
+
+    // Page 1 — Cover & quick facts
+    pages.push(
+      '<div class="book-page" data-page="0">' +
+      '<div class="book-page-label"><i class="fas fa-book-open"></i> Species Card</div>' +
       '<div class="bio-grid">' +
       '<div class="bio-tile"><span class="bio-label">Kingdom</span><span class="bio-value">' + species.kingdom + '</span></div>' +
       '<div class="bio-tile"><span class="bio-label">Domain</span><span class="bio-value">' + species.domain + '</span></div>' +
       '<div class="bio-tile"><span class="bio-label">Category</span><span class="bio-value">' + species.category + '</span></div>' +
       '<div class="bio-tile"><span class="bio-label">Population</span><span class="bio-value">' + species.population + '</span></div>' +
-      '</div></div>' +
-      // 2. Feeding habit (accordion, open by default)
-      '<details class="detail-section" open>' +
-      '<summary><i class="fas fa-utensils"></i> Feeding Habit</summary>' +
-      '<p>' + species.diet + '</p></details>' +
-      // 3. Adaptations & safety (harmful or not)
-      '<details class="detail-section">' +
-      '<summary><i class="fas fa-shield-halved"></i> Adaptations &amp; Safety</summary>' +
-      '<p>' + species.behavior + '</p>' +
+      '</div>' +
       '<div class="safety-badge ' + harm.cls + '"><i class="fas ' + harm.icon + '"></i> ' + harm.label + '</div>' +
-      '</details>' +
-      // 4. Habitat & geography
-      '<details class="detail-section">' +
-      '<summary><i class="fas fa-globe-africa"></i> Habitat &amp; Geography</summary>' +
-      '<p>' + species.habitat + (species.soil ? '<br><span class="detail-dim"><i class="fas fa-layer-group"></i> Soil: ' + species.soil + '</span>' : '') + '</p>' +
-      '</details>' +
-      // 5. Threats & conservation
-      '<details class="detail-section">' +
-      '<summary><i class="fas fa-exclamation-triangle"></i> Threats &amp; Conservation</summary>' +
-      '<p>' + species.threats + '</p></details>' +
-      // 6. About
-      '<details class="detail-section">' +
-      '<summary><i class="fas fa-info-circle"></i> About</summary>' +
-      '<p>' + species.desc + '</p></details>';
+      '</div>'
+    );
 
-    // Render the "everything detected" scene panel alongside the primary result
-    this.renderSceneAnalysis(detections, bestMatch);
+    // Page 2 — Feeding habit
+    pages.push(
+      '<div class="book-page" data-page="1">' +
+      '<div class="book-page-label"><i class="fas fa-utensils"></i> Feeding Habit</div>' +
+      '<p class="book-text">' + species.diet + '</p>' +
+      '</div>'
+    );
 
-    // Render "you've scanned this before" (past-scan match) and the
-    // surroundings / geography / historic context panels
-    this.renderPastScanMatch();
-    this.renderSurroundings();
+    // Page 3 — Adaptations & safety
+    pages.push(
+      '<div class="book-page" data-page="2">' +
+      '<div class="book-page-label"><i class="fas fa-shield-halved"></i> Adaptations &amp; Safety</div>' +
+      '<p class="book-text">' + species.behavior + '</p>' +
+      '<div class="safety-badge ' + harm.cls + '"><i class="fas ' + harm.icon + '"></i> ' + harm.label + '</div>' +
+      '</div>'
+    );
+
+    // Page 4 — Habitat & geography
+    pages.push(
+      '<div class="book-page" data-page="3">' +
+      '<div class="book-page-label"><i class="fas fa-globe-africa"></i> Habitat &amp; Geography</div>' +
+      '<p class="book-text">' + species.habitat +
+      (species.soil ? '<br><span class="detail-dim"><i class="fas fa-layer-group"></i> Soil: ' + species.soil + '</span>' : '') +
+      '</p>' +
+      '</div>'
+    );
+
+    // Page 5 — Threats & conservation
+    pages.push(
+      '<div class="book-page" data-page="4">' +
+      '<div class="book-page-label"><i class="fas fa-exclamation-triangle"></i> Threats &amp; Conservation</div>' +
+      '<p class="book-text">' + species.threats + '</p>' +
+      '</div>'
+    );
+
+    // Page 6 — About
+    pages.push(
+      '<div class="book-page" data-page="5">' +
+      '<div class="book-page-label"><i class="fas fa-info-circle"></i> About</div>' +
+      '<p class="book-text">' + species.desc + '</p>' +
+      '</div>'
+    );
+
+    // Page 7 — Live conditions (real-time weather, local time, local sightings)
+    const liveHtml = this.liveConditionsHtml();
+    if (liveHtml) {
+      pages.push(
+        '<div class="book-page" data-page="' + pages.length + '">' +
+        '<div class="book-page-label"><i class="fas fa-cloud-sun"></i> Live Conditions</div>' +
+        liveHtml +
+        '</div>'
+      );
+    }
+
+    // Page 8 — History & cultural context (Wikipedia extract + GBIF authority)
+    const historyHtml = this.historyHtml();
+    if (historyHtml) {
+      pages.push(
+        '<div class="book-page" data-page="' + pages.length + '">' +
+        '<div class="book-page-label"><i class="fas fa-landmark"></i> History &amp; Cultural Context</div>' +
+        historyHtml +
+        '</div>'
+      );
+    }
+
+    // Page 7 — Everything detected in the scene (if more than one)
+    const sceneList = this.sceneListHtml(detections, bestMatch);
+    if (sceneList) {
+      pages.push(
+        '<div class="book-page" data-page="' + pages.length + '">' +
+        '<div class="book-page-label"><i class="fas fa-shapes"></i> Scene Analysis — Everything Detected</div>' +
+        sceneList +
+        '</div>'
+      );
+    }
+
+    // Page 8 — Past scans (if any)
+    const pastList = this.pastScanListHtml();
+    if (pastList) {
+      pages.push(
+        '<div class="book-page" data-page="' + pages.length + '">' +
+        '<div class="book-page-label"><i class="fas fa-clock"></i> Past Scans</div>' +
+        pastList +
+        '</div>'
+      );
+    }
+
+    // Page 9 — Surroundings & general area
+    const surrBody = this.surroundingsBodyHtml();
+    if (surrBody) {
+      pages.push(
+        '<div class="book-page" data-page="' + pages.length + '">' +
+        '<div class="book-page-label"><i class="fas fa-map-marked-alt"></i> Surroundings &amp; General Area</div>' +
+        surrBody +
+        '</div>'
+      );
+    }
+
+    this.renderBook(pages);
 
     // Inject save/admin buttons and auto-send to admin
     const resultActions = this.els.resultState.querySelector(".result-actions");
@@ -1297,6 +1674,16 @@ const WildlifeScan = {
       const geoNote = (this.currentResult.geo && (this.currentResult.geo.place || this.currentResult.geo.region || this.currentResult.geo.country))
         ? " It was scanned around " + this.currentResult.geo.place + ", " + this.currentResult.geo.region + ", " + this.currentResult.geo.country + "."
         : "";
+      let liveNote = "";
+      const weather = this.currentResult.weather;
+      const sightings = this.currentResult.sightings;
+      if (weather && typeof weather.temperature === "number") {
+        liveNote += " Right now it is " + Math.round(weather.temperature) + " degrees celsius and " +
+          (this.weatherLabel(weather.weatherCode).toLowerCase()) + (weather.isDay ? " during the day" : " at night") + " here.";
+      }
+      if (sightings && sightings.total > 0) {
+        liveNote += " This species has " + sightings.total + " recent recorded observation" + (sightings.total === 1 ? "" : "s") + " near this location.";
+      }
       let sceneNote = "";
       const others = (detections || []).filter(d => d.kind === "living" && d.key !== bestMatch);
       if (others.length) {
@@ -1304,7 +1691,7 @@ const WildlifeScan = {
       }
       this.speak(species.name + ", " + species.scientificName + ". Biological data: a " + species.domain + " from the kingdom " + species.kingdom +
         ", a " + species.category + " with a wild population of about " + species.population + ". Feeding habit: " + species.diet + ". Adaptations: " + species.behavior +
-        "." + harmNote + " Habitat: " + species.habitat + (species.soil ? ", soil " + species.soil + "." : ".") + " Conservation status: " + species.status + "." + geoNote + sceneNote + aiNote);
+        "." + harmNote + " Habitat: " + species.habitat + (species.soil ? ", soil " + species.soil + "." : ".") + " Conservation status: " + species.status + "." + geoNote + liveNote + sceneNote + aiNote);
     }
   },
 

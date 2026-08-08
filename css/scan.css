@@ -304,6 +304,121 @@
   margin-bottom: 1.5rem;
 }
 
+/* ---------- Field-Guide Book (flip-page result) ---------- */
+.field-book {
+  position: relative;
+}
+
+.book-viewport {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius, 12px);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.book-page {
+  display: none;
+  padding: 1.2rem 1.4rem;
+  overflow: hidden;
+  animation: bookPageIn 0.35s ease;
+}
+
+.book-page.active {
+  display: block;
+}
+
+@keyframes bookPageIn {
+  from { opacity: 0; transform: translateX(14px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.book-page-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent, #c9a227);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.9rem;
+}
+
+.book-page-label i {
+  font-size: 0.9rem;
+}
+
+.book-text {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.book-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  margin-top: 0.9rem;
+}
+
+.book-nav-btn {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.book-nav-btn:hover:not(:disabled) {
+  background: rgba(27, 94, 64, 0.7);
+  border-color: rgba(27, 94, 64, 0.9);
+}
+
+.book-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.book-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.book-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.book-dot.active {
+  background: var(--accent, #c9a227);
+  transform: scale(1.3);
+}
+
+.book-counter {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  min-width: 3.4rem;
+  text-align: center;
+}
+
 .detail-section {
   margin-bottom: 0.6rem;
   border: 1px solid rgba(255, 255, 255, 0.07);
@@ -312,13 +427,90 @@
   overflow: hidden;
 }
 
-.detail-section--full {
-  background: transparent;
-  border: none;
-  margin-bottom: 1rem;
+/* ---------- Live Conditions (real-time weather + local sightings) ---------- */
+.live-weather {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
 }
 
-.detail-section summary {
+.live-weather-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 100px;
+  background: rgba(27, 94, 64, 0.18);
+  border: 1px solid rgba(27, 94, 64, 0.45);
+  color: #7fd1a3;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.live-weather-chip i {
+  font-size: 0.85rem;
+  color: var(--accent, #c9a227);
+}
+
+.sighting-list {
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.sighting-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius, 8px);
+  padding: 0.5rem 0.7rem;
+}
+
+.sighting-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius, 6px);
+  object-fit: cover;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.sighting-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.sighting-info strong {
+  color: #ffffff;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sighting-info span {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.78rem;
+}
+
+.book-page .ai-source-link {
+  display: inline-block;
+  margin-top: 0.6rem;
+}
+
+.detail-section h4 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -328,44 +520,20 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 0.7rem 0.9rem;
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-  transition: background 0.2s ease;
+  margin: 0;
 }
 
-.detail-section summary::-webkit-details-marker {
-  display: none;
-}
-
-.detail-section summary i {
-  font-size: 0.9rem;
-}
-
-.detail-section summary::after {
-  content: "\f078";
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
-  font-size: 0.7rem;
-  margin-left: auto;
-  opacity: 0.6;
-  transition: transform 0.2s ease;
-}
-
-.detail-section[open] summary::after {
-  transform: rotate(180deg);
-}
-
-.detail-section summary:hover {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.detail-section p {
+.detail-section p,
+.detail-section ul {
   color: rgba(255, 255, 255, 0.75);
   font-size: 0.9rem;
   line-height: 1.6;
   margin: 0;
   padding: 0 0.9rem 0.8rem;
+}
+
+.detail-section li {
+  margin-bottom: 0.3rem;
 }
 
 .detail-dim {
@@ -438,18 +606,6 @@
   color: #22c55e;
   border: 1px solid rgba(34, 197, 94, 0.35);
 }
-
-/* Two-column detail sections on wide screens so the result panel is
-   compact and doesn't force the user to scroll forever. */
-.result-details {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-  align-items: start;
-}
-
-.result-details .detail-section--full { grid-column: 1 / -1; }
-.result-details .detail-section { break-inside: avoid; }
 
 /* ---------- Result Actions ---------- */
 .result-actions {
@@ -995,10 +1151,6 @@
     font-size: 1.5rem;
   }
 
-  .result-details {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
   .bio-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 0.5rem;
@@ -1007,9 +1159,22 @@
     padding: 0.6rem 0.75rem;
   }
 
-  .detail-section summary {
-    padding: 0.8rem 0.75rem;
-    min-height: 44px;
+  .book-page {
+    padding: 1rem 1.1rem;
+  }
+
+  .book-nav {
+    gap: 0.6rem;
+  }
+
+  .book-nav-btn {
+    width: 46px;
+    height: 46px;
+  }
+
+  .book-dot {
+    width: 10px;
+    height: 10px;
   }
 
   .scene-analysis summary,
