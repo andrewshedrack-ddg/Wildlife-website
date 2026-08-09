@@ -462,31 +462,6 @@
   margin-top: 1rem;
 }
 
-/* Collapsible Scanned Section */
-#scannedSection.collapsed {
-  max-height: 0;
-  opacity: 0;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-#scannedSection:not(.collapsed) {
-  max-height: 5000px;
-  opacity: 1;
-}
-#toggleScanned {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: transform 0.3s ease;
-}
-#toggleScanned[aria-expanded="true"] .chevron {
-  transform: rotate(180deg);
-}
-.chevron {
-  transition: transform 0.3s ease;
-}
-
 /* Scanned Species Empty State */
 .scanned-empty {
   text-align: center;

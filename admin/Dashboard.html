@@ -11,36 +11,7 @@
 <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script defer src="../js/i18n.js"></script>
-</head>
-<body>
-  <div class="page-slideshow">
-    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
-    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
-    <div class="page-slide" style="background-image: url('../assets/images/Background3.png');"></div>
-    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
-    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
-  </div>
-
-  <div class="admin-app">
-    <aside class="admin-sidebar" id="adminSidebar">
-      <div class="admin-brand">
-        <img src="../assets/images/logo.png" alt="WildGuard">
-        <span>Admin Portal</span>
-      </div>
-      <nav class="admin-nav">
-        <button class="admin-nav-item active" data-tab="dashboard" onclick="switchTab(this, 'dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
-        <button class="admin-nav-item" data-tab="scans" onclick="switchTab(this, 'scans')"><i class="fas fa-camera"></i> Scan Reviews</button>
-        <button class="admin-nav-item" data-tab="messages" onclick="switchTab(this, 'messages')"><i class="fas fa-envelope"></i> Messages</button>
-        <button class="admin-nav-item" data-tab="notifications" onclick="switchTab(this, 'notifications')"><i class="fas fa-bell"></i> Notifications</button>
-        <button class="admin-nav-item" data-tab="users" onclick="switchTab(this, 'users')"><i class="fas fa-users"></i> Users</button>
-        <button class="admin-nav-item" data-tab="admins" onclick="switchTab(this, 'admins')"><i class="fas fa-shield-halved"></i> Admins</button>
-        <button class="admin-nav-item" data-tab="logs" onclick="switchTab(this, 'logs')"><i class="fas fa-clipboard-list"></i> Activity Log</button>
-        <button class="admin-nav-item" data-tab="settings" onclick="switchTab(this, 'settings')"><i class="fas fa-cog"></i> Settings</button>
-      </nav>
-      <div class="admin-logout">
-        <a href="#" onclick="portalLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
-      </div>
-    </aside>
+  <style>
     .admin-topbar-right { display: flex; align-items: center; gap: 1rem; }
     .admin-notif-btn { position: relative; background: none; border: none; color: rgba(255,255,255,0.7); font-size: 1.1rem; cursor: pointer; padding: 0.5rem; transition: all 0.3s ease; }
     .admin-notif-btn:hover { color: var(--accent); }

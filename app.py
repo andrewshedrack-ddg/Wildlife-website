@@ -877,18 +877,6 @@ if __name__ == '__main__':
         
         db.session.commit()
         print("Backend ready. Seed data injected correctly.")
-    
-    # Serve static HTML files - must be outside main block for test_client to work
-    @app.route('/')
-    def serve_index():
-        return send_from_directory('.', 'index.html')
-
-    @app.route('/<path:path>')
-    def serve_static(path):
-        try:
-            return send_from_directory('.', path)
-        except:
-            return send_from_directory('.', 'index.html'), 404
 
     if __name__ == '__main__':
         socketio.run(app, debug=True, port=5000, allow_unsafe_werkzeug=True)

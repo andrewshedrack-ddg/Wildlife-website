@@ -94,6 +94,9 @@ const books = [
     if (scannedSection) {
         scannedSection.classList.add('collapsed');
     }
+    if (toggleScannedBtn) {
+        toggleScannedBtn.setAttribute('aria-expanded', 'false');
+    }
 
     // Toggle scanned section
     if (toggleScannedBtn) {
