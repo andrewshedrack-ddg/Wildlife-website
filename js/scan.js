@@ -683,7 +683,14 @@ const WildlifeScan = {
   // scan falls through to the on-device trained model.
   async cloudScan(imageDataUrl) {
     const base = this.backendApiBase();
-    if (!base || !navigator.onLine || !imageDataUrl) return null;
+    // Track why cloud scan was skipped for honest messaging
+    if (!base) {
+      return { available: false, reason: 'no_backend', message: 'Cloud AI not available (static hosting)' };
+    }
+    if (!navigator.onLine) {
+      return { available: false, reason: 'offline', message: 'Cloud AI unavailable (offline)' };
+    }
+    if (!imageDataUrl) return { available: false, reason: 'no_image', message: 'No image provided' };
     try {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 9000);
@@ -694,12 +701,14 @@ const WildlifeScan = {
         signal: controller.signal
       });
       clearTimeout(timer);
-      if (!resp.ok) return null;
+      if (!resp.ok) return { available: false, reason: 'http_error', message: 'Cloud AI returned error' };
       const data = await resp.json();
-      if (!data || data.available === false || !data.tags) return null;
-      return data; // { tags:[...], caption, source }
+      if (!data || data.available === false || !data.tags) {
+        return { available: false, reason: 'unconfigured', message: data?.error || 'Cloud AI not configured' };
+      }
+      return { available: true, ...data }; // { tags:[...], caption, source }
     } catch (e) {
-      return null;
+      return { available: false, reason: 'network_error', message: 'Cloud AI request failed' };
     }
   },
 
@@ -722,7 +731,8 @@ const WildlifeScan = {
       const key = this.matchTagToSpecies(t);
       if (key && !seen[key]) {
         seen[key] = true;
-        out.push({ key: key, confidence: 70 + Math.floor(Math.random() * 25) });
+        // Use a fixed confidence for cloud vision tag matches (no per-tag confidence from API)
+        out.push({ key: key, confidence: 75 });
       }
     }
     out.sort((a, b) => b.confidence - a.confidence);
@@ -1061,7 +1071,8 @@ const WildlifeScan = {
   },
 
   showNonLivingResult(detectedLabel, confidence) {
-    const confidencePercent = confidence || Math.floor(Math.random() * 20) + 75;
+    // Use provided confidence (from MobileNet) or a fixed base for non-living detection
+    const confidencePercent = confidence || 75;
     this.currentResult = { nonLiving: true, label: detectedLabel, confidence: confidencePercent };
 
     this.els.loadingState.style.display = "none";
@@ -1248,11 +1259,12 @@ const WildlifeScan = {
     for (const p of past) {
       const d = new Date(p.timestamp);
       const when = isNaN(d) ? "earlier" : d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+      const img = (p.imageData && /^data:image\/(png|jpe?g|gif|webp);base64,/i.test(p.imageData)) ? p.imageData : "";
       html += '<div class="past-scan-item">' +
-        (p.imageData ? '<img src="' + p.imageData + '" alt="Previous scan" class="past-scan-thumb">' : '<div class="past-scan-thumb empty"><i class="fas fa-camera"></i></div>') +
-        '<div class="past-scan-info"><strong>' + (p.species || "Identified subject") + '</strong>' +
+        (img ? '<img src="' + img + '" alt="Previous scan" class="past-scan-thumb">' : '<div class="past-scan-thumb empty"><i class="fas fa-camera"></i></div>') +
+        '<div class="past-scan-info"><strong>' + this.escapeHtml(p.species || "Identified subject") + '</strong>' +
         '<span>' + when + (p.approved ? '' : ' &middot; awaiting admin review') + '</span>' +
-        (p.confidence ? '<span>Confidence: ' + p.confidence + '%</span>' : '') +
+        (p.confidence ? '<span>Confidence: ' + this.escapeHtml(p.confidence) + '%</span>' : '') +
         '</div></div>';
     }
     html += '</div>';
@@ -1476,6 +1488,8 @@ const WildlifeScan = {
     let aiConfidence = 0;
     let aiLabel = "";
     let predictions = [];
+    let cloudAttempted = false;
+    let cloudFallbackReason = null;
 
     // Step 1: Tier-1 real cloud vision AI via the Flask backend (if deployed).
     // Tier-2: on-device transfer-learning wildlife classifier (WildGuardAI).
@@ -1485,13 +1499,19 @@ const WildlifeScan = {
     let trainedPick = null;
     if (this.els.previewImg && this.els.previewImg.src) {
       cloudResult = await this.cloudScan(this.els.previewImg.src);
-      if (cloudResult && cloudResult.tags && cloudResult.tags.length) {
+      cloudAttempted = true;
+      if (cloudResult && cloudResult.available && cloudResult.tags && cloudResult.tags.length) {
         const cloudMatches = this.tagsToSpecies(cloudResult.tags);
         if (cloudMatches.length) {
           bestMatch = cloudMatches[0].key;
           aiConfidence = cloudMatches[0].confidence;
           aiLabel = cloudResult.caption || "";
         }
+      } else if (cloudResult && !cloudResult.available) {
+        // Cloud AI unavailable — honest fallback messaging
+        cloudFallbackReason = cloudResult.message || cloudResult.reason;
+        this.els.loadingText.textContent = "Cloud AI unavailable — using on-device model...";
+        await new Promise(r => setTimeout(r, 400));
       }
       // If the cloud tier is unconfigured/unreachable, fall to the on-device
       // trained model for a real wildlife identification.
@@ -1567,12 +1587,38 @@ const WildlifeScan = {
     }
 
     const species = this.speciesDB[bestMatch];
-    const confidence = aiConfidence > 0 ? aiConfidence : (bestScore > 0 ? Math.floor(Math.random() * 10) + 87 : 82);
+    // Honest confidence: use actual model scores, not fabricated randomness.
+    let confidence;
+    if (aiConfidence > 0) {
+      // Cloud vision or trained model provided a real confidence
+      confidence = aiConfidence;
+    } else if (primary && primary.confidence) {
+      // MobileNet prediction confidence (0-100)
+      confidence = primary.confidence;
+    } else if (bestScore > 0) {
+      // Filename keyword match - weak signal, fixed base
+      confidence = 70;
+    } else {
+      // Should not reach here (handled above), but fallback
+      confidence = 60;
+    }
 
     // Determine the AI source used for this identification
-    let aiSource = aiLabel
-      ? (cloudResult ? "Azure AI Vision cloud" : (trainedPick ? "Trained wildlife AI" : "MobileNet neural network"))
-      : (bestScore > 0 ? "Smart keyword match" : "Local species database");
+    let aiSource;
+    if (cloudResult && cloudResult.available) {
+      aiSource = "Azure AI Vision cloud";
+    } else if (trainedPick) {
+      aiSource = "Trained wildlife AI (on-device)";
+      if (cloudFallbackReason) aiSource += " — cloud unavailable: " + cloudFallbackReason;
+    } else if (primary && primary.confidence) {
+      aiSource = "MobileNet neural network";
+      if (cloudFallbackReason) aiSource += " — cloud unavailable: " + cloudFallbackReason;
+    } else if (bestScore > 0) {
+      aiSource = "Smart keyword match (filename)";
+      if (cloudFallbackReason) aiSource += " — cloud unavailable: " + cloudFallbackReason;
+    } else {
+      aiSource = "Local species database";
+    }
     let iNat = null;
 
     // Enrich with real-world data from the free iNaturalist API when online.
@@ -1633,13 +1679,10 @@ const WildlifeScan = {
     if (hash) this.currentResult.hash = hash;
     this.currentResult.pastScans = this.findPastScans(bestMatch, hash);
 
-    // Animate analysis steps
-    this.els.loadingText.textContent = "Analyzing image with neural network...";
-    await new Promise(r => setTimeout(r, 900));
-    this.els.loadingText.textContent = "Detecting features...";
-    await new Promise(r => setTimeout(r, 600));
-    this.els.loadingText.textContent = "Matching against species database...";
-    await new Promise(r => setTimeout(r, 700));
+    // Real work is complete (AI inference, enrichment APIs). Just finalize.
+    this.els.loadingText.textContent = "Finalizing results...";
+    // Small yield to let UI update
+    await new Promise(r => setTimeout(r, 50));
 
     this.els.loadingState.style.display = "none";
     this.els.resultState.style.display = "block";

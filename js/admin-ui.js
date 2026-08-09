@@ -88,7 +88,7 @@
 
     // Fade out
     area.style.opacity = '0';
-    area.style.transition = 'opacity 0.2s ease;
+    area.style.transition = 'opacity 0.2s ease';
 
     setTimeout(() => {  area.innerHTML = sections[sectionId].content;  area.style.opacity = '1'; }, 200);
 

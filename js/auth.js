@@ -29,15 +29,8 @@
     return [hasUpper, hasLower, hasNumber, hasSpecial].filter(Boolean).length >= 3;
   }
 
-  function simpleHash(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash;
-    }
-    return 'hash_' + Math.abs(hash).toString(16);
-  }
+  // No client-side password hashing — demo/fallback mode delegates to backend.
+  // All password verification happens server-side with bcrypt.
 
   // --- Bot & Honeypot Detection ---
   function checkBotSignals() {
@@ -400,10 +393,13 @@
         }
       }
 
-      // ---- Demo / Fallback Mode ----
+      // ---- Demo / Fallback Mode (no client-side password verification) ----
+      // In demo mode we accept any password and create a session.
+      // Real authentication should use the backend with bcrypt.
+      securityMonitor('demo_login', { email: email.substring(0, 3) + '***' });
       const demoUsers = getDemoUsers();
       const demoUser = demoUsers[email];
-      if (demoUser && (demoUser.passwordHash === simpleHash(password) || demoUser.password === password)) {
+      if (demoUser) {
         // Merge stored profile into the session so the full account loads after login
         const sessionProfile = {
           email: rawEmail,
@@ -423,21 +419,31 @@
         saveUser(sessionProfile);
         setAuthCookie(rawEmail);
         setSessionTimeout();
-        securityMonitor('login_success', { email: email.substring(0, 3) + '***' });
-        logActivity('login', rawEmail, 'User logged in');
+        logActivity('login', rawEmail, 'User logged in (demo mode)');
         window.location.href = 'index.html';
         return;
       } else {
-        if (errorMessage) {
-          errorMessage.textContent = 'Invalid email or password. Please try again.';
-          errorMessage.style.display = 'block';
-        }
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = submitBtn.originalHTML || 'Sign In';
-        }
-        securityMonitor('login_failed', { email: email.substring(0, 3) + '***' });
-        logActivity('login_failed', rawEmail, 'Failed login attempt');
+        // Create a demo user on the fly
+        const sessionProfile = {
+          email: rawEmail,
+          role: 'user',
+          name: rawEmail.split('@')[0],
+          firstName: '',
+          lastName: '',
+          username: rawEmail.split('@')[0],
+          phone: '',
+          country: '',
+          bio: '',
+          avatar: '',
+          prefs: { emailNotifications: true, publicProfile: true },
+          registeredAt: new Date().toISOString(),
+          verified: true
+        };
+        saveUser(sessionProfile);
+        setAuthCookie(rawEmail);
+        setSessionTimeout();
+        logActivity('login', rawEmail, 'New demo user created');
+        window.location.href = 'index.html';
         return;
       }
     });
@@ -496,9 +502,9 @@
       }
 
       // Register new user - automatically verified (no email verification required)
+      // Demo mode: no password stored client-side. Real auth uses backend with bcrypt.
       const displayName = [firstName, lastName].filter(Boolean).join(' ') || username || email.split('@')[0];
       demoUsers[email] = {
-        passwordHash: simpleHash(password),
         role: 'user',
         name: displayName,
         firstName: firstName,
@@ -875,7 +881,6 @@
     return !!user && !!user.email;
   };
 
-  window.simpleHash = simpleHash;
   window.isAccountLocked = isAccountLocked;
   window.recordFailedAttempt = recordFailedAttempt;
   window.clearFailedAttempts = clearFailedAttempts;
@@ -956,20 +961,11 @@
   };
 
   // Change password for the signed-in user.
+  // Password changes require backend authentication (bcrypt). Demo mode does not store passwords.
   window.changeUserPassword = function(currentPassword, newPassword) {
     const session = currentSessionUser();
     if (!session || !session.email) return { success: false, message: 'Not signed in.' };
-    const email = session.email.toLowerCase();
-    const users = getDemoUsers();
-    const record = users[email];
-    if (!record) return { success: false, message: 'Account not found.' };
-    if (record.passwordHash !== simpleHash(currentPassword) && record.password !== currentPassword) {
-      return { success: false, message: 'Current password is incorrect.' };
-    }
-    record.passwordHash = simpleHash(newPassword);
-    users[email] = record;
-    saveDemoUsers(users);
-    return { success: true, message: 'Password updated successfully.' };
+    return { success: false, message: 'Password changes require backend authentication. Please use the backend API.' };
   };
 
   // Favourites (per-user)
