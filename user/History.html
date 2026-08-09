@@ -227,6 +227,9 @@
             }
         })();
 
+        function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+        function safeImg(src){return /^data:image\/(png|jpe?g|gif|webp);base64,/i.test(src)||/^https:\/\//i.test(src)?src:'';}
+
         document.addEventListener('DOMContentLoaded', function() {
             const timeline = document.getElementById('history-timeline');
             const scans = (window.getUserScans ? window.getUserScans() : JSON.parse(localStorage.getItem('wildlife_scans') || '[]')) || [];
@@ -250,13 +253,14 @@
                         const conf = scan.confidence || '—';
                         const cat = scan.category || (s.category ? s.category.toLowerCase() : '') || 'other';
                         const catLabel = (scan.scanType === 'nature-scene' ? 'Nature Scene' : (s.category || cat));
-                        const catBadge = '<span class="cat-badge">' + cat + '</span>';
-                        const img = scan.imageData ? '<img src="' + scan.imageData + '" alt="' + name + '" style="width:64px;height:48px;object-fit:cover;border-radius:6px;margin-top:0.5rem;display:block;">' : '';
+                        const catBadge = '<span class="cat-badge">' + esc(cat) + '</span>';
+                        const safeSrc = safeImg(scan.imageData);
+                        const img = safeSrc ? '<img src="' + safeSrc + '" alt="' + esc(name) + '" style="width:64px;height:48px;object-fit:cover;border-radius:6px;margin-top:0.5rem;display:block;">' : '';
                         item.innerHTML = '<div class="timeline-icon"><i class="fas fa-camera"></i></div>' +
                             '<div class="timeline-content">' +
-                            '<span class="timeline-date">' + fmt(scan.timestamp) + '</span>' +
-                            '<h4 class="timeline-title">' + (scan.scanType === 'nature-scene' ? 'Scene Record: ' : 'Wildlife Scan: ') + name + ' ' + catBadge + '</h4>' +
-                            '<p class="timeline-desc">' + catLabel + ' &middot; Confidence: ' + conf + '% match' + (s.status ? ' &middot; ' + s.status : '') + '.</p>' +
+                            '<span class="timeline-date">' + esc(fmt(scan.timestamp)) + '</span>' +
+                            '<h4 class="timeline-title">' + (scan.scanType === 'nature-scene' ? 'Scene Record: ' : 'Wildlife Scan: ') + esc(name) + ' ' + catBadge + '</h4>' +
+                            '<p class="timeline-desc">' + esc(catLabel) + ' &middot; Confidence: ' + esc(conf) + '% match' + (s.status ? ' &middot; ' + esc(s.status) : '') + '.</p>' +
                             img +
                             '</div>';
                         timeline.appendChild(item);

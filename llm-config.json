@@ -13,5 +13,6 @@
     "presence_penalty": 0.0,
     "stream": true
   },
-  "_notes": "Model updated from deprecated deepseek-ai/deepseek-v4-pro to deepseek-chat. For OpenRouter use deepseek/deepseek-chat with base_url https://openrouter.ai/api/v1 and api_key_env OPENROUTER_API_KEY. For Together AI use deepseek-ai/DeepSeek-V3 with base_url https://api.together.xyz/v1 and api_key_env TOGETHER_API_KEY."
+  "_notes": "Model updated from deprecated deepseek-chat to deepseek-chat. For OpenRouter use deepseek/deepseek-chat with base_url https://openrouter.ai/api/v1 and api_key_env OPENROUTER_API_KEY. For Together AI use deepseek-ai/DeepSeek-V3 with base_url https://api.together.xyz/v1 and api_key_env TOGETHER_API_KEY."
 }
+

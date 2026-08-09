@@ -19,6 +19,7 @@
 
   function query(selector) { return document.querySelector(selector); }
   function queryAll(selector) { return document.querySelectorAll(selector); }
+  function escHtml(v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
   /* ============================================================
      INIT
@@ -184,7 +185,7 @@
     var toast = document.createElement('div');
     toast.setAttribute('role', 'status');
     toast.style.cssText = 'display:flex;align-items:center;gap:0.6rem;min-width:240px;max-width:360px;padding:0.85rem 1.1rem;border-radius:12px;background:' + (colors[kind] || colors.success) + ';color:#fff;font-size:0.88rem;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.12);opacity:0;transform:translateX(24px);transition:all 0.3s ease;';
-    toast.innerHTML = '<i class="fas ' + (icons[kind] || icons.success) + '" style="font-size:1.05rem;"></i><span>' + message + '</span>';
+    toast.innerHTML = '<i class="fas ' + (icons[kind] || icons.success) + '" style="font-size:1.05rem;"></i><span>' + escHtml(message) + '</span>';
     container.appendChild(toast);
     requestAnimationFrame(function () {
       toast.style.opacity = '1';

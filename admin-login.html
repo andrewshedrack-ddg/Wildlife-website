@@ -86,8 +86,18 @@
         <div style="text-align:center;padding:1.5rem 0 1rem;">
           <i class="fas fa-shield-halved" style="font-size:3rem;color:var(--accent);opacity:0.9;margin-bottom:1rem;display:block;"></i>
           <h2 style="font-family:var(--font-heading);margin:0 0 0.5rem;">Admin Portal</h2>
-          <p style="opacity:0.6;font-size:0.9rem;margin:0 0 1.5rem;">One click and you're in — manage users, scans, rewards, tokens, and the species database.</p>
-          <button type="button" id="enter-portal-btn" class="btn-submit" style="width:100%;font-size:1rem;padding:0.85rem 1rem;"><i class="fas fa-sign-in-alt"></i> Enter Portal</button>
+          <p style="opacity:0.6;font-size:0.9rem;margin:0 0 1.5rem;">Sign in to manage users, scans, and the species database.</p>
+          <form id="admin-login-form" style="text-align:left;">
+            <label style="display:block;font-size:0.8rem;opacity:0.7;margin:0.75rem 0 0.3rem;">Admin email</label>
+            <input type="email" id="admin-email" autocomplete="username" required
+                   placeholder="admin@wildguardsociety.org"
+                   style="width:100%;padding:0.7rem 0.85rem;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-size:0.95rem;" />
+            <label style="display:block;font-size:0.8rem;opacity:0.7;margin:0.75rem 0 0.3rem;">Password</label>
+            <input type="password" id="admin-password" autocomplete="current-password" required
+                   placeholder="••••••••••••"
+                   style="width:100%;padding:0.7rem 0.85rem;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-size:0.95rem;" />
+            <button type="submit" id="enter-portal-btn" class="btn-submit" style="width:100%;font-size:1rem;padding:0.85rem 1rem;margin-top:1rem;"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+          </form>
         </div>
         <div style="margin-top:1rem;text-align:center;font-size:0.78rem;color:rgba(255,255,255,0.4);">
           <a href="?reset=1" style="color:rgba(255,255,255,0.45);text-decoration:underline;cursor:pointer;"><i class="fas fa-broom"></i> Start fresh — clear all local data</a>
@@ -160,47 +170,92 @@
       const ADMIN_EMAIL = 'admin@wildguardsociety.org';
       const ADMIN_NAME = 'WildGuard Administrator';
 
-      function enterPortal() {
-        // Auto-login as super admin (no credentials required for the demo/portal)
-        const session = {
-          email: ADMIN_EMAIL,
-          name: ADMIN_NAME,
-          role: 'super_admin',
-          firstName: 'WildGuard',
-          lastName: 'Administrator',
-          username: 'wildguard_admin',
-          verified: true
-        };
-        localStorage.setItem('wildguard_user', JSON.stringify(session));
+      function showError(msg) {
+        const el = document.getElementById('error-message');
+        if (el) el.textContent = msg;
+      }
 
-        // Make sure the admin appears in the user store so it shows in Users & Roles
+      async function enterPortal(email, password) {
+        // 1) Prefer the real Flask backend when reachable.
+        const apiBase = (window.location.protocol === 'https:' || window.location.protocol === 'http:') &&
+                        window.location.hostname !== '127.0.0.1' && window.location.hostname !== 'localhost'
+                        ? '' : 'http://localhost:5000';
         try {
-          const users = JSON.parse(localStorage.getItem('wildguard_demo_users') || '{}');
-          if (!users[ADMIN_EMAIL]) {
-            users[ADMIN_EMAIL] = {
-              role: 'super_admin',
+          const resp = await fetch(apiBase + '/api/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ email: email, password: password })
+          });
+          const body = await resp.json().catch(() => ({}));
+          if (resp.ok && body.authenticated) {
+            const session = {
+              email: body.email || email,
               name: ADMIN_NAME,
+              role: 'super_admin',
               firstName: 'WildGuard',
               lastName: 'Administrator',
               username: 'wildguard_admin',
-              registeredAt: new Date().toISOString(),
-              verified: true
+              verified: true,
+              server: true
             };
-            localStorage.setItem('wildguard_demo_users', JSON.stringify(users));
+            localStorage.setItem('wildguard_user', JSON.stringify(session));
+            if (window.securityMonitor) { try { window.securityMonitor('admin_login_success', { email }); } catch (err) {} }
+            if (window.logActivity) { try { window.logActivity('admin_login', email, 'Admin signed in via backend'); } catch (err) {} }
+            window.location.href = 'admin.html';
+            return;
           }
-        } catch (err) {}
+          showError(body.message || 'Backend login failed');
+        } catch (err) {
+          // 2) Backend unreachable (static hosting / demo). Fall back to the
+          //    locally-configured admin account. No anonymous access.
+        }
 
-        if (window.securityMonitor) { try { window.securityMonitor('admin_login_success', { email: ADMIN_EMAIL }); } catch (err) {} }
-        if (window.logActivity) { try { window.logActivity('admin_login', ADMIN_EMAIL, 'Admin entered portal'); } catch (err) {} }
-        window.location.href = 'admin.html';
+        try {
+          const users = JSON.parse(localStorage.getItem('wildguard_demo_users') || '{}');
+          const account = users[email];
+          const configuredPassword = localStorage.getItem('wildguard_admin_password') || 'WildGuard2026!';
+          const localValid = account && account.role === 'super_admin' && password === configuredPassword;
+          const isLocalAdmin = email === ADMIN_EMAIL && password === configuredPassword;
+          if (!localValid && !isLocalAdmin) {
+            showError('Invalid admin credentials.');
+            return;
+          }
+          const session = {
+            email: email,
+            name: ADMIN_NAME,
+            role: 'super_admin',
+            firstName: 'WildGuard',
+            lastName: 'Administrator',
+            username: 'wildguard_admin',
+            verified: true
+          };
+          localStorage.setItem('wildguard_user', JSON.stringify(session));
+          if (!account) {
+            const all = JSON.parse(localStorage.getItem('wildguard_demo_users') || '{}');
+            all[email] = { role: 'super_admin', name: ADMIN_NAME, firstName: 'WildGuard', lastName: 'Administrator', username: 'wildguard_admin', registeredAt: new Date().toISOString(), verified: true };
+            localStorage.setItem('wildguard_demo_users', JSON.stringify(all));
+          }
+          if (window.securityMonitor) { try { window.securityMonitor('admin_login_success', { email }); } catch (err) {} }
+          if (window.logActivity) { try { window.logActivity('admin_login', email, 'Admin signed in'); } catch (err) {} }
+          window.location.href = 'admin.html';
+        } catch (err) {
+          showError('Login failed. Please try again.');
+        }
       }
 
-      const btn = document.getElementById('enter-portal-btn');
-      if (btn) {
-        btn.addEventListener('click', enterPortal);
+      const form = document.getElementById('admin-login-form');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const email = document.getElementById('admin-email').value.trim();
+          const password = document.getElementById('admin-password').value;
+          if (!email || !password) { showError('Email and password are required.'); return; }
+          enterPortal(email, password);
+        });
       } else {
-        // No button found (e.g. direct navigation) — enter automatically
-        enterPortal();
+        const btn = document.getElementById('enter-portal-btn');
+        if (btn) btn.addEventListener('click', enterPortal);
       }
     });
   </script>

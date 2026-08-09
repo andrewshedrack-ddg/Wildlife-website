@@ -203,6 +203,8 @@
             }
         })();
 
+        function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
         function fmtInbox(iso) {
             try { return new Date(iso).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) + ' ' + new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); } catch(e) { return iso || ''; }
         }
@@ -260,15 +262,15 @@
                 row.onkeydown = function(ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); openEmail(e.id); } };
                 var badge = e.read ? '' : '<span class="email-badge">New</span>';
                 row.innerHTML = '<div class="email-avatar"><i class="fas fa-paw"></i></div>' +
-                    '<div class="email-body"><div class="email-subject">' + (e.subject || 'Update from WildGuard') + '</div>' +
-                    '<div class="email-preview">' + (e.body || '').replace(/\n/g, ' ').slice(0, 80) + '</div></div>' +
-                    '<div class="email-meta">' + fmtInbox(e.timestamp) + '<br>' + badge + '</div>';
+                    '<div class="email-body"><div class="email-subject">' + esc(e.subject || 'Update from WildGuard') + '</div>' +
+                    '<div class="email-preview">' + esc((e.body || '').replace(/\n/g, ' ').slice(0, 80)) + '</div></div>' +
+                    '<div class="email-meta">' + esc(fmtInbox(e.timestamp)) + '<br>' + badge + '</div>';
                 list.appendChild(row);
 
                 var detail = document.createElement('div');
                 detail.className = 'email-detail';
                 detail.id = 'email-detail-' + e.id;
-                detail.innerHTML = '<div class="email-content"><div class="email-sub"><strong>From:</strong> ' + (e.from || 'info@wildguard.org') + ' &middot; <strong>Type:</strong> ' + typeLabel(e.type) + '</div>' + (e.body || '') + '</div>';
+                detail.innerHTML = '<div class="email-content"><div class="email-sub"><strong>From:</strong> ' + esc(e.from || 'info@wildguard.org') + ' &middot; <strong>Type:</strong> ' + esc(typeLabel(e.type)) + '</div>' + esc(e.body || '') + '</div>';
                 list.appendChild(detail);
             });
             renderInboxCount();

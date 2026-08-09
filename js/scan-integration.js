@@ -7,6 +7,23 @@
     try { return new Date(iso).toLocaleDateString(); } catch(e) { return iso; }
   }
 
+  function esc(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  // Only allow data:image or https: image URLs in <img src>.
+  function safeImage(src) {
+    if (!src) return "";
+    if (/^data:image\/(png|jpe?g|gif|webp);base64,/i.test(src)) return src;
+    if (/^https:\/\//i.test(src)) return src;
+    return "";
+  }
+
   // ====== Library Renderer ======
   function renderLibrary(container) {
     if (!container) return;
@@ -23,14 +40,15 @@
     }
     var html = '<div class="scanned-grid">';
     items.forEach(function(scan) {
-      var s = scan.species;
+      var s = scan.species || {};
+      var img = safeImage(scan.imageData);
       html += '<div class="card scanned-card">';
-      if (scan.imageData) html += '<img src="' + scan.imageData + '" alt="' + s.name + '" class="scanned-img">';
+      if (img) html += '<img src="' + img + '" alt="' + esc(s.name) + '" class="scanned-img">';
       html += '<div class="scanned-body">';
-      html += '<span class="scanned-category">' + s.domain + ' &bull; ' + s.kingdom + '</span>';
-      html += '<h3>' + s.name + '</h3>';
-      html += '<p class="scanned-desc">' + s.desc + '</p>';
-      html += '<p class="scanned-meta">' + (scan.confidence || "92") + '% match &bull; ' + formatDate(scan.timestamp) + '</p>';
+      html += '<span class="scanned-category">' + esc(s.domain) + ' &bull; ' + esc(s.kingdom) + '</span>';
+      html += '<h3>' + esc(s.name) + '</h3>';
+      html += '<p class="scanned-desc">' + esc(s.desc) + '</p>';
+      html += '<p class="scanned-meta">' + esc(scan.confidence || "92") + '% match &bull; ' + esc(formatDate(scan.timestamp)) + '</p>';
       html += '</div></div>';
     });
     html += '</div>';
@@ -49,24 +67,25 @@
     updateStats(pending.length);
     var html = '<div class="pending-grid">';
     pending.forEach(function(scan) {
-      var s = scan.species;
-      html += '<div class="card pending-card" data-id="' + scan.id + '">';
+      var s = scan.species || {};
+      var img = safeImage(scan.imageData);
+      html += '<div class="card pending-card" data-id="' + esc(scan.id) + '">';
       html += '<div class="pending-img-wrap">';
-      if (scan.imageData) html += '<img src="' + scan.imageData + '" alt="' + s.name + '" class="pending-img">';
+      if (img) html += '<img src="' + img + '" alt="' + esc(s.name) + '" class="pending-img">';
       else html += '<div class="pending-placeholder"><i class="fas fa-image"></i></div>';
       html += '</div>';
       html += '<div class="pending-body">';
-      html += '<span class="pending-category">' + s.category + '</span>';
-      html += '<h3>' + s.name + '</h3>';
-      html += '<p class="pending-scientific">' + s.scientificName + '</p>';
+      html += '<span class="pending-category">' + esc(s.category) + '</span>';
+      html += '<h3>' + esc(s.name) + '</h3>';
+      html += '<p class="pending-scientific">' + esc(s.scientificName) + '</p>';
       html += '<div class="pending-meta">';
-      html += '<span class="pending-status ' + (scan.status || 'pending') + '">' + (scan.status || 'Pending') + '</span>';
-      html += '<span class="pending-confidence">' + (scan.confidence || "92") + '% match</span>';
+      html += '<span class="pending-status ' + esc(scan.status || 'pending') + '">' + esc(scan.status || 'Pending') + '</span>';
+      html += '<span class="pending-confidence">' + esc(scan.confidence || "92") + '% match</span>';
       html += '</div>';
-      html += '<p class="pending-date"><i class="fas fa-clock"></i> Submitted ' + formatDate(scan.timestamp) + '</p>';
+      html += '<p class="pending-date"><i class="fas fa-clock"></i> Submitted ' + esc(formatDate(scan.timestamp)) + '</p>';
       html += '<div class="pending-actions">';
-      html += '<button class="approve-btn" data-id="' + scan.id + '" onclick="AdminScans.approve(this)"><i class="fas fa-check"></i> Approve</button>';
-      html += '<button class="reject-btn" data-id="' + scan.id + '" onclick="AdminScans.reject(this)"><i class="fas fa-times"></i> Reject</button>';
+      html += '<button class="approve-btn" data-id="' + esc(scan.id) + '" onclick="AdminScans.approve(this)"><i class="fas fa-check"></i> Approve</button>';
+      html += '<button class="reject-btn" data-id="' + esc(scan.id) + '" onclick="AdminScans.reject(this)"><i class="fas fa-times"></i> Reject</button>';
       html += '</div>';
       html += '</div></div>';
     });

@@ -97,3 +97,9 @@ coverage.xml
 .terraform/
 *.tfstate
 *.tfstate.*
+# Never commit the SQLite database or runtime env files
+instance/
+*.db
+.env
+.env.local
+

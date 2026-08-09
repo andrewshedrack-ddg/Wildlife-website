@@ -6,6 +6,9 @@
 (function() {
   'use strict';
 
+  function esc(v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+  function safeImgSrc(v) { v = String(v == null ? '' : v); return (/^data:image\/(?:png|jpe?g|gif|webp);base64,/i.test(v) || /^https:\/\//i.test(v)) ? v : ''; }
+
   // --- Data Sources ---
   function getItem(key, def) { try { const d = localStorage.getItem(key); return d ? JSON.parse(d) : def; } catch(e) { return def; } }
   function getPendingScans() { return getItem('wildlife_pending_admin', []); }
@@ -61,10 +64,11 @@
       const species = item.species || {};
       const date = new Date(item.timestamp).toLocaleString();
       html += '<div class="scan-card">';
-      html += item.imageData ? '<img src="' + item.imageData + '" class="scan-img" onerror="this.style.display=\'none\'">' : '<div class="scan-img" style="display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);"><i class="fas fa-image" style="color:rgba(255,255,255,0.3);"></i></div>';
+      var scanImg = safeImgSrc(item.imageData);
+      html += scanImg ? '<img src="' + scanImg + '" class="scan-img" onerror="this.style.display=\'none\'">' : '<div class="scan-img" style="display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);"><i class="fas fa-image" style="color:rgba(255,255,255,0.3);"></i></div>';
       html += '<div class="scan-info">';
-      html += '<h4>' + (species.name || 'Unknown Species') + '</h4>';
-      html += '<p><em>' + (species.scientificName || '') + '</em> &middot; ' + (species.category || 'Unknown') + '</p>';
+      html += '<h4>' + esc(species.name || 'Unknown Species') + '</h4>';
+      html += '<p><em>' + esc(species.scientificName || '') + '</em> &middot; ' + esc(species.category || 'Unknown') + '</p>';
       html += '<div class="scan-meta">';
       html += '<span class="badge badge-pending">Pending</span>';
       html += '<span style="color:rgba(255,255,255,0.5);font-size:0.82rem;"><i class="fas fa-bolt"></i> ' + (item.confidence || 0) + '% confidence</span>';
@@ -92,14 +96,14 @@
       const isUnread = msg.status === 'unread';
       html += '<div class="message-card ' + (isUnread ? 'unread' : '') + '">';
       html += '<div class="message-header">';
-      html += '<div><strong>' + (msg.name || 'Anonymous') + '</strong> &lt;' + (msg.email || 'no-email') + '&gt; <span class="badge badge-new">' + (msg.subject || 'Contact') + '</span></div>';
+      html += '<div><strong>' + esc(msg.name || 'Anonymous') + '</strong> &lt;' + esc(msg.email || 'no-email') + '&gt; <span class="badge badge-new">' + esc(msg.subject || 'Contact') + '</span></div>';
       html += '<span>' + new Date(msg.createdAt).toLocaleString() + '</span>';
       html += '</div>';
       var msgBody = msg.body || msg.message || '';
-      html += '<div class="message-body">' + msgBody.substring(0, 250) + (msgBody.length > 250 ? '...' : '') + '</div>';
+      html += '<div class="message-body">' + esc(msgBody.substring(0, 250)) + (msgBody.length > 250 ? '...' : '') + '</div>';
       html += '<div class="message-actions">';
       if (isUnread) html += '<button class="btn-sm btn-mark-read" onclick="markMessageRead(this.dataset.id)" data-id="' + msg.id + '"><i class="fas fa-check"></i> Mark Read</button>';
-      html += '<a href="mailto:' + (msg.email || '') + '" class="btn-sm btn-view"><i class="fas fa-reply"></i> Reply</a>';
+      html += '<a href="mailto:' + esc(msg.email || '') + '" class="btn-sm btn-view"><i class="fas fa-reply"></i> Reply</a>';
       html += '<button class="btn-sm btn-reject" onclick="deleteMessage(this.dataset.id)" data-id="' + msg.id + '"><i class="fas fa-trash"></i> Delete</button>';
       html += '</div></div>';
     });
@@ -120,10 +124,10 @@
       const icon = n.type === 'new_user' ? 'fas fa-user-plus' : n.type === 'bot_detected' ? 'fas fa-robot' : 'fas fa-info-circle';
       html += '<div class="message-card ' + (!n.read ? 'unread' : '') + '">';
       html += '<div class="message-header">';
-      html += '<div><i class="' + icon + '" style="color:var(--accent);margin-right:0.5rem;"></i><strong>' + (n.title || 'Notification') + '</strong></div>';
+      html += '<div><i class="' + icon + '" style="color:var(--accent);margin-right:0.5rem;"></i><strong>' + esc(n.title || 'Notification') + '</strong></div>';
       html += '<span>' + new Date(n.timestamp).toLocaleString() + '</span>';
       html += '</div>';
-      html += '<div class="message-body">' + (n.message || '') + '</div>';
+      html += '<div class="message-body">' + esc(n.message || '') + '</div>';
       html += '<div class="message-actions">';
       if (!n.read) html += '<button class="btn-sm btn-mark-read" onclick="markNotifRead(this.dataset.id)" data-id="' + n.id + '"><i class="fas fa-check"></i> Mark Read</button>';
       html += '<button class="btn-sm btn-reject" onclick="deleteNotif(this.dataset.id)" data-id="' + n.id + '"><i class="fas fa-trash"></i> Delete</button>';

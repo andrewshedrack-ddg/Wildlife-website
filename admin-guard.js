@@ -2,14 +2,14 @@ async function checkAdminAuth() {
     const adminDashboard = document.getElementById('admin-dashboard');
     console.log('[WildGuard] Checking admin auth...');
 
-    // Check localStorage session first (for static hosting / no backend)
+    // Check localStorage session first (for static hosting / no backend).
+    // Role must be admin/super_admin — no hardcoded email bypass.
     let localUser = null;
     try {
         localUser = JSON.parse(localStorage.getItem('wildguard_user') || 'null');
     } catch (e) { }
 
-    // Fallback admin credentials for demo mode
-    const isLocalAdmin = localUser && (localUser.role === 'admin' || localUser.email === 'admin@wildguard.org');
+    const isLocalAdmin = localUser && (localUser.role === 'admin' || localUser.role === 'super_admin');
 
     if (isLocalAdmin) {
         if (adminDashboard) adminDashboard.classList.remove('hidden');

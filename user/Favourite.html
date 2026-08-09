@@ -194,6 +194,9 @@
             }
         })();
 
+        function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+        function safeImg(src){return /^data:image\/(png|jpe?g|gif|webp);base64,/i.test(src)||/^https:\/\//i.test(src)?src:'';}
+
         function statusPillClass(status) {
             const s = (status || '').toLowerCase();
             if (s.indexOf('critically') !== -1) return 'status-critical';
@@ -248,21 +251,21 @@
                 const card = document.createElement('div');
                 card.className = 'card favourite-card';
                 card.style.animationDelay = (index * 0.06) + 's';
-                const imgSrc = fav.image || ('../assets/images/' + (fav.speciesKey || '') + '.jpg');
+                const imgSrc = fav.image && safeImg(fav.image) ? fav.image : ('../assets/images/' + esc(fav.speciesKey || '') + '.jpg');
                 const statusText = fav.status || 'Status Unknown';
-                const pill = '<span class="fav-status-pill ' + statusPillClass(statusText) + '"><i class="fas fa-circle"></i>' + statusText + '</span>';
-                const added = fav.addedAt ? '<div class="fav-meta"><i class="fas fa-calendar-check"></i> Added ' + formatAddedDate(fav.addedAt) + '</div>' : '';
+                const pill = '<span class="fav-status-pill ' + statusPillClass(statusText) + '"><i class="fas fa-circle"></i>' + esc(statusText) + '</span>';
+                const added = fav.addedAt ? '<div class="fav-meta"><i class="fas fa-calendar-check"></i> Added ' + esc(formatAddedDate(fav.addedAt)) + '</div>' : '';
                 card.innerHTML = '<div class="fav-media">' +
-                    '<img src="' + imgSrc + '" alt="' + fav.name + '" loading="lazy" onerror="this.src=\'../assets/images/background.png\'">' +
+                    '<img src="' + imgSrc + '" alt="' + esc(fav.name) + '" loading="lazy" onerror="this.src=\'../assets/images/background.png\'">' +
                     pill +
                     '<span class="fav-heart-pin"><i class="fas fa-heart"></i></span>' +
                     '</div>' +
                     '<div class="fav-info">' +
-                    '<h3>' + fav.name + '</h3>' +
-                    (fav.scientificName ? '<p class="fav-sci">' + fav.scientificName + '</p>' : '') +
+                    '<h3>' + esc(fav.name) + '</h3>' +
+                    (fav.scientificName ? '<p class="fav-sci">' + esc(fav.scientificName) + '</p>' : '') +
                     '<div class="fav-meta">' +
-                    '<i class="fas fa-leaf"></i><span>' + (statusText) + '</span>' +
-                    '<button class="remove-fav" data-key="' + fav.speciesKey + '" aria-label="Remove ' + fav.name + ' from favourites"><i class="fas fa-heart-broken"></i> Remove</button>' +
+                    '<i class="fas fa-leaf"></i><span>' + esc(statusText) + '</span>' +
+                    '<button class="remove-fav" data-key="' + esc(fav.speciesKey) + '" aria-label="Remove ' + esc(fav.name) + ' from favourites"><i class="fas fa-heart-broken"></i> Remove</button>' +
                     '</div>' +
                     added +
                     '</div>';

@@ -316,17 +316,8 @@
       var user = null;
       try { user = JSON.parse(localStorage.getItem('wildguard_user') || 'null'); } catch(e){}
       if (!user || (user.role !== 'admin' && user.role !== 'super_admin')) {
-        // Auto-enter: seed a super_admin session so the portal opens without credentials
-        var session = {
-          email: 'admin@wildguardsociety.org',
-          name: 'WildGuard Administrator',
-          role: 'super_admin',
-          firstName: 'WildGuard',
-          lastName: 'Administrator',
-          username: 'wildguard_admin',
-          verified: true
-        };
-        localStorage.setItem('wildguard_user', JSON.stringify(session));
+        // No valid admin session: redirect to the (credential-gated) admin login.
+        window.location.replace('admin-login.html');
       }
     })();
     function portalLogout() {

@@ -30,6 +30,7 @@
   function read(key, def) { try { var d = localStorage.getItem(key); return d ? JSON.parse(d) : def; } catch (e) { return def; } }
   function write(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
   function esc(str) { var d = document.createElement('div'); d.textContent = str || ''; return d.innerHTML; }
+  function safeImgSrc(src) { src = String(src == null ? '' : src); return (/^data:image\/(?:png|jpe?g|gif|webp);base64,/i.test(src) || /^https:\/\//i.test(src) || /^(?:assets|images)\//.test(src)) ? src : ''; }
   function fmt(d) { try { return new Date(d).toLocaleString(); } catch (e) { return d; } }
   function fmtShort(d) { try { return new Date(d).toLocaleDateString(); } catch (e) { return d; } }
 
@@ -944,7 +945,8 @@
     var src = url ? url.value.trim() : sel.value;
     if (!src) { preview.innerHTML = ''; return; }
     src = window.WildGuardSpeciesDB.image(src);
-    preview.innerHTML = '<div style="font-size:0.72rem;opacity:0.5;margin-bottom:0.35rem">Preview</div><img src="' + src + '" alt="" style="max-width:180px;max-height:120px;border-radius:8px;object-fit:cover;border:1px solid rgba(201,162,39,0.3)" onerror="this.outerHTML=\'<div style=color:#ef4444;font-size:0.75rem>Image failed to load</div>\'">';
+    src = safeImgSrc(src);
+    preview.innerHTML = src ? '<div style="font-size:0.72rem;opacity:0.5;margin-bottom:0.35rem">Preview</div><img src="' + src + '" alt="" style="max-width:180px;max-height:120px;border-radius:8px;object-fit:cover;border:1px solid rgba(201,162,39,0.3)" onerror="this.outerHTML=\'<div style=color:#ef4444;font-size:0.75rem>Image failed to load</div>\'">' : '<div style="font-size:0.72rem;opacity:0.5;margin-bottom:0.35rem">Preview</div><span style="color:#ef4444;font-size:0.75rem">Image failed to load</span>';
   }
 
   window._addSpecies = function() { showModal(speciesForm(null)); setTimeout(updateImagePreview, 100); };
@@ -975,7 +977,8 @@
     var src = custom ? custom.value.trim() : sel.value;
     if (!src) { preview.innerHTML = '<span style="font-size:0.8rem;opacity:0.5">No image selected</span>'; return; }
     src = window.WildGuardSpeciesDB.image(src);
-    preview.innerHTML = '<img src="' + src + '" alt="" style="max-width:200px;max-height:140px;border-radius:10px;object-fit:cover;border:1px solid rgba(201,162,39,0.35)">';
+    src = safeImgSrc(src);
+    preview.innerHTML = src ? '<img src="' + src + '" alt="" style="max-width:200px;max-height:140px;border-radius:10px;object-fit:cover;border:1px solid rgba(201,162,39,0.35)">' : '<span style="font-size:0.8rem;color:#ef4444">Image failed to load</span>';
   };
   window._applySwap = function(key) {
     var sel = document.getElementById('swap-image');

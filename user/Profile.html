@@ -380,6 +380,8 @@
             }
         })();
 
+        function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
         document.addEventListener('DOMContentLoaded', function() {
             const user = window.getCurrentUser ? window.getCurrentUser() : (function(){ try { return JSON.parse(localStorage.getItem('wildguard_user')); } catch(e) { return null; } })();
             if (!user || !user.email) return;
@@ -568,10 +570,10 @@
                         certList.innerHTML = myCerts.map(function (c) {
                             return '<div style="background:linear-gradient(145deg,rgba(201,162,39,0.08),rgba(27,94,64,0.08));border:1px solid rgba(201,162,39,0.3);border-radius:16px;padding:1.5rem;text-align:center;position:relative;">' +
                                 '<div style="font-size:2.2rem;color:var(--accent);margin-bottom:0.5rem;"><i class="fas fa-medal"></i></div>' +
-                                '<div style="font-family:var(--font-heading);font-size:1.05rem;font-weight:700;margin-bottom:0.35rem;">' + c.title + '</div>' +
-                                (c.message ? '<div style="font-size:0.85rem;opacity:0.8;line-height:1.5;margin-bottom:0.75rem;">' + c.message + '</div>' : '') +
-                                '<div style="font-size:0.7rem;opacity:0.5;letter-spacing:1px;text-transform:uppercase;">Issued ' + new Date(c.issuedAt).toLocaleDateString() + '</div>' +
-                                '<div style="margin-top:0.75rem;font-family:monospace;font-size:0.72rem;color:var(--accent);border-top:1px dashed rgba(201,162,39,0.3);padding-top:0.6rem;">' + (c.code || '') + '</div>' +
+                                '<div style="font-family:var(--font-heading);font-size:1.05rem;font-weight:700;margin-bottom:0.35rem;">' + esc(c.title) + '</div>' +
+                                (c.message ? '<div style="font-size:0.85rem;opacity:0.8;line-height:1.5;margin-bottom:0.75rem;">' + esc(c.message) + '</div>' : '') +
+                                '<div style="font-size:0.7rem;opacity:0.5;letter-spacing:1px;text-transform:uppercase;">Issued ' + esc(new Date(c.issuedAt).toLocaleDateString()) + '</div>' +
+                                '<div style="margin-top:0.75rem;font-family:monospace;font-size:0.72rem;color:var(--accent);border-top:1px dashed rgba(201,162,39,0.3);padding-top:0.6rem;">' + esc(c.code || '') + '</div>' +
                                 '</div>';
                         }).join('');
                     }

@@ -1,10 +1,12 @@
 import os
 import datetime
+import re
 from flask import Flask, request, jsonify, make_response, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask_migrate import Migrate
 import jwt
 from functools import wraps
 
@@ -16,31 +18,130 @@ def serve_index():
     from flask import send_from_directory
     return send_from_directory('.', 'index.html')
 
-# Serve static files from root
-app.static_folder = '.'
-app.static_url_path = ''
+# Files that may be served to browsers. Everything else (source, secrets,
+# database, config) is refused to prevent file-disclosure attacks.
+_STATIC_ALLOWED = {
+    'index.html', 'about.html', 'contact.html', 'scan.html', 'login.html',
+    'register.html', 'admin-login.html', 'admin.html', 'adopt.html',
+    'library/library.html', 'library/mammals.html', 'library/birds.html',
+    'library/reptile.html', 'library/amphibian.html', 'library/aquatic.html',
+    'library/plants.html', 'library/fungi.html', 'library/bacteria.html',
+    'library/viruses.html', 'admin/Dashboard.html', 'admin/manage-animals.html',
+    'admin/upload.html', 'user/Profile.html', 'user/History.html',
+    'user/Favourite.html', 'user/Inbox.html',
+    'css/style.css', 'css/scan.css', 'css/library.css', 'css/components.css',
+    'css/layout.css', 'css/tokens.css', 'css/animations.css', 'css/slideshow.css',
+    'js/main.js', 'js/scan.js', 'js/ai-trainer.js', 'js/auth.js', 'js/config.js',
+    'js/connectivity.js', 'js/species-db.js', 'js/system-monitor.js',
+    'js/library.js', 'js/slideshow.js', 'js/counter-animate.js',
+    'js/alert.js', 'js/i18n.js', 'js/admin.js', 'js/admin-ui.js',
+    'js/admin-portal.js', 'js/admin-auth-guard.js', 'js/admin-guard.js',
+    'js/scan-integration.js', 'js/wildlife-data.json',
+    'js/i18n/en.json', 'js/i18n/es.json', 'js/i18n/fr.json', 'js/i18n/sw.json',
+    'sw.js', 'favicon.ico', 'robots.txt', 'manifest.json', 'site.webmanifest',
+}
 
-# Explicitly serve all HTML files and assets
+
+def _file_exists(path):
+    return os.path.isfile(path)
+
+
+# Explicitly serve only allowlisted HTML files and assets. Refuses to reveal
+# app.py, .env, instance/ (database), llm-config.json or any other private file.
 @app.route('/<path:filename>')
 def serve_static(filename):
     from flask import send_from_directory
-    try:
-        return send_from_directory('.', filename)
-    except:
-        from flask import send_from_directory
-        return send_from_directory('.', 'index.html'), 404
+    normalized = filename.replace('\\', '/')
+    if normalized in _STATIC_ALLOWED:
+        try:
+            return send_from_directory('.', normalized)
+        except Exception:
+            pass
+    # Assets inside css/ js/ assets/ or images/ subfolders referenced by allowed
+    # pages are served too (photos, logos), but never dotfiles or config/source.
+    if (normalized.startswith('assets/') or normalized.startswith('images/') or
+            (normalized.startswith('css/') and normalized.endswith('.css')) or
+            (normalized.startswith('js/') and normalized.endswith('.js')) or
+            (normalized.startswith('js/i18n/') and normalized.endswith('.json'))):
+        if os.path.basename(normalized).startswith('.'):
+            return make_response('Forbidden', 403)
+        try:
+            return send_from_directory('.', normalized)
+        except Exception:
+            pass
+    return make_response('Not found', 404)
+
 
 # --- Configuration & Security ---
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'super-secret-wildguard-key-2026')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///wildguard.db'
+# Fail fast if the signing key is missing. Never ship a predictable fallback:
+# a known SECRET_KEY lets anyone forge auth tokens and take over the admin.
+if not os.environ.get('SECRET_KEY'):
+    raise RuntimeError(
+        "SECRET_KEY environment variable is required. Set a strong random value "
+        "before starting the server (e.g. python -c \"import secrets; print(secrets.token_hex(32))\")."
+    )
+app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+# Use absolute path for SQLite to ensure it works from any working directory
+_base_dir = os.path.dirname(os.path.abspath(__file__))
+default_db_path = os.path.join(_base_dir, 'instance', 'wildguard.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+    'DATABASE_URL', f'sqlite:///{default_db_path}')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-CORS(app, supports_credentials=True)
+migrate = Migrate(app, db)
+
+# Restrict cross-origin calls to the documented deployment origins.
+_ALLOWED_ORIGINS = [
+    'http://localhost:5000', 'http://127.0.0.1:5000',
+    'http://localhost:3000', 'http://127.0.0.1:3000',
+    'https://andrewshedrack-ddg.github.io',
+]
+CORS(app, supports_credentials=True, origins=_ALLOWED_ORIGINS)
 
 # --- SocketIO for Real-time Live Feed ---
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading', logger=True, engineio_logger=True)
+socketio = SocketIO(app, cors_allowed_origins=_ALLOWED_ORIGINS, async_mode='threading', logger=False, engineio_logger=False)
+
+# --- Lightweight in-process rate limiting (per IP + endpoint) ---
+from collections import defaultdict
+from threading import Lock
+
+_rate_limits = defaultdict(list)
+_rate_lock = Lock()
+_RATE_WINDOW = 60
+_RATE_MAX = {
+    '/api/login': 10, '/api/admin/login': 5,
+    '/api/register': 5, '/api/contact': 5,
+}
+
+
+def _rate_limited():
+    """Return True if the caller exceeded the limit for this endpoint."""
+    limit = _RATE_MAX.get(request.path)
+    if not limit:
+        return False
+    now = datetime.datetime.utcnow().timestamp()
+    ip = request.remote_addr or 'unknown'
+    key = f"{ip}:{request.path}"
+    with _rate_lock:
+        recent = [t for t in _rate_limits.get(key, []) if now - t < _RATE_WINDOW]
+        if len(recent) >= limit:
+            _rate_limits[key] = recent
+            return True
+        recent.append(now)
+        _rate_limits[key] = recent
+    return False
+
+
+def rate_limited(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if _rate_limited():
+            return jsonify({'message': 'Too many requests. Please try again later.'}), 429
+        return f(*args, **kwargs)
+    return decorated
+
 
 # --- Database Models ---
 class User(db.Model):
@@ -133,6 +234,25 @@ def admin_required(f):
     return decorated
 
 # --- SocketIO Event Handlers for Real-time Live Feed ---
+def _socket_current_user():
+    """Resolve the JWT user for the current socket request, or None."""
+    if not request or not request.args:
+        return None
+    token = request.args.get('token')
+    if not token:
+        return None
+    try:
+        data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        return User.query.filter_by(id=data['user_id']).first()
+    except Exception:
+        return None
+
+
+def _socket_is_admin():
+    user = _socket_current_user()
+    return user is not None and user.role == 'admin'
+
+
 @socketio.on('connect')
 def handle_connect():
     print(f'Client connected: {request.sid}')
@@ -144,19 +264,31 @@ def handle_disconnect():
 
 @socketio.on('join_user_room')
 def handle_join_user_room(data):
-    user_email = data.get('email')
-    if user_email:
-        room = f"user_{user_email}"
-        join_room(room)
-        emit('joined_room', {'room': room})
+    # Only allow joining your OWN room, not arbitrary other users' inboxes.
+    user = _socket_current_user()
+    user_email = (data or {}).get('email')
+    if not user_email:
+        return
+    if not user or user.email.lower() != user_email.lower():
+        emit('error', {'message': 'Unauthorized: join only your own room'})
+        return
+    room = f"user_{user.email}"
+    join_room(room)
+    emit('joined_room', {'room': room})
 
 @socketio.on('join_admin_room')
 def handle_join_admin_room():
+    if not _socket_is_admin():
+        emit('error', {'message': 'Unauthorized: admin role required'})
+        return
     join_room('admins')
     emit('joined_room', {'room': 'admins'})
 
 @socketio.on('request_stats_update')
 def handle_stats_request():
+    if not _socket_is_admin():
+        emit('error', {'message': 'Unauthorized: admin role required'})
+        return
     stats = {
         'total_users': User.query.count(),
         'total_messages': Message.query.count(),
@@ -170,23 +302,29 @@ def handle_stats_request():
 @socketio.on('admin_broadcast')
 def handle_admin_broadcast(data):
     """Admin sends broadcast message to users"""
-    recipients = data.get('recipients', [])
-    subject = data.get('subject', '')
-    body = data.get('body', '')
-    
+    if not _socket_is_admin():
+        emit('error', {'message': 'Unauthorized: admin role required'})
+        return
+    data = data or {}
+    recipients = data.get('recipients', []) or []
+    if not isinstance(recipients, list):
+        recipients = [recipients]
+    subject = str(data.get('subject', ''))[:200]
+    body = str(data.get('body', ''))[:5000]
+
     for email in recipients:
         socketio.emit('notification', {
             'type': 'admin_broadcast',
-            'title': data.get('subject', 'Admin Message'),
-            'body': data.get('body', ''),
+            'title': subject or 'Admin Message',
+            'body': body,
             'from': 'WildGuard Admin',
             'timestamp': datetime.datetime.utcnow().isoformat()
         }, room=f"user_{email}")
-    
+
     socketio.emit('broadcast_sent', {
         'admin': 'admin',
         'recipients': len(recipients),
-        'subject': data.get('subject', ''),
+        'subject': subject,
         'timestamp': datetime.datetime.utcnow().isoformat()
     }, room='admins')
 
@@ -205,10 +343,15 @@ def background_stats_updater():
             }
             socketio.emit('stats_update', stats, room='admins')
 
-# Start background task
-@socketio.on('connect')
-def start_background_tasks():
-    socketio.start_background_task(background_stats_updater)
+# Start the background stats updater exactly once (not once per connection).
+def _start_background_stats():
+    global _stats_updater_started
+    if not _stats_updater_started:
+        _stats_updater_started = True
+        socketio.start_background_task(background_stats_updater)
+
+_stats_updater_started = False
+_start_background_stats()
 
 # --- Public APIs (To drive your Frontend dynamically) ---
 
@@ -227,6 +370,9 @@ def ai_scan():
     image = data.get('image') or ''
     if not image:
         return jsonify({'available': False, 'error': 'No image'}), 400
+    # Reject oversized payloads before decoding (bandwidth/memory abuse).
+    if len(image) > 7 * 1024 * 1024:
+        return jsonify({'available': False, 'error': 'Image too large (max 7MB)'}), 413
 
     endpoint = os.environ.get('AZURE_VISION_ENDPOINT')
     key = os.environ.get('AZURE_VISION_KEY')
@@ -296,15 +442,24 @@ def get_public_species():
     return jsonify({'species': output}), 200
 
 @app.route('/api/contact', methods=['POST'])
+@rate_limited
 def receive_message():
     data = request.get_json() or {}
     if not all(k in data for k in ('name', 'email', 'subject', 'content')):
         return jsonify({'message': 'Missing fields.'}), 400
-    
-    new_msg = Message(name=data['name'], email=data['email'], subject=data['subject'], content=data['content'])
+    if not _is_valid_email(data.get('email', '')):
+        return jsonify({'message': 'Invalid email address.'}), 400
+    name = str(data['name'])[:100]
+    email = str(data['email']).strip().lower()[:120]
+    subject = str(data['subject'])[:200]
+    content = str(data['content'])[:5000]
+    if not name or not email or not subject or not content:
+        return jsonify({'message': 'Fields may not be empty.'}), 400
+
+    new_msg = Message(name=name, email=email, subject=subject, content=content)
     db.session.add(new_msg)
     db.session.commit()
-    
+
     # Real-time notification to admins
     socketio.emit('new_message', {
         'id': new_msg.id,
@@ -314,7 +469,7 @@ def receive_message():
         'content': new_msg.content,
         'created_at': new_msg.created_at.strftime('%Y-%m-%d %H:%M:%S')
     }, room='admins')
-    
+
     # Also notify the user
     socketio.emit('notification', {
         'type': 'message_sent',
@@ -322,35 +477,71 @@ def receive_message():
         'body': f'Your message "{new_msg.subject}" has been received. We\'ll get back to you soon.',
         'timestamp': datetime.datetime.utcnow().isoformat()
     }, room=f"user_{new_msg.email}")
-    
+
     return jsonify({'message': 'Message sent successfully!'}), 201
 
 # --- User Authentication APIs ---
+_EMAIL_RE = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+
+
+def _is_valid_email(email):
+    return bool(email) and _EMAIL_RE.match(email) is not None
+
+
+def _set_auth_cookie(response, token):
+    """Set the auth cookie with security hardening."""
+    response.set_cookie(
+        'auth_token', token, httponly=True, samesite='Strict',
+        secure=os.environ.get('COOKIE_SECURE', 'true').lower() in ('1', 'true', 'yes'),
+        max_age=7200)
+    return response
+
+
+def _log_activity(user_id, action, details=None):
+    """Record an activity entry in the DB (best-effort, never raises)."""
+    try:
+        entry = ActivityLog(
+            user_id=user_id,
+            action=str(action)[:100],
+            details=str(details or '')[:2000],
+            created_at=datetime.datetime.utcnow()
+        )
+        db.session.add(entry)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+
 
 @app.route('/api/register', methods=['POST'])
+@rate_limited
 def register():
     data = request.get_json() or {}
-    email = data.get('email')
-    password = data.get('password')
+    email = (data.get('email') or '').strip().lower()
+    password = data.get('password') or ''
     if not email or not password:
         return jsonify({'message': 'Email and password required'}), 400
+    if not _is_valid_email(email):
+        return jsonify({'message': 'Invalid email address.'}), 400
+    if len(password) < 8 or len(password) > 128:
+        return jsonify({'message': 'Password must be between 8 and 128 characters.'}), 400
     if User.query.filter_by(email=email).first():
         return jsonify({'message': 'Email already registered'}), 400
     hashed_pw = bcrypt.generate_password_hash(password).decode('utf-8')
     user = User(email=email, password_hash=hashed_pw, role='user')
     db.session.add(user)
     db.session.commit()
-    
+
     # Log activity
-    log_activity(None, 'user_registered', {'email': email})
-    
+    _log_activity(user.id, 'user_registered', {'email': email})
+
     return jsonify({'message': 'User registered successfully'}), 201
 
 @app.route('/api/login', methods=['POST'])
+@rate_limited
 def login():
     data = request.get_json() or {}
-    email = data.get('email')
-    password = data.get('password')
+    email = (data.get('email') or '').strip().lower()
+    password = data.get('password') or ''
     if not email or not password:
         return jsonify({'message': 'Email and password required'}), 400
     user = User.query.filter_by(email=email).first()
@@ -360,8 +551,7 @@ def login():
         user.is_online = True
         db.session.commit()
         response = make_response(jsonify({'message': 'Login successful', 'role': user.role}))
-        response.set_cookie('auth_token', token, httponly=True, samesite='Lax')
-        return response
+        return _set_auth_cookie(response, token)
     return jsonify({'message': 'Invalid credentials'}), 401
 
 @app.route('/api/me', methods=['GET'])
@@ -372,10 +562,11 @@ def get_current_user(current_user):
 # --- Administrative Guarded APIs ---
 
 @app.route('/api/admin/login', methods=['POST'])
+@rate_limited
 def admin_login():
     data = request.get_json() or {}
-    email = data.get('email')
-    password = data.get('password')
+    email = (data.get('email') or '').strip().lower()
+    password = data.get('password') or ''
     if not email or not password:
         return jsonify({'message': 'Email and password are required.'}), 400
     user = User.query.filter_by(email=email).first()
@@ -384,8 +575,7 @@ def admin_login():
             return jsonify({'message': 'Admin access required.'}), 403
         token = jwt.encode({'user_id': user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=2)}, app.config['SECRET_KEY'], algorithm='HS256')
         response = make_response(jsonify({'message': 'Login successful.', 'authenticated': True, 'role': user.role}))
-        response.set_cookie('auth_token', token, httponly=True, samesite='Lax')
-        return response
+        return _set_auth_cookie(response, token)
     return jsonify({'message': 'Invalid credentials.'}), 401
 
 @app.route('/api/admin/verify', methods=['POST'])
@@ -485,7 +675,16 @@ def add_user_scan(current_user):
     data = request.get_json() or {}
     if 'species_name' not in data or 'confidence' not in data:
         return jsonify({'message': 'Missing required fields'}), 400
-    scan = Scan(user_id=current_user.id, species_name=data['species_name'], confidence=data['confidence'], image_data=data.get('image_data'))
+    species_name = str(data['species_name'])[:100]
+    try:
+        confidence = max(0, min(100, int(data['confidence'])))
+    except (TypeError, ValueError):
+        confidence = 0
+    image_data = data.get('image_data') or ''
+    # Reject oversized images before storing (DB bloat / DoS).
+    if len(image_data) > 5 * 1024 * 1024:
+        return jsonify({'message': 'Image too large (max 5MB)'}), 413
+    scan = Scan(user_id=current_user.id, species_name=species_name, confidence=confidence, image_data=image_data[:5 * 1024 * 1024] or None)
     db.session.add(scan)
     db.session.commit()
     return jsonify({'message': 'Scan saved', 'id': scan.id}), 201
@@ -567,9 +766,11 @@ def broadcast_message(current_user):
     recipients = data['recipients']
     if not isinstance(recipients, list) or not recipients:
         return jsonify({'message': 'Recipients must be a non-empty list'}), 400
+    if len(recipients) > 500:
+        return jsonify({'message': 'Too many recipients (max 500)'}), 413
     
     valid_emails = []
-    for email in recipients:
+    for email in recipients[:500]:
         user = User.query.filter_by(email=email).first()
         if user:
             valid_emails.append(email)
