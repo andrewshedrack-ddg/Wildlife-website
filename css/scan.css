@@ -291,37 +291,56 @@
 }
 
 .status-badge {
-  display: inline-block;
-  padding: 0.35rem 1rem;
-  border-radius: 100px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  --badge-c: #8a8f98;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem 0.28rem 1.15rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
   margin-bottom: 0.75rem;
+  color: #33291c;
+  background:
+    repeating-linear-gradient(45deg, rgba(0,0,0,0.025) 0 2px, transparent 2px 5px),
+    linear-gradient(180deg, #fbf4e4 0%, #ecdfc3 100%);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.8);
 }
 
-.status-badge.vulnerable {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
-  border: 1px solid rgba(245, 158, 11, 0.25);
+/* status ribbon (left edge) */
+.status-badge::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: var(--badge-c);
+  border-radius: 3px 0 0 3px;
 }
 
-.status-badge.endangered {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.25);
+/* punched tie-hole */
+.status-badge::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--darker, #0f1f17);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,0.35), 0 0 0 1.5px rgba(80,62,36,0.55);
 }
 
-.status-badge.near-threatened {
-  background: rgba(245, 158, 11, 0.12);
-  color: #fbbf24;
-  border: 1px solid rgba(251, 191, 36, 0.25);
-}
-
-.status-badge.least-concern {
-  background: rgba(34, 197, 94, 0.15);
-  color: #22c55e;
-  border: 1px solid rgba(34, 197, 94, 0.25);
-}
+.status-badge.vulnerable { --badge-c: #e07a3c; }
+.status-badge.endangered { --badge-c: #d64545; }
+.status-badge.near-threatened { --badge-c: #d9b23a; }
+.status-badge.least-concern { --badge-c: #3fa34d; }
+.status-badge.not-living { --badge-c: #d64545; }
+.status-badge.unidentified { --badge-c: #8a8f98; }
 
 .confidence {
   font-size: 0.9rem;
@@ -996,15 +1015,11 @@
 
 /* ---------- Status Badge Non-Living ---------- */
 .status-badge.not-living {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  --badge-c: #d64545;
 }
 
 .status-badge.unidentified {
-  background: rgba(148, 163, 184, 0.15);
-  color: #94a3b8;
-  border: 1px solid rgba(148, 163, 184, 0.3);
+  --badge-c: #8a8f98;
 }
 
 .liveness-indicator.unknown {

@@ -591,6 +591,27 @@ textarea:focus-visible, [tabindex]:focus-visible, .admin-nav-item:focus-visible 
   .field-notes-track { animation: none; flex-wrap: wrap; width: auto; }
 }
 
+/* ============================================================
+   CUSTOM ICONS - hand-drawn sprite loader (js/icons.js)
+   ============================================================ */
+.wg-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+@keyframes wg-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.wg-icon-spin { animation: wg-spin 1s linear infinite; }
+
 /* ============================================================ UTILITIES ============================================================ */
 .text-center { text-align: center; }
 .mt-2 { margin-top: 2rem; }

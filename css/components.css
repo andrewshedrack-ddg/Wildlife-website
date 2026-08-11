@@ -355,58 +355,69 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   BADGES
+   BADGES — printed field-guide / ranger tags
+   A paper card tag: status ribbon on the left edge, punched tie-hole
+   at the top, aged stock texture. Ink-dark text on paper.
    ═══════════════════════════════════════════════════════════════ */
 
 .badge {
+  --badge-c: var(--accent);
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.9rem;
-  border-radius: var(--radius-full);
-  font-size: 0.78rem;
-  font-weight: 600;
+  gap: 0.4rem;
+  padding: 0.55rem 0.9rem 0.28rem 1.05rem;
+  border-radius: 3px;
+  font-size: 0.68rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  line-height: 1.4;
+  letter-spacing: 0.7px;
+  line-height: 1.35;
+  color: #33291c;
+  background:
+    repeating-linear-gradient(45deg, rgba(0,0,0,0.025) 0 2px, transparent 2px 5px),
+    linear-gradient(180deg, #fbf4e4 0%, #ecdfc3 100%);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.8);
 }
 
-.badge--accent {
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-glass);
-  color: var(--accent);
+/* status ribbon (left edge) */
+.badge::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: var(--badge-c);
+  border-radius: 3px 0 0 3px;
 }
 
-.badge--success {
-  background: rgba(34, 197, 94, 0.12);
-  border: 1px solid rgba(34, 197, 94, 0.2);
-  color: var(--success);
+/* punched tie-hole */
+.badge::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--darker, #0f1f17);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,0.35), 0 0 0 1.5px rgba(80,62,36,0.55);
 }
 
-.badge--warning {
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.2);
-  color: var(--warning);
-}
+.badge--accent { --badge-c: var(--accent); }
+.badge--success { --badge-c: #3fa34d; }
+.badge--warning { --badge-c: #d9a021; }
+.badge--danger { --badge-c: #d64545; }
+.badge--info { --badge-c: #5b8db8; }
 
-.badge--danger {
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  color: var(--danger);
-}
-
-.badge--info {
-  background: rgba(59, 130, 246, 0.12);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  color: var(--info);
-}
-
-/* Conservation status badges */
-.badge--least-concern { background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.2); color: var(--success); }
-.badge--near-threatened { background: rgba(251, 191, 36, 0.12); border: 1px solid rgba(251, 191, 36, 0.2); color: #fbbf24; }
-.badge--vulnerable { background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.2); color: var(--warning); }
-.badge--endangered { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.2); color: var(--danger); }
-.badge--critically-endangered { background: rgba(185, 28, 28, 0.25); border: 1px solid rgba(185, 28, 28, 0.4); color: #f87171; }
+/* Conservation status tags */
+.badge--least-concern { --badge-c: #3fa34d; }
+.badge--near-threatened { --badge-c: #d9b23a; }
+.badge--vulnerable { --badge-c: #e07a3c; }
+.badge--endangered { --badge-c: #d64545; }
+.badge--critically-endangered { --badge-c: #a91d1d; }
 
 /* ═══════════════════════════════════════════════════════════════
    EYEBROW / PAGE BANNER
