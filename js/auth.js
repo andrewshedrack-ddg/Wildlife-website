@@ -1029,4 +1029,35 @@
     return currentSessionUser();
   };
 
+  // Upgrade the legacy localStorage-only sendEmail to send real email via
+  // EmailJS when configured (loads js/email.js if not already loaded).
+  try {
+    if (typeof window.WildGuardEmail === 'undefined') {
+      var _authScripts = document.getElementsByTagName('script');
+      var _authDir = '';
+      for (var _i = 0; _i < _authScripts.length; _i++) {
+        var _src = _authScripts[_i].getAttribute('src') || '';
+        if (_src.indexOf('auth.js') !== -1) {
+          _authDir = _src.replace(/auth\.js$/, '');
+          break;
+        }
+      }
+      if (!document.querySelector('script[src$="email-config.js"]')) {
+        var _cfgScript = document.createElement('script');
+        _cfgScript.src = _authDir + 'email-config.js';
+        _cfgScript.async = true;
+        document.head.appendChild(_cfgScript);
+      }
+      var _emailScript = document.createElement('script');
+      _emailScript.src = _authDir + 'email.js';
+      _emailScript.async = true;
+      _emailScript.onload = function () {
+        if (window.WildGuardEmail && window.WildGuardEmail.upgradeLegacy) window.WildGuardEmail.upgradeLegacy();
+      };
+      document.head.appendChild(_emailScript);
+    } else if (window.WildGuardEmail && window.WildGuardEmail.upgradeLegacy) {
+      window.WildGuardEmail.upgradeLegacy();
+    }
+  } catch (e) {}
+
 })();

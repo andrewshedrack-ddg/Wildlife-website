@@ -207,6 +207,8 @@
   <script defer src="js/connectivity.js"></script>
 <script defer src="js/main.js"></script>
   <script defer src="js/auth.js"></script>
+  <script defer src="js/email-config.js"></script>
+  <script defer src="js/email.js"></script>
 
   <script>
     (function() {
@@ -266,20 +268,35 @@
           return;
         }
 
-        try {
-          var API_BASE = window.location.origin.includes('localhost') ? 'http://localhost:5000' : '';
-          if (API_BASE) {
-            var resp = await fetch(API_BASE + '/api/contact', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ name: name, email: email, subject: "Contact Form", content: body })
-            });
-            if (resp.ok) {
-              if (status) { status.textContent = "Message sent successfully — We'll get back to you soon."; status.style.display = "block"; status.style.background = "#d1fae5"; status.style.color = "#065f46"; }
-            }
+        // Real delivery into the WildGuard Gmail inbox via EmailJS
+        var emailed = false;
+        if (window.WildGuardEmail && window.WildGuardEmail.isConfigured && window.WildGuardEmail.isConfigured()) {
+          try {
+            await window.WildGuardEmail.sendContactMessage({ name: name, email: email, subject: "Contact Form", content: body });
+            emailed = true;
+          } catch (mailErr) {
+            if (status) { status.textContent = "Email service is temporarily unavailable — your message was saved. We'll get back to you soon."; status.style.display = "block"; status.style.background = "#fef3c7"; status.style.color = "#92400e"; }
           }
-        } catch(err) {
-          if (status) { status.textContent = "Message saved locally. We'll sync when you're back online."; status.style.display = "block"; status.style.background = "#fef3c7"; status.style.color = "#92400e"; }
+        }
+
+        if (!emailed) {
+          try {
+            var API_BASE = window.location.origin.includes('localhost') ? 'http://localhost:5000' : '';
+            if (API_BASE) {
+              var resp = await fetch(API_BASE + '/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name, email: email, subject: "Contact Form", content: body })
+              });
+              if (resp.ok) {
+                if (status) { status.textContent = "Message sent successfully — We'll get back to you soon."; status.style.display = "block"; status.style.background = "#d1fae5"; status.style.color = "#065f46"; }
+              }
+            }
+          } catch(err) {
+            if (status) { status.textContent = "Message saved locally. We'll sync when you're back online."; status.style.display = "block"; status.style.background = "#fef3c7"; status.style.color = "#92400e"; }
+          }
+        } else {
+          if (status) { status.textContent = "Message sent to WildGuard's inbox — We'll get back to you soon."; status.style.display = "block"; status.style.background = "#d1fae5"; status.style.color = "#065f46"; }
         }
         form.reset();
       });
