@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script defer src="../js/i18n.js"></script>
   <style>
-    .admin-dashboard { padding: 3rem 0 2rem; max-width: 1200px; margin-left: auto; margin-right: auto; color: var(--lighter, #fff); }
+    .admin-dashboard { color: var(--lighter, #fff); }
     .admin-header { margin-bottom: 2.5rem; }
     .admin-header h1 { font-family: var(--font-heading, 'Playfair Display', Georgia, serif); font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 0.5rem; }
     .admin-header p { color: rgba(255,255,255,0.6); font-size: 1.05rem; max-width: 600px; }
@@ -23,86 +23,59 @@
     .form-field { margin-bottom: 1.2rem; }
     .form-field label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.85); }
     .form-field input, .form-field select, .form-field textarea { width: 100%; padding: 0.85rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: var(--lighter); font-size: 0.95rem; transition: all 0.3s ease; }
-    .form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,162,39,0.12); }
+    .form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(244,162,97,0.12); }
     .form-field textarea { min-height: 120px; resize: vertical; }
     .upload-area { border: 2px dashed rgba(255,255,255,0.15); border-radius: 12px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease; background: rgba(255,255,255,0.02); }
-    .upload-area:hover { border-color: var(--accent); background: rgba(201,162,39,0.05); }
+    .upload-area:hover { border-color: var(--accent); background: rgba(244,162,97,0.05); }
     .upload-area i { font-size: 2.5rem; color: var(--accent); margin-bottom: 0.75rem; }
     .upload-area p { margin: 0; color: rgba(255,255,255,0.6); font-size: 0.92rem; }
     .upload-area .sub-text { font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 0.35rem; }
     .upload-area input[type="file"] { display: none; }
     .admin-btn-back { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.2rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: rgba(255,255,255,0.75); font-size: 0.9rem; text-decoration: none; transition: all 0.3s ease; margin-bottom: 1.5rem; }
     .admin-btn-back:hover { background: rgba(255,255,255,0.1); color: var(--lighter); }
-    .submit-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.85rem 1.8rem; background: linear-gradient(135deg, #1b5e40, #143d2a); color: #fff; font-size: 0.95rem; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+    .submit-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.85rem 1.8rem; background: linear-gradient(135deg, #2d6a4f, #1e3a2b); color: #fff; font-size: 0.95rem; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
     .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(27,94,64,0.35); }
     .success-toast { position: fixed; bottom: 2rem; right: 2rem; background: rgba(34,197,94,0.9); color: #fff; padding: 1rem 1.5rem; border-radius: 12px; font-weight: 500; transform: translateY(100px); opacity: 0; transition: all 0.4s ease; z-index: 5000; }
     .success-toast.show { transform: translateY(0); opacity: 1; }
-    @media (max-width: 768px) {
-      .admin-dashboard { padding: 2rem 1.5rem; }
+@media (max-width: 768px) {
       .form-row { grid-template-columns: 1fr; }
       .admin-form-card { padding: 1.5rem; }
     }
   </style>
 </head>
 <body>
-  <!-- Background Slideshow -->
-  <div class="page-slideshow">
-    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
-    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
-    <div class="page-slide" style="background-image: url('../assets/images/Background3.png');"></div>
-    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
-    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
-  </div>
-
-  <header class="site-header" id="site-header">
-    <div class="header-container">
-      <a href="../index.html" class="logo">
-        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
-        <span class="logo-text">WildGuard Society</span>
-      </a>
-      <nav class="desktop-nav" id="desktop-nav">
-        <a href="../index.html"><i class="fas fa-home"></i> Home</a>
-        <a href="../library/library.html"><i class="fas fa-book"></i> Library</a>
-        <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
-        <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
-        <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a>
+  <div class="admin-app">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-brand">
+        <img src="../assets/images/logo.png" alt="WildGuard">
+        <span>Admin Portal</span>
+      </div>
+      <nav class="admin-nav">
+        <a class="admin-nav-item" href="Dashboard.html"><i class="fas fa-chart-pie"></i> Dashboard</a>
+        <a class="admin-nav-item" href="manage-animals.html"><i class="fas fa-paw"></i> Manage Animals</a>
+        <a class="admin-nav-item active" href="upload.html"><i class="fas fa-cloud-upload-alt"></i> Upload Species</a>
+        <a class="admin-nav-item" href="Dashboard.html"><i class="fas fa-home"></i> Back to Dashboard</a>
       </nav>
-      <div class="header-actions">
-        <div class="auth-buttons" id="auth-buttons">
-          <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
-          <div class="user-menu" id="user-menu" style="display:none;">
-            <button class="user-menu-toggle" id="user-menu-toggle">
-              <i class="fas fa-user-circle"></i>
-              <span id="user-email">User</span>
-              <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="user-dropdown" id="user-dropdown">
-              <a href="../user/Profile.html"><i class="fas fa-user"></i> Profile</a>
-              <a href="../user/History.html"><i class="fas fa-history"></i> History</a>
-              <a href="../user/Inbox.html"><i class="fas fa-inbox"></i> Inbox</a>
+      <div class="admin-logout">
+        <a href="#" id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </aside>
 
-                                        <a href="../user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
-              <div class="dropdown-divider"></div>
-              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
-          </div>
+    <!-- Main Content -->
+    <div class="admin-main">
+      <div class="admin-topbar">
+        <div style="display:flex; align-items:center; gap:1rem;">
+          <button class="mobile-toggle-sidebar" id="mobileToggleSidebar"><i class="fas fa-bars"></i></button>
+          <h1>Upload Species</h1>
         </div>
-        <div class="language-selector" data-language-selector>
-          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
-            <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
-            <i class="fas fa-chevron-down"></i>
-          </button>
-          <div class="lang-dropdown" role="menu" hidden>
-            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
-            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
-            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
-          </div>
+        <div class="admin-topbar-right">
+          <span id="adminEmail" style="font-size:0.85rem; color:rgba(255,255,255,0.6);">Admin</span>
         </div>
       </div>
-    </div>
-  </header>
 
-  <main class="admin-dashboard">
+      <div class="admin-content">
+    <main class="admin-dashboard">
     <div class="admin-header">
       <span class="eyebrow">Administration</span>
       <h1>Upload Species</h1>
@@ -173,56 +146,16 @@
       </div>
     </section>
   </main>
+      </div>
+    </div>
+  </div>
 
   <div class="success-toast" id="success-toast"><i class="fas fa-check-circle"></i> Species uploaded successfully!</div>
-
-  <footer class="site-footer">
-    <div class="footer-content">
-      <div class="footer-brand">
-        <h3>WildGuard Society</h3>
-        <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
-        <div class="footer-social">
-          <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" title="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
-          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="https://wa.me/255700123456" target="_blank" rel="noopener" title="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
-          <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" title="Join us on Telegram"><i class="fab fa-telegram"></i></a>
-          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
-        </div>
-      </div>
-      <div class="footer-links">
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../library/library.html">Library</a></li>
-          <li><a href="../scan.html">Scan</a></li>
-          <li><a href="../about.html">About</a></li>
-          <li><a href="../contact.html">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-links">
-        <h4>Get Involved</h4>
-        <ul>
-          <li><a href="../adopt.html">Donate</a></li>
-          <li><a href="../adopt.html">Adopt an Animal</a></li>
-          <li><a href="../adopt.html">Volunteer</a></li>
-          <li><a href="../contact.html">Partner with Us</a></li>
-        </ul>
-      </div>
-      <div class="footer-contact">
-        <h4>Contact</h4>
-        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
-        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
-        <p><i class="fas fa-map-marker-alt"></i> Global</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
-    </div>
-  </footer>
 
   <script defer src="../js/connectivity.js"></script>
 <script defer src="../js/main.js"></script>
   <script defer src="../js/auth.js"></script>
+  <script defer src="../js/admin-api.js"></script>
   <script defer src="../js/admin-auth-guard.js"></script>
   <script>
     // Upload functionality
@@ -261,14 +194,39 @@
         }
       });
 
-      // Form submission
-      form.addEventListener('submit', function(e) {
+      // Form submission - POST to the backend species API
+      form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        // Simulate upload
+        const name = document.getElementById('species-name').value.trim();
+        const status = document.getElementById('conservation-status').value;
+        const description = document.getElementById('description').value.trim();
+        let image_url = '';
+
+        if (fileInput.files && fileInput.files[0]) {
+          image_url = await new Promise(function(resolve) {
+            const reader = new FileReader();
+            reader.onload = function(ev) { resolve(ev.target.result); };
+            reader.readAsDataURL(fileInput.files[0]);
+          });
+        }
+
+        let res;
+        if (window.AdminAPI && window.AdminAPI.backendAvailable()) {
+          res = await window.AdminAPI.createSpecies({ name: name, status: status, description: description, image_url: image_url });
+        } else {
+          // Local fallback: store in the species store used by the catalog.
+          try {
+            const species = JSON.parse(localStorage.getItem('wildguard_species') || '[]');
+            species.push({ id: Date.now(), name: name, status: status, description: description, image_url: image_url });
+            localStorage.setItem('wildguard_species', JSON.stringify(species));
+            res = { success: true };
+          } catch (err) { res = { success: false, message: 'Could not save locally.' }; }
+        }
+
+        if (!res.success) { alert(res.message || 'Upload failed.'); return; }
         successToast.classList.add('show');
         setTimeout(function() {
           successToast.classList.remove('show');
-          // Reset form after short delay
           setTimeout(function() {
             if (confirm('Would you like to add another species?')) {
               form.reset();
@@ -280,6 +238,23 @@
         }, 2000);
       });
     });
+  </script>
+  <script>
+    document.getElementById('mobileToggleSidebar')?.addEventListener('click', () => {
+      const sidebar = document.getElementById('adminSidebar');
+      sidebar.classList.toggle('open');
+      const nav = sidebar.querySelector('.admin-nav');
+      if (nav) nav.style.display = sidebar.classList.contains('open') ? 'flex' : 'none';
+    });
+    document.getElementById('adminLogoutBtn')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('wildguard_user');
+      window.location.href = '../admin-login.html';
+    });
+    try {
+      const u = JSON.parse(localStorage.getItem('wildguard_user') || '{}');
+      if (u.email && document.getElementById('adminEmail')) document.getElementById('adminEmail').textContent = u.email;
+    } catch (e) {}
   </script>
 </body>
 </html>

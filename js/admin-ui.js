@@ -8,7 +8,7 @@
       title: 'Dashboard Overview',
       content: `
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1.5rem; margin-bottom:2rem;">
-          <div style="background: linear-gradient(135deg, #1b5e40, #143d2a); padding: 1.5rem; border-radius: 12px; color: #fff; text-align: center;">
+          <div style="background: linear-gradient(135deg, #2d6a4f, #1e3a2b); padding: 1.5rem; border-radius: 12px; color: #fff; text-align: center;">
             <div style="font-size: 2rem; margin-bottom: 0.5rem;">🐾</div>
             <div style="font-size: 2rem; font-weight: 700;">0</div>
             <div style="font-size: 0.9rem; opacity: 0.8;">Pending Scans</div>
@@ -18,12 +18,12 @@
             <div style="font-size: 2rem; font-weight: 700;">0</div>
             <div style="font-size: 0.9rem; opacity: 0.8;">Species</div>
           </div>
-          <div style="background: linear-gradient(135deg, #2d8a5e, #1b5e40); padding: 1.5rem; border-radius: 12px; color: #fff; text-align: center;">
+          <div style="background: linear-gradient(135deg, #2d8a5e, #2d6a4f); padding: 1.5rem; border-radius: 12px; color: #fff; text-align: center;">
             <div style="font-size: 2rem; margin-bottom: 0.5rem;">👥</div>
             <div style="font-size: 2rem; font-weight: 700;">0</div>
             <div style="font-size: 0.9rem; opacity: 0.8;">Users</div>
           </div>
-          <div style="background: linear-gradient(135deg, #c9a227, #b8941d); padding: 1.5rem; border-radius: 12px; color: #1a1a1a; text-align: center;">
+          <div style="background: linear-gradient(135deg, #F4A261, #e08e4a); padding: 1.5rem; border-radius: 12px; color: #1a1a1a; text-align: center;">
             <div style="font-size: 2rem; margin-bottom: 0.5rem;">📬</div>
             <div style="font-size: 2rem; font-weight: 700;">0</div>
             <div style="font-size: 0.9rem; opacity: 0.8;">Messages</div>

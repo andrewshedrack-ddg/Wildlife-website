@@ -26,7 +26,7 @@
         },
 
         runDiagnostics() {
-            console.log('%c[WildGuard] Running system diagnostics...', 'color:#c9a227;font-weight:bold;');
+            console.log('%c[WildGuard] Running system diagnostics...', 'color:#F4A261;font-weight:bold;');
             try {
                 var test = 'wildguard_test_' + Date.now();
                 localStorage.setItem(test, 'ok');

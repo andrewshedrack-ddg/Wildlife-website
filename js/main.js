@@ -177,7 +177,7 @@
     }
     var kind = type || 'success';
     var colors = {
-      success: 'linear-gradient(135deg,#1b5e40,#143d2a)',
+      success: 'linear-gradient(135deg,#2d6a4f,#1e3a2b)',
       error: 'linear-gradient(135deg,#7f1d1d,#450a0a)',
       info: 'linear-gradient(135deg,#1e3a5f,#0f2440)'
     };

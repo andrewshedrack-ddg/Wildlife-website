@@ -15,6 +15,9 @@ js/library.js.bak
 js/scan_backup.js
 library/library.html.bak
 
+# Unused local media (not referenced by the site)
+assets/videos/
+
 # Temporary / debug files
 button.txt
 error.txt

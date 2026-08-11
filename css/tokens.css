@@ -4,21 +4,29 @@
    ============================================================ */
 
 :root {
-  /* ── Colors: Primary ── */
-  --primary:            #1b5e40;
-  --primary-dark:       #0a2e1f;
-  --primary-light:      #2d8a5e;
-  --primary-bright:     #3cb371;
+  /* ── Colors: Primary (East African landscape heritage) ── */
+  --primary:            #2d6a4f;   /* lush flora green */
+  --primary-dark:       #1e3a2b;   /* deep savannah green */
+  --primary-light:      #40916c;
+  --primary-bright:     #52b788;
 
-  /* ── Colors: Accent ── */
-  --accent:             #d4a017;
-  --accent-hover:       #c8960c;
-  --accent-soft:        rgba(212, 160, 23, 0.12);
-  --accent-glass:       rgba(212, 160, 23, 0.20);
+  /* ── Colors: Accent (warm amber gold of the savannah dusk) ── */
+  --amber:              #F4A261;
+  --accent:             #F4A261;
+  --accent-hover:       #e08e4a;
+  --accent-soft:        rgba(244, 162, 97, 0.14);
+  --accent-glass:       rgba(244, 162, 97, 0.22);
+
+  /* ── Colors: Signature palette (used for badges, tabs, focus) ── */
+  --terracotta:         #E07A5F;
+  --terracotta-soft:    rgba(224, 122, 95, 0.14);
+  --savannah-green:     #1E3A2B;
+  --charcoal:           #121814;
+  --flora-green:        #2D6A4F;
 
   /* ── Colors: Dark (default theme) ── */
-  --dark:               #0a1a12;
-  --darker:             #050e09;
+  --dark:               #121814;
+  --darker:             #0b0f0c;
   --surface:            rgba(255, 255, 255, 0.04);
   --surface-hover:      rgba(255, 255, 255, 0.08);
   --border-subtle:      rgba(255, 255, 255, 0.06);
@@ -77,8 +85,8 @@
   --shadow:             0 4px 20px rgba(0, 0, 0, 0.15);
   --shadow-lg:          0 10px 40px rgba(0, 0, 0, 0.25);
   --shadow-card:        0 8px 32px rgba(0, 0, 0, 0.4);
-  --shadow-header:      0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(212, 160, 23, 0.1);
-  --shadow-header-scrolled: 0 12px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 160, 23, 0.2);
+  --shadow-header:      0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(244, 162, 97, 0.1);
+  --shadow-header-scrolled: 0 12px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(244, 162, 97, 0.2);
 
   /* ── Transitions ── */
   --transition:         all 0.3s ease;

@@ -20,11 +20,11 @@
     .login-security { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); font-size: 0.8rem; }
     .login-security i { color: #22c55e; font-size: 0.85rem; }
     .error-message { background:#fee2e2; color:#991b1b; padding:0.75rem 1rem; border-radius:8px; border-left:4px solid #dc2626; margin-bottom: 1rem; display:none; }
-    .admin-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.75rem; background: rgba(201,162,39,0.1); border: 1px solid rgba(201,162,39,0.2); border-radius: 100px; color: var(--accent); font-size: 0.78rem; font-weight: 500; margin-bottom: 1rem; }
+    .admin-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.75rem; background: rgba(244, 162, 97,0.1); border: 1px solid rgba(244, 162, 97,0.2); border-radius: 100px; color: var(--accent); font-size: 0.78rem; font-weight: 500; margin-bottom: 1rem; }
     .admin-badge i { font-size: 0.75rem; }
     .attempts-warning { color: #f59e0b; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
-    .admin-login-wrap { position:relative; width:100%; max-width:460px; margin:0 auto; background:linear-gradient(160deg, rgba(27,94,64,0.16), rgba(10,21,16,0.92) 55%), rgba(255,255,255,0.05); border:1px solid rgba(201,162,39,0.25); border-radius:20px; padding:2.75rem 2.5rem; backdrop-filter:blur(12px); overflow:hidden; animation: adminLoginFadeUp 0.55s ease both; box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,162,39,0.1); }
-    .admin-login-wrap::before { content:''; position:absolute; top:-70px; right:-70px; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, rgba(201,162,39,0.25), transparent 70%); pointer-events:none; }
+    .admin-login-wrap { position:relative; width:100%; max-width:460px; margin:0 auto; background:linear-gradient(160deg, rgba(27,94,64,0.16), rgba(10,21,16,0.92) 55%), rgba(255,255,255,0.05); border:1px solid rgba(244, 162, 97,0.25); border-radius:20px; padding:2.75rem 2.5rem; backdrop-filter:blur(12px); overflow:hidden; animation: adminLoginFadeUp 0.55s ease both; box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(244, 162, 97,0.1); }
+    .admin-login-wrap::before { content:''; position:absolute; top:-70px; right:-70px; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, rgba(244, 162, 97,0.25), transparent 70%); pointer-events:none; }
     .admin-login-wrap::after { content:''; position:absolute; bottom:-90px; left:-70px; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(45,138,94,0.3), transparent 70%); pointer-events:none; }
     @keyframes adminLoginFadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
     .admin-login-wrap .login-form { position:relative; }

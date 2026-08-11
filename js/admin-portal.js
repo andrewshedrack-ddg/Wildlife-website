@@ -99,8 +99,8 @@
     var t = document.createElement('div');
     t.className = 'portal-toast ' + (type || 'info');
     var ic = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
-    var co = type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#c9a227';
-    t.style.cssText = 'background:rgba(10,21,16,0.98);border:1px solid rgba(201,162,39,0.3);color:#fff;padding:14px 20px;border-radius:10px;font-size:0.9rem;display:flex;align-items:center;gap:10px;min-width:280px;box-shadow:0 8px 32px rgba(0,0,0,0.4);';
+    var co = type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#F4A261';
+    t.style.cssText = 'background:rgba(10,21,16,0.98);border:1px solid rgba(244, 162, 97,0.3);color:#fff;padding:14px 20px;border-radius:10px;font-size:0.9rem;display:flex;align-items:center;gap:10px;min-width:280px;box-shadow:0 8px 32px rgba(0,0,0,0.4);';
     t.innerHTML = '<i class="fas ' + ic + '" style="color:' + co + '"></i><div class="portal-toast-content"><div class="portal-toast-title">' + esc(titleFor(msg)) + '</div><div class="portal-toast-message">' + esc(msg) + '</div></div>';
     c.appendChild(t);
     setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 5000);
@@ -222,7 +222,7 @@
     list.innerHTML = notifs.slice(0, 20).map(function(n) {
       return '<div class="notification-item' + (n.read ? '' : ' unread') + '" onclick="window._markNotifRead(\'' + esc(n.id) + '\')">' +
         '<div style="flex:1;min-width:0">' +
-        '<div style="font-weight:600;font-size:0.85rem;display:flex;align-items:center;gap:0.5rem"><span class="portal-badge" style="background:rgba(201,162,39,0.12);color:var(--accent);padding:2px 8px">' + esc(n._typeLabel) + '</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(n.title || 'Notification') + '</span></div>' +
+        '<div style="font-weight:600;font-size:0.85rem;display:flex;align-items:center;gap:0.5rem"><span class="portal-badge" style="background:rgba(244, 162, 97,0.12);color:var(--accent);padding:2px 8px">' + esc(n._typeLabel) + '</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(n.title || 'Notification') + '</span></div>' +
         (n.message ? '<div style="font-size:0.78rem;opacity:0.65;margin-top:0.25rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(n.message) + '</div>' : '') +
         '<div style="font-size:0.7rem;opacity:0.4;margin-top:0.3rem">' + fmt(n.timestamp) + '</div>' +
         '</div></div>';
@@ -505,10 +505,10 @@
       var image = s.imageData || (sp.image ? window.WildGuardSpeciesDB && window.WildGuardSpeciesDB.image ? window.WildGuardSpeciesDB.image(sp.image) : sp.image : '');
       return '<div class="portal-card"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">' +
         '<div style="display:flex;align-items:center;gap:1rem;min-width:0">' +
-          (image ? '<div style="width:60px;height:60px;border-radius:10px;overflow:hidden;flex-shrink:0;background:rgba(255,255,255,0.05)"><img src="' + image + '" alt="" style="width:100%;height:100%;object-fit:cover"></div>' : '<div style="width:60px;height:60px;background:linear-gradient(135deg,#1b5e40,#143d2a);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.5rem">🐾</div>') +
+          (image ? '<div style="width:60px;height:60px;border-radius:10px;overflow:hidden;flex-shrink:0;background:rgba(255,255,255,0.05)"><img src="' + image + '" alt="" style="width:100%;height:100%;object-fit:cover"></div>' : '<div style="width:60px;height:60px;background:linear-gradient(135deg,#2d6a4f,#1e3a2b);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.5rem">🐾</div>') +
           '<div style="min-width:0"><div style="font-weight:600;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(sp.name || s.animalName || 'Unknown Animal') + '</div>' +
           '<div style="font-size:0.82rem;opacity:0.6">By: ' + esc(s.user || s.submittedBy || 'Unknown') + ' · ' + (s.confidence ? s.confidence + '% match' : '') + ' · ' + fmtShort(s.timestamp || s.createdAt) + '</div>' +
-          '<span class="portal-badge" style="background:rgba(201,162,39,0.15);color:var(--accent)">' + esc(sp.category || '') + '</span></div></div>' +
+          '<span class="portal-badge" style="background:rgba(244, 162, 97,0.15);color:var(--accent)">' + esc(sp.category || '') + '</span></div></div>' +
         (tab === 'pending' ? '<div style="display:flex;gap:0.5rem"><button class="portal-btn portal-btn-success portal-btn-sm" onclick="window._approveScanById(\'' + esc(s.id) + '\')"><i class="fas fa-check"></i> Approve</button><button class="portal-btn portal-btn-danger portal-btn-sm" onclick="window._rejectScanById(\'' + esc(s.id) + '\')"><i class="fas fa-xmark"></i> Reject</button></div>' : '<span class="portal-badge" style="background:rgba(34,197,94,0.15);color:#22c55e">Approved</span>') + '</div></div>';
     }).join('') : '<div class="portal-empty"><i class="fas fa-image"></i><p>No ' + (tab === 'approved' ? 'approved scans' : 'pending scans') + '</p></div>');
   }
@@ -717,7 +717,7 @@
       '</div>' +
       '<h3 style="margin:0 0 1rem;font-size:1rem;opacity:0.8">Issued Certificates (' + certs.length + ')</h3>' +
       (certs.length ? '<div class="portal-grid" style="grid-template-columns:repeat(auto-fill,minmax(340px,1fr))">' + certs.map(function(c) {
-        return '<div class="portal-card" style="background:linear-gradient(145deg,rgba(201,162,39,0.06),rgba(27,94,64,0.06));border:1px solid rgba(201,162,39,0.25)">' +
+        return '<div class="portal-card" style="background:linear-gradient(145deg,rgba(244, 162, 97,0.06),rgba(27,94,64,0.06));border:1px solid rgba(244, 162, 97,0.25)">' +
           '<div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem"><i class="fas fa-medal" style="color:var(--accent);font-size:1.6rem"></i>' +
           '<div><div style="font-weight:700">' + esc(c.title) + '</div><div style="font-size:0.78rem;opacity:0.6">' + esc(c.name || c.user) + '</div></div></div>' +
           (c.message ? '<div style="font-size:0.85rem;opacity:0.8;line-height:1.5;margin-bottom:0.75rem">' + esc(c.message) + '</div>' : '') +
@@ -870,7 +870,7 @@
           '<td>' + (img ? '<div style="width:52px;height:52px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,0.05)"><img src="' + img + '" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'"></div>' : '<div style="width:52px;height:52px;border-radius:8px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;color:var(--accent)"><i class="fas fa-paw"></i></div>') + '</td>' +
           '<td><div style="font-weight:600">' + esc(s.name || s.key) + '</div><div style="font-size:0.75rem;opacity:0.5;font-style:italic">' + esc(s.scientificName || '') + '</div></td>' +
           '<td><span class="portal-badge" style="background:rgba(27,94,64,0.2);color:var(--primary-light)">' + esc(s.category || '') + '</span></td>' +
-          '<td><span class="portal-badge" style="background:rgba(201,162,39,0.15);color:var(--accent)">' + esc(s.status || '') + '</span></td>' +
+          '<td><span class="portal-badge" style="background:rgba(244, 162, 97,0.15);color:var(--accent)">' + esc(s.status || '') + '</span></td>' +
           '<td><div style="display:flex;gap:0.4rem;flex-wrap:wrap"><button class="portal-btn portal-btn-sm portal-btn-secondary" onclick="window._editSpecies(\'' + esc(s.key) + '\')"><i class="fas fa-edit"></i> Edit</button>' +
           '<button class="portal-btn portal-btn-sm portal-btn-secondary" onclick="window._swapImage(\'' + esc(s.key) + '\')"><i class="fas fa-image"></i> Image</button>' +
           '<button class="portal-btn portal-btn-sm portal-btn-danger" onclick="window._deleteSpecies(\'' + esc(s.key) + '\')"><i class="fas fa-trash"></i></button></div></td></tr>';
@@ -946,7 +946,7 @@
     if (!src) { preview.innerHTML = ''; return; }
     src = window.WildGuardSpeciesDB.image(src);
     src = safeImgSrc(src);
-    preview.innerHTML = src ? '<div style="font-size:0.72rem;opacity:0.5;margin-bottom:0.35rem">Preview</div><img src="' + src + '" alt="" style="max-width:180px;max-height:120px;border-radius:8px;object-fit:cover;border:1px solid rgba(201,162,39,0.3)" onerror="this.outerHTML=\'<div style=color:#ef4444;font-size:0.75rem>Image failed to load</div>\'">' : '<div style="font-size:0.72rem;opacity:0.5;margin-bottom:0.35rem">Preview</div><span style="color:#ef4444;font-size:0.75rem">Image failed to load</span>';
+    preview.innerHTML = src ? '<div style="font-size:0.72rem;opacity:0.5;margin-bottom:0.35rem">Preview</div><img src="' + src + '" alt="" style="max-width:180px;max-height:120px;border-radius:8px;object-fit:cover;border:1px solid rgba(244, 162, 97,0.3)" onerror="this.outerHTML=\'<div style=color:#ef4444;font-size:0.75rem>Image failed to load</div>\'">' : '<div style="font-size:0.72rem;opacity:0.5;margin-bottom:0.35rem">Preview</div><span style="color:#ef4444;font-size:0.75rem">Image failed to load</span>';
   }
 
   window._addSpecies = function() { showModal(speciesForm(null)); setTimeout(updateImagePreview, 100); };
@@ -978,7 +978,7 @@
     if (!src) { preview.innerHTML = '<span style="font-size:0.8rem;opacity:0.5">No image selected</span>'; return; }
     src = window.WildGuardSpeciesDB.image(src);
     src = safeImgSrc(src);
-    preview.innerHTML = src ? '<img src="' + src + '" alt="" style="max-width:200px;max-height:140px;border-radius:10px;object-fit:cover;border:1px solid rgba(201,162,39,0.35)">' : '<span style="font-size:0.8rem;color:#ef4444">Image failed to load</span>';
+    preview.innerHTML = src ? '<img src="' + src + '" alt="" style="max-width:200px;max-height:140px;border-radius:10px;object-fit:cover;border:1px solid rgba(244, 162, 97,0.35)">' : '<span style="font-size:0.8rem;color:#ef4444">Image failed to load</span>';
   };
   window._applySwap = function(key) {
     var sel = document.getElementById('swap-image');

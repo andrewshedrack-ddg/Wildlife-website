@@ -90,7 +90,7 @@
 
   function notifyFlush(count) {
     var toast = document.createElement('div');
-    toast.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1b5e40,#143d2a);color:#fff;padding:12px 24px;border-radius:8px;z-index:4000;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:fadeInUp 0.3s ease;';
+    toast.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#2d6a4f,#1e3a2b);color:#fff;padding:12px 24px;border-radius:8px;z-index:4000;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:fadeInUp 0.3s ease;';
     toast.textContent = 'Back online - ' + count + ' queued action' + (count > 1 ? 's' : '') + ' synced.';
     document.body.appendChild(toast);
     setTimeout(function () { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 3500);

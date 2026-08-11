@@ -1706,7 +1706,7 @@ const WildlifeScan = {
       aiSourceHtml +
       '<span class="liveness-indicator living"><i class="fas fa-heartbeat"></i> LIVING ORGANISM</span>' +
       '<div class="confidence-wrapper">' +
-      '<span class="confidence-bar-container"><span class="confidence-bar" style="width: ' + confidence + '%; background: linear-gradient(90deg, #1b5e40, #4caf50);"></span></span>' +
+      '<span class="confidence-bar-container"><span class="confidence-bar" style="width: ' + confidence + '%; background: linear-gradient(90deg, #2d6a4f, #4caf50);"></span></span>' +
       '<span class="confidence-text">' + confText + '</span>' +
       '</div>';
 
@@ -1903,18 +1903,26 @@ const WildlifeScan = {
 
     // Also save to backend if available
     try {
-      const API_BASE = window.location.origin.includes('localhost') ? 'http://localhost:5000' : '';
-      if (API_BASE) {
-        await fetch(API_BASE + '/api/user/scans', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({
-            species_name: this.currentResult.species.name,
-            confidence: this.currentResult.confidence,
-            image_data: this.els.previewImg ? this.els.previewImg.src : ""
-          })
+      if (window.UserAPI) {
+        await window.UserAPI.addScan({
+          species_name: this.currentResult.species.name,
+          confidence: this.currentResult.confidence,
+          image_data: this.els.previewImg ? this.els.previewImg.src : ""
         });
+      } else {
+        const API_BASE = window.location.origin.includes('localhost') ? 'http://localhost:5000' : '';
+        if (API_BASE) {
+          await fetch(API_BASE + '/api/user/scans', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({
+              species_name: this.currentResult.species.name,
+              confidence: this.currentResult.confidence,
+              image_data: this.els.previewImg ? this.els.previewImg.src : ""
+            })
+          });
+        }
       }
     } catch (e) {}
 
@@ -2024,7 +2032,7 @@ const WildlifeScan = {
 
   showToast(message) {
     const toast = document.createElement("div");
-    toast.style.cssText = "position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1b5e40,#143d2a);color:#fff;padding:12px 24px;border-radius:8px;z-index:3000;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:fadeInUp 0.3s ease;";
+    toast.style.cssText = "position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#2d6a4f,#1e3a2b);color:#fff;padding:12px 24px;border-radius:8px;z-index:3000;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:fadeInUp 0.3s ease;";
     toast.textContent = message;
     document.body.appendChild(toast);
     setTimeout(() => {
@@ -2071,7 +2079,7 @@ const WildlifeScan = {
   updateVoiceStatus(text, isActive) {
     if (this.els.voiceStatus) {
       this.els.voiceStatus.textContent = text;
-      this.els.voiceStatus.style.color = isActive ? "#c9a227" : "#888";
+      this.els.voiceStatus.style.color = isActive ? "#F4A261" : "#888";
     }
   },
 

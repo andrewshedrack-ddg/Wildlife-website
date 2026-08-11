@@ -20,20 +20,21 @@
   function getDemoUsers() { return getItem('wildguard_demo_users', {}); }
 
   // --- Stats ---
-  function updateStats() {
+  async function updateStats() {
+    const stats = (window.AdminAPI ? await window.AdminAPI.getStats() : null) || {};
     const pending = getPendingScans();
     const scans = getCompleteScans();
-    const users = getUserList();
+    const users = getItem('wildguard_user_list', []);
     const messages = getMessages();
     const today = new Date().toDateString();
     const scansToday = scans.filter(s => new Date(s.timestamp).toDateString() === today).length;
 
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-    set('statPending', pending.length);
-    set('statTotal', scans.length);
+    set('statPending', stats.pending_scans !== undefined ? stats.pending_scans : pending.length);
+    set('statTotal', stats.total_species !== undefined ? stats.total_species : scans.length);
     set('statToday', scansToday);
-    set('statUsers', users.length);
-    set('statMessages', messages.filter(m => m.status === 'unread').length);
+    set('statUsers', stats.total_users !== undefined ? stats.total_users : users.length);
+    set('statMessages', stats.total_messages !== undefined ? stats.total_messages : messages.filter(m => m.status === 'unread').length);
     set('statEmails', (typeof getAllEmails === 'function' ? getAllEmails() : []).length);
     set('statActivity', (typeof getActivityLog === 'function' ? getActivityLog() : []).length);
 
@@ -44,10 +45,10 @@
       if (count > 0) { el.textContent = count; el.style.display = 'inline-block'; }
       else { el.style.display = 'none'; }
     };
-    setBadge('navBadgeScans', pending.length);
-    setBadge('navBadgeMessages', messages.filter(m => m.status === 'unread').length);
+    setBadge('navBadgeScans', stats.pending_scans !== undefined ? stats.pending_scans : pending.length);
+    setBadge('navBadgeMessages', stats.total_messages !== undefined ? stats.total_messages : messages.filter(m => m.status === 'unread').length);
     setBadge('navBadgeNotifs', getAdminNotifications().filter(n => !n.read).length);
-    setBadge('headerNotifBadge', getAdminNotifications().filter(n => !n.read).length + messages.filter(m => m.status === 'unread').length);
+    setBadge('headerNotifBadge', getAdminNotifications().filter(n => !n.read).length + (stats.total_messages !== undefined ? stats.total_messages : messages.filter(m => m.status === 'unread').length));
   }
 
   // --- Scan Cards ---
@@ -83,10 +84,11 @@
   }
 
   // --- Messages (from contact form) ---
-  function renderMessages() {
+  async function renderMessages() {
     const container = document.getElementById('messagesList');
     if (!container) return;
-    const messages = getMessages().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const messages = ((window.AdminAPI ? await window.AdminAPI.getMessages() : null) || getMessages())
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     if (messages.length === 0) {
       container.innerHTML = '<div class="empty-state"><i class="fas fa-envelope-open"></i><h3>No Messages</h3><p>When users send messages from the contact page, they will appear here.</p></div>';
       return;
@@ -141,10 +143,10 @@
   }
 
   // --- Users ---
-  function renderUsers() {
+  async function renderUsers() {
     const container = document.getElementById('usersList');
     if (!container) return;
-    const users = getUserList().sort((a, b) => new Date(b.registeredAt || 0) - new Date(a.registeredAt || 0));
+    const users = ((window.AdminAPI ? await window.AdminAPI.getUsers() : null) || getUserList()).sort((a, b) => new Date(b.registeredAt || 0) - new Date(a.registeredAt || 0));
     const demoUsers = Object.entries(getDemoUsers()).map(([email, data]) => ({ email, ...data, registeredAt: data.registeredAt || new Date().toISOString() }));
     const allUsers = [...users, ...demoUsers].filter((v, i, a) => a.findIndex(t => t.email === v.email) === i); // dedupe
 
@@ -154,12 +156,14 @@
     }
     let html = '<table class="data-table"><thead><tr><th>User</th><th>Email</th><th>Role</th><th>Registered</th><th>Status</th></tr></thead><tbody>';
     allUsers.forEach(u => {
+      const name = u.name || (u.email ? u.email.split('@')[0] : 'Unknown');
+      const status = u.is_online !== undefined ? (u.is_online ? 'online' : 'offline') : (u.status || 'active');
       html += '<tr>';
-      html += '<td><strong>' + (u.name || u.email.split('@')[0]) + '</strong></td>';
-      html += '<td>' + u.email + '</td>';
-      html += '<td><span class="badge ' + (u.role === 'admin' ? 'badge-approved' : 'badge-new') + '">' + (u.role || 'user') + '</span></td>';
+      html += '<td><strong>' + esc(name) + '</strong></td>';
+      html += '<td>' + esc(u.email) + '</td>';
+      html += '<td><span class="badge ' + (u.role === 'admin' ? 'badge-approved' : 'badge-new') + '">' + esc(u.role || 'user') + '</span></td>';
       html += '<td>' + new Date(u.registeredAt || new Date()).toLocaleDateString() + '</td>';
-      html += '<td>' + (u.status || 'active') + '</td>';
+      html += '<td>' + esc(status) + '</td>';
       html += '</tr>';
     });
     html += '</tbody></table>';
@@ -168,10 +172,10 @@
 
   // --- Activity Log (Traffic) ---
   function getActivityLog() { return getItem('wildguard_activity_log', []); }
-  function renderActivityLog() {
+  async function renderActivityLog() {
     var container = document.getElementById('activityLogList');
     if (!container) return;
-    var logs = getActivityLog();
+    var logs = (window.AdminAPI ? await window.AdminAPI.getActivity() : null) || getActivityLog();
     if (logs.length === 0) {
       container.innerHTML = '<div class="empty-state"><i class="fas fa-clipboard-list"></i><h3>No Activity Yet</h3><p>User registrations, logins, and other events will appear here.</p></div>';
       return;
@@ -182,10 +186,10 @@
       var eventColor = log.event === 'login' ? '#22c55e' : log.event === 'register' ? '#3b82f6' : log.event === 'logout' ? '#f59e0b' : log.event === 'login_failed' ? '#ef4444' : '#a855f7';
       html += '<tr>';
       html += '<td style="white-space:nowrap;font-size:0.82rem;">' + new Date(log.timestamp).toLocaleString() + '</td>';
-      html += '<td><span style="color:' + eventColor + ';font-weight:600;font-size:0.85rem;"><i class="' + eventIcon + '" style="margin-right:0.3rem;"></i>' + log.event + '</span></td>';
-      html += '<td style="font-size:0.85rem;">' + (log.user || 'guest') + '</td>';
-      html += '<td style="font-size:0.85rem;">' + (log.details || '') + '</td>';
-      html += '<td style="font-size:0.78rem;opacity:0.6;max-width:200px;overflow:hidden;text-overflow:ellipsis;">' + (log.page || '') + '</td>';
+      html += '<td><span style="color:' + eventColor + ';font-weight:600;font-size:0.85rem;"><i class="' + eventIcon + '" style="margin-right:0.3rem;"></i>' + esc(log.event) + '</span></td>';
+      html += '<td style="font-size:0.85rem;">' + esc(log.user || 'guest') + '</td>';
+      html += '<td style="font-size:0.85rem;">' + esc(log.details || '') + '</td>';
+      html += '<td style="font-size:0.78rem;opacity:0.6;max-width:200px;overflow:hidden;text-overflow:ellipsis;">' + esc(log.page || '') + '</td>';
       html += '</tr>';
     });
     html += '</tbody></table>';
@@ -262,10 +266,15 @@
     updateStats(); renderMessages();
   };
 
-  window.deleteMessage = function(id) {
+  window.deleteMessage = async function(id) {
     if (!confirm('Delete this message?')) return;
-    const msgs = getMessages().filter(m => m.id !== id);
-    localStorage.setItem('wildguard_admin_messages', JSON.stringify(msgs));
+    if (window.AdminAPI) {
+      const res = await window.AdminAPI.deleteMessage(id);
+      if (!res.success && res.message) { alert(res.message); return; }
+    } else {
+      const msgs = getMessages().filter(m => m.id !== id);
+      localStorage.setItem('wildguard_admin_messages', JSON.stringify(msgs));
+    }
     updateStats(); renderMessages();
   };
 
@@ -285,14 +294,14 @@
 
   function showAdminToast(text) {
     const toast = document.createElement('div');
-    toast.style.cssText = 'position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#1b5e40,#143d2a);color:#fff;padding:12px 20px;border-radius:8px;z-index:6000;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:fadeIn 0.3s ease; font-size:0.9rem;';
+    toast.style.cssText = 'position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#2d6a4f,#1e3a2b);color:#fff;padding:12px 20px;border-radius:8px;z-index:6000;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:fadeIn 0.3s ease; font-size:0.9rem;';
     toast.innerHTML = '<i class="fas fa-check-circle" style="margin-right:8px;"></i>' + text;
     document.body.appendChild(toast);
     setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 2500);
   }
 
   // --- Admin Email Campaign ---
-  window.sendAdminEmailCampaign = function() {
+  window.sendAdminEmailCampaign = async function() {
     var subject = document.getElementById('emailSubject')?.value.trim();
     var body = document.getElementById('emailBody')?.value.trim();
     var type = document.getElementById('emailType')?.value || 'update';
@@ -301,35 +310,48 @@
       return;
     }
     var users = getUserList();
-    var sentCount = 0;
-    if (typeof window.sendEmail === 'function') {
-      users.forEach(function(u) {
-        window.sendEmail(u.email, subject, body, type);
-        sentCount++;
-      });
+
+    // Prefer the backend broadcast endpoint (persists to user inboxes).
+    if (window.AdminAPI && window.AdminAPI.backendAvailable()) {
+      const recipients = users.map(function(u) { return u.email; }).filter(Boolean);
+      const res = await window.AdminAPI.broadcast(recipients, subject, body);
+      if (res.success) {
+        showAdminToast('Broadcast sent to ' + res.recipients + ' recipient(s).');
+      } else {
+        alert(res.message || 'Could not send broadcast.');
+        return;
+      }
     } else {
-      // Fallback: use localStorage directly
-      var emails = getAllEmails();
-      users.forEach(function(u) {
-        emails.unshift({
-          id: 'email_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
-          from: 'info@wildguard.org',
-          to: u.email,
-          subject: subject,
-          body: body,
-          timestamp: new Date().toISOString(),
-          read: false,
-          type: type
+      var sentCount = 0;
+      if (typeof window.sendEmail === 'function') {
+        users.forEach(function(u) {
+          window.sendEmail(u.email, subject, body, type);
+          sentCount++;
         });
-        sentCount++;
-      });
-      localStorage.setItem('wildguard_emails', JSON.stringify(emails));
+      } else {
+        // Fallback: use localStorage directly
+        var emails = getAllEmails();
+        users.forEach(function(u) {
+          emails.unshift({
+            id: 'email_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+            from: 'info@wildguard.org',
+            to: u.email,
+            subject: subject,
+            body: body,
+            timestamp: new Date().toISOString(),
+            read: false,
+            type: type
+          });
+          sentCount++;
+        });
+        localStorage.setItem('wildguard_emails', JSON.stringify(emails));
+      }
+      // Log activity
+      if (typeof window.logActivity === 'function') {
+        window.logActivity('email_campaign', 'admin', 'Admin sent email campaign to ' + sentCount + ' users');
+      }
+      alert('Email campaign sent to ' + sentCount + ' users!');
     }
-    // Log activity
-    if (typeof window.logActivity === 'function') {
-      window.logActivity('email_campaign', 'admin', 'Admin sent email campaign to ' + sentCount + ' users');
-    }
-    alert('Email campaign sent to ' + sentCount + ' users!');
     document.getElementById('emailSubject').value = '';
     document.getElementById('emailBody').value = '';
     renderSentEmails();
@@ -337,13 +359,13 @@
   };
 
   // --- Init ---
-  function init() {
-    updateStats();
-    renderPendingScans();
-    renderMessages();
+  async function init() {
+    await updateStats();
+    await renderPendingScans();
+    await renderMessages();
     renderNotifications();
-    renderUsers();
-    renderActivityLog();
+    await renderUsers();
+    await renderActivityLog();
     renderSentEmails();
     // Show admin email
     try {

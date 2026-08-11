@@ -13,13 +13,13 @@
     <style>
         /* ---------- Favourites page: wildlife vibe ---------- */
         .fav-header { text-align: center; margin: 1.5rem 0 2.5rem; }
-        .fav-header .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(201,162,39,0.25), rgba(45,138,94,0.25)); border-color: rgba(201,162,39,0.4); }
+        .fav-header .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(244, 162, 97,0.25), rgba(45,138,94,0.25)); border-color: rgba(244, 162, 97,0.4); }
         .fav-header .page-title { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 0.5rem; }
 
         /* Stats strip */
         .fav-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; max-width: 720px; margin: 0 auto 2.5rem; }
         .fav-stat { position: relative; text-align: center; padding: 1.1rem 1rem; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(6px); overflow: hidden; transition: var(--transition); }
-        .fav-stat::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(27,94,64,0.25), rgba(201,162,39,0.18)); opacity: 0; transition: opacity 0.3s ease; }
+        .fav-stat::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(45, 106, 79,0.25), rgba(244, 162, 97,0.18)); opacity: 0; transition: opacity 0.3s ease; }
         .fav-stat:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
         .fav-stat:hover::before { opacity: 1; }
         .fav-stat-value { position: relative; display: block; font-family: var(--font-heading); font-size: 2rem; font-weight: 700; color: var(--lighter); line-height: 1.1; }
@@ -29,7 +29,7 @@
         /* Favourite cards */
         .fav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.75rem; }
         .favourite-card { position: relative; border-radius: var(--radius-lg); overflow: hidden; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease; animation: favFadeUp 0.55s ease both; }
-        .favourite-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,162,39,0.3); border-color: rgba(201,162,39,0.35); }
+        .favourite-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.45), 0 0 0 1px rgba(244, 162, 97,0.3); border-color: rgba(244, 162, 97,0.35); }
 
         .fav-media { position: relative; aspect-ratio: 16/10; overflow: hidden; background: linear-gradient(135deg, var(--primary-dark), var(--dark)); }
         .fav-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
@@ -43,7 +43,7 @@
         .status-vulnerable { background: rgba(234,179,8,0.92); color: #1c1917; box-shadow: 0 4px 14px rgba(234,179,8,0.4); }
         .status-near-threatened { background: rgba(163,230,53,0.92); color: #1c1917; box-shadow: 0 4px 14px rgba(163,230,53,0.35); }
         .status-least-concern { background: rgba(34,197,94,0.92); color: #052e16; box-shadow: 0 4px 14px rgba(34,197,94,0.35); }
-        .status-default { background: rgba(201,162,39,0.9); color: #1c1917; box-shadow: 0 4px 14px rgba(201,162,39,0.4); }
+        .status-default { background: rgba(244, 162, 97,0.9); color: #1c1917; box-shadow: 0 4px 14px rgba(244, 162, 97,0.4); }
 
         .fav-heart-pin { position: absolute; top: 0.9rem; right: 0.9rem; z-index: 2; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(10,21,16,0.45); border: 1px solid rgba(255,255,255,0.18); color: #ef4444; font-size: 1rem; backdrop-filter: blur(6px); }
 
@@ -57,14 +57,14 @@
         .remove-fav:hover { background: rgba(239,68,68,0.22); border-color: rgba(239,68,68,0.5); transform: translateY(-1px); }
 
         /* Empty state */
-        .fav-empty { grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; border-radius: var(--radius-lg); background: linear-gradient(160deg, rgba(27,94,64,0.15), rgba(201,162,39,0.08)); border: 1px dashed rgba(201,162,39,0.35); animation: favFadeUp 0.6s ease both; }
-        .fav-empty-icon { width: 90px; height: 90px; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; border-radius: 50%; background: linear-gradient(135deg, rgba(201,162,39,0.25), rgba(27,94,64,0.25)); border: 1px solid rgba(201,162,39,0.4); color: var(--accent); animation: favPulse 2.2s ease-in-out infinite; }
+        .fav-empty { grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; border-radius: var(--radius-lg); background: linear-gradient(160deg, rgba(45, 106, 79,0.15), rgba(244, 162, 97,0.08)); border: 1px dashed rgba(244, 162, 97,0.35); animation: favFadeUp 0.6s ease both; }
+        .fav-empty-icon { width: 90px; height: 90px; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; border-radius: 50%; background: linear-gradient(135deg, rgba(244, 162, 97,0.25), rgba(45, 106, 79,0.25)); border: 1px solid rgba(244, 162, 97,0.4); color: var(--accent); animation: favPulse 2.2s ease-in-out infinite; }
         .fav-empty h3 { color: var(--lighter); font-size: 1.6rem; margin-bottom: 0.6rem; }
         .fav-empty p { color: rgba(255,255,255,0.6); max-width: 440px; margin: 0 auto 1.75rem; }
         .fav-empty .btn { margin: 0 0.35rem; }
 
         @keyframes favFadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes favPulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(201,162,39,0.35); } 50% { transform: scale(1.05); box-shadow: 0 0 0 14px rgba(201,162,39,0); } }
+        @keyframes favPulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 162, 97,0.35); } 50% { transform: scale(1.05); box-shadow: 0 0 0 14px rgba(244, 162, 97,0); } }
 
         @media (max-width: 768px) {
             .fav-grid { grid-template-columns: 1fr; }
@@ -185,6 +185,7 @@
     <script defer src="../js/connectivity.js"></script>
 <script defer src="../js/main.js"></script>
     <script defer src="../js/i18n.js"></script>
+    <script defer src="../js/user-api.js"></script>
     <script defer src="../js/auth.js"></script>
     <script>
         (function() {
@@ -229,10 +230,10 @@
                 '<div class="fav-stat"><span class="fav-stat-value"><i class="fas fa-tree"></i>' + parks + '</span><span class="fav-stat-label">Habitats</span></div>';
         }
 
-        function renderFavourites() {
+        async function renderFavourites() {
             const grid = document.getElementById('favourites-grid');
             if (!grid) return;
-            const favs = (window.getUserFavourites ? window.getUserFavourites() : []) || [];
+            const favs = (window.UserAPI ? await window.UserAPI.getFavourites() : (window.getUserFavourites ? window.getUserFavourites() : [])) || [];
             renderStats(favs);
 
             if (favs.length === 0) {
@@ -265,7 +266,7 @@
                     (fav.scientificName ? '<p class="fav-sci">' + esc(fav.scientificName) + '</p>' : '') +
                     '<div class="fav-meta">' +
                     '<i class="fas fa-leaf"></i><span>' + esc(statusText) + '</span>' +
-                    '<button class="remove-fav" data-key="' + esc(fav.speciesKey) + '" aria-label="Remove ' + esc(fav.name) + ' from favourites"><i class="fas fa-heart-broken"></i> Remove</button>' +
+                    '<button class="remove-fav" data-id="' + (fav.id || '') + '" data-key="' + esc(fav.speciesKey) + '" aria-label="Remove ' + esc(fav.name) + ' from favourites"><i class="fas fa-heart-broken"></i> Remove</button>' +
                     '</div>' +
                     added +
                     '</div>';
@@ -275,15 +276,25 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             renderFavourites();
-            document.getElementById('favourites-grid').addEventListener('click', function(e) {
+            document.getElementById('favourites-grid').addEventListener('click', async function(e) {
                 const btn = e.target.closest('.remove-fav');
                 if (!btn) return;
                 const key = btn.getAttribute('data-key');
+                const id = btn.getAttribute('data-id');
                 const session = (window.getCurrentUser ? window.getCurrentUser() : null) || {};
-                const all = JSON.parse(localStorage.getItem('wildguard_favourites') || '[]');
-                const fav = all.find(f => (f.user || '').toLowerCase() === (session.email || '').toLowerCase() && f.speciesKey === key);
-                localStorage.setItem('wildguard_favourites', JSON.stringify(all.filter(f => !(f.user === (session.email || '').toLowerCase() && f.speciesKey === key))));
-                if (typeof window.showToast === 'function') window.showToast((fav ? fav.name : 'Species') + ' removed from favourites', 'info');
+                let removed = false;
+                // Backend-backed favourites are removed by id.
+                if (id && window.UserAPI) {
+                    const res = await window.UserAPI.removeFavourite(id);
+                    removed = res && res.success;
+                } else {
+                    // localStorage favourites keyed by speciesKey.
+                    const all = JSON.parse(localStorage.getItem('wildguard_favourites') || '[]');
+                    const fav = all.find(f => (f.user || '').toLowerCase() === (session.email || '').toLowerCase() && f.speciesKey === key);
+                    localStorage.setItem('wildguard_favourites', JSON.stringify(all.filter(f => !(f.user === (session.email || '').toLowerCase() && f.speciesKey === key))));
+                    removed = true;
+                    if (typeof window.showToast === 'function') window.showToast((fav ? fav.name : 'Species') + ' removed from favourites', 'info');
+                }
                 renderFavourites();
             });
         });

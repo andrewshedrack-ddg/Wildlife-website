@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <style>
         .hist-header { text-align: center; margin: 1.5rem 0 2.5rem; }
-        .hist-header .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(201,162,39,0.25), rgba(45,138,94,0.25)); border-color: rgba(201,162,39,0.4); }
+        .hist-header .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(244, 162, 97,0.25), rgba(45,138,94,0.25)); border-color: rgba(244, 162, 97,0.4); }
         .hist-header .page-title { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 0.5rem; }
 
         .history-layout { display: grid; grid-template-columns: 1fr 350px; gap: 2rem; align-items: start; }
@@ -26,27 +26,27 @@
         .timeline-card:hover, .summary-card:hover, .quick-links-card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px rgba(0,0,0,0.4); }
 
         .timeline { position: relative; padding-left: 1.75rem; }
-        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 3px; background: linear-gradient(to bottom, var(--accent), var(--primary-light), rgba(201,162,39,0.1)); box-shadow: 0 0 12px rgba(201,162,39,0.25); }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 3px; background: linear-gradient(to bottom, var(--accent), var(--primary-light), rgba(244, 162, 97,0.1)); box-shadow: 0 0 12px rgba(244, 162, 97,0.25); }
         .timeline-item { position: relative; padding-bottom: 2rem; padding-left: 1.75rem; }
         .timeline-item:last-child { padding-bottom: 0; }
-        .timeline-icon { position: absolute; left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-light), var(--primary-dark)); border: 2px solid rgba(201,162,39,0.55); display: flex; align-items: center; justify-content: center; color: var(--lighter); font-size: 0.85rem; transform: translateX(-50%); box-shadow: 0 4px 14px rgba(27,94,64,0.45); }
+        .timeline-icon { position: absolute; left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-light), var(--primary-dark)); border: 2px solid rgba(244, 162, 97,0.55); display: flex; align-items: center; justify-content: center; color: var(--lighter); font-size: 0.85rem; transform: translateX(-50%); box-shadow: 0 4px 14px rgba(45, 106, 79,0.45); }
         .timeline-date { display: block; color: var(--accent); font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; }
         .timeline-title { color: var(--lighter); font-size: 1rem; margin-bottom: 0.25rem; }
-        .cat-badge { display: inline-block; margin-left: 0.4rem; padding: 0.15rem 0.55rem; border-radius: 100px; background: rgba(201,162,39,0.15); color: var(--accent); border: 1px solid rgba(201,162,39,0.3); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; vertical-align: middle; }
+        .cat-badge { display: inline-block; margin-left: 0.4rem; padding: 0.15rem 0.55rem; border-radius: 100px; background: rgba(244, 162, 97,0.15); color: var(--accent); border: 1px solid rgba(244, 162, 97,0.3); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; vertical-align: middle; }
         .timeline-desc { color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.5; }
         .timeline-content { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 0.9rem 1.1rem; transition: var(--transition); }
-        .timeline-item:hover .timeline-content { background: rgba(255,255,255,0.05); border-color: rgba(201,162,39,0.25); }
+        .timeline-item:hover .timeline-content { background: rgba(255,255,255,0.05); border-color: rgba(244, 162, 97,0.25); }
 
         .summary-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         .summary-item { text-align: center; padding: 1.1rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); transition: var(--transition); }
-        .summary-item:hover { transform: translateY(-2px); border-color: rgba(201,162,39,0.3); background: linear-gradient(160deg, rgba(27,94,64,0.18), rgba(201,162,39,0.1)); }
+        .summary-item:hover { transform: translateY(-2px); border-color: rgba(244, 162, 97,0.3); background: linear-gradient(160deg, rgba(45, 106, 79,0.18), rgba(244, 162, 97,0.1)); }
         .summary-value { display: block; color: var(--lighter); font-size: 1.5rem; font-weight: 700; font-family: var(--font-heading); }
         .summary-value i { color: var(--accent); font-size: 1.1rem; }
         .summary-label { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
 
         .quick-links { display: flex; flex-direction: column; gap: 0.75rem; }
         .quick-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.8rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); color: rgba(255,255,255,0.75); font-size: 0.9rem; transition: var(--transition); }
-        .quick-link:hover { background: linear-gradient(135deg, rgba(27,94,64,0.25), rgba(201,162,39,0.12)); border-color: rgba(201,162,39,0.35); color: var(--lighter); transform: translateX(4px); }
+        .quick-link:hover { background: linear-gradient(135deg, rgba(45, 106, 79,0.25), rgba(244, 162, 97,0.12)); border-color: rgba(244, 162, 97,0.35); color: var(--lighter); transform: translateX(4px); }
         .quick-link i { color: var(--accent); }
 
         @keyframes histFadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
@@ -218,6 +218,7 @@
     <script defer src="../js/connectivity.js"></script>
 <script defer src="../js/main.js"></script>
     <script defer src="../js/i18n.js"></script>
+    <script defer src="../js/user-api.js"></script>
     <script defer src="../js/auth.js"></script>
     <script>
         (function() {
@@ -230,9 +231,9 @@
         function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
         function safeImg(src){return /^data:image\/(png|jpe?g|gif|webp);base64,/i.test(src)||/^https:\/\//i.test(src)?src:'';}
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             const timeline = document.getElementById('history-timeline');
-            const scans = (window.getUserScans ? window.getUserScans() : JSON.parse(localStorage.getItem('wildlife_scans') || '[]')) || [];
+            const scans = (window.UserAPI ? await window.UserAPI.getScans() : (window.getUserScans ? window.getUserScans() : [])) || [];
 
             function fmt(iso) {
                 try { return new Date(iso).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) + ' at ' + new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); } catch(e) { return iso || ''; }
@@ -269,7 +270,7 @@
             }
 
             // Summary stats
-            const favs = (window.getUserFavourites ? window.getUserFavourites() : []) || [];
+            const favs = (window.UserAPI ? await window.UserAPI.getFavourites() : (window.getUserFavourites ? window.getUserFavourites() : [])) || [];
             const setStat = function(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; };
             setStat('stat-scans', scans.length);
             setStat('stat-favourites', favs.length);

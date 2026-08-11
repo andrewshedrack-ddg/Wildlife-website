@@ -73,14 +73,14 @@
   - Role-based access control (admin_required decorator)
 
 ### User Features
-- [ ] **Profile page** (user/Profile.html) - complete with:
+- [x] **Profile page** (user/Profile.html) - complete with:
   - Avatar upload
   - Bio, location, preferences
   - Password change (backend)
   - Account deletion
-- [ ] **History page** (user/History.html) - scan history with filters
-- [ ] **Favorites page** (user/Favourite.html) - saved species
-- [ ] **Inbox/Notifications** (user/Inbox.html) - admin messages, scan status
+- [x] **History page** (user/History.html) - scan history with filters
+- [x] **Favorites page** (user/Favourite.html) - saved species
+- [x] **Inbox/Notifications** (user/Inbox.html) - admin messages, scan status
 
 ### AI/ML Improvements
 - [ ] **Improve WildGuardAI on-device model**

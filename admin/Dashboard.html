@@ -54,19 +54,19 @@
 
     /* Action Buttons */
     .btn-sm { padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.3s ease; }
-    .btn-approve { background: linear-gradient(135deg, #1b5e40, #143d2a); color: #fff; }
+    .btn-approve { background: linear-gradient(135deg, #2d6a4f, #1e3a2b); color: #fff; }
     .btn-approve:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(27,94,64,0.3); }
     .btn-reject { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.25); }
     .btn-reject:hover { background: rgba(239,68,68,0.2); }
-    .btn-view { background: rgba(201,162,39,0.1); color: var(--accent); border: 1px solid rgba(201,162,39,0.25); }
-    .btn-view:hover { background: rgba(201,162,39,0.2); }
+    .btn-view { background: rgba(244,162,97,0.1); color: var(--accent); border: 1px solid rgba(244,162,97,0.25); }
+    .btn-view:hover { background: rgba(244,162,97,0.2); }
     .btn-mark-read { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.12); }
     .btn-mark-read:hover { background: rgba(255,255,255,0.1); color: var(--lighter); }
 
     /* Message Cards */
     .message-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.25rem; margin-bottom: 0.75rem; transition: all 0.3s ease; }
     .message-card:hover { border-color: rgba(255,255,255,0.12); }
-    .message-card.unread { border-left: 3px solid var(--accent); background: rgba(201,162,39,0.04); }
+    .message-card.unread { border-left: 3px solid var(--accent); background: rgba(244,162,97,0.04); }
     .message-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem; }
     .message-header strong { color: var(--lighter); font-size: 0.95rem; }
     .message-header span { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
@@ -89,8 +89,8 @@
     .action-card i { font-size: 1.8rem; color: var(--accent); margin-bottom: 0.75rem; display: block; }
     .action-card h4 { color: var(--lighter); margin:  0 0 0.4rem; font-size: 1rem; }
     .action-card p { color: rgba(255,255,255,0.55); font-size: 0.85rem; margin: 0 0 1rem; }
-    .action-card a { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.2rem; background: rgba(201,162,39,0.12); border: 1px solid rgba(201,162,39,0.25); border-radius: 8px; color: var(--accent); font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: all 0.3s ease; }
-    .action-card a:hover { background: rgba(201,162,39,0.2); border-color: rgba(201,162,39,0.4); }
+    .action-card a { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.2rem; background: rgba(244,162,97,0.12); border: 1px solid rgba(244,162,97,0.25); border-radius: 8px; color: var(--accent); font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: all 0.3s ease; }
+    .action-card a:hover { background: rgba(244,162,97,0.2); border-color: rgba(244,162,97,0.4); }
 
     /* Sidebar Logout */
     .admin-logout { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
@@ -128,6 +128,9 @@
         <button class="admin-nav-item" data-tab="emails" onclick="switchTab(this, 'emails')">
           <i class="fas fa-paper-plane"></i> Email Campaign
         </button>
+        <div class="admin-nav-divider"></div>
+        <a class="admin-nav-item" href="manage-animals.html"><i class="fas fa-paw"></i> Manage Animals</a>
+        <a class="admin-nav-item" href="upload.html"><i class="fas fa-cloud-upload-alt"></i> Upload Species</a>
       </nav>
       <div class="admin-logout">
         <a href="#" id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -270,6 +273,7 @@
   <script defer src="../js/connectivity.js"></script>
 <script defer src="../js/main.js"></script>
   <script defer src="../js/auth.js"></script>
+  <script defer src="../js/admin-api.js"></script>
   <script defer src="../js/admin-auth-guard.js"></script>
   <script defer src="../js/admin.js"></script>
   <script>
@@ -288,6 +292,10 @@
     // Mobile sidebar toggle
     document.getElementById('mobileToggleSidebar')?.addEventListener('click', () => {
       document.getElementById('adminSidebar').classList.toggle('open');
+      const sidebar = document.getElementById('adminSidebar');
+      const nav = sidebar.querySelector('.admin-nav');
+      if (sidebar.classList.contains('open')) nav.style.display = 'flex';
+      else nav.style.display = 'none';
     });
 
     // Admin logout

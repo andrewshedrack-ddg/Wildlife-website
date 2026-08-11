@@ -1,6 +1,7 @@
 import os
 import datetime
 import re
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify, make_response, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
@@ -9,6 +10,10 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_migrate import Migrate
 import jwt
 from functools import wraps
+
+# Load environment variables from .env (also enables `python app.py` to work
+# without the Flask CLI, which loads .env automatically).
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -37,6 +42,7 @@ _STATIC_ALLOWED = {
     'js/alert.js', 'js/i18n.js', 'js/admin.js', 'js/admin-ui.js',
     'js/admin-portal.js', 'js/admin-auth-guard.js', 'js/admin-guard.js',
     'js/scan-integration.js', 'js/wildlife-data.json',
+    'js/user-api.js', 'js/admin-api.js',
     'js/i18n/en.json', 'js/i18n/es.json', 'js/i18n/fr.json', 'js/i18n/sw.json',
     'sw.js', 'favicon.ico', 'robots.txt', 'manifest.json', 'site.webmanifest',
 }
@@ -152,6 +158,8 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     last_seen = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     is_online = db.Column(db.Boolean, default=False)
+    # Optional profile data (name, bio, phone, country, avatar, prefs, ...)
+    profile = db.Column(db.JSON, nullable=True, default=dict)
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -196,6 +204,16 @@ class ActivityLog(db.Model):
     details = db.Column(db.Text, nullable=True)
     ip_address = db.Column(db.String(45), nullable=True)
     user_agent = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
+class Notification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    type = db.Column(db.String(50), nullable=False, default='admin_broadcast')
+    title = db.Column(db.String(200), nullable=False)
+    body = db.Column(db.Text, nullable=True)
+    from_email = db.Column(db.String(120), nullable=True)
+    read = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
 # --- Security Decorators ---
@@ -489,10 +507,17 @@ def _is_valid_email(email):
 
 
 def _set_auth_cookie(response, token):
-    """Set the auth cookie with security hardening."""
+    """Set the auth cookie with security hardening. The Secure flag follows the
+    request scheme (True over HTTPS), so development over plain HTTP keeps the
+    cookie working while production HTTPS stays secure."""
+    secure = os.environ.get('COOKIE_SECURE')
+    if secure is None:
+        secure = 'true' if (request.is_secure or request.headers.get('X-Forwarded-Proto', '') == 'https') else 'false'
+    else:
+        secure = secure.lower() in ('1', 'true', 'yes')
     response.set_cookie(
         'auth_token', token, httponly=True, samesite='Strict',
-        secure=os.environ.get('COOKIE_SECURE', 'true').lower() in ('1', 'true', 'yes'),
+        secure=secure,
         max_age=7200)
     return response
 
@@ -660,6 +685,18 @@ def get_admin_users(current_user):
     output = [{'id': u.id, 'email': u.email, 'role': u.role, 'created_at': u.created_at.strftime('%Y-%m-%d %H:%M:%S'), 'is_online': u.is_online, 'last_seen': u.last_seen.strftime('%Y-%m-%d %H:%M:%S') if u.last_seen else None} for u in users]
     return jsonify({'users': output}), 200
 
+
+@app.route('/api/admin/activity', methods=['GET'])
+@admin_required
+def get_admin_activity(current_user):
+    logs = ActivityLog.query.order_by(ActivityLog.created_at.desc()).limit(500).all()
+    output = [{
+        'id': l.id, 'user_id': l.user_id, 'action': l.action, 'details': l.details,
+        'ip_address': l.ip_address, 'user_agent': l.user_agent,
+        'timestamp': l.created_at.strftime('%Y-%m-%d %H:%M:%S')
+    } for l in logs]
+    return jsonify({'activity': output}), 200
+
 # --- User Profile & Data APIs ---
 
 @app.route('/api/user/scans', methods=['GET'])
@@ -723,7 +760,87 @@ def delete_user_favourite(current_user, id):
 def get_user_profile(current_user):
     scans_count = Scan.query.filter_by(user_id=current_user.id).count()
     favs_count = Favourite.query.filter_by(user_id=current_user.id).count()
-    return jsonify({'id': current_user.id, 'email': current_user.email, 'role': current_user.role, 'scans_count': scans_count, 'favourites_count': favs_count, 'created_at': current_user.created_at.strftime('%Y-%m-%d %H:%M:%S')}), 200
+    profile = current_user.profile or {}
+    return jsonify({
+        'id': current_user.id,
+        'email': current_user.email,
+        'role': current_user.role,
+        'scans_count': scans_count,
+        'favourites_count': favs_count,
+        'created_at': current_user.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+        'profile': profile,
+        'name': profile.get('name') or profile.get('firstName', ''),
+        'firstName': profile.get('firstName', ''),
+        'lastName': profile.get('lastName', ''),
+        'username': profile.get('username', ''),
+        'bio': profile.get('bio', ''),
+        'phone': profile.get('phone', ''),
+        'country': profile.get('country', ''),
+        'avatar': profile.get('avatar', ''),
+        'prefs': profile.get('prefs', {}),
+    }), 200
+
+
+@app.route('/api/user/profile', methods=['PUT'])
+@token_required
+def update_user_profile(current_user):
+    data = request.get_json() or {}
+    profile = dict(current_user.profile or {})
+    allowed = ('firstName', 'lastName', 'name', 'username', 'bio', 'phone',
+               'country', 'avatar', 'prefs', 'emailNotifications', 'publicProfile')
+    changed = False
+    for key, value in data.items():
+        if key in allowed:
+            # prefs can be passed flat or nested
+            if key in ('emailNotifications', 'publicProfile'):
+                prefs = profile.setdefault('prefs', {})
+                prefs[key] = bool(value)
+            else:
+                profile[key] = str(value) if key != 'avatar' else value
+            changed = True
+    if changed:
+        current_user.profile = profile
+        db.session.commit()
+    return jsonify({'message': 'Profile updated', 'profile': profile}), 200
+
+
+@app.route('/api/user/change-password', methods=['POST'])
+@token_required
+def change_user_password(current_user):
+    data = request.get_json() or {}
+    current_pw = data.get('current_password') or ''
+    new_pw = data.get('new_password') or ''
+    if not current_pw or not new_pw:
+        return jsonify({'message': 'Current and new password are required.'}), 400
+    if not bcrypt.check_password_hash(current_user.password_hash, current_pw):
+        return jsonify({'message': 'Current password is incorrect.'}), 401
+    if len(new_pw) < 8 or len(new_pw) > 128:
+        return jsonify({'message': 'New password must be between 8 and 128 characters.'}), 400
+    current_user.password_hash = bcrypt.generate_password_hash(new_pw).decode('utf-8')
+    db.session.commit()
+    _log_activity(current_user.id, 'password_changed', {'email': current_user.email})
+    return jsonify({'message': 'Password updated successfully.'}), 200
+
+
+@app.route('/api/user/notifications', methods=['GET'])
+@token_required
+def get_user_notifications(current_user):
+    notes = Notification.query.filter_by(user_id=current_user.id).order_by(Notification.created_at.desc()).all()
+    output = [{
+        'id': n.id, 'type': n.type, 'title': n.title, 'body': n.body,
+        'from': n.from_email, 'read': n.read,
+        'timestamp': n.created_at.strftime('%Y-%m-%d %H:%M:%S')
+    } for n in notes]
+    return jsonify({'notifications': output}), 200
+
+
+@app.route('/api/user/notifications/<int:id>/read', methods=['POST'])
+@token_required
+def mark_notification_read(current_user, id):
+    note = Notification.query.filter_by(id=id, user_id=current_user.id).first_or_404()
+    note.read = True
+    db.session.commit()
+    return jsonify({'message': 'Notification marked as read'}), 200
 
 @app.route('/api/admin/logout', methods=['POST'])
 def admin_logout():
@@ -794,6 +911,16 @@ def broadcast_message(current_user):
                 'from': 'WildGuard Admin',
                 'timestamp': datetime.datetime.utcnow().isoformat()
             }, room=f"user_{email}")
+            user = User.query.filter_by(email=email).first()
+            if user:
+                db.session.add(Notification(
+                    user_id=user.id,
+                    type='admin_broadcast',
+                    title=str(data['subject'])[:200],
+                    body=str(data['body'])[:5000],
+                    from_email='WildGuard Admin',
+                ))
+        db.session.commit()
         
         socketio.emit('broadcast_sent', {
             'admin': current_user.email,

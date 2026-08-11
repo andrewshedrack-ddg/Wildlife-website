@@ -245,7 +245,7 @@
         const adminLink = document.createElement('a');
         adminLink.href = getBasePath() + 'admin/Dashboard.html';
         adminLink.setAttribute('data-admin-link', 'true');
-        adminLink.style.color = 'var(--accent, #c9a227)';
+        adminLink.style.color = 'var(--accent, #F4A261)';
         adminLink.style.fontWeight = '600';
         adminLink.innerHTML = '<i class="fas fa-shield-halved"></i> Admin Dashboard';
         if (divider) {
@@ -984,6 +984,13 @@
     const existing = all.find(f => f.user === email && f.speciesKey === speciesKey);
     if (existing) {
       localStorage.setItem(FAVOURITES_KEY, JSON.stringify(all.filter(f => f !== existing)));
+      // Sync removal to the backend (best-effort).
+      if (window.UserAPI) {
+        window.UserAPI.getFavourites().then(function(favs) {
+          const match = (favs || []).find(f => (f.speciesKey || '').toLowerCase() === String(speciesKey).toLowerCase());
+          if (match && match.id) window.UserAPI.removeFavourite(match.id);
+        });
+      }
       return { success: true, favourited: false };
     }
     all.unshift({
@@ -996,6 +1003,8 @@
       addedAt: new Date().toISOString()
     });
     localStorage.setItem(FAVOURITES_KEY, JSON.stringify(all));
+    // Sync addition to the backend (best-effort).
+    if (window.UserAPI) window.UserAPI.addFavourite(speciesData.name || speciesKey);
     return { success: true, favourited: true };
   };
 

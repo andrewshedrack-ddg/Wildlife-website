@@ -17,7 +17,7 @@
     .portal-root * { box-sizing: border-box; }
     .portal-header { position: sticky; top: 0; z-index: 100; background: linear-gradient(180deg, rgba(10,21,16,0.98) 0%, rgba(10,21,16,0.9) 100%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
     .portal-header-logo { display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; }
-    .portal-header-logo img { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--accent); box-shadow: 0 0 12px rgba(201,162,39,0.3); }
+    .portal-header-logo img { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--accent); box-shadow: 0 0 12px rgba(244, 162, 97,0.3); }
     .portal-header-actions { display: flex; align-items: center; gap: 1rem; }
     .portal-header-actions span { font-size: 0.85rem; opacity: 0.7; }
     .portal-header-actions button { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #ef4444; padding: 0.45rem 1rem; border-radius: var(--radius); cursor: pointer; font-size: 0.8rem; transition: var(--transition); }
@@ -34,7 +34,7 @@
 
     /* Notification Bell */
     .notification-bell { position: relative; width: 40px; height: 40px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 50%; color: var(--lighter); cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; }
-    .notification-bell:hover { background: rgba(201,162,39,0.2); border-color: var(--accent); color: var(--accent); }
+    .notification-bell:hover { background: rgba(244, 162, 97,0.2); border-color: var(--accent); color: var(--accent); }
     .notification-badge { position: absolute; top: 4px; right: 4px; min-width: 18px; height: 18px; background: #ef4444; color: var(--lighter); font-size: 0.65rem; font-weight: 700; border-radius: 100px; display: flex; align-items: center; justify-content: center; padding: 0 5px; animation: pulse 2s infinite; }
     .notification-dropdown { position: absolute; top: calc(100% + 0.5rem); right: 0; width: 360px; max-height: 400px; background: var(--dark); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; box-shadow: var(--shadow-lg); overflow: hidden; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: var(--transition); z-index: 2000; display: flex; flex-direction: column; }
     .notification-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
@@ -44,8 +44,8 @@
     .notification-header button:hover { color: var(--accent); }
     .notification-list { flex: 1; overflow-y: auto; padding: 0.5rem; }
     .notification-item { display: flex; gap: 0.75rem; padding: 0.85rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.04); border-radius: 10px; margin-bottom: 0.5rem; transition: var(--transition); cursor: pointer; }
-    .notification-item:hover { background: rgba(201,162,39,0.08); border-color: rgba(201,162,39,0.2); }
-    .notification-item.unread { background: rgba(201,162,39,0.05); border-left: 3px solid var(--accent); }
+    .notification-item:hover { background: rgba(244, 162, 97,0.08); border-color: rgba(244, 162, 97,0.2); }
+    .notification-item.unread { background: rgba(244, 162, 97,0.05); border-left: 3px solid var(--accent); }
     .notification-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; color: var(--dark); font-size: 0.9rem; flex-shrink: 0; }
     .notification-content { flex: 1; min-width: 0; }
     .notification-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -62,22 +62,22 @@
     .portal-nav-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); transform: scaleY(0); transform-origin: bottom; transition: transform 0.3s ease; }
     .portal-nav-item:hover { background: rgba(255,255,255,0.05); color: var(--lighter); padding-left: 1.25rem; }
     .portal-nav-item:hover::before { transform: scaleY(1); }
-    .portal-nav-item.active { background: linear-gradient(90deg, rgba(201,162,39,0.12), rgba(201,162,39,0.03)); color: var(--accent); border: 1px solid rgba(201,162,39,0.2); padding-left: 1.25rem; }
+    .portal-nav-item.active { background: linear-gradient(90deg, rgba(244, 162, 97,0.12), rgba(244, 162, 97,0.03)); color: var(--accent); border: 1px solid rgba(244, 162, 97,0.2); padding-left: 1.25rem; }
     .portal-nav-item.active::before { transform: scaleY(1); }
     .portal-nav-item i { width: 22px; text-align: center; font-size: 1rem; transition: var(--transition); }
     .portal-nav-item:hover i, .portal-nav-item.active i { color: var(--accent); transform: translateX(2px); }
     .portal-nav-badge { margin-left: auto; background: var(--accent); color: var(--dark); font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 100px; min-width: 20px; text-align: center; animation: pulse 2s infinite; }
     
-    .portal-main { flex: 1; padding: 2.5rem; overflow-y: auto; background: radial-gradient(ellipse at top right, rgba(27,94,64,0.08) 0%, transparent 50%), var(--darker); }
+    .portal-main { flex: 1; padding: 2.5rem; overflow-y: auto; background: radial-gradient(ellipse at top right, rgba(45, 106, 79,0.08) 0%, transparent 50%), var(--darker); }
     .portal-section { animation: fadeInUp 0.5s ease-out; }
     .portal-section h2 { font-family: var(--font-heading); margin-bottom: 1.5rem; font-size: 1.6rem; display: flex; align-items: center; gap: 0.75rem; }
-    .portal-section h2 i { color: var(--accent); background: rgba(201,162,39,0.1); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .portal-section h2 i { color: var(--accent); background: rgba(244, 162, 97,0.1); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
     
     /* Stats Grid */
     .portal-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
     .portal-stat-card { position: relative; background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; padding: 2rem 1.5rem; text-align: center; transition: var(--transition); overflow: hidden; }
     .portal-stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary)); opacity: 0; transition: var(--transition); }
-    .portal-stat-card:hover { transform: translateY(-4px); border-color: rgba(201,162,39,0.3); box-shadow: 0 12px 40px rgba(27,94,64,0.2); }
+    .portal-stat-card:hover { transform: translateY(-4px); border-color: rgba(244, 162, 97,0.3); box-shadow: 0 12px 40px rgba(45, 106, 79,0.2); }
     .portal-stat-card:hover::before { opacity: 1; }
     .portal-stat-icon { font-size: 2.2rem; margin-bottom: 0.75rem; display: flex; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .portal-stat-value { font-size: 2.5rem; font-weight: 700; font-family: var(--font-heading); margin-bottom: 0.25rem; color: var(--lighter); line-height: 1; }
@@ -100,21 +100,21 @@
     .badge-warning { background: rgba(245,158,11,0.2); color: #f59e0b; }
     .badge-danger { background: rgba(239,68,68,0.2); color: #ef4444; }
     .badge-success { background: rgba(34,197,94,0.2); color: #22c55e; }
-    .badge-accent { background: rgba(201,162,39,0.2); color: var(--accent); }
+    .badge-accent { background: rgba(244, 162, 97,0.2); color: var(--accent); }
     
     .portal-list-item { position: relative; padding: 1rem 1.25rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; margin-bottom: 0.75rem; transition: var(--transition); }
     .portal-list-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: transparent; transition: var(--transition); border-radius: 3px 0 0 3px; }
     .portal-list-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); padding-left: 1.5rem; }
     .portal-list-item:hover::before { background: var(--accent); width: 4px; }
-    .portal-list-item.unread { background: rgba(201,162,39,0.05); border-left: 3px solid var(--accent); }
+    .portal-list-item.unread { background: rgba(244, 162, 97,0.05); border-left: 3px solid var(--accent); }
     .portal-list-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .portal-list-meta { font-size: 0.78rem; opacity: 0.5; display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
     .portal-list-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
     
     /* Buttons */
     .portal-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.2rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: var(--transition); border: none; }
-    .portal-btn-primary { background: linear-gradient(135deg, #1b5e40, #143d2a); color: #fff; }
-    .portal-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(27,94,64,0.4); }
+    .portal-btn-primary { background: linear-gradient(135deg, #2d6a4f, #1e3a2b); color: #fff; }
+    .portal-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(45, 106, 79,0.4); }
     .portal-btn-accent { background: var(--accent); color: var(--dark); }
     .portal-btn-accent:hover { background: var(--accent-hover); }
     .portal-btn-secondary { background: rgba(255,255,255,0.08); color: var(--lighter); border: 1px solid rgba(255,255,255,0.15); }
@@ -163,7 +163,7 @@
     .portal-field { margin-bottom: 1.25rem; }
     .portal-field label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 500; opacity: 0.8; }
     .portal-field input, .portal-field textarea, .portal-field select { width: 100%; padding: 0.85rem 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: var(--lighter); font-size: 0.95rem; font-family: var(--font-body); transition: var(--transition); }
-    .portal-field input:focus, .portal-field textarea:focus, .portal-field select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,162,39,0.15); }
+    .portal-field input:focus, .portal-field textarea:focus, .portal-field select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(244, 162, 97,0.15); }
     .portal-field textarea { min-height: 120px; resize: vertical; }
     .portal-field select { cursor: pointer; }
     .portal-field small { display: block; margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.5; }
@@ -187,7 +187,7 @@
     .recipient-selector { max-height: 300px; overflow-y: auto; }
     .recipient-option { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; margin-bottom: 0.5rem; cursor: pointer; transition: var(--transition); }
     .recipient-option:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
-    .recipient-option.selected { background: rgba(201,162,39,0.1); border-color: var(--accent); }
+    .recipient-option.selected { background: rgba(244, 162, 97,0.1); border-color: var(--accent); }
     .recipient-option input { accent-color: var(--accent); width: 18px; height: 18px; }
     .recipient-option .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: var(--dark); }
     .recipient-info { flex: 1; min-width: 0; }
@@ -205,7 +205,7 @@
     
     /* Notification Bell in Admin Header */
     .portal-header-actions .notification-bell { width: 40px; height: 40px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 50%; color: var(--lighter); cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; }
-    .portal-header-actions .notification-bell:hover { background: rgba(201,162,39,0.2); border-color: var(--accent); color: var(--accent); }
+    .portal-header-actions .notification-bell:hover { background: rgba(244, 162, 97,0.2); border-color: var(--accent); color: var(--accent); }
     .portal-header-actions .notification-badge { position: absolute; top: 4px; right: 4px; min-width: 18px; height: 18px; background: #ef4444; color: var(--lighter); font-size: 0.65rem; font-weight: 700; border-radius: 100px; display: flex; align-items: center; justify-content: center; padding: 0 5px; animation: pulse 2s infinite; }
     
     /* Header left group + menu toggle */

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <style>
         .inbox-header { text-align: center; margin: 1.5rem 0 2.5rem; }
-        .inbox-header .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(201,162,39,0.25), rgba(45,138,94,0.25)); border-color: rgba(201,162,39,0.4); }
+        .inbox-header .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(244, 162, 97,0.25), rgba(45,138,94,0.25)); border-color: rgba(244, 162, 97,0.4); }
         .inbox-header .page-title { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 0.5rem; }
 
         .inbox-layout { display: grid; grid-template-columns: 1fr 350px; gap: 2rem; align-items: start; }
@@ -25,29 +25,29 @@
 
         .email-list { display: flex; flex-direction: column; gap: 0.75rem; }
         .email-row { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); transition: var(--transition); cursor: pointer; }
-        .email-row:hover { background: rgba(255,255,255,0.05); border-color: rgba(201,162,39,0.3); transform: translateY(-2px); }
-        .email-row.unread { background: linear-gradient(135deg, rgba(27,94,64,0.22), rgba(45,138,94,0.08)); border-color: rgba(45,138,94,0.4); }
-        .email-avatar { flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-light), var(--primary-dark)); display: flex; align-items: center; justify-content: center; color: var(--lighter); border: 2px solid rgba(201,162,39,0.5); }
+        .email-row:hover { background: rgba(255,255,255,0.05); border-color: rgba(244, 162, 97,0.3); transform: translateY(-2px); }
+        .email-row.unread { background: linear-gradient(135deg, rgba(45, 106, 79,0.22), rgba(45,138,94,0.08)); border-color: rgba(45,138,94,0.4); }
+        .email-avatar { flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-light), var(--primary-dark)); display: flex; align-items: center; justify-content: center; color: var(--lighter); border: 2px solid rgba(244, 162, 97,0.5); }
         .email-body { flex: 1; min-width: 0; }
         .email-subject { color: var(--lighter); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .email-row.unread .email-subject { color: #fff; }
         .email-preview { color: rgba(255,255,255,0.5); font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .email-meta { flex-shrink: 0; text-align: right; font-size: 0.75rem; color: rgba(255,255,255,0.4); }
-        .email-badge { display: inline-block; margin-top: 0.35rem; font-size: 0.68rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 20px; background: rgba(201,162,39,0.15); color: var(--accent); border: 1px solid rgba(201,162,39,0.35); }
+        .email-badge { display: inline-block; margin-top: 0.35rem; font-size: 0.68rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 20px; background: rgba(244, 162, 97,0.15); color: var(--accent); border: 1px solid rgba(244, 162, 97,0.35); }
 
         .email-detail { display: none; }
         .email-detail .email-content { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); padding: 1.5rem; margin-top: 1rem; white-space: pre-wrap; line-height: 1.7; font-size: 0.92rem; color: rgba(255,255,255,0.85); }
         .email-detail .email-sub { color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-bottom: 0.75rem; }
 
         .btn-small { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--lighter); font-size: 0.8rem; cursor: pointer; transition: var(--transition); }
-        .btn-small:hover { background: rgba(201,162,39,0.15); border-color: rgba(201,162,39,0.4); }
+        .btn-small:hover { background: rgba(244, 162, 97,0.15); border-color: rgba(244, 162, 97,0.4); }
 
         .inbox-empty { text-align: center; padding: 3rem 1rem; color: rgba(255,255,255,0.5); }
-        .inbox-empty i { font-size: 2.5rem; color: rgba(201,162,39,0.5); margin-bottom: 1rem; }
+        .inbox-empty i { font-size: 2.5rem; color: rgba(244, 162, 97,0.5); margin-bottom: 1rem; }
 
         .quick-links { display: flex; flex-direction: column; gap: 0.75rem; }
         .quick-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.8rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); color: rgba(255,255,255,0.75); font-size: 0.9rem; transition: var(--transition); }
-        .quick-link:hover { background: linear-gradient(135deg, rgba(27,94,64,0.25), rgba(201,162,39,0.12)); border-color: rgba(201,162,39,0.35); color: var(--lighter); transform: translateX(4px); }
+        .quick-link:hover { background: linear-gradient(135deg, rgba(45, 106, 79,0.25), rgba(244, 162, 97,0.12)); border-color: rgba(244, 162, 97,0.35); color: var(--lighter); transform: translateX(4px); }
         .quick-link i { color: var(--accent); }
     </style>
 </head>
@@ -194,6 +194,7 @@
     <script defer src="../js/connectivity.js"></script>
     <script defer src="../js/main.js"></script>
     <script defer src="../js/i18n.js"></script>
+    <script defer src="../js/user-api.js"></script>
     <script defer src="../js/auth.js"></script>
     <script>
         (function() {
@@ -214,6 +215,7 @@
         }
         function openEmail(id) {
             if (typeof window.markEmailRead === 'function') window.markEmailRead(id);
+            if (window.UserAPI) window.UserAPI.markNotificationRead(id);
             var row = document.getElementById('email-row-' + id);
             var detail = document.getElementById('email-detail-' + id);
             if (row) { row.classList.remove('unread'); row.querySelector('.email-badge') && row.querySelector('.email-badge').remove(); }
@@ -226,24 +228,32 @@
             }
             renderInboxCount();
         }
-        function renderInboxCount() {
+        async function getAllInboxEmails() {
+            if (window.UserAPI) {
+                const notifications = await window.UserAPI.getNotifications();
+                if (notifications && notifications.length) return notifications;
+            }
+            if (typeof window.getAllEmails === 'function') return window.getAllEmails();
+            try { return JSON.parse(localStorage.getItem('wildguard_emails') || '[]'); } catch (e) { return []; }
+        }
+        async function renderInboxCount() {
             var el = document.getElementById('inbox-count');
             var sub = document.getElementById('inbox-subtitle');
             var user = (typeof window.getCurrentUser === 'function' && window.getCurrentUser()) || null;
             var email = user && user.email ? user.email : '';
-            var all = (typeof window.getAllEmails === 'function' ? window.getAllEmails() : []) || [];
-            var mine = email ? all.filter(function(e) { return (e.to || '').toLowerCase() === email.toLowerCase(); }) : all;
+            var all = await getAllInboxEmails();
+            var mine = email ? all.filter(function(e) { return (e.to || e.email || '').toLowerCase() === email.toLowerCase() || !e.to; }) : all;
             var unread = mine.filter(function(e) { return !e.read; }).length;
             if (el) el.textContent = mine.length ? unread + ' unread of ' + mine.length : 'No messages';
-            if (sub) sub.textContent = mine.length ? 'Emails sent to ' + (email || 'your account') : 'No emails yet — our team will write to you soon';
+            if (sub) sub.textContent = mine.length ? 'Messages for ' + (email || 'your account') : 'No messages yet — our team will write to you soon';
         }
-        function renderInbox() {
+        async function renderInbox() {
             var list = document.getElementById('email-list');
             if (!list) return;
             var user = (typeof window.getCurrentUser === 'function' && window.getCurrentUser()) || null;
             var email = user && user.email ? user.email : '';
-            var all = (typeof window.getAllEmails === 'function' ? window.getAllEmails() : []) || [];
-            var mine = email ? all.filter(function(e) { return (e.to || '').toLowerCase() === email.toLowerCase(); }) : all;
+            var all = await getAllInboxEmails();
+            var mine = email ? all.filter(function(e) { return (e.to || e.email || '').toLowerCase() === email.toLowerCase() || !e.to; }) : all;
             mine.sort(function(a, b) { return new Date(b.timestamp) - new Date(a.timestamp); });
 
             if (mine.length === 0) {

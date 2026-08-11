@@ -16,7 +16,7 @@
 
 /* ── 1. Design tokens ───────────────────────────────────────── */
 :root {
-  --lib-accent:      #c9a227;
+  --lib-accent:      #F4A261;
   --lib-bg:          #0f1f17;
   --lib-card-bg:     rgba(255,255,255,0.04);
   --lib-shadow:      0 16px 40px rgba(0,0,0,0.2);
@@ -258,8 +258,8 @@
   display:inline-flex; align-items:center; gap:0.3rem; font-family:var(--font-body);
 }
 .lib-book-actions .btn:hover {
-  background:rgba(201,162,39,0.18);
-  border-color:rgba(201,162,39,0.4);
+  background:rgba(244, 162, 97,0.18);
+  border-color:rgba(244, 162, 97,0.4);
   color:var(--lib-accent);
   transform:translateY(-1px);
 }
@@ -341,9 +341,9 @@
 .wildlife-card {
   position: relative;
   background: linear-gradient(145deg, rgba(28, 40, 31, 0.92), rgba(13, 20, 14, 0.94));
-  border: 1px solid rgba(201, 162, 39, 0.28);
+  border: 1px solid rgba(244, 162, 97, 0.28);
 }
-.wildlife-card:hover { border-color: rgba(201, 162, 39, 0.6); }
+.wildlife-card:hover { border-color: rgba(244, 162, 97, 0.6); }
 
 .wildlife-card .brief {
   position: absolute;
@@ -359,7 +359,7 @@
   text-transform: uppercase;
   color: #fff;
   background: rgba(12, 24, 16, 0.78);
-  border: 1px solid rgba(201, 162, 39, 0.55);
+  border: 1px solid rgba(244, 162, 97, 0.55);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
@@ -401,7 +401,7 @@
 .search-box input:focus {
   outline: none;
   border-color: var(--lib-accent);
-  box-shadow: 0 0 0 3px rgba(201,162,39,0.2);
+  box-shadow: 0 0 0 3px rgba(244, 162, 97,0.2);
 }
 .filter-select {
   position: relative;
@@ -429,7 +429,7 @@
 .filter-bar select:focus {
   outline: none;
   border-color: var(--lib-accent);
-  box-shadow: 0 0 0 3px rgba(201,162,39,0.2);
+  box-shadow: 0 0 0 3px rgba(244, 162, 97,0.2);
 }
 
 /* Collapsible Scanned Section */
@@ -476,7 +476,7 @@
 }
 .scanned-empty-icon {
   font-size: 2.5rem;
-  color: var(--accent, #c9a227);
+  color: var(--accent, #F4A261);
   opacity: 0.85;
   margin-bottom: 0.25rem;
 }
