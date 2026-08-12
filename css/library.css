@@ -513,24 +513,27 @@
 
 
 /* ============================================================
-   WILDLIFE SHOWREEL - square autoplay player
+   WILDLIFE SHOWREEL - widescreen hero player (top of page)
    ============================================================ */
+.showreel-hero {
+  padding-top: 0.5rem;
+}
 .showreel-wrap {
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .showreel {
   position: relative;
   width: 100%;
-  max-width: 360px;
-  aspect-ratio: 1 / 1;
-  border-radius: 16px;
+  max-width: 960px;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
   overflow: hidden;
   background: #000;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.55);
   cursor: pointer;
 }
 
@@ -606,9 +609,17 @@
 .showreel-caption h3 {
   margin: 0;
   font-family: var(--font-heading, 'Playfair Display', serif);
-  font-size: 1.15rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.showreel-hero .section-header.showreel-heading {
+  text-align: center;
+}
+.showreel-hero .section-header.showreel-heading h2 {
+  font-size: 2.4rem;
 }
 
 .showreel.sg-await-interaction::after {
@@ -617,4 +628,21 @@
   inset: 0;
   background: transparent;
   pointer-events: none;
+}
+
+/* Showreel is now the hero — slim down the banner below it */
+.showreel-hero + .page-banner {
+  padding: 3rem 2rem 2.5rem;
+}
+
+@media (max-width: 720px) {
+  .showreel-hero {
+    padding-top: 0;
+  }
+  .showreel-hero .section-header.showreel-heading h2 {
+    font-size: 1.8rem;
+  }
+  .showreel-caption h3 {
+    font-size: 1.1rem;
+  }
 }
