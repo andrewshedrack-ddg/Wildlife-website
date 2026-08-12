@@ -42,9 +42,9 @@ _STATIC_ALLOWED = {
     'js/alert.js', 'js/i18n.js', 'js/admin.js', 'js/admin-ui.js',
     'js/admin-portal.js', 'js/admin-auth-guard.js', 'js/admin-guard.js',
     'js/scan-integration.js', 'js/wildlife-data.json',
-    'js/user-api.js', 'js/admin-api.js',
+    'js/user-api.js', 'js/admin-api.js', 'js/pwa.js',
     'js/i18n/en.json', 'js/i18n/es.json', 'js/i18n/fr.json', 'js/i18n/sw.json',
-    'sw.js', 'favicon.ico', 'robots.txt', 'manifest.json', 'site.webmanifest',
+    'sw.js', 'favicon.ico', 'robots.txt', 'manifest.json', 'site.webmanifest', 'manifest.webmanifest',
 }
 
 
@@ -76,6 +76,27 @@ def serve_static(filename):
         except Exception:
             pass
     return make_response('Not found', 404)
+
+
+# --- Security response headers ---
+@app.after_request
+def add_security_headers(response):
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers.setdefault(
+        'Content-Security-Policy',
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' https://cdn.socket.io https://cdn.jsdelivr.net; "
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; "
+        "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; "
+        "img-src 'self' data: blob:; "
+        "media-src 'self' blob: mediastream:; "
+        "connect-src 'self'; "
+        "object-src 'none'; "
+        "frame-ancestors 'self'; "
+        "base-uri 'self'"
+    )
+    return response
 
 
 # --- Configuration & Security ---

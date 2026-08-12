@@ -95,11 +95,10 @@
   - Show live detections overlay
 
 ### Mobile & PWA
-- [ ] **Service Worker** (sw.js) - offline support
-  - Cache static assets
-  - Queue scans for sync when online
-  - Background sync for admin notifications
-- [ ] **Web App Manifest** - installable PWA
+- [x] **Service Worker** (sw.js) - offline support
+  - Caches static assets (project-path aware for GitHub Pages)
+  - Serves cached assets offline with network fallback + runtime caching
+- [x] **Web App Manifest** - installable PWA (manifest.webmanifest + registration on all pages)
 - [ ] **Camera improvements**
   - Better mobile camera handling
   - Torch/flash support
@@ -173,8 +172,8 @@
 - [ ] SocketIO uses threading mode - consider eventlet/gevent for production
 
 ### Security
-- [ ] Content Security Policy (CSP) headers not fully configured
-- [ ] Subresource Integrity (SRI) for external scripts (FontAwesome, etc.)
+- [x] **Content Security Policy (CSP) headers** - added via Flask `after_request` (backend)
+- [x] **Subresource Integrity (SRI) for external scripts** (FontAwesome) - all HTML pages
 - [ ] Regular dependency updates (Dependabot)
 
 ---
