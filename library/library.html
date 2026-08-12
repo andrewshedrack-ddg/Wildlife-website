@@ -87,6 +87,31 @@
       <p class="lede">Discover mammals, birds, reptiles, amphibians, aquatic life, plants, fungi, bacteria, and viruses.</p>
     </section>
 
+    <!-- ══════════════ WILDLIFE SHOWREEL ══════════════ -->
+    <section class="content-overlay" aria-labelledby="showreel-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="showreel-heading">In the Field</h2>
+          <p>Real footage from our rangers and scouts — tap to hear the sounds of the wild</p>
+        </div>
+        <div class="showreel-wrap">
+          <div id="wildguard-showreel" class="showreel" role="region" aria-label="Wildlife video showreel"
+               data-clips='[{"src":"../assets/videos/video1.mp4","title":"On Patrol"},{"src":"../assets/videos/Video2.mp4","title":"Life in the Wild"},{"src":"../assets/videos/Video3.mp4","title":"Corridor Crossing"},{"src":"../assets/videos/Video4.mp4","title":"Field Research"},{"src":"../assets/videos/Video5.mp4","title":"The Guardians"}]'>
+            <video playsinline preload="metadata" aria-label="Wildlife field footage"></video>
+            <span class="showreel-live" id="showreel-live"><i class="fas fa-circle" style="font-size:0.5rem;"></i> Live</span>
+            <button type="button" id="showreel-mute" class="showreel-mute" aria-label="Toggle sound">
+              <i class="fas fa-volume-up sg-mute-off"></i>
+              <i class="fas fa-volume-mute sg-mute-on"></i>
+            </button>
+            <div class="showreel-caption">
+              <span class="showreel-counter" id="showreel-counter">1 / 5</span>
+              <h3 id="showreel-title">On Patrol</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ══════════════ CATEGORIES ══════════════ -->
     <section class="content-overlay" aria-labelledby="categories-heading">
       <div class="container">
@@ -375,6 +400,7 @@
   <script defer src="../js/auth.js"></script>
   <script defer src="../js/library.js"></script>
   <script defer src="../js/scan-integration.js"></script>
+  <script defer src="../js/showreel.js"></script>
   <script defer src="../js/icons.js"></script>
 </body>
 </html>

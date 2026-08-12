@@ -510,3 +510,111 @@
   }
   .lib-book { --book-w:100px; --book-h:155px; --book-d:12px; }
 }
+
+
+/* ============================================================
+   WILDLIFE SHOWREEL - square autoplay player
+   ============================================================ */
+.showreel-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.showreel {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.showreel video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.showreel-live {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.32rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+.showreel-live i { color: #f87171; animation: pulse 2s ease-in-out infinite; }
+
+.showreel-mute {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.showreel-mute:hover { background: rgba(244, 162, 97, 0.9); color: #1a1408; transform: scale(1.05); }
+.showreel-mute i { pointer-events: none; }
+.showreel-mute .sg-mute-off { display: none; } /* sound-off icon hidden until unmuted */
+
+.showreel-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 2.2rem 1rem 0.9rem;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.78));
+  color: #fff;
+}
+.showreel-counter {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--accent, #F4A261);
+  margin-bottom: 0.25rem;
+}
+.showreel-caption h3 {
+  margin: 0;
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.showreel.sg-await-interaction::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+}
