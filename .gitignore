@@ -16,7 +16,7 @@ js/scan_backup.js
 library/library.html.bak
 
 # Unused local media (not referenced by the site)
-assets/videos/
+# assets/videos/  -- now referenced by index.html Wildlife in Motion section
 
 # Temporary / debug files
 button.txt

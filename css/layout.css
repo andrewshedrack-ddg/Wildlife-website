@@ -95,6 +95,28 @@ main:not(.portal-main) {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
+/* ── Field footage video grid ── */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-xl);
+  margin-top: var(--space-xl);
+}
+
+.video-card video {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius-lg, 16px) var(--radius-lg, 16px) 0 0;
+  background: #000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.video-card video::-webkit-media-controls-panel {
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.6));
+}
+
+.video-card .card-body { padding: 1rem 1.1rem 1.2rem; }
+
 /* ── Vertical rhythm helpers ── */
 .stack > * + * { margin-top: var(--space-lg); }
 .stack--sm > * + * { margin-top: var(--space-sm); }
