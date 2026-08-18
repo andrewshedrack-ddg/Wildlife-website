@@ -1,4 +1,21 @@
-"""Tests for public endpoints: species listing, settings, and contact form."""
+"""Tests for public endpoints: health, species, settings, and contact form."""
+
+
+class TestHealth:
+    def test_health_ok(self, client):
+        resp = client.get('/api/health')
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert data['status'] == 'ok'
+        assert data['service'] == 'wildguard-backend'
+
+
+class TestErrorHandlers:
+    def test_unknown_api_route_returns_json(self, client):
+        resp = client.get('/api/does-not-exist')
+        assert resp.status_code == 404
+        assert resp.is_json
+        assert resp.get_json()['message'] == 'Not found'
 
 
 class TestSpecies:

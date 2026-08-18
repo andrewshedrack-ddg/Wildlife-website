@@ -1,7 +1,35 @@
 # WildGuard Society - Project Roadmap & TODO List
 
-> Last Updated: August 9, 2026
-> Status: Core security hardening & AI honesty fixes complete
+> Last Updated: August 18, 2026
+> Status: PostgreSQL-ready, JWT refresh tokens, CI/CD pipeline complete
+
+---
+
+## ✅ COMPLETED: Session Auth, DB & CI/CD (Current Sprint)
+
+### JWT Refresh-Token Session Management (auth overhaul)
+- **Added** rotating refresh tokens (HttpOnly `refresh_token` cookie, SameSite=Strict)
+- **Added** `/api/auth/refresh` — rotates token pair, marks old as revoked, links replacement
+- **Added** reuse-detection: presenting a rotated token revokes the user's whole token family
+- **Added** `/api/logout` (user) + hardened `/api/admin/logout` — revoke family + clear cookies
+- **Added** password-change token revocation (all sessions invalidated on password rotation)
+- **Added** `RefreshToken` model (SHA-256 hashes only, revocation + rotation support)
+- **Separated** `JWT_SECRET_KEY` from `SECRET_KEY`; access TTL 15 min (rotatable), refresh 7 days
+- **Frontend**: transparent 401 → refresh → retry in `user-api.js` + `admin-api.js`; logout revokes server-side
+
+### PostgreSQL Support & Database Migrations
+- **Fixed** broken Alembic chain: replaced auto-migrations (which assumed pre-existing tables) with a single clean baseline (`3f8c1a2d4e6b`) that creates the full schema on any engine
+- **Verified** `flask db upgrade` against fresh SQLite + rendered PostgreSQL DDL
+- **Added** `TEST_DATABASE_URL` support in `tests/conftest.py` so the suite runs against a real PostgreSQL service container in CI
+- Backend already reads `DATABASE_URL` — set to a `postgresql://` string for production
+
+### CI/CD Pipeline (GitHub Actions)
+- **Added** `.github/workflows/ci.yml` — lint (ruff) + tests on SQLite and PostgreSQL (service container)
+- **Rewrote** `.github/workflows/deploy.yml`:
+  - Frontend → GitHub Pages (curated publish set, no backend source/secrets)
+  - Backend → Azure App Service (tests → zip deploy → app settings → startup), gated on `AZURE_*` secrets
+- **Added** `wsgi.py` (gunicorn + eventlet entry) and `Dockerfile` (Container Apps / App Service Linux)
+- **Added** `requirements-dev.txt` (pytest, ruff) and `ruff.toml` (backend lints clean: `ruff check app.py tests/`)
 
 ---
 
@@ -53,13 +81,15 @@
   - Test `/api/scan` endpoint with real images
 
 ### Database & Persistence
-- [ ] **Migrate from localStorage to PostgreSQL** (Azure Database for PostgreSQL)
-  - Users, scans, favorites, messages, activity logs
-  - Admin notifications, email queue
-- [ ] **Implement proper session management** (JWT + refresh tokens)
-  - HttpOnly Secure cookies
-  - Token rotation
-- [ ] **Add database migrations** (Flask-Migrate already configured)
+- [ ] **Migrate production data to PostgreSQL** (Azure Database for PostgreSQL)
+  - ✅ Backend supports `DATABASE_URL=postgresql://` + Alembic baseline migration
+  - ✅ CI runs the full suite against a PostgreSQL container
+  - [ ] Provision Azure Database for PostgreSQL and point the app at it
+  - [ ] Move users, scans, favourites, messages, activity logs, refresh tokens to PostgreSQL
+- [x] **Implement proper session management** (JWT + refresh tokens)
+  - ✅ HttpOnly Secure cookies
+  - ✅ Token rotation + reuse detection + revocation (logout / password change)
+- [x] **Add database migrations** (Flask-Migrate baseline `3f8c1a2d4e6b`)
 
 ### Admin Features
 - [ ] **Complete admin dashboard** (admin/Dashboard.html)
@@ -115,12 +145,10 @@
   - RTL support for Arabic (future)
 
 ### Testing & Quality
+- [x] **CI/CD Pipeline** (GitHub Actions) — lint + SQLite/PostgreSQL tests on PR/push
 - [ ] **Unit tests** (pytest for backend, Jest for frontend)
 - [ ] **Integration tests** (API endpoints)
 - [ ] **E2E tests** (Playwright/Cypress)
-- [ ] **CI/CD Pipeline** (GitHub Actions)
-  - Lint, typecheck, test on PR
-  - Auto-deploy to staging/production
 
 ### Monitoring & Analytics
 - [ ] **Application Insights** (Azure) - backend telemetry
@@ -198,6 +226,9 @@ For each task:
 |-----------|-------------|--------|
 | Security Hardening Complete | Aug 2026 | ✅ Done |
 | AI Honesty Fixes Complete | Aug 2026 | ✅ Done |
+| JWT Refresh Tokens + Session Rotation | Aug 2026 | ✅ Done |
+| PostgreSQL-Ready Backend + Migrations | Aug 2026 | ✅ Done |
+| CI/CD Pipeline (GitHub Actions) | Aug 2026 | ✅ Done |
 | Backend Deployed to Azure | Sep 2026 | 🔄 Planned |
 | Frontend on GitHub Pages | Sep 2026 | 🔄 Planned |
 | Full User Features | Oct 2026 | 📋 Backlog |

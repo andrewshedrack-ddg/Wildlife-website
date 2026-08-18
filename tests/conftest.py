@@ -6,13 +6,18 @@ import pytest
 os.environ.setdefault('SECRET_KEY', 'test-secret-key-not-for-production')
 os.environ.setdefault('COOKIE_SECURE', 'false')
 
-# Use a throwaway SQLite database so tests never touch the real data.
-_test_db_fd, _test_db_path = tempfile.mkstemp(suffix='.db')
-os.close(_test_db_fd)
-os.environ['DATABASE_URL'] = f'sqlite:///{_test_db_path}'
+# Tests run against a throwaway SQLite database by default so they never touch
+# the real data. CI can override this with TEST_DATABASE_URL (e.g. a PostgreSQL
+# service container) to exercise the same suite against the production engine.
+if os.environ.get('TEST_DATABASE_URL'):
+    os.environ['DATABASE_URL'] = os.environ['TEST_DATABASE_URL']
+else:
+    _test_db_fd, _test_db_path = tempfile.mkstemp(suffix='.db')
+    os.close(_test_db_fd)
+    os.environ['DATABASE_URL'] = f'sqlite:///{_test_db_path}'
 
 import app as app_module
-from app import db, bcrypt, User, Species, Message
+from app import db, bcrypt, User, Species
 
 
 @pytest.fixture()
@@ -20,7 +25,7 @@ def app():
     app_module.app.config.update(
         TESTING=True,
         SECRET_KEY='test-secret-key-not-for-production',
-        SQLALCHEMY_DATABASE_URI=f'sqlite:///{_test_db_path}',
+        SQLALCHEMY_DATABASE_URI=os.environ['DATABASE_URL'],
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
     )
     with app_module.app.app_context():

@@ -1,23 +1,97 @@
-name: Deploy to GitHub Pages
+name: Deploy (GitHub Pages + Azure)
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-  build-and-deploy:
+  # ---------------------------------------------------------------------------
+  # FRONTEND -> GitHub Pages (curated set, no backend source or secrets)
+  # ---------------------------------------------------------------------------
+  deploy-frontend:
+    name: Deploy frontend to GitHub Pages
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: .
-        force_orphan: true
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Stage frontend files
+        run: |
+          mkdir -p _site
+          cp *.html manifest.webmanifest sw.js _site/ 2>/dev/null || true
+          for d in css js library admin user assets images fonts icons; do
+            [ -d "$d" ] && cp -r "$d" _site/
+          done
+          # PWA + SEO essentials if present
+          cp favicon.ico robots.txt _site/ 2>/dev/null || true
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _site
+          force_orphan: true
+
+  # ---------------------------------------------------------------------------
+  # BACKEND -> Azure App Service (Linux / Python). Enabled only when the
+  # AZURE_WEBAPP_NAME secret is configured; otherwise this job is skipped.
+  # ---------------------------------------------------------------------------
+  deploy-backend:
+    name: Deploy backend to Azure App Service
+    runs-on: ubuntu-latest
+    if: ${{ secrets.AZURE_WEBAPP_NAME != '' && secrets.AZURE_RESOURCE_GROUP != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run tests before deploy
+        env:
+          SECRET_KEY: ci-secret-not-for-production
+          COOKIE_SECURE: 'false'
+        run: |
+          pip install -r requirements.txt -r requirements-dev.txt
+          python -m pytest tests/
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build deployment package
+        run: |
+          mkdir deploy
+          cp app.py wsgi.py requirements.txt deploy/
+          cp -r migrations deploy/
+          cd deploy && zip -r ../backend.zip .
+
+      - name: Deploy to Azure App Service
+        uses: Azure/webapps-deploy@v3
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          package: backend.zip
+
+      - name: Configure app settings and startup
+        run: |
+          az webapp config appsettings set \
+            --name "${{ secrets.AZURE_WEBAPP_NAME }}" \
+            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+            --settings \
+              SECRET_KEY="${{ secrets.SECRET_KEY }}" \
+              JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" \
+              DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+              ADMIN_EMAIL="${{ secrets.ADMIN_EMAIL }}" \
+              ADMIN_PASSWORD="${{ secrets.ADMIN_PASSWORD }}" \
+              AZURE_VISION_ENDPOINT="${{ secrets.AZURE_VISION_ENDPOINT }}" \
+              AZURE_VISION_KEY="${{ secrets.AZURE_VISION_KEY }}" \
+              COOKIE_SECURE="true"
+          az webapp config set \
+            --name "${{ secrets.AZURE_WEBAPP_NAME }}" \
+            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+            --startup-file "flask db upgrade && gunicorn -k eventlet -w 1 --timeout 120 wsgi:app"

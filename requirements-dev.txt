@@ -1,0 +1,4 @@
+# WildGuard Society — development & CI tooling
+# Production runtime deps live in requirements.txt.
+pytest>=8.0
+ruff>=0.5

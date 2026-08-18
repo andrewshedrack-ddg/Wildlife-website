@@ -1,0 +1,17 @@
+# Ruff linter configuration for WildGuard Society backend
+# Run locally with: python -m ruff check .
+# Runs in CI via .github/workflows/ci.yml
+
+target-version = "py311"
+line-length = 120
+exclude = ["migrations/versions"]
+
+[lint]
+# Default pycodestyle (subset) + pyflakes. Intentional patterns are ignored
+# below so existing code (in-process rate limiter, defensive error handling)
+# lints cleanly without unnecessary churn.
+select = ["E4", "E7", "E9", "F"]
+ignore = [
+    "E402",  # module-level imports mid-file (rate limiter helpers)
+    "E741",  # short loop variable names (e.g. `for l in logs`)
+]

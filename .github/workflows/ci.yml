@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    name: Lint (ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dev deps
+        run: pip install -r requirements-dev.txt
+
+      - name: Ruff check
+        run: ruff check app.py tests/
+
+  test-sqlite:
+    name: Tests (SQLite)
+    runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: ci-secret-not-for-production
+      COOKIE_SECURE: 'false'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install deps
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Run tests (SQLite)
+        run: python -m pytest tests/
+
+  test-postgres:
+    name: Tests (PostgreSQL)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: wildguard
+          POSTGRES_PASSWORD: wildguard
+          POSTGRES_DB: wildguard
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U wildguard"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      SECRET_KEY: ci-secret-not-for-production
+      COOKIE_SECURE: 'false'
+      DATABASE_URL: postgresql://wildguard:wildguard@localhost:5432/wildguard
+      TEST_DATABASE_URL: postgresql://wildguard:wildguard@localhost:5432/wildguard
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install deps
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Verify Alembic migration applies to PostgreSQL
+        run: flask db upgrade
+
+      - name: Run tests (PostgreSQL)
+        run: python -m pytest tests/

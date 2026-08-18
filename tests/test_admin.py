@@ -2,7 +2,6 @@
 
 import pytest
 
-from .conftest import register_user, login_user
 
 
 @pytest.fixture()

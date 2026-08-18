@@ -1,15 +1,21 @@
 import os
 import datetime
+import hashlib
+import logging
 import re
+import time
+import uuid
 from dotenv import load_dotenv
-from flask import Flask, request, jsonify, make_response, send_from_directory
+from flask import Flask, request, jsonify, make_response, g
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
-from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask_socketio import SocketIO, emit, join_room
 from flask_migrate import Migrate
 import jwt
 from functools import wraps
+
+_logger = logging.getLogger('wildguard')
 
 # Load environment variables from .env (also enables `python app.py` to work
 # without the Flask CLI, which loads .env automatically).
@@ -75,6 +81,9 @@ def serve_static(filename):
             return send_from_directory('.', normalized)
         except Exception:
             pass
+    # API-style requests get a JSON 404 so client code can parse the response.
+    if normalized.startswith('api/') or normalized == 'api':
+        return jsonify({'message': 'Not found'}), 404
     return make_response('Not found', 404)
 
 
@@ -99,6 +108,54 @@ def add_security_headers(response):
     return response
 
 
+# --- Request logging (structured, lightweight) ---
+@app.before_request
+def _start_request_timer():
+    g._wg_start = time.perf_counter()
+
+
+@app.after_request
+def _log_request(response):
+    try:
+        duration_ms = round((time.perf_counter() - g.get('_wg_start', time.perf_counter())) * 1000, 1)
+        _logger.info('%s %s -> %s (%.1fms)', request.method, request.path, response.status_code, duration_ms)
+    except Exception:
+        pass
+    return response
+
+
+# --- Health & error responses (JSON, deployment-friendly) ---
+@app.route('/api/health')
+def health():
+    """Liveness probe for Azure App Service / Container Apps. No auth, no DB hit."""
+    return jsonify({
+        'status': 'ok',
+        'service': 'wildguard-backend',
+        'version': '1.0',
+        'time': datetime.datetime.utcnow().isoformat() + 'Z',
+    }), 200
+
+
+@app.errorhandler(404)
+def _not_found(_e):
+    return jsonify({'message': 'Not found'}), 404
+
+
+@app.errorhandler(413)
+def _too_large(_e):
+    return jsonify({'message': 'Payload too large'}), 413
+
+
+@app.errorhandler(429)
+def _too_many(_e):
+    return jsonify({'message': 'Too many requests. Please try again later.'}), 429
+
+
+@app.errorhandler(500)
+def _server_error(_e):
+    return jsonify({'message': 'Internal server error'}), 500
+
+
 # --- Configuration & Security ---
 # Fail fast if the signing key is missing. Never ship a predictable fallback:
 # a known SECRET_KEY lets anyone forge auth tokens and take over the admin.
@@ -108,7 +165,14 @@ if not os.environ.get('SECRET_KEY'):
         "before starting the server (e.g. python -c \"import secrets; print(secrets.token_hex(32))\")."
     )
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
-# Use absolute path for SQLite to ensure it works from any working directory
+# JWT signing key. Uses a dedicated JWT_SECRET_KEY when provided (recommended),
+# otherwise falls back to SECRET_KEY for backwards compatibility.
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY') or app.config['SECRET_KEY']
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = int(os.environ.get('JWT_ACCESS_TOKEN_EXPIRES', '900'))
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = int(os.environ.get('JWT_REFRESH_TOKEN_EXPIRES', str(7 * 24 * 60 * 60)))
+# Use absolute path for SQLite to ensure it works from any working directory.
+# In production set DATABASE_URL to a PostgreSQL connection string
+# (e.g. postgresql://user:pass@host:5432/wildguard?sslmode=require).
 _base_dir = os.path.dirname(os.path.abspath(__file__))
 default_db_path = os.path.join(_base_dir, 'instance', 'wildguard.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
@@ -130,17 +194,28 @@ CORS(app, supports_credentials=True, origins=_ALLOWED_ORIGINS)
 # --- SocketIO for Real-time Live Feed ---
 socketio = SocketIO(app, cors_allowed_origins=_ALLOWED_ORIGINS, async_mode='threading', logger=False, engineio_logger=False)
 
-# --- Lightweight in-process rate limiting (per IP + endpoint) ---
+# --- Rate limiting: Redis-backed when REDIS_URL is set, in-process otherwise ---
 from collections import defaultdict
 from threading import Lock
 
-_rate_limits = defaultdict(list)
-_rate_lock = Lock()
 _RATE_WINDOW = 60
 _RATE_MAX = {
     '/api/login': 10, '/api/admin/login': 5,
     '/api/register': 5, '/api/contact': 5,
 }
+
+# Optional Redis-backed limiter (distributed across instances). Falls back to
+# the in-process limiter if Redis is unreachable or not configured.
+_redis_client = None
+try:
+    import redis as _redis
+    if os.environ.get('REDIS_URL'):
+        _redis_client = _redis.from_url(os.environ['REDIS_URL'], socket_connect_timeout=1, socket_timeout=1)
+except Exception:
+    _redis_client = None
+
+_rate_limits = defaultdict(list)
+_rate_lock = Lock()
 
 
 def _rate_limited():
@@ -150,7 +225,19 @@ def _rate_limited():
         return False
     now = datetime.datetime.utcnow().timestamp()
     ip = request.remote_addr or 'unknown'
-    key = f"{ip}:{request.path}"
+    key = f"rl:{ip}:{request.path}"
+    if _redis_client is not None:
+        try:
+            pipe = _redis_client.pipeline()
+            pipe.zremrangebyscore(key, '-inf', now - _RATE_WINDOW)
+            pipe.zadd(key, {str(now): now})
+            pipe.zcard(key)
+            pipe.expire(key, _RATE_WINDOW)
+            count = pipe.execute()[-1]
+            return count > limit
+        except Exception:
+            # Redis temporarily unavailable: fall back to in-process for this call.
+            pass
     with _rate_lock:
         recent = [t for t in _rate_limits.get(key, []) if now - t < _RATE_WINDOW]
         if len(recent) >= limit:
@@ -237,38 +324,149 @@ class Notification(db.Model):
     read = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
+class RefreshToken(db.Model):
+    """Server-side record for refresh tokens so they can be rotated and revoked.
+
+    Only a SHA-256 hash of the token is stored, never the token itself, so a
+    database leak cannot be replayed. On rotation the old row is marked revoked
+    and linked to its replacement (revocation / theft detection)."""
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, index=True)
+    token_hash = db.Column(db.String(64), unique=True, nullable=False, index=True)
+    expires_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    revoked_at = db.Column(db.DateTime, nullable=True)
+    replaced_by = db.Column(db.String(64), nullable=True)
+    user_agent = db.Column(db.Text, nullable=True)
+    ip_address = db.Column(db.String(45), nullable=True)
+
+# --- Token helpers (JWT access + rotating refresh tokens) ---
+def _hash_token(token):
+    """Return a SHA-256 hash of a token (used for the server-side store)."""
+    return hashlib.sha256(token.encode('utf-8')).hexdigest()
+
+
+def _issue_token_pair(user):
+    """Issue a fresh access + refresh token pair and persist the refresh token.
+
+    Returns (access_token, refresh_token). The refresh token is stored hashed
+    server-side so it can be rotated, revoked, and reused-token theft detected.
+    """
+    now = datetime.datetime.utcnow()
+    access = jwt.encode({
+        'user_id': user.id,
+        'type': 'access',
+        'iat': now,
+        'exp': now + datetime.timedelta(seconds=app.config['JWT_ACCESS_TOKEN_EXPIRES']),
+    }, app.config['JWT_SECRET_KEY'], algorithm='HS256')
+    refresh = jwt.encode({
+        'user_id': user.id,
+        'type': 'refresh',
+        'jti': uuid.uuid4().hex,
+        'iat': now,
+        'exp': now + datetime.timedelta(seconds=app.config['JWT_REFRESH_TOKEN_EXPIRES']),
+    }, app.config['JWT_SECRET_KEY'], algorithm='HS256')
+    record = RefreshToken(
+        user_id=user.id,
+        token_hash=_hash_token(refresh),
+        expires_at=now + datetime.timedelta(seconds=app.config['JWT_REFRESH_TOKEN_EXPIRES']),
+        user_agent=(request.headers.get('User-Agent') or '')[:500] or None,
+        ip_address=request.remote_addr,
+    )
+    db.session.add(record)
+    db.session.commit()
+    return access, refresh
+
+
+def _decode_token(token):
+    """Decode + validate a JWT. Returns the payload, or None if invalid/expired."""
+    try:
+        return jwt.decode(token, app.config['JWT_SECRET_KEY'], algorithms=['HS256'])
+    except Exception:
+        return None
+
+
+def _get_access_token():
+    """Resolve the access token from the HttpOnly cookie or Authorization header."""
+    token = request.cookies.get('auth_token')
+    if not token:
+        header = request.headers.get('Authorization', '')
+        if header.startswith('Bearer '):
+            token = header[7:].strip()
+    return token or None
+
+
+def _user_from_access_token():
+    """Resolve the authenticated user from a valid access token, or None."""
+    token = _get_access_token()
+    if not token:
+        return None
+    payload = _decode_token(token)
+    if not payload or payload.get('type') != 'access':
+        return None
+    return User.query.filter_by(id=payload.get('user_id')).first()
+
+
+def _revoke_user_refresh_tokens(user_id, except_hash=None):
+    """Revoke every active refresh token for a user (logout / password change)."""
+    now = datetime.datetime.utcnow()
+    rows = RefreshToken.query.filter_by(user_id=user_id).filter(RefreshToken.revoked_at.is_(None)).all()
+    for r in rows:
+        if except_hash and r.token_hash == except_hash:
+            continue
+        r.revoked_at = now
+    db.session.commit()
+
+
+def _cookie_secure():
+    """Resolve whether cookies should carry the Secure flag. Defaults to HTTPS."""
+    secure = os.environ.get('COOKIE_SECURE')
+    if secure is None:
+        return request.is_secure or request.headers.get('X-Forwarded-Proto', '') == 'https'
+    return secure.lower() in ('1', 'true', 'yes')
+
+
+def _set_cookie(response, name, token, max_age):
+    """Set an HttpOnly, SameSite=Strict auth cookie."""
+    response.set_cookie(
+        name, token, httponly=True, samesite='Strict',
+        secure=_cookie_secure(), max_age=max_age)
+    return response
+
+
+def _set_auth_cookies(response, user):
+    """Set both the access token cookie and the refresh token cookie."""
+    access, refresh = _issue_token_pair(user)
+    _set_cookie(response, 'auth_token', access, app.config['JWT_ACCESS_TOKEN_EXPIRES'])
+    _set_cookie(response, 'refresh_token', refresh, app.config['JWT_REFRESH_TOKEN_EXPIRES'])
+    return response
+
+
+def _clear_auth_cookies(response):
+    """Expire both auth cookies so the client is fully signed out."""
+    response.set_cookie('auth_token', '', expires=0, httponly=True, samesite='Strict', secure=_cookie_secure())
+    response.set_cookie('refresh_token', '', expires=0, httponly=True, samesite='Strict', secure=_cookie_secure())
+    return response
+
+
 # --- Security Decorators ---
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = request.cookies.get('auth_token')
-        if not token:
-            return jsonify({'message': 'Authentication token is missing!'}), 401
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
-            current_user = User.query.filter_by(id=data['user_id']).first()
-            if not current_user:
-                return jsonify({'message': 'Invalid token.'}), 401
-        except Exception as e:
-            return jsonify({'message': 'Token is invalid or expired!'}), 401
+        current_user = _user_from_access_token()
+        if not current_user:
+            return jsonify({'message': 'Authentication token is missing or invalid!'}), 401
         return f(current_user, *args, **kwargs)
     return decorated
 
 def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = request.cookies.get('auth_token')
-        if not token:
-            return jsonify({'message': 'Authentication token is missing!'}), 401
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
-            current_user = User.query.filter_by(id=data['user_id']).first()
-            if not current_user:
-                return jsonify({'message': 'Invalid token.'}), 401
-            if current_user.role != 'admin':
-                return jsonify({'message': 'Admin privilege required!'}), 403
-        except Exception as e:
-            return jsonify({'message': 'Token is invalid or expired!'}), 401
+        current_user = _user_from_access_token()
+        if not current_user:
+            return jsonify({'message': 'Authentication token is missing or invalid!'}), 401
+        if current_user.role != 'admin':
+            return jsonify({'message': 'Admin privilege required!'}), 403
         return f(current_user, *args, **kwargs)
     return decorated
 
@@ -527,22 +725,6 @@ def _is_valid_email(email):
     return bool(email) and _EMAIL_RE.match(email) is not None
 
 
-def _set_auth_cookie(response, token):
-    """Set the auth cookie with security hardening. The Secure flag follows the
-    request scheme (True over HTTPS), so development over plain HTTP keeps the
-    cookie working while production HTTPS stays secure."""
-    secure = os.environ.get('COOKIE_SECURE')
-    if secure is None:
-        secure = 'true' if (request.is_secure or request.headers.get('X-Forwarded-Proto', '') == 'https') else 'false'
-    else:
-        secure = secure.lower() in ('1', 'true', 'yes')
-    response.set_cookie(
-        'auth_token', token, httponly=True, samesite='Strict',
-        secure=secure,
-        max_age=7200)
-    return response
-
-
 def _log_activity(user_id, action, details=None):
     """Record an activity entry in the DB (best-effort, never raises)."""
     try:
@@ -592,12 +774,11 @@ def login():
         return jsonify({'message': 'Email and password required'}), 400
     user = User.query.filter_by(email=email).first()
     if user and bcrypt.check_password_hash(user.password_hash, password):
-        token = jwt.encode({'user_id': user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=2)}, app.config['SECRET_KEY'], algorithm='HS256')
         user.last_seen = datetime.datetime.utcnow()
         user.is_online = True
         db.session.commit()
         response = make_response(jsonify({'message': 'Login successful', 'role': user.role}))
-        return _set_auth_cookie(response, token)
+        return _set_auth_cookies(response, user)
     return jsonify({'message': 'Invalid credentials'}), 401
 
 @app.route('/api/me', methods=['GET'])
@@ -619,9 +800,8 @@ def admin_login():
     if user and bcrypt.check_password_hash(user.password_hash, password):
         if user.role != 'admin':
             return jsonify({'message': 'Admin access required.'}), 403
-        token = jwt.encode({'user_id': user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=2)}, app.config['SECRET_KEY'], algorithm='HS256')
         response = make_response(jsonify({'message': 'Login successful.', 'authenticated': True, 'role': user.role}))
-        return _set_auth_cookie(response, token)
+        return _set_auth_cookies(response, user)
     return jsonify({'message': 'Invalid credentials.'}), 401
 
 @app.route('/api/admin/verify', methods=['POST'])
@@ -838,6 +1018,8 @@ def change_user_password(current_user):
     if len(new_pw) < 8 or len(new_pw) > 128:
         return jsonify({'message': 'New password must be between 8 and 128 characters.'}), 400
     current_user.password_hash = bcrypt.generate_password_hash(new_pw).decode('utf-8')
+    # Password rotation invalidates every existing session (token family revoked).
+    _revoke_user_refresh_tokens(current_user.id)
     db.session.commit()
     _log_activity(current_user.id, 'password_changed', {'email': current_user.email})
     return jsonify({'message': 'Password updated successfully.'}), 200
@@ -863,11 +1045,66 @@ def mark_notification_read(current_user, id):
     db.session.commit()
     return jsonify({'message': 'Notification marked as read'}), 200
 
-@app.route('/api/admin/logout', methods=['POST'])
-def admin_logout():
-    response = make_response(jsonify({'message': 'Logged out.'}))
-    response.set_cookie('auth_token', '', expires=0)
+# --- Token Refresh & Logout ---
+@app.route('/api/auth/refresh', methods=['POST'])
+def refresh_token():
+    """Exchange the refresh-token cookie for a fresh access + refresh pair.
+
+    The presented refresh token is rotated: the old record is revoked and linked
+    to its replacement. Presenting an already-rotated (revoked) token is treated
+    as possible token theft and revokes the user's entire token family."""
+    token = request.cookies.get('refresh_token')
+    if not token:
+        return jsonify({'message': 'Refresh token missing'}), 401
+    payload = _decode_token(token)
+    if not payload or payload.get('type') != 'refresh':
+        return jsonify({'message': 'Invalid refresh token'}), 401
+    user = User.query.filter_by(id=payload.get('user_id')).first()
+    if not user:
+        return jsonify({'message': 'Invalid refresh token'}), 401
+    record = RefreshToken.query.filter_by(token_hash=_hash_token(token)).first()
+    now = datetime.datetime.utcnow()
+    if not record or record.expires_at <= now:
+        return jsonify({'message': 'Refresh token expired'}), 401
+    if record.revoked_at is not None:
+        # Reuse of a rotated token => assume theft and kill the whole family.
+        _revoke_user_refresh_tokens(user.id)
+        return jsonify({'message': 'Refresh token reuse detected'}), 401
+
+    access, refresh = _issue_token_pair(user)
+    record.revoked_at = now
+    record.replaced_by = _hash_token(refresh)
+    user.last_seen = now
+    db.session.commit()
+
+    response = make_response(jsonify({'message': 'Tokens refreshed', 'role': user.role}))
+    _set_cookie(response, 'auth_token', access, app.config['JWT_ACCESS_TOKEN_EXPIRES'])
+    _set_cookie(response, 'refresh_token', refresh, app.config['JWT_REFRESH_TOKEN_EXPIRES'])
     return response
+
+
+@app.route('/api/logout', methods=['POST'])
+@token_required
+def logout(current_user):
+    """Sign the current user out: revoke all their refresh tokens and clear cookies."""
+    _revoke_user_refresh_tokens(current_user.id)
+    current_user.is_online = False
+    db.session.commit()
+    _log_activity(current_user.id, 'logout', {'email': current_user.email})
+    response = make_response(jsonify({'message': 'Logged out.'}))
+    return _clear_auth_cookies(response)
+
+
+@app.route('/api/admin/logout', methods=['POST'])
+@admin_required
+def admin_logout(current_user):
+    """Sign the current admin out: revoke their refresh tokens and clear cookies."""
+    _revoke_user_refresh_tokens(current_user.id)
+    current_user.is_online = False
+    db.session.commit()
+    _log_activity(current_user.id, 'admin_logout', {'email': current_user.email})
+    response = make_response(jsonify({'message': 'Logged out.'}))
+    return _clear_auth_cookies(response)
 
 # --- Email & Broadcast Endpoints ---
 
@@ -881,7 +1118,6 @@ def send_email(current_user):
     
     try:
         import json
-        admin_emails = ['wildguardsociety@gmail.com', 'shedrackanderson576@gmail.com']
         log_entry = {
             'timestamp': datetime.datetime.utcnow().isoformat(),
             'action': 'email_sent',
