@@ -693,8 +693,8 @@
       }).join('') : '<tr><td colspan="4" class="portal-empty">No admins found</td></tr>') +
       '</tbody></table></div></div></div>';
   });
-  window._demoteAdmin = function(email) {
-    if (!confirm('Demote ' + email + ' to regular user?')) return;
+  window._demoteAdmin = async function(email) {
+    if (!(await WGConfirm({ title: 'Demote ' + email + '?', message: 'This user will lose admin access and become a regular member.', confirmText: 'Demote', danger: true }))) return;
     saveUserRecord({ email: email, role: 'user' });
     logAct('admin_demoted', 'Demoted ' + email);
     notify('Admin demoted', 'success');
@@ -765,8 +765,8 @@
     if (currentSection === 'rewards') show('rewards');
     renderUsersList();
   };
-  window._revokeCert = function(id) {
-    if (!confirm('Revoke this certificate?')) return;
+  window._revokeCert = async function(id) {
+    if (!(await WGConfirm({ title: 'Revoke this certificate?', message: 'The certificate will be permanently removed from the member\'s profile.', confirmText: 'Revoke', danger: true }))) return;
     var certs = getCerts().filter(function(c) { return c.id !== id; });
     write(K.CERTS, certs);
     logAct('cert_revoked', 'Revoked certificate ' + id);
@@ -1027,8 +1027,8 @@
     notify('Species saved', 'success');
     renderDatabase();
   };
-  window._deleteSpecies = function(key) {
-    if (!confirm('Delete "' + key + '" from the species database?')) return;
+  window._deleteSpecies = async function(key) {
+    if (!(await WGConfirm({ title: 'Delete "' + key + '"?', message: 'This species record will be permanently removed from the database.', confirmText: 'Delete', danger: true }))) return;
     window.WildGuardSpeciesDB.remove(key);
     logAct('species_deleted', 'Deleted species ' + key);
     notify('Species deleted', 'info');
@@ -1050,8 +1050,8 @@
         }).join('') + '</tbody></table></div>' : '<div class="portal-empty"><i class="fas fa-clipboard"></i><p>No activity logged</p></div>') +
       '</div></div>';
   });
-  window.portalClearLog = function() {
-    if (!confirm('Clear all activity logs?')) return;
+  window.portalClearLog = async function() {
+    if (!(await WGConfirm({ title: 'Clear all activity logs?', message: 'All recorded events will be permanently erased.', confirmText: 'Clear log', danger: true }))) return;
     write(K.LOG, []);
     notify('Activity log cleared', 'success');
     show('logs');
@@ -1075,14 +1075,14 @@
       '</div></div>';
   });
   window.portalTestEmail = function() { notify('Email test sent to configured address', 'info'); };
-  window.portalResetDB = function() {
-    if (!confirm('Reset the species database to defaults? Your custom species and images will be removed.')) return;
+  window.portalResetDB = async function() {
+    if (!(await WGConfirm({ title: 'Reset the species database?', message: 'Your custom species and images will be removed and replaced with the defaults.', confirmText: 'Reset', danger: true }))) return;
     window.WildGuardSpeciesDB.reset();
     notify('Species database reset', 'success');
     setTimeout(function() { show('database'); }, 300);
   };
-  window.portalClearAll = function() {
-    if (!confirm('Clear ALL local data? This cannot be undone.')) return;
+  window.portalClearAll = async function() {
+    if (!(await WGConfirm({ title: 'Clear ALL local data?', message: 'Every WildGuard record on this device — users, scans, messages, settings and more — will be permanently erased. This cannot be undone.', confirmText: 'Clear everything', danger: true }))) return;
     Object.keys(localStorage).filter(function(k) { return k.indexOf('wildguard_') === 0 || k.indexOf('wildlife_') === 0; }).forEach(function(key) { localStorage.removeItem(key); });
     notify('All local data cleared', 'success');
     setTimeout(function() { location.reload(); }, 1000);

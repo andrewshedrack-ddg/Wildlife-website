@@ -33,10 +33,11 @@
     return sdkPromise;
   }
 
-  function send(params) {
+  function send(params, templateId) {
     return loadSDK().then(function (emailjs) {
       emailjs.init({ publicKey: CONFIG.publicKey });
-      return emailjs.send(CONFIG.serviceId, CONFIG.templateId, params);
+      var tpl = templateId || CONFIG.templateId;
+      return emailjs.send(CONFIG.serviceId, tpl, params);
     });
   }
 
@@ -56,15 +57,36 @@
   /* Generic outbound email (admin replies, system notifications) -> user inbox */
   window.WildGuardEmail.sendEmail = function (to, subject, body) {
     return send({
-      from_name: CONFIG.fromName || 'WildGuard Society',
-      reply_to: CONFIG.toEmail || 'wildguardsociety@gmail.com',
+      from_name: CONFIG.fromName || 'WildGuard Society (No-Reply)',
+      reply_to: CONFIG.replyTo || CONFIG.toEmail || 'wildguardsociety@gmail.com',
       to_email: to || '',
       subject: subject || 'Message from WildGuard Society',
       message: body || ''
     });
   };
 
+  /* Welcome email sent automatically after a new user registers. From
+     "No-Reply", to the user's Gmail, using the dedicated welcome template. */
+  window.WildGuardEmail.sendWelcomeEmail = function (name, email) {
+    if (!email) return Promise.reject(new Error('No recipient email'));
+    return send({
+      from_name: CONFIG.fromName || 'WildGuard Society (No-Reply)',
+      reply_to: CONFIG.replyTo || CONFIG.toEmail || 'wildguardsociety@gmail.com',
+      to_email: email,
+      user_name: name || email.split('@')[0],
+      subject: 'Welcome to WildGuard Society!',
+      site_name: 'WildGuard Society',
+      message: ''
+    }, CONFIG.welcomeTemplateId || CONFIG.templateId);
+  };
+
   window.WildGuardEmail.isConfigured = isConfigured;
+
+  /* True only when the welcome template key is filled in too. */
+  window.WildGuardEmail.isWelcomeConfigured = function () {
+    return isConfigured() && !!(CONFIG.welcomeTemplateId &&
+      CONFIG.welcomeTemplateId.indexOf('YOUR_') !== 0);
+  };
 
   /* Upgrade the legacy window.sendEmail (in-app only) so it also sends real
      email when EmailJS is configured, then records it in the in-app inbox. */

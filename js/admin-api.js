@@ -26,7 +26,7 @@
     return apiBase() !== '';
   }
 
-  async function request(path, options) {
+  async function request(path, options, _retried) {
     const base = apiBase();
     if (!base) return null;
     options = options || {};
@@ -37,12 +37,31 @@
     }
     try {
       const resp = await fetch(base + path, options);
+      if (resp.status === 401 && !_retried) {
+        // Access token expired: rotate via the refresh-token cookie and retry once.
+        const refreshed = await tryRefresh();
+        if (refreshed) return request(path, options, true);
+      }
       if (resp.status === 401 || resp.status === 403) return null;
       const data = await resp.json().catch(() => ({}));
       if (!resp.ok) return Object.assign({ ok: false, message: data.message || 'Request failed' }, data);
       return Object.assign({ ok: true }, data);
     } catch (e) {
       return null;
+    }
+  }
+
+  async function tryRefresh() {
+    const base = apiBase();
+    if (!base) return false;
+    try {
+      const resp = await fetch(base + '/api/auth/refresh', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      return resp.ok;
+    } catch (e) {
+      return false;
     }
   }
 
@@ -174,6 +193,7 @@
   var AdminAPI = {
     apiBase: apiBase,
     backendAvailable: backendAvailable,
+    refreshSession: tryRefresh,
     getStats: getStats,
     getUsers: getUsers,
     getMessages: getMessages,

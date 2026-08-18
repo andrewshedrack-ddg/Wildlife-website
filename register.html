@@ -16,7 +16,8 @@
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQodUVekKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/lively.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
   <script defer src="js/i18n.js"></script>
 </head>
 <body>
@@ -40,7 +41,7 @@
     .email-exists a:hover { text-decoration:underline; }
     .password-field { position: relative; }
     .password-field .form-input { padding-right: 3rem; }
-    .password-toggle { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1rem; padding: 0.25rem; transition: var(--transition); z-index: 10; }
+    .password-toggle { position: absolute; right: 0.6rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1rem; padding: 0.5rem; transition: var(--transition); z-index: 10; min-width: 40px; min-height: 40px; display: flex; align-items: center; justify-content: center; }
     .password-toggle:hover { color: var(--accent); }
     .password-toggle:focus { outline: none; color: var(--accent); }
     .login-security { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); font-size: 0.8rem; }
@@ -75,8 +76,10 @@
     <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
   </div>
 
+  <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
   <header class="site-header" id="site-header">
     <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
       <a href="index.html" class="logo">
         <img src="assets/images/logo.png" alt="WildGuard Society" class="logo-img">
         <span class="logo-text">WildGuard Society</span>
@@ -112,7 +115,6 @@
             </div>
           </div>
         </div>
-      </div>
         <div class="language-selector" data-language-selector>
           <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
             <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
@@ -123,10 +125,11 @@
             <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
             <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
           </div>
-        </div>
+</div>
       </div>
     </div>
   </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
 
   <main>
     <section class="content-overlay register-page">
@@ -249,7 +252,10 @@
   </footer>
 
   <script defer src="js/connectivity.js"></script>
+
+<script defer src="js/wg-dialog.js"></script>
 <script defer src="js/main.js?v=2"></script>
+  <script defer src="js/lively.js"></script>
   <script defer src="js/auth.js?v=2"></script>
   <script defer src="js/system-monitor.js?v=2"></script>
   <script>

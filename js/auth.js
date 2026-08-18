@@ -307,6 +307,15 @@
       if (user && user.email && typeof logActivity !== 'undefined') {
         try { logActivity('logout', user.email, 'User logged out'); } catch(e) {}
       }
+      // Best-effort backend sign-out: revokes the HttpOnly refresh token so the
+      // session cannot be rotated after logout (the browser cannot clear
+      // HttpOnly cookies itself).
+      const api = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1')
+        ? 'http://localhost:5000'
+        : (window.location.origin.includes('github.io') || window.location.protocol === 'file:' ? '' : '/api');
+      if (api) {
+        try { fetch(api + '/api/logout', { method: 'POST', credentials: 'include' }); } catch(e) {}
+      }
       clearUser();
       clearAuthCookie();
       window.location.href = getBasePath() + 'index.html';
@@ -537,8 +546,20 @@
         message: `Hi ${displayName}, your account is ready. Explore the library and try a wildlife scan.`
       });
 
-      // Send welcome email (informational, no verification required)
-      if (typeof sendWelcomeEmail !== 'undefined') { try { sendWelcomeEmail(email); } catch(e) {} }
+      // Send welcome email — real delivery via EmailJS (from "No-Reply") when
+      // the welcome template is configured, otherwise the in-app inbox fallback.
+      if (typeof sendWelcomeEmail !== 'undefined' || window.WildGuardEmail) {
+        try {
+          if (window.WildGuardEmail && window.WildGuardEmail.isWelcomeConfigured &&
+              window.WildGuardEmail.isWelcomeConfigured()) {
+            window.WildGuardEmail.sendWelcomeEmail(displayName, email).catch(function () {
+              try { sendWelcomeEmail(email); } catch (e) {}
+            });
+          } else if (typeof sendWelcomeEmail !== 'undefined') {
+            sendWelcomeEmail(email, displayName);
+          }
+        } catch (e) {}
+      }
 
       // Log activity
       if (typeof logActivity !== 'undefined') { try { logActivity('register', email, 'New user registered'); } catch(e) {} }
@@ -559,7 +580,11 @@
       securityMonitor('register_success', { email: email.substring(0, 3) + '***' });
 
       if (successMessage) {
-        successMessage.innerHTML = '<strong>Account created successfully!</strong><br>Welcome to WildGuard Society, <strong>' + escapeHtml(displayName) + '</strong>.<br>Your account is ready — sign in now to explore the wildlife library and start scanning.';
+        var emailNote = (window.WildGuardEmail && window.WildGuardEmail.isWelcomeConfigured &&
+          window.WildGuardEmail.isWelcomeConfigured())
+          ? '<br>🐾 A welcome email is on its way to <strong>' + escapeHtml(rawEmail) + '</strong>.'
+          : '';
+        successMessage.innerHTML = '<strong>Account created successfully!</strong><br>Welcome to WildGuard Society, <strong>' + escapeHtml(displayName) + '</strong>.<br>Your account is ready — sign in now to explore the wildlife library and start scanning.' + emailNote;
         successMessage.style.display = 'block';
       }
       registerForm.reset();
@@ -576,8 +601,10 @@
     });
   }
 
-  // Session timeout (2 hours)
-  const SESSION_TIMEOUT = 2 * 60 * 60 * 1000;
+  // Session timeout mirrors the backend refresh-token lifetime (7 days by
+  // default). The backend manages actual token validity + rotation; this only
+  // prevents an abandoned localStorage session from lingering past that window.
+  const SESSION_TIMEOUT = 7 * 24 * 60 * 60 * 1000;
   const SESSION_TIMEOUT_KEY = 'wildguard_session_start';
 
   function setSessionTimeout() {
@@ -840,8 +867,9 @@
     emails.forEach(function(e) { e.read = true; });
     saveEmails(emails);
   }
-  function sendWelcomeEmail(userEmail) {
-    sendEmail(userEmail, 'Welcome to WildGuard Society!', 'Dear wildlife enthusiast,\n\nWelcome to WildGuard Society! Your account has been successfully created. You can now explore our wildlife library, go on virtual safaris, and report conservation issues.\n\nIf you did not create this account, please contact us at info@wildguard.org.\n\nBest regards,\nThe WildGuard Team', 'welcome');
+  function sendWelcomeEmail(userEmail, userName) {
+    var name = userName || userEmail.split('@')[0];
+    sendEmail(userEmail, 'Welcome to WildGuard Society!', 'Dear ' + name + ',\n\nWelcome to WildGuard Society! Your account has been successfully created. You can now explore our wildlife library, scan wildlife, and track conservation sightings.\n\nIf you did not create this account, please contact us at info@wildguard.org.\n\nThis is an automated message — please do not reply.\n\nBest regards,\nThe WildGuard Team', 'welcome');
   }
   function sendVerificationEmail(userEmail) {
     var code = Math.random().toString(36).substr(2, 8).toUpperCase();
@@ -905,8 +933,8 @@
   window.sendVerificationEmail = sendVerificationEmail;
 
   // --- Clear All Storage (Fresh Start) ---
-  window.clearAllStorage = function(confirmBeforeClear) {
-    if (confirmBeforeClear !== false && !window.confirm('This will clear ALL local data including users, scans, messages, and settings. This action cannot be undone.')) {
+  window.clearAllStorage = async function(confirmBeforeClear) {
+    if (confirmBeforeClear !== false && !(await WGConfirm({ title: 'Clear all local data?', message: 'This will clear ALL local data including users, scans, messages, and settings. This action cannot be undone.', confirmText: 'Clear all', danger: true }))) {
       return false;
     }
     var keys = Object.keys(localStorage).filter(function(k) { return k.startsWith('wildguard_') || k.startsWith('wildlife_'); });

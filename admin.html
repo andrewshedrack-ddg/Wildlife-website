@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=5">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQodUVekKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <style>
     /* Admin Portal Enhanced Styles */
@@ -311,6 +311,7 @@
 <script defer src="js/species-db.js?v=1"></script>
 <script defer src="js/auth.js?v=5"></script>
 <script defer src="js/connectivity.js"></script>
+<script defer src="js/wg-dialog.js"></script>
 <script defer src="js/admin-portal.js?v=6"></script>
   <script>
     (function(){
@@ -322,10 +323,12 @@
       }
     })();
     function portalLogout() {
-      if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('wildguard_user');
-        window.location.href = 'index.html';
-      }
+      WGConfirm({ title: 'Sign out of WildGuard?', message: 'You will be logged out of the admin portal.', confirmText: 'Log out', cancelText: 'Cancel' }).then(function(ok) {
+        if (ok) {
+          localStorage.removeItem('wildguard_user');
+          window.location.href = 'index.html';
+        }
+      });
     }
     document.addEventListener('DOMContentLoaded', function() {
       var user = null;

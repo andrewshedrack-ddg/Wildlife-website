@@ -498,17 +498,24 @@
   .lib-hero       { padding:4rem 1.5rem 2.5rem; }
   .lib-hero-title { font-size:2.4rem; }
   .lib-books-grid, .lib-bookshelf {
-    gap:3rem 1.5rem;
-    grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+    gap:2.5rem 1rem;
+    grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
   }
-  .lib-book { --book-w:120px; --book-h:185px; --book-d:14px; }
+  .lib-book { --book-w:140px; --book-h:210px; --book-d:16px; }
+  .lib-book-info .lib-book-pages,
+  .lib-book-info .lib-book-desc { max-width:100%; word-wrap:break-word; }
+  .lib-book-info .lib-book-desc {
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+  }
 }
 
 @media (max-width:480px) {
   .lib-books-grid, .lib-bookshelf {
-    grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
+    grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+    gap:2rem 0.75rem;
   }
-  .lib-book { --book-w:100px; --book-h:155px; --book-d:12px; }
+  .lib-book { --book-w:120px; --book-h:180px; --book-d:14px; }
+  .lib-book-info .lib-book-desc { -webkit-line-clamp:2; }
 }
 
 
@@ -643,7 +650,7 @@
   padding: 3rem 2rem 2.5rem;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .showreel-hero {
     padding-top: 0;
   }
@@ -673,4 +680,14 @@
   }
   .filter-select label { flex-shrink: 0; }
   .filter-select select { margin-left: 0.75rem; flex: 1; min-width: 0; }
+
+  /* Comfortable 44px+ touch targets on phones */
+  .showreel-mute { width: 44px; height: 44px; }
+  .lib-book-actions .btn--sm {
+    min-height: 44px;
+    padding: 0.6rem 1.1rem;
+    justify-content: center;
+    flex: 1;
+  }
+  .lib-book-actions { display: flex; gap: 0.5rem; }
 }

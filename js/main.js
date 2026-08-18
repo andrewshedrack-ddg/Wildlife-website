@@ -25,6 +25,7 @@
      INIT
      ============================================================ */
   document.addEventListener('DOMContentLoaded', function () {
+    initMobileNav();
     updateYear();
     initHeaderScroll();
     initUserDropdown();
@@ -164,6 +165,55 @@
         carousel.style.justifyContent = 'center';
       }
     });
+  }
+
+  /* ── Mobile navigation: hamburger toggle + slide-down drawer ──
+     The toggle is a CSS-only checkbox/label pair in the HTML; this only
+     adds keyboard + resize polish and moves the language picker. */
+  function initMobileNav() {
+    var header = query('.site-header');
+    var nav = query('.desktop-nav');
+    var toggle = document.getElementById('mobile-nav-toggle');
+    if (!header || !nav || !toggle) return;
+
+    /* Relocate the language picker out of the tight top bar and into the
+       drawer on mobile so the header stays minimal; move it back on resize. */
+    var langSelect = query('.header-actions .language-selector');
+    function arrangeLanguage() {
+      var isMobile = window.matchMedia('(max-width: 768px)').matches;
+      if (isMobile && langSelect && !header.classList.contains('mobile-lang-moved')) {
+        nav.appendChild(langSelect);
+        header.classList.add('mobile-lang-moved');
+      } else if (!isMobile && langSelect && header.classList.contains('mobile-lang-moved')) {
+        var actions = query('.header-actions');
+        if (actions) actions.appendChild(langSelect);
+        header.classList.remove('mobile-lang-moved');
+      }
+    }
+    arrangeLanguage();
+
+    /* Close the drawer when a navigation link is tapped */
+    nav.addEventListener('click', function (e) {
+      if (e.target.closest('a') && toggle.checked) toggle.checked = false;
+    });
+
+    /* Close the drawer with the Escape key for keyboard users */
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && toggle.checked) {
+        toggle.checked = false;
+        var btn = query('.mobile-nav-toggle-btn');
+        if (btn) btn.focus();
+      }
+    });
+
+    /* Reset the drawer if the viewport is resized back to desktop */
+    var mq = window.matchMedia('(min-width: 769px)');
+    function resetOnDesktop(m) {
+      if (m.matches && toggle.checked) toggle.checked = false;
+      arrangeLanguage();
+    }
+    if (mq.addEventListener) mq.addEventListener('change', resetOnDesktop);
+    else if (mq.addListener) mq.addListener(resetOnDesktop);
   }
 
   /* ── Global Toast / Popup ── */

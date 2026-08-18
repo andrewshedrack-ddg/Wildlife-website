@@ -12,8 +12,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/lively.css">
   <link rel="stylesheet" href="../css/library.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQodUVekKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
   <script defer src="../js/i18n.js"></script>
 </head>
 <body>
@@ -27,8 +28,10 @@
   </div>
 
   <!-- Unified Header -->
+  <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
   <header class="site-header" id="site-header">
     <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
       <a href="../index.html" class="logo">
         <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
         <span class="logo-text">WildGuard Society</span>
@@ -73,6 +76,7 @@
       </div>
     </div>
   </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
 
   <main>
     <section class="page-banner">
@@ -140,7 +144,10 @@
   </footer>
 
   <script defer src="../js/connectivity.js"></script>
+
+<script defer src="../js/wg-dialog.js"></script>
 <script defer src="../js/main.js"></script>
+  <script defer src="../js/lively.js"></script>
   <script defer src="../js/auth.js"></script>
   <script defer src="../js/library.js"></script>
   <script defer src="../js/icons.js"></script>

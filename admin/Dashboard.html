@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQodUVekKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
   <script defer src="../js/i18n.js"></script>
   <style>
     .admin-topbar-right { display: flex; align-items: center; gap: 1rem; }
@@ -199,13 +199,13 @@
               <i class="fas fa-chart-bar"></i>
               <h4>Analytics</h4>
               <p>View scans, trends, users.</p>
-              <a href="#" onclick="alert('Coming soon'); return false;"><i class="fas fa-arrow-right"></i> View</a>
+              <a href="#" onclick="WGAlert({ title: 'Coming Soon', message: 'Analytics dashboards are being prepared for you.', icon: 'fa-chart-line' }); return false;"><i class="fas fa-arrow-right"></i> View</a>
             </div>
             <div class="action-card">
               <i class="fas fa-gear"></i>
               <h4>Settings</h4>
               <p>Configure parameters.</p>
-              <a href="#" onclick="alert('Coming soon'); return false;"><i class="fas fa-arrow-right"></i> Manage</a>
+              <a href="#" onclick="WGAlert({ title: 'Coming Soon', message: 'Settings controls are being prepared for you.', icon: 'fa-gear' }); return false;"><i class="fas fa-arrow-right"></i> Manage</a>
             </div>
           </div>
         </div>
@@ -272,6 +272,8 @@
   </div>
 
   <script defer src="../js/connectivity.js"></script>
+
+<script defer src="../js/wg-dialog.js"></script>
 <script defer src="../js/main.js"></script>
   <script defer src="../js/auth.js"></script>
   <script defer src="../js/admin-api.js"></script>

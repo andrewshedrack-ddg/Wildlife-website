@@ -902,7 +902,7 @@ const WildlifeScan = {
       this.els.previewImg.src = e.target.result;
     };
     reader.onerror = () => {
-      alert("Error reading file. Please try again.");
+      WGAlert({ title: 'File Error', message: 'Error reading file. Please try again.', danger: true });
       this.resetScan();
     };
     reader.readAsDataURL(file);
@@ -910,7 +910,7 @@ const WildlifeScan = {
 
   openCamera() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      alert("Camera not supported on this browser.");
+      WGAlert({ title: 'Camera Unavailable', message: 'Camera not supported on this browser.', danger: true });
       return;
     }
     const modal = document.createElement("div");
@@ -986,7 +986,7 @@ const WildlifeScan = {
         .catch((err) => {
           console.error("Camera error:", err);
           if (!streamRef) {
-            alert("Could not access camera. Please allow camera permissions.");
+            WGAlert({ title: 'Camera Access Denied', message: 'Could not access camera. Please allow camera permissions.', danger: true });
             if (modal.parentNode) modal.parentNode.removeChild(modal);
           }
         });
@@ -1019,7 +1019,7 @@ const WildlifeScan = {
         this.simulateScanAsync(dataUrl);
       } catch (err) {
         console.error("Capture error:", err);
-        alert("Error capturing image.");
+        WGAlert({ title: 'Capture Failed', message: 'Error capturing image.', danger: true });
       }
     });
     closeBtn.addEventListener("click", () => {
@@ -2063,7 +2063,7 @@ const WildlifeScan = {
 
   toggleVoiceListening() {
     if (!this.recognition) {
-      alert("Voice commands not supported. Try Chrome.");
+      WGAlert({ title: 'Voice Unsupported', message: 'Voice commands not supported. Try Chrome.', danger: true });
       return;
     }
     if (this.isListening) {

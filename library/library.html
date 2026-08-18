@@ -10,15 +10,15 @@
   <meta property="og:description" content="Explore global biodiversity. Discover mammals, birds, reptiles, amphibians, and more.">
   <meta property="og:image" content="../assets/images/lion.jpg">
   <link rel="icon" type="image/png" href="../assets/images/logo.png">
-  <link rel="manifest" href="../manifest.webmanifest">
   <title>Library | WildGuard Society</title>
   <link rel="stylesheet" href="../css/tokens.css">
   <link rel="stylesheet" href="../css/animations.css">
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/lively.css">
   <link rel="stylesheet" href="../css/library.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQodUVekKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
@@ -34,8 +34,10 @@
     <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
   </div>
 
+  <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
   <header class="site-header" id="site-header" role="banner">
     <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
       <a href="../index.html" class="logo" aria-label="WildGuard Society Home">
         <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
         <span class="logo-text">WildGuard Society</span>
@@ -79,6 +81,7 @@
       </div>
     </div>
   </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
 
   <main id="main-content">
     <!-- ══════════════ WILDLIFE SHOWREEL (top hero) ══════════════ -->
@@ -300,7 +303,7 @@
             <h2><i class="fas fa-camera"></i> Scanned Species</h2>
             <p>Species identified by users through the AI scan feature</p>
           </div>
-          <button type="button" id="toggleScanned" aria-expanded="false" aria-controls="scannedSection" style="background:none;border:1px solid rgba(244,162,97,0.3);color:var(--accent);border-radius:8px;padding:0.5rem 1rem;cursor:pointer;font-size:0.85rem;white-space:nowrap;">
+          <button type="button" id="toggleScanned" aria-expanded="false" aria-controls="scannedSection" style="background:none;border:1px solid rgba(244,162,97,0.3);color:var(--accent);border-radius:8px;padding:0.75rem 1.25rem;cursor:pointer;font-size:0.9rem;white-space:nowrap;min-height:44px;min-width:44px;">
             <span class="chevron"><i class="fas fa-chevron-down"></i></span> Show
           </button>
         </div>
@@ -344,7 +347,7 @@
     <div class="footer-content">
       <div class="footer-brand">
         <h3>WildGuard Society</h3>
-        <p>Young people in Tanzania protecting the wildlife and land we call home. <strong>Protect Nature — Protect Life</strong>.</p>
+        <p>A youth-led environmental conservation movement. <strong>Protect Nature — Protect Life</strong>.</p>
         <div class="footer-social">
           <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" aria-label="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
           <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -397,12 +400,14 @@
   <!-- Scripts -->
   <script defer src="../js/i18n.js"></script>
   <script defer src="../js/connectivity.js"></script>
+
+<script defer src="../js/wg-dialog.js"></script>
 <script defer src="../js/main.js"></script>
+  <script defer src="../js/lively.js"></script>
   <script defer src="../js/auth.js"></script>
   <script defer src="../js/library.js"></script>
   <script defer src="../js/scan-integration.js"></script>
   <script defer src="../js/showreel.js"></script>
   <script defer src="../js/icons.js"></script>
-<script defer src="../js/pwa.js"></script>
 </body>
 </html>

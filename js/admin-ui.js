@@ -117,9 +117,10 @@
     // Logout link
     const logoutLink = document.getElementById('sidebar-logout-link');
     if (logoutLink) {
-      logoutLink.addEventListener('click', (e) => {
+      logoutLink.addEventListener('click', async (e) => {
         e.preventDefault();
-        if (confirm('Are you sure you want to logout?')) {
+        const ok = await WGConfirm({ title: 'Sign out of WildGuard?', message: 'You will be logged out of the admin dashboard.', confirmText: 'Log out', danger: false });
+        if (ok) {
           window.location.href = 'index.html';
         }
       });

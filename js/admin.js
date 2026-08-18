@@ -244,8 +244,8 @@
     }
   };
 
-  window.rejectScan = function(id) {
-    if (!confirm('Reject this scan?')) return;
+  window.rejectScan = async function(id) {
+    if (!(await WGConfirm({ title: 'Reject this scan?', message: 'The submitted scan will be removed from the review queue and the scout will be notified.', confirmText: 'Reject', danger: true }))) return;
     const pending = getPendingScans();
     const item = pending.find(p => p.id === id);
     localStorage.setItem('wildlife_pending_admin', JSON.stringify(pending.filter(p => p.id !== id)));
@@ -267,10 +267,10 @@
   };
 
   window.deleteMessage = async function(id) {
-    if (!confirm('Delete this message?')) return;
+    if (!(await WGConfirm({ title: 'Delete this message?', message: 'This message will be permanently removed from the inbox.', confirmText: 'Delete', danger: true }))) return;
     if (window.AdminAPI) {
       const res = await window.AdminAPI.deleteMessage(id);
-      if (!res.success && res.message) { alert(res.message); return; }
+      if (!res.success && res.message) { WGAlert({ title: 'Delete Failed', message: res.message, danger: true }); return; }
     } else {
       const msgs = getMessages().filter(m => m.id !== id);
       localStorage.setItem('wildguard_admin_messages', JSON.stringify(msgs));
@@ -285,8 +285,8 @@
     updateStats(); renderNotifications();
   };
 
-  window.deleteNotif = function(id) {
-    if (!confirm('Delete this notification?')) return;
+  window.deleteNotif = async function(id) {
+    if (!(await WGConfirm({ title: 'Delete this notification?', message: 'This notification will be permanently removed.', confirmText: 'Delete', danger: true }))) return;
     const notifs = getAdminNotifications().filter(n => n.id !== id);
     localStorage.setItem('wildguard_admin_notifications', JSON.stringify(notifs));
     updateStats(); renderNotifications();
@@ -306,7 +306,7 @@
     var body = document.getElementById('emailBody')?.value.trim();
     var type = document.getElementById('emailType')?.value || 'update';
     if (!subject || !body) {
-      alert('Please fill in both subject and body.');
+      WGAlert({ title: 'Missing Details', message: 'Please fill in both subject and body.', danger: true });
       return;
     }
     var users = getUserList();
@@ -318,7 +318,7 @@
       if (res.success) {
         showAdminToast('Broadcast sent to ' + res.recipients + ' recipient(s).');
       } else {
-        alert(res.message || 'Could not send broadcast.');
+        WGAlert({ title: 'Broadcast Failed', message: res.message || 'Could not send broadcast.', danger: true });
         return;
       }
     } else {
@@ -350,7 +350,7 @@
       if (typeof window.logActivity === 'function') {
         window.logActivity('email_campaign', 'admin', 'Admin sent email campaign to ' + sentCount + ' users');
       }
-      alert('Email campaign sent to ' + sentCount + ' users!');
+      WGAlert({ title: 'Campaign Sent', message: 'Email campaign sent to ' + sentCount + ' users!' });
     }
     document.getElementById('emailSubject').value = '';
     document.getElementById('emailBody').value = '';

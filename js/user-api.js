@@ -28,7 +28,7 @@
     return apiBase() !== '';
   }
 
-  async function request(path, options) {
+  async function request(path, options, _retried) {
     const base = apiBase();
     if (!base) return null;
     options = options || {};
@@ -39,6 +39,12 @@
     }
     try {
       const resp = await fetch(base + path, options);
+      if (resp.status === 401 && !_retried) {
+        // The access token expired: try to rotate via the refresh-token cookie,
+        // then replay the original request once.
+        const refreshed = await tryRefresh();
+        if (refreshed) return request(path, options, true);
+      }
       if (resp.status === 401) return null;
       const data = await resp.json().catch(() => ({}));
       if (!resp.ok) {
@@ -47,6 +53,22 @@
       return Object.assign({ ok: true }, data);
     } catch (e) {
       return null;
+    }
+  }
+
+  // Rotate the session: POST /api/auth/refresh (uses the HttpOnly cookie the
+  // browser holds). Resolves true on success, false otherwise.
+  async function tryRefresh() {
+    const base = apiBase();
+    if (!base) return false;
+    try {
+      const resp = await fetch(base + '/api/auth/refresh', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      return resp.ok;
+    } catch (e) {
+      return false;
     }
   }
 
@@ -183,6 +205,7 @@
   var UserAPI = {
     apiBase: apiBase,
     backendAvailable: backendAvailable,
+    refreshSession: tryRefresh,
     getScans: getScans,
     addScan: addScan,
     getFavourites: getFavourites,

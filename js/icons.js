@@ -63,7 +63,7 @@
       if (cls[i] && cls[i].indexOf('fa') !== 0) extra.push(cls[i]);
     }
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('class', ('wg-icon' + (el.classList.contains('fa-spin') ? ' wg-icon-spin' : '') + ' ' + extra.join(' ')).replace(/\s+$/, ''));
+    svg.setAttribute('class', ('wg-icon wg-icon-' + name + ' ' + name + (el.classList.contains('fa-spin') ? ' wg-icon-spin' : '') + ' ' + extra.join(' ')).replace(/\s+$/, ''));
     svg.setAttribute('aria-hidden', 'true');
     svg.setAttribute('role', 'img');
     svg.setAttribute('viewBox', '0 0 24 24');

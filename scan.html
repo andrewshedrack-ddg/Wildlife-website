@@ -17,8 +17,9 @@
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/lively.css">
   <link rel="stylesheet" href="css/scan.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQodUVekKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
@@ -36,8 +37,10 @@
     <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
   </div>
 
+  <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
   <header class="site-header" id="site-header" role="banner">
     <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
       <a href="index.html" class="logo" aria-label="WildGuard Society Home">
         <img src="assets/images/logo.png" alt="WildGuard Society" class="logo-img">
         <span class="logo-text">WildGuard Society</span>
@@ -81,6 +84,7 @@
       </div>
     </div>
   </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
 
 <main id="main-content">
     <!-- Page Banner -->
@@ -275,7 +279,10 @@
   <script defer src="js/i18n.js"></script>
   <script defer src="js/species-db.js?v=1"></script>
   <script defer src="js/connectivity.js"></script>
+
+<script defer src="js/wg-dialog.js"></script>
 <script defer src="js/main.js"></script>
+  <script defer src="js/lively.js"></script>
   <script defer src="js/ai-trainer.js"></script>
   <script defer src="js/scan.js"></script>
   <script defer src="js/user-api.js"></script>
