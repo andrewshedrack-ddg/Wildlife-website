@@ -4,10 +4,6 @@ on:
   push:
     branches: [ main ]
 
-env:
-  AZURE_WEBAPP_NAME: ${{ secrets.AZURE_WEBAPP_NAME }}
-  AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
-
 jobs:
   # ---------------------------------------------------------------------------
   # FRONTEND -> GitHub Pages (curated set, no backend source or secrets)
@@ -42,10 +38,28 @@ jobs:
   # BACKEND -> Azure App Service (Linux / Python). Enabled only when the
   # AZURE_WEBAPP_NAME secret is configured; otherwise this job is skipped.
   # ---------------------------------------------------------------------------
+  check-backend-secrets:
+    name: Check Azure deployment secrets
+    runs-on: ubuntu-latest
+    outputs:
+      backend_enabled: ${{ steps.check.outputs.backend_enabled }}
+    steps:
+      - id: check
+        env:
+          AZURE_WEBAPP_NAME: ${{ secrets.AZURE_WEBAPP_NAME }}
+          AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
+        run: |
+          if [ -n "$AZURE_WEBAPP_NAME" ] && [ -n "$AZURE_RESOURCE_GROUP" ]; then
+            echo "backend_enabled=true"
+          else
+            echo "backend_enabled=false"
+          fi
+
   deploy-backend:
     name: Deploy backend to Azure App Service
     runs-on: ubuntu-latest
-    if: ${{ env.AZURE_WEBAPP_NAME != '' && env.AZURE_RESOURCE_GROUP != '' }}
+    needs: check-backend-secrets
+    if: needs.check-backend-secrets.outputs.backend_enabled == 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
