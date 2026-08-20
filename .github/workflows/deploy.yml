@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main ]
 
+env:
+  AZURE_WEBAPP_NAME: ${{ secrets.AZURE_WEBAPP_NAME }}
+  AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
+
 jobs:
   # ---------------------------------------------------------------------------
   # FRONTEND -> GitHub Pages (curated set, no backend source or secrets)
@@ -41,7 +45,7 @@ jobs:
   deploy-backend:
     name: Deploy backend to Azure App Service
     runs-on: ubuntu-latest
-    if: ${{ secrets.AZURE_WEBAPP_NAME != '' && secrets.AZURE_RESOURCE_GROUP != '' }}
+    if: ${{ env.AZURE_WEBAPP_NAME != '' && env.AZURE_RESOURCE_GROUP != '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
