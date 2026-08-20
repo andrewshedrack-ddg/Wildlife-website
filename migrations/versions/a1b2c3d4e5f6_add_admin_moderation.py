@@ -23,7 +23,7 @@ depends_on = None
 def upgrade():
     # server_default keeps the migration portable (SQLite cannot ALTER/DROP
     # defaults); the application also sets these values explicitly on insert.
-    op.add_column('user', sa.Column('is_active', sa.Boolean(), nullable=False, server_default=sa.text('1')))
+    op.add_column('user', sa.Column('is_active', sa.Boolean(), nullable=False, server_default=sa.true()))
     op.add_column('scan', sa.Column('status', sa.String(length=20), nullable=False, server_default='pending'))
 
 
