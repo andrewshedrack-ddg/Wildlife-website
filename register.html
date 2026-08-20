@@ -21,6 +21,7 @@
   <script defer src="js/i18n.js"></script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
   <style>
     .register-page { display:flex; align-items:center; justify-content:center; min-height: calc(100vh - var(--header-height) - 1rem); padding:2rem; }
     .register-container { position:relative; width:100%; max-width:460px; background:linear-gradient(160deg, rgba(27,94,64,0.16), rgba(10,21,16,0.92) 55%), rgba(255,255,255,0.05); border:1px solid rgba(244, 162, 97,0.25); border-radius:20px; padding:2.75rem 2.5rem; backdrop-filter:blur(12px); overflow:hidden; animation: registerFadeUp 0.55s ease both; box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(244, 162, 97,0.1); }
@@ -131,7 +132,7 @@
   </header>
   <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
 
-  <main>
+  <main id="main-content" tabindex="-1">
     <section class="content-overlay register-page">
       <div class="register-container">
         <div class="register-header">

@@ -1,0 +1,14 @@
+{
+  "name": "wildguard-society",
+  "version": "1.0.0",
+  "private": true,
+  "description": "WildGuard Society - wildlife conservation website (frontend tests)",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "jsdom": "^30.0.1",
+    "vitest": "^3.0.0"
+  }
+}

@@ -68,6 +68,7 @@
     </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
     <div class="page-slideshow">
         <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
         <div class="page-slide" style="background-image: url('../assets/images/background2.png')"></div>
@@ -126,7 +127,7 @@
     </header>
   <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
 
-    <main>
+    <main id="main-content" tabindex="-1">
         <section class="content-overlay">
             <div class="container" style="padding-bottom: 3rem;">
                 <!-- Page Banner -->
@@ -142,7 +143,7 @@
                     <div class="card profile-card">
                         <div class="profile-avatar-wrap">
                             <img src="../assets/images/logo.png" alt="Profile Avatar" class="profile-avatar" id="profile-avatar-img" onerror="this.src='../assets/images/logo.png'">
-                            <button class="avatar-edit-btn" title="Change avatar"><i class="fas fa-camera"></i></button>
+                            <button class="avatar-edit-btn" title="Change avatar" aria-label="Change avatar"><i class="fas fa-camera"></i></button>
                         </div>
                         <div class="profile-info">
                             <h2 class="profile-name" id="profile-display-name">Loading...</h2>
@@ -255,7 +256,7 @@
                                 <div class="form-group toggle-group">
                                     <label class="form-label">Email Notifications</label>
                                     <label class="toggle-switch">
-                                        <input type="checkbox" checked>
+                                        <input type="checkbox" checked aria-label="Email notifications">
                                         <span class="toggle-slider"></span>
                                     </label>
                                     <span class="toggle-hint">Receive updates about conservation news</span>
@@ -263,7 +264,7 @@
                                 <div class="form-group toggle-group">
                                     <label class="form-label">Privacy: Public Profile</label>
                                     <label class="toggle-switch">
-                                        <input type="checkbox" checked>
+                                        <input type="checkbox" checked aria-label="Public profile">
                                         <span class="toggle-slider"></span>
                                     </label>
                                     <span class="toggle-hint">Allow others to see your public profile</span>

@@ -100,6 +100,7 @@
   </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
   <div class="admin-app">
     <!-- Sidebar -->
     <aside class="admin-sidebar" id="adminSidebar">
@@ -129,6 +130,9 @@
         <button class="admin-nav-item" data-tab="emails" onclick="switchTab(this, 'emails')">
           <i class="fas fa-paper-plane"></i> Email Campaign
         </button>
+        <button class="admin-nav-item" data-tab="settings" onclick="switchTab(this, 'settings')">
+          <i class="fas fa-gear"></i> Settings
+        </button>
         <div class="admin-nav-divider"></div>
         <a class="admin-nav-item" href="manage-animals.html"><i class="fas fa-paw"></i> Manage Animals</a>
         <a class="admin-nav-item" href="upload.html"><i class="fas fa-cloud-upload-alt"></i> Upload Species</a>
@@ -139,10 +143,10 @@
     </aside>
 
     <!-- Main Content -->
-    <div class="admin-main">
+    <div class="admin-main" id="main-content" tabindex="-1">
       <div class="admin-topbar">
         <div style="display:flex; align-items:center; gap:1rem;">
-          <button class="mobile-toggle-sidebar" id="mobileToggleSidebar"><i class="fas fa-bars"></i></button>
+          <button class="mobile-toggle-sidebar" id="mobileToggleSidebar" aria-label="Toggle sidebar" aria-expanded="false" aria-controls="adminSidebar"><i class="fas fa-bars"></i></button>
           <h1 id="pageTitle">Dashboard</h1>
         </div>
         <div class="admin-topbar-right">
@@ -267,6 +271,36 @@
           <div id="sentEmailsList"></div>
         </div>
 
+        <!-- Settings Tab -->
+        <div id="tab-settings" class="tab-content">
+          <div class="admin-section-header"><h2><i class="fas fa-gear" style="color:var(--accent);"></i> Site Settings</h2></div>
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.5rem;">
+            <div style="margin-bottom:1rem;">
+              <label for="settingSiteName" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Site Name</label>
+              <input id="settingSiteName" type="text" placeholder="WildGuard Society" style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom:1rem;">
+              <label for="settingAnnouncement" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Announcement Banner</label>
+              <textarea id="settingAnnouncement" rows="2" placeholder="Shown to all users on the homepage (leave blank to hide)" style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;resize:vertical;"></textarea>
+            </div>
+            <div style="margin-bottom:1rem;">
+              <label for="settingContactEmail" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Public Contact Email</label>
+              <input id="settingContactEmail" type="email" placeholder="info@wildguard.org" style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
+              <div>
+                <label for="settingMaxScan" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Max Scan Size (MB)</label>
+                <input id="settingMaxScan" type="number" min="1" max="50" value="5" style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;">
+              </div>
+              <div>
+                <label for="settingScansPerDay" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Scans per Day Limit</label>
+                <input id="settingScansPerDay" type="number" min="1" max="1000" value="50" style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;">
+              </div>
+            </div>
+            <button onclick="saveAdminSettings()" class="btn-sm btn-approve" style="padding:0.65rem 1.5rem;font-size:0.9rem;"><i class="fas fa-save" style="margin-right:0.4rem;"></i> Save Settings</button>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -290,15 +324,21 @@
       // Refresh tab-specific data
       if (tabName === 'traffic' && typeof window.renderActivityLog === 'function') window.renderActivityLog();
       if (tabName === 'emails' && typeof window.renderSentEmails === 'function') window.renderSentEmails();
+      if (tabName === 'settings' && typeof window.renderSettings === 'function') window.renderSettings();
+      if (tabName === 'users' && typeof window.renderUsers === 'function') window.renderUsers();
     };
 
     // Mobile sidebar toggle
     document.getElementById('mobileToggleSidebar')?.addEventListener('click', () => {
-      document.getElementById('adminSidebar').classList.toggle('open');
       const sidebar = document.getElementById('adminSidebar');
+      const btn = document.getElementById('mobileToggleSidebar');
       const nav = sidebar.querySelector('.admin-nav');
-      if (sidebar.classList.contains('open')) nav.style.display = 'flex';
+      const open = !sidebar.classList.contains('open');
+      sidebar.classList.toggle('open');
+      if (open) nav.style.display = 'flex';
       else nav.style.display = 'none';
+      btn.setAttribute('aria-expanded', open);
+      if (open) nav.querySelector('.admin-nav-item')?.focus();
     });
 
     // Admin logout

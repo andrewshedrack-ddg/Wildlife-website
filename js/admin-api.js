@@ -99,7 +99,7 @@
       return backend.users.map(function (u) {
         return {
           id: u.id, email: u.email, role: u.role,
-          registeredAt: u.created_at, is_online: u.is_online, last_seen: u.last_seen,
+          registeredAt: u.created_at, is_online: u.is_online, is_active: u.is_active, last_seen: u.last_seen,
           source: 'backend'
         };
       });
@@ -111,6 +111,46 @@
       return a.findIndex(function (t) { return t.email === v.email; }) === i;
     });
     return merged;
+  }
+
+  async function updateUser(id, data) {
+    const backend = await request('/api/admin/users/' + encodeURIComponent(id), { method: 'PUT', body: data });
+    if (backend && backend.ok) return { success: true };
+    return { success: false, message: backend && backend.message ? backend.message : 'Could not update user.' };
+  }
+
+  // ---------- Scan review queue ----------
+  async function getPendingScans() {
+    const backend = await request('/api/admin/scans/pending');
+    if (backend && backend.ok && Array.isArray(backend.scans)) {
+      return backend.scans.map(function (s) {
+        return {
+          id: s.id, user_id: s.user_id, speciesName: s.species_name,
+          confidence: s.confidence, imageData: s.image_data, createdAt: s.created_at,
+          source: 'backend'
+        };
+      });
+    }
+    return getItem('wildlife_pending_admin', []);
+  }
+
+  async function reviewScan(id, status) {
+    const backend = await request('/api/admin/scans/' + encodeURIComponent(id) + '/review', { method: 'PUT', body: { status: status } });
+    if (backend && backend.ok) return { success: true };
+    return { success: false, message: backend && backend.message ? backend.message : 'Could not review scan.' };
+  }
+
+  // ---------- Settings ----------
+  async function getSettings() {
+    const backend = await request('/api/settings');
+    if (backend && backend.ok) return backend;
+    return getItem('wildguard_settings', {});
+  }
+
+  async function updateSettings(data) {
+    const backend = await request('/api/admin/settings', { method: 'PUT', body: data });
+    if (backend && backend.ok) return { success: true, message: backend.message };
+    return { success: false, message: backend && backend.message ? backend.message : 'Could not update settings.' };
   }
 
   // ---------- Messages ----------
@@ -196,6 +236,7 @@
     refreshSession: tryRefresh,
     getStats: getStats,
     getUsers: getUsers,
+    updateUser: updateUser,
     getMessages: getMessages,
     deleteMessage: deleteMessage,
     getActivity: getActivity,
@@ -203,7 +244,11 @@
     createSpecies: createSpecies,
     updateSpecies: updateSpecies,
     deleteSpecies: deleteSpecies,
-    broadcast: broadcast
+    broadcast: broadcast,
+    getPendingScans: getPendingScans,
+    reviewScan: reviewScan,
+    getSettings: getSettings,
+    updateSettings: updateSettings
   };
   window.AdminAPI = AdminAPI;
 })();

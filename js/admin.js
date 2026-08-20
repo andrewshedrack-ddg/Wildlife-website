@@ -52,10 +52,10 @@
   }
 
   // --- Scan Cards ---
-  function renderPendingScans() {
+  async function renderPendingScans() {
     const container = document.getElementById('pendingScansList');
     if (!container) return;
-    const pending = getPendingScans();
+    const pending = (window.AdminAPI ? await window.AdminAPI.getPendingScans() : null) || getPendingScans();
     if (pending.length === 0) {
       container.innerHTML = '<div class="empty-state"><i class="fas fa-check-circle"></i><h3>All Caught Up</h3><p>No pending scans to review right now.</p></div>';
       return;
@@ -63,13 +63,16 @@
     let html = '';
     pending.forEach(item => {
       const species = item.species || {};
-      const date = new Date(item.timestamp).toLocaleString();
+      const name = species.name || item.speciesName || 'Unknown Species';
+      const sci = species.scientificName || '';
+      const category = species.category || '';
+      const image = safeImgSrc(item.imageData || item.image_data);
+      const date = new Date(item.timestamp || item.createdAt || Date.now()).toLocaleString();
       html += '<div class="scan-card">';
-      var scanImg = safeImgSrc(item.imageData);
-      html += scanImg ? '<img src="' + scanImg + '" class="scan-img" onerror="this.style.display=\'none\'">' : '<div class="scan-img" style="display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);"><i class="fas fa-image" style="color:rgba(255,255,255,0.3);"></i></div>';
+      html += image ? '<img src="' + image + '" class="scan-img" onerror="this.style.display=\'none\'">' : '<div class="scan-img" style="display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);"><i class="fas fa-image" style="color:rgba(255,255,255,0.3);"></i></div>';
       html += '<div class="scan-info">';
-      html += '<h4>' + esc(species.name || 'Unknown Species') + '</h4>';
-      html += '<p><em>' + esc(species.scientificName || '') + '</em> &middot; ' + esc(species.category || 'Unknown') + '</p>';
+      html += '<h4>' + esc(name) + '</h4>';
+      html += '<p><em>' + esc(sci) + '</em>' + (category ? ' &middot; ' + esc(category) : '') + '</p>';
       html += '<div class="scan-meta">';
       html += '<span class="badge badge-pending">Pending</span>';
       html += '<span style="color:rgba(255,255,255,0.5);font-size:0.82rem;"><i class="fas fa-bolt"></i> ' + (item.confidence || 0) + '% confidence</span>';
@@ -154,21 +157,52 @@
       container.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i><h3>No Users Registered</h3><p>Users who register will appear here.</p></div>';
       return;
     }
-    let html = '<table class="data-table"><thead><tr><th>User</th><th>Email</th><th>Role</th><th>Registered</th><th>Status</th></tr></thead><tbody>';
+    const canModerate = window.AdminAPI && window.AdminAPI.backendAvailable();
+    let html = '<table class="data-table"><thead><tr><th>User</th><th>Email</th><th>Role</th><th>Registered</th><th>Status</th>' + (canModerate ? '<th>Actions</th>' : '') + '</tr></thead><tbody>';
     allUsers.forEach(u => {
       const name = u.name || (u.email ? u.email.split('@')[0] : 'Unknown');
       const status = u.is_online !== undefined ? (u.is_online ? 'online' : 'offline') : (u.status || 'active');
+      const active = u.is_active !== undefined ? u.is_active : true;
+      const isAdmin = u.role === 'admin';
+      const isSelf = u.email && window.localStorage.getItem('wildguard_user') && JSON.parse(window.localStorage.getItem('wildguard_user') || '{}').email === u.email;
       html += '<tr>';
       html += '<td><strong>' + esc(name) + '</strong></td>';
       html += '<td>' + esc(u.email) + '</td>';
-      html += '<td><span class="badge ' + (u.role === 'admin' ? 'badge-approved' : 'badge-new') + '">' + esc(u.role || 'user') + '</span></td>';
+      html += '<td><span class="badge ' + (isAdmin ? 'badge-approved' : 'badge-new') + '">' + esc(u.role || 'user') + '</span></td>';
       html += '<td>' + new Date(u.registeredAt || new Date()).toLocaleDateString() + '</td>';
-      html += '<td>' + esc(status) + '</td>';
+      html += '<td>' + esc(status) + (active ? '' : ' <span class="badge badge-rejected" style="color:#ef4444;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);">banned</span>') + '</td>';
+      if (canModerate && u.id !== undefined && !isSelf) {
+        html += '<td style="white-space:nowrap;">';
+        html += '<button class="btn-sm ' + (isAdmin ? 'btn-reject' : 'btn-approve') + '" onclick="toggleUserRole(this.dataset.id, this.dataset.role)" data-id="' + u.id + '" data-role="' + (isAdmin ? 'user' : 'admin') + '"><i class="fas fa-user-shield"></i> ' + (isAdmin ? 'Demote' : 'Promote') + '</button> ';
+        html += '<button class="btn-sm ' + (active ? 'btn-reject' : 'btn-approve') + '" onclick="toggleUserBan(this.dataset.id, this.dataset.active)" data-id="' + u.id + '" data-active="' + (active ? 'false' : 'true') + '"><i class="fas fa-ban"></i> ' + (active ? 'Ban' : 'Unban') + '</button>';
+        html += '</td>';
+      }
       html += '</tr>';
     });
     html += '</tbody></table>';
     container.innerHTML = html;
   }
+
+  window.toggleUserRole = async function(id, newRole) {
+    if (!(await WGConfirm({ title: newRole === 'admin' ? 'Promote to Admin?' : 'Demote to User?', message: 'This will change the account role immediately.', confirmText: newRole === 'admin' ? 'Promote' : 'Demote' }))) return;
+    if (window.AdminAPI) {
+      const res = await window.AdminAPI.updateUser(id, { role: newRole });
+      if (!res.success) { WGAlert({ title: 'Update Failed', message: res.message, danger: true }); return; }
+      showAdminToast(newRole === 'admin' ? 'User promoted to admin.' : 'Admin demoted to user.');
+    }
+    renderUsers(); updateStats();
+  };
+
+  window.toggleUserBan = async function(id, active) {
+    const banning = active === 'false';
+    if (!(await WGConfirm({ title: banning ? 'Ban this user?' : 'Restore this user?', message: banning ? 'The user will be unable to log in or use the API.' : 'The user will regain access to their account.', confirmText: banning ? 'Ban' : 'Restore', danger: banning }))) return;
+    if (window.AdminAPI) {
+      const res = await window.AdminAPI.updateUser(id, { is_active: active === 'true' });
+      if (!res.success) { WGAlert({ title: 'Update Failed', message: res.message, danger: true }); return; }
+      showAdminToast(banning ? 'User banned.' : 'User restored.');
+    }
+    renderUsers(); updateStats();
+  };
 
   // --- Activity Log (Traffic) ---
   function getActivityLog() { return getItem('wildguard_activity_log', []); }
@@ -221,7 +255,14 @@
   }
 
   // --- Action Handlers ---
-  window.approveScan = function(id) {
+  window.approveScan = async function(id) {
+    if (window.AdminAPI && window.AdminAPI.backendAvailable()) {
+      const res = await window.AdminAPI.reviewScan(id, 'approved');
+      if (!res.success) { WGAlert({ title: 'Approval Failed', message: res.message, danger: true }); return; }
+      updateStats(); renderPendingScans();
+      showAdminToast('Scan approved.');
+      return;
+    }
     const pending = getPendingScans();
     const item = pending.find(p => p.id === id);
     if (item) {
@@ -246,6 +287,13 @@
 
   window.rejectScan = async function(id) {
     if (!(await WGConfirm({ title: 'Reject this scan?', message: 'The submitted scan will be removed from the review queue and the scout will be notified.', confirmText: 'Reject', danger: true }))) return;
+    if (window.AdminAPI && window.AdminAPI.backendAvailable()) {
+      const res = await window.AdminAPI.reviewScan(id, 'rejected');
+      if (!res.success) { WGAlert({ title: 'Reject Failed', message: res.message, danger: true }); return; }
+      updateStats(); renderPendingScans();
+      showAdminToast('Scan rejected.');
+      return;
+    }
     const pending = getPendingScans();
     const item = pending.find(p => p.id === id);
     localStorage.setItem('wildlife_pending_admin', JSON.stringify(pending.filter(p => p.id !== id)));
@@ -295,6 +343,8 @@
   function showAdminToast(text) {
     const toast = document.createElement('div');
     toast.style.cssText = 'position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#2d6a4f,#1e3a2b);color:#fff;padding:12px 20px;border-radius:8px;z-index:6000;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:fadeIn 0.3s ease; font-size:0.9rem;';
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
     toast.innerHTML = '<i class="fas fa-check-circle" style="margin-right:8px;"></i>' + text;
     document.body.appendChild(toast);
     setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 2500);
@@ -358,6 +408,45 @@
     updateStats();
   };
 
+  // --- Admin Settings ---
+  const DEFAULT_SETTINGS = {
+    site_name: 'WildGuard Society',
+    announcement: '',
+    contact_email: 'info@wildguard.org',
+    max_scan_size_mb: '5',
+    scans_per_day_limit: '50'
+  };
+
+  async function renderSettings() {
+    const form = document.getElementById('settingsForm');
+    if (!form) return;
+    const settings = Object.assign({}, DEFAULT_SETTINGS, (window.AdminAPI ? await window.AdminAPI.getSettings() : {}) || {});
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+    set('settingSiteName', settings.site_name);
+    set('settingAnnouncement', settings.announcement);
+    set('settingContactEmail', settings.contact_email);
+    set('settingMaxScan', settings.max_scan_size_mb);
+    set('settingScansPerDay', settings.scans_per_day_limit);
+  }
+
+  window.saveAdminSettings = async function() {
+    if (!window.AdminAPI) { WGAlert({ title: 'Backend Required', message: 'Settings are managed by the backend.', danger: true }); return; }
+    const data = {
+      site_name: document.getElementById('settingSiteName').value.trim(),
+      announcement: document.getElementById('settingAnnouncement').value.trim(),
+      contact_email: document.getElementById('settingContactEmail').value.trim(),
+      max_scan_size_mb: document.getElementById('settingMaxScan').value.trim(),
+      scans_per_day_limit: document.getElementById('settingScansPerDay').value.trim()
+    };
+    const res = await window.AdminAPI.updateSettings(data);
+    if (res.success) {
+      showAdminToast('Settings saved.');
+      localStorage.setItem('wildguard_settings', JSON.stringify(data));
+    } else {
+      WGAlert({ title: 'Save Failed', message: res.message || 'Could not save settings.', danger: true });
+    }
+  };
+
   // --- Init ---
   async function init() {
     await updateStats();
@@ -367,6 +456,7 @@
     await renderUsers();
     await renderActivityLog();
     renderSentEmails();
+    await renderSettings();
     // Show admin email
     try {
       const user = getItem('wildguard_user', null);
@@ -399,4 +489,5 @@
   window.renderActivityLog = renderActivityLog;
   window.renderSentEmails = renderSentEmails;
   window.getAllEmails = getAllEmails;
+  window.renderSettings = renderSettings;
 })();

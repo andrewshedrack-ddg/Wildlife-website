@@ -33,6 +33,7 @@
   </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
   <div class="page-slideshow">
     <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
     <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
@@ -77,7 +78,7 @@
   </header>
   <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
 
-  <main>
+  <main id="main-content" tabindex="-1">
     <section class="page-banner">
       <span class="eyebrow">Administration</span>
       <h1>Admin Login</h1>
@@ -92,11 +93,11 @@
           <h2 style="font-family:var(--font-heading);margin:0 0 0.5rem;">Admin Portal</h2>
           <p style="opacity:0.6;font-size:0.9rem;margin:0 0 1.5rem;">Sign in to manage users, scans, and the species database.</p>
           <form id="admin-login-form" style="text-align:left;">
-            <label style="display:block;font-size:0.8rem;opacity:0.7;margin:0.75rem 0 0.3rem;">Admin email</label>
+            <label for="admin-email" style="display:block;font-size:0.8rem;opacity:0.7;margin:0.75rem 0 0.3rem;">Admin email</label>
             <input type="email" id="admin-email" autocomplete="username" required
                    placeholder="admin@wildguardsociety.org"
                    style="width:100%;padding:0.7rem 0.85rem;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-size:0.95rem;" />
-            <label style="display:block;font-size:0.8rem;opacity:0.7;margin:0.75rem 0 0.3rem;">Password</label>
+            <label for="admin-password" style="display:block;font-size:0.8rem;opacity:0.7;margin:0.75rem 0 0.3rem;">Password</label>
             <input type="password" id="admin-password" autocomplete="current-password" required
                    placeholder="••••••••••••"
                    style="width:100%;padding:0.7rem 0.85rem;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-size:0.95rem;" />
@@ -221,7 +222,15 @@
         try {
           const users = JSON.parse(localStorage.getItem('wildguard_demo_users') || '{}');
           const account = users[email];
-          const configuredPassword = localStorage.getItem('wildguard_admin_password') || 'WildGuard2026!';
+          // No hardcoded credentials: the static/demo fallback only accepts a
+          // password that an administrator has explicitly configured (for
+          // example, from a bootstrap/onboarding page). If it is not set, admin
+          // access requires the real Flask backend instead.
+          const configuredPassword = localStorage.getItem('wildguard_admin_password');
+          if (!configuredPassword) {
+            showError('Admin access requires the backend or a locally configured password.');
+            return;
+          }
           const localValid = account && account.role === 'super_admin' && password === configuredPassword;
           const isLocalAdmin = email === ADMIN_EMAIL && password === configuredPassword;
           if (!localValid && !isLocalAdmin) {

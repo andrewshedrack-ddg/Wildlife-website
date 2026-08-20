@@ -241,12 +241,13 @@
   </style>
 </head>
 <body class="portal-root">
+  <a class="skip-link" href="#portal-content">Skip to main content</a>
   <header class="portal-header">
     <div class="portal-header-left">
       <button class="portal-menu-toggle" id="portal-menu-toggle" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
       <div class="portal-header-logo">
         <img src="assets/images/logo.png" alt="WildGuard">
-        <span>Admin Portal</span>
+        <h1 style="font-size:inherit;font-weight:700;margin:0;">Admin Portal</h1>
       </div>
     </div>
     <div class="portal-header-actions">
@@ -298,7 +299,7 @@
         <button class="portal-nav-item" data-section="settings"><i class="fas fa-cog"></i> Settings</button>
       </nav>
     </aside>
-    <main class="portal-main" id="portal-content">
+    <main id="portal-content" tabindex="-1" class="portal-main">
       <div class="portal-loading"><i class="fas fa-circle-notch fa-spin" style="font-size:2.5rem;margin-bottom:1rem"></i><p>Loading admin portal...</p></div>
     </main>
   </div>

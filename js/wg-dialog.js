@@ -155,7 +155,7 @@
     if (resolver) resolver(result);
   }
 
-  // Keyboard: Escape closes, Enter confirms
+  // Keyboard: Escape closes, Enter confirms, Tab traps focus inside the dialog
   document.addEventListener('keydown', function (e) {
     var root = document.getElementById(ROOT_ID);
     if (!root || !root.classList.contains('open')) return;
@@ -165,6 +165,20 @@
     } else if (e.key === 'Enter') {
       e.preventDefault();
       dismiss(true);
+    } else if (e.key === 'Tab') {
+      // Trap focus within the modal (WCAG 2.1.2).
+      var card = root.querySelector('.wg-dialog-card');
+      var focusables = card.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+      if (focusables.length === 0) return;
+      var first = focusables[0];
+      var last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     }
   });
 

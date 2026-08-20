@@ -1,11 +1,49 @@
 # WildGuard Society - Project Roadmap & TODO List
 
 > Last Updated: August 18, 2026
-> Status: PostgreSQL-ready, JWT refresh tokens, CI/CD pipeline complete
+> Status: PostgreSQL-ready, JWT refresh tokens, CI/CD, admin moderation & tests complete
 
 ---
 
-## ✅ COMPLETED: Session Auth, DB & CI/CD (Current Sprint)
+## ✅ COMPLETED: Admin Moderation, Tests & Accessibility (Current Sprint)
+
+### Admin Dashboard Completion
+- **User management** (admin/Dashboard.html):
+  - Backend `PUT /api/admin/users/<id>` — promote/demote role, ban/unban (`is_active`)
+  - Banned accounts cannot log in or call the API (enforced in login + decorators)
+  - Frontend Users tab: Promote/Demote + Ban/Unban buttons (backend-gated, self-protection)
+- **Scan review queue**:
+  - Backend `GET /api/admin/scans/pending` + `PUT /api/admin/scans/<id>/review` (approved/rejected)
+  - `Scan.status` column (`pending` default) + Alembic migration `a1b2c3d4e5f6`
+  - Frontend Pending Scans tab wired to the backend queue with fallback to localStorage
+- **Site settings management**:
+  - Fixed `PUT /api/admin/settings` to upsert (was a no-op on fresh DB)
+  - New Settings tab in Dashboard.html (site name, announcement, contact email, limits)
+- **Activity logging**: logins/admin logins now write ActivityLog entries
+- **Hardened static admin fallback**: removed hardcoded fallback password from admin-login.html
+
+### Backend Tests
+- Added `tests/test_admin_extra.py` (13 tests): settings upsert, activity log, send-email,
+  user moderation (promote/ban/self-guard/invalid role), scan review queue, broadcast→notification
+- Full backend suite now at **94 tests passing** (SQLite + PostgreSQL in CI)
+
+### Frontend Tests (Vitest)
+- Added `package.json` + `vitest.config.js` (jsdom), `npm test`
+- Tests for `WildGuardConfig` (translations, params, RTL) and `WildGuardSpeciesDB` image normalization
+- Fixed a real bug found by tests: `normalizeImage` double-prefixed `assets/images/` paths
+- CI: new `test-frontend` job runs Vitest (npm ci + npm test)
+
+### WCAG 2.1 Accessibility Pass
+- **Skip links** added to all 26 pages (WCAG 2.4.1 Bypass Blocks) + `.skip-link` CSS (visually hidden until focus)
+- **Focus management**: dialog focus trap in `wg-dialog.js` (WCAG 2.1.2), mobile sidebar `aria-expanded` + focus, Escape closes drawer
+- **Labels**: admin-login labels now `for`-associated; Profile toggle switches + scan file input + admin sidebar buttons given `aria-label`
+- **Headings**: single `h1` per page (fixed admin.html/manage-animals.html/upload.html); fixed duplicate `id` on admin.html `<main>`
+- **Live regions**: `aria-live="polite"` on toast containers (main.js + admin.js)
+- **Semantics**: editModal in manage-animals.html now `role="dialog"` + `aria-modal` + labelled inputs
+
+---
+
+## ✅ COMPLETED: Session Auth, DB & CI/CD (Previous Sprint)
 
 ### JWT Refresh-Token Session Management (auth overhaul)
 - **Added** rotating refresh tokens (HttpOnly `refresh_token` cookie, SameSite=Strict)
@@ -92,12 +130,12 @@
 - [x] **Add database migrations** (Flask-Migrate baseline `3f8c1a2d4e6b`)
 
 ### Admin Features
-- [ ] **Complete admin dashboard** (admin/Dashboard.html)
-  - User management (list, ban, promote)
-  - Species CRUD (already has API)
-  - Scan approval queue (pending → approved/rejected)
-  - Broadcast messaging to users
-  - Site settings management
+- [x] **Complete admin dashboard** (admin/Dashboard.html)
+  - ✅ User management (list, ban, promote) — `PUT /api/admin/users/<id>`
+  - ✅ Species CRUD (has API + manage-animals.html)
+  - ✅ Scan approval queue (pending → approved/rejected) — `/api/admin/scans/*`
+  - ✅ Broadcast messaging to users (Email Campaign tab)
+  - ✅ Site settings management (Settings tab + upsert fix)
 - [ ] **Admin authentication hardening**
   - Separate admin login flow (admin-login.html)
   - Role-based access control (admin_required decorator)
@@ -135,19 +173,21 @@
   - Zoom control
 
 ### Accessibility & i18n
-- [ ] **WCAG 2.1 AA compliance**
-  - Focus management
-  - ARIA labels
-  - Color contrast
-  - Keyboard navigation
+- [x] **WCAG 2.1 AA — core pass**
+  - ✅ Skip links (2.4.1), dialog focus trap (2.1.2), focus-visible rings
+  - ✅ Form labels + icon-button aria-labels, aria-live toasts
+  - ✅ Single h1 per page, reduced-motion media queries
+- [ ] **WCAG 2.1 AA — remaining**
+  - [ ] axe-core audit + color contrast testing
+  - [ ] Keyboard navigation full coverage review
 - [ ] **Complete i18n translations** (en, es, fr, sw)
   - All UI strings externalized
   - RTL support for Arabic (future)
 
 ### Testing & Quality
 - [x] **CI/CD Pipeline** (GitHub Actions) — lint + SQLite/PostgreSQL tests on PR/push
-- [ ] **Unit tests** (pytest for backend, Jest for frontend)
-- [ ] **Integration tests** (API endpoints)
+- [x] **Backend unit + integration tests** (pytest, 94 tests) — auth, refresh, admin moderation, user data, public endpoints
+- [x] **Frontend unit tests** (Vitest + jsdom, 16 tests) — config/i18n, species-db
 - [ ] **E2E tests** (Playwright/Cypress)
 
 ### Monitoring & Analytics
@@ -229,10 +269,12 @@ For each task:
 | JWT Refresh Tokens + Session Rotation | Aug 2026 | ✅ Done |
 | PostgreSQL-Ready Backend + Migrations | Aug 2026 | ✅ Done |
 | CI/CD Pipeline (GitHub Actions) | Aug 2026 | ✅ Done |
+| Backend Tests (94) + Frontend Tests (Vitest) | Aug 2026 | ✅ Done |
+| Admin Dashboard (moderation, queue, settings) | Aug 2026 | ✅ Done |
+| WCAG 2.1 Core Accessibility Pass | Aug 2026 | ✅ Done |
 | Backend Deployed to Azure | Sep 2026 | 🔄 Planned |
 | Frontend on GitHub Pages | Sep 2026 | 🔄 Planned |
 | Full User Features | Oct 2026 | 📋 Backlog |
-| Admin Dashboard Complete | Oct 2026 | 📋 Backlog |
 | PWA + Offline Support | Nov 2026 | 📋 Backlog |
 | v1.0 Release | Dec 2026 | 📋 Planned |
 

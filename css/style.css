@@ -680,6 +680,27 @@ textarea:focus-visible, [tabindex]:focus-visible, .admin-nav-item:focus-visible 
 }
 .admin-nav-item:focus-visible { background: rgba(255,255,255,0.06); }
 
+/* Skip link (WCAG 2.4.1 Bypass Blocks) - visually hidden until focused */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 1rem;
+  z-index: 10000;
+  background: var(--primary, #1b5e40);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 8px 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skip-link { transition: none; }
+}
+
 /* ============================================================
    MICRO-INTERACTIONS - glassmorphism depth & gentle lift
    ============================================================ */

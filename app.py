@@ -266,6 +266,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     last_seen = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     is_online = db.Column(db.Boolean, default=False)
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
     # Optional profile data (name, bio, phone, country, avatar, prefs, ...)
     profile = db.Column(db.JSON, nullable=True, default=dict)
 
@@ -290,6 +291,7 @@ class Scan(db.Model):
     species_name = db.Column(db.String(100), nullable=False)
     confidence = db.Column(db.Integer, nullable=False)
     image_data = db.Column(db.Text, nullable=True)
+    status = db.Column(db.String(20), nullable=False, default='pending')
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
 class Favourite(db.Model):
@@ -456,6 +458,8 @@ def token_required(f):
         current_user = _user_from_access_token()
         if not current_user:
             return jsonify({'message': 'Authentication token is missing or invalid!'}), 401
+        if not current_user.is_active:
+            return jsonify({'message': 'This account has been deactivated.'}), 403
         return f(current_user, *args, **kwargs)
     return decorated
 
@@ -467,6 +471,8 @@ def admin_required(f):
             return jsonify({'message': 'Authentication token is missing or invalid!'}), 401
         if current_user.role != 'admin':
             return jsonify({'message': 'Admin privilege required!'}), 403
+        if not current_user.is_active:
+            return jsonify({'message': 'This account has been deactivated.'}), 403
         return f(current_user, *args, **kwargs)
     return decorated
 
@@ -773,10 +779,11 @@ def login():
     if not email or not password:
         return jsonify({'message': 'Email and password required'}), 400
     user = User.query.filter_by(email=email).first()
-    if user and bcrypt.check_password_hash(user.password_hash, password):
+    if user and user.is_active and bcrypt.check_password_hash(user.password_hash, password):
         user.last_seen = datetime.datetime.utcnow()
         user.is_online = True
         db.session.commit()
+        _log_activity(user.id, 'login', {'email': email})
         response = make_response(jsonify({'message': 'Login successful', 'role': user.role}))
         return _set_auth_cookies(response, user)
     return jsonify({'message': 'Invalid credentials'}), 401
@@ -797,9 +804,13 @@ def admin_login():
     if not email or not password:
         return jsonify({'message': 'Email and password are required.'}), 400
     user = User.query.filter_by(email=email).first()
-    if user and bcrypt.check_password_hash(user.password_hash, password):
+    if user and user.is_active and bcrypt.check_password_hash(user.password_hash, password):
         if user.role != 'admin':
             return jsonify({'message': 'Admin access required.'}), 403
+        user.last_seen = datetime.datetime.utcnow()
+        user.is_online = True
+        db.session.commit()
+        _log_activity(user.id, 'admin_login', {'email': email})
         response = make_response(jsonify({'message': 'Login successful.', 'authenticated': True, 'role': user.role}))
         return _set_auth_cookies(response, user)
     return jsonify({'message': 'Invalid credentials.'}), 401
@@ -814,9 +825,13 @@ def verify_admin(current_user):
 def update_settings(current_user):
     data = request.get_json() or {}
     for key, value in data.items():
-        setting = Setting.query.filter_by(key=key).first()
+        if not key or len(str(key)) > 100:
+            continue
+        setting = Setting.query.filter_by(key=str(key)).first()
         if setting:
             setting.value = str(value)
+        else:
+            db.session.add(Setting(key=str(key), value=str(value)))
     db.session.commit()
     return jsonify({'message': 'Site settings updated successfully.'}), 200
 
@@ -876,15 +891,61 @@ def get_admin_stats(current_user):
     total_species = Species.query.count()
     total_messages = Message.query.count()
     total_users = User.query.count()
-    pending_scans = Scan.query.count()
+    pending_scans = Scan.query.filter_by(status='pending').count()
     return jsonify({'total_species': total_species, 'total_messages': total_messages, 'total_users': total_users, 'pending_scans': pending_scans}), 200
 
 @app.route('/api/admin/users', methods=['GET'])
 @admin_required
 def get_admin_users(current_user):
     users = User.query.all()
-    output = [{'id': u.id, 'email': u.email, 'role': u.role, 'created_at': u.created_at.strftime('%Y-%m-%d %H:%M:%S'), 'is_online': u.is_online, 'last_seen': u.last_seen.strftime('%Y-%m-%d %H:%M:%S') if u.last_seen else None} for u in users]
+    output = [{'id': u.id, 'email': u.email, 'role': u.role, 'created_at': u.created_at.strftime('%Y-%m-%d %H:%M:%S'), 'is_online': u.is_online, 'is_active': u.is_active, 'last_seen': u.last_seen.strftime('%Y-%m-%d %H:%M:%S') if u.last_seen else None} for u in users]
     return jsonify({'users': output}), 200
+
+
+@app.route('/api/admin/users/<int:id>', methods=['PUT'])
+@admin_required
+def update_admin_user(current_user, id):
+    """Promote/demote a user's role or ban/unban their account."""
+    if id == current_user.id:
+        return jsonify({'message': 'You cannot modify your own account.'}), 400
+    target = User.query.get_or_404(id)
+    data = request.get_json() or {}
+    if 'role' in data:
+        if data['role'] not in ('user', 'admin'):
+            return jsonify({'message': 'Role must be "user" or "admin".'}), 400
+        target.role = data['role']
+    if 'is_active' in data:
+        target.is_active = bool(data['is_active'])
+    db.session.commit()
+    _log_activity(current_user.id, 'admin_user_updated', {'email': target.email, **{k: str(v) for k, v in data.items() if k in ('role', 'is_active')}})
+    return jsonify({'message': 'User updated.'}), 200
+
+
+@app.route('/api/admin/scans/pending', methods=['GET'])
+@admin_required
+def get_pending_scans(current_user):
+    scans = Scan.query.filter_by(status='pending').order_by(Scan.created_at.asc()).all()
+    output = [{
+        'id': s.id, 'user_id': s.user_id, 'species_name': s.species_name,
+        'confidence': s.confidence, 'image_data': s.image_data,
+        'created_at': s.created_at.strftime('%Y-%m-%d %H:%M:%S')
+    } for s in scans]
+    return jsonify({'scans': output}), 200
+
+
+@app.route('/api/admin/scans/<int:id>/review', methods=['PUT'])
+@admin_required
+def review_scan(current_user, id):
+    """Approve or reject a pending scan in the review queue."""
+    scan = Scan.query.get_or_404(id)
+    data = request.get_json() or {}
+    decision = data.get('status', '')
+    if decision not in ('approved', 'rejected'):
+        return jsonify({'message': 'Status must be "approved" or "rejected".'}), 400
+    scan.status = decision
+    db.session.commit()
+    _log_activity(current_user.id, f'scan_{decision}', {'scan_id': scan.id, 'species': scan.species_name})
+    return jsonify({'message': f'Scan {decision}.', 'status': decision}), 200
 
 
 @app.route('/api/admin/activity', methods=['GET'])

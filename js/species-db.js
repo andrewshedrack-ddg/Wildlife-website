@@ -72,7 +72,7 @@
     if (!src) return '';
     if (/^(data:|http:\/\/|https:\/\/|blob:)/.test(src)) return src;
     var trimmed = src.trim();
-    if (trimmed.charAt(0) !== '/' && !/^\.\.?\//.test(trimmed)) trimmed = 'assets/images/' + trimmed;
+    if (trimmed.charAt(0) !== '/' && !/^(?:assets\/images\/|\.\.?\/)/.test(trimmed)) trimmed = 'assets/images/' + trimmed;
     return trimmed;
   }
 

@@ -223,6 +223,7 @@
       container = document.createElement('div');
       container.id = 'toast-container';
       container.style.cssText = 'position:fixed;top:1rem;right:1rem;z-index:9999;display:flex;flex-direction:column;gap:0.6rem;pointer-events:none;';
+      container.setAttribute('aria-live', 'polite');
       document.body.appendChild(container);
     }
     var kind = type || 'success';

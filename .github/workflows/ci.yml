@@ -46,6 +46,23 @@ jobs:
       - name: Run tests (SQLite)
         run: python -m pytest tests/
 
+  test-frontend:
+    name: Tests (Frontend Vitest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Run frontend tests
+        run: npm test
+
   test-postgres:
     name: Tests (PostgreSQL)
     runs-on: ubuntu-latest

@@ -45,6 +45,7 @@
   </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
   <div class="admin-app">
     <!-- Sidebar -->
     <aside class="admin-sidebar" id="adminSidebar">
@@ -64,10 +65,10 @@
     </aside>
 
     <!-- Main Content -->
-    <div class="admin-main">
+    <div class="admin-main" id="main-content" tabindex="-1">
       <div class="admin-topbar">
         <div style="display:flex; align-items:center; gap:1rem;">
-          <button class="mobile-toggle-sidebar" id="mobileToggleSidebar"><i class="fas fa-bars"></i></button>
+          <button class="mobile-toggle-sidebar" id="mobileToggleSidebar" aria-label="Toggle sidebar" aria-expanded="false" aria-controls="adminSidebar"><i class="fas fa-bars"></i></button>
           <h1>Upload Species</h1>
         </div>
         <div class="admin-topbar-right">
@@ -76,10 +77,10 @@
       </div>
 
       <div class="admin-content">
-    <main class="admin-dashboard">
+    <main id="main-content" tabindex="-1" class="admin-dashboard">
     <div class="admin-header">
       <span class="eyebrow">Administration</span>
-      <h1>Upload Species</h1>
+      <h2 style="margin:0 0 0.25rem;">Upload Species</h2>
       <p>Add new wildlife entries with the same visual and editorial standards used across the site.</p>
     </div>
 
@@ -247,9 +248,13 @@
   <script>
     document.getElementById('mobileToggleSidebar')?.addEventListener('click', () => {
       const sidebar = document.getElementById('adminSidebar');
-      sidebar.classList.toggle('open');
+      const btn = document.getElementById('mobileToggleSidebar');
       const nav = sidebar.querySelector('.admin-nav');
-      if (nav) nav.style.display = sidebar.classList.contains('open') ? 'flex' : 'none';
+      const open = !sidebar.classList.contains('open');
+      sidebar.classList.toggle('open');
+      if (nav) nav.style.display = open ? 'flex' : 'none';
+      btn.setAttribute('aria-expanded', open);
+      if (open) nav.querySelector('.admin-nav-item')?.focus();
     });
     document.getElementById('adminLogoutBtn')?.addEventListener('click', (e) => {
       e.preventDefault();
