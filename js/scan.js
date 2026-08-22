@@ -1119,8 +1119,8 @@ const WildlifeScan = {
     this.els.resultStatusBadge.textContent = "Low confidence";
     this.els.resultConfidence.innerHTML = '<span class="liveness-indicator unknown"><i class="fas fa-question-circle"></i> No confident match</span>';
     this.els.resultDetails.innerHTML =
-      '<div class="detail-section"><h4><i class="fas fa-exclamation-triangle"></i> No Reliable Match</h4><p>WildGuard could not confidently match this image to a species in the database. This can happen with blurry, distant, or heavily cropped photos, or when the subject is very common non-wildlife.</p></div>' +
-      '<div class="detail-section"><h4><i class="fas fa-lightbulb"></i> Tips for Better Results</h4><ul><li>Move closer to the subject</li><li>Ensure the subject fills the frame</li><li>Use good natural lighting</li><li>Try a clearer, still photo</li></ul></div>';
+      '<div class="detail-section"><h4><i class="fas fa-exclamation-triangle"></i> No Reliable Match</h4><p>WildGuard could not confidently match this image to a species in the database. This can happen with blurry, distant, or heavily cropped photos, or when the subject is very common non-wildlife such as objects, vehicles, or domestic animals.</p></div>' +
+      '<div class="detail-section"><h4><i class="fas fa-lightbulb"></i> Tips for Better Results</h4><ul><li>Move closer to the subject so it fills more of the frame</li><li>Ensure the subject is the main focus, not background clutter</li><li>Use good natural lighting — avoid deep shadows</li><li>Try a clearer, still photo rather than a video frame</li><li>If it\'s a domestic animal (dog/cat), the keyword match may work better</li></ul></div>';
 
     const resultActions = this.els.resultState.querySelector(".result-actions");
     if (resultActions) {
@@ -1549,6 +1549,7 @@ const WildlifeScan = {
     }
 
     // Step 3: if no AI living match, try filename keywords
+    // improved: weighted matching against species DB keys + tags
     if (!bestMatch) {
       let searchText = "";
       if (this.lastInputSource && this.lastInputSource.name) {
@@ -1558,17 +1559,23 @@ const WildlifeScan = {
       speciesKeys.forEach(key => {
         const item = this.speciesDB[key];
         let score = 0;
-        const allWords = [key, ...item.tags];
-        allWords.forEach(word => {
-          if (!word) return;
-          const w = word.toLowerCase();
-          if (searchText.includes(" " + w + " ") || searchText.startsWith(w + " ") || searchText.endsWith(" " + w) || searchText === w) {
-            score += w === key.toLowerCase() ? 50 : 10;
-          } else if (searchText.includes(w)) {
-            score += w === key.toLowerCase() ? 30 : 5;
-          }
+        const allWords = [key, ...(item.tags || [])];
+        // Exact scientific name / key match
+        if (searchText === key.toLowerCase()) score += 100;
+        else if (searchText.includes(key.toLowerCase())) score += 50;
+        // Token-based matching: check if any significant word from DB matches
+        const dbWords = key.toLowerCase().split(/[\s\-\+]+/).filter(w => w.length > 2);
+        const searchWords = searchText.split(/[\s\-\+]+/).filter(w => w.length > 2);
+        dbWords.forEach(dw => {
+          searchWords.forEach(sw => {
+            if (dw === sw) { score += 30; }
+            else if (searchText.includes(sw)) { score += 15; }
+          });
         });
-        if (score > bestScore) { bestScore = score; bestMatch = key; }
+        // Prefix/contains match
+        if (key.toLowerCase().startsWith(searchText.trim())) score += 40;
+        if (searchText.toLowerCase().startsWith(key.trim())) score += 35;
+        if (score > bestScore) { bestScore = score; bestMatch = key; });
       });
     }
 
@@ -1681,6 +1688,44 @@ const WildlifeScan = {
 
     // Real work is complete (AI inference, enrichment APIs). Just finalize.
     this.els.loadingText.textContent = "Finalizing results...";
+
+    // Honest AI source badge — shows exactly what was used
+    let aiSourceDisplay = "";
+    if (this.currentResult.aiSource) {
+      aiSourceDisplay = '<div class="ai-source-badge"><i class="fas fa-microchip"></i> ' + this.currentResult.aiSource;
+      // Append iNaturalist if present
+      if (this.currentResult.iNat && this.currentResult.iNat.commonName) {
+        aiSourceDisplay += ' &middot; ' + this.currentResult.iNat.commonName;
+      }
+      // Append live parts if present
+      const liveParts = [];
+      if (this.currentResult.weather) liveParts.push("weather");
+      if (this.currentResult.sightings) liveParts.push("sightings");
+      if (this.currentResult.history) liveParts.push("Wikipedia");
+      if (this.currentResult.gbif) liveParts.push("GBIF");
+      if (liveParts.length) {
+        aiSourceDisplay += ' + ' + liveParts.join(", ");
+      }
+      aiSourceDisplay += '</div>';
+    } else {
+      aiSourceDisplay = '<div class="ai-source-badge"><i class="fas fa-microchip"></i> Local identification</div>';
+    }
+
+    // Insert the AI source badge into the result UI
+    const existingBadge = document.querySelector('.ai-source-badge');
+    if (existingBadge) existingBadge.remove();
+    const resultState = this.els.resultState;
+    const badgeContainer = resultState.querySelector('.result-details');
+    if (badgeContainer) {
+      const bottomSection = resultState.querySelector('.detail-section:last-child');
+      if (badgeContainer.contains(badgeContainer.lastElementChild)) {
+        // Insert before the last detail section
+        const insertPoint = badgeContainer.lastElementChild;
+        resultState.insertBefore(document.createElement('div').innerHTML = aiSourceDisplay, insertPoint);
+      } else {
+        resultState.insertAdjacentHTML('beforeend', aiSourceDisplay);
+      }
+    }
     // Small yield to let UI update
     await new Promise(r => setTimeout(r, 50));
 

@@ -1,21 +1,21 @@
 // WildGuardAI — on-device transfer-learning wildlife classifier.
 //
-// Uses the already-loaded MobileNet as a feature extractor and trains a
-// species classifier in the browser on REAL wildlife photos pulled from
-// Wikipedia / Wikimedia (CORS-enabled). Per-species embedding centroids are
-// cached in localStorage so the model persists across visits. Identification
-// is cosine-similarity against those centroids, optionally boosted by the
-// scan's geographic context (habitat/country match).
-//
-// Fallback chain (scan.js): cloud vision API -> this on-device model ->
-// generic MobileNet labels + filename keywords.
+# Uses the already-loaded MobileNet as a feature extractor and trains a
+# species classifier in the browser on REAL wildlife photos pulled from
+# Wikipedia / Wikimedia (CORS-enabled). Per-species embedding centroids are
+# cached in localStorage so the model persists across visits. Identification
+# is cosine-similarity against those centroids, optionally boosted by the
+# scan's geographic context (habitat/country match).
+#
+# Fallback chain (scan.js): cloud vision API -> this on-device model ->
+# generic MobileNet labels + filename keywords.
 
 const WildGuardAI = (function () {
   const STORAGE_KEY = "wildguard_ai_model_v1";
-  const MAX_TRAIN = 60;            // species we train on (first N resolved)
+  const MAX_TRAIN = 100;            // species we train on (first N resolved)
   const CONCURRENCY = 4;           // parallel image fetches during training
-  const GEO_BOOST = 0.06;          // added similarity for habitat/country match
-  const MIN_CONFIDENCE = 0.18;     // below this the model is "unsure"
+  const GEO_BOOST = 0.08;          // added similarity for habitat/country match
+  const MIN_CONFIDENCE = 0.22;     // below this the model is "unsure"
   const IMG_SIZE = 224;
 
   let tfModel = null;              // MobileNet instance (has .infer(img, true))
@@ -39,6 +39,12 @@ const WildGuardAI = (function () {
       if (!data || data.version !== 1 || !data.centroids) return false;
       centroids = data.centroids || {};
       trained = Object.keys(centroids).length > 0;
+      // Prune old cache if > 200 species (prevents bloating)
+      if (Object.keys(centroids).length > 200) {
+        // Keep only the most recent 150 species by timestamp
+        const entries = Object.entries(centroids).sort((a, b) => (b[1].savedAt || 0) - (a[1].savedAt || 0));
+        centroids = Object.fromEntries(entries.slice(0, 150).map(([k, v]) => [k, v]));
+      }
       return trained;
     } catch (e) {
       return false;
@@ -51,6 +57,7 @@ const WildGuardAI = (function () {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       return true;
     } catch (e) {
+      console.warn("Failed to save AI model cache:", e);
       return false;
     }
   }
@@ -127,7 +134,7 @@ const WildGuardAI = (function () {
       const pending = keys.filter(k => speciesDB[k] && !centroids[k]);
       const queue = pending.slice(0, MAX_TRAIN);
       let done = 0;
-      const total = queue.length;
+      const total = Math.max(queue, 1); // avoid div/0
 
       const worker = async (key) => {
         const sp = speciesDB[key];
@@ -143,12 +150,15 @@ const WildGuardAI = (function () {
               category: sp.category || "",
               habitat: (sp.habitat || "").slice(0, 120),
               vector: Array.from(vec),
-              count: 1
+              count: 1,
+              savedAt: Date.now()
             };
           }
-        } catch (e) {}
+        } catch (e) {
+          // Species skipped (no Wikipedia image available)
+        }
         done++;
-        if (onProgress) onProgress(Math.round((done / total) * 100), done, total);
+        if (onProgress) onProgress(Math.min(100, Math.round((done / total) * 100)), done, total);
       };
 
       // Run with a small concurrency limit.
@@ -183,7 +193,7 @@ const WildGuardAI = (function () {
     return dot / (Math.sqrt(na) * Math.sqrt(nb) || 1);
   }
 
-  // Classify an image element. Returns sorted [{key, name, score, geo]}].
+  // Classify an image element. Returns sorted [{key, name, score, geo}].
   async function classify(imgEl, geo) {
     if (!isReady() || !imgEl) return [];
     const vec = await embed(imgEl);
@@ -192,6 +202,7 @@ const WildGuardAI = (function () {
     for (const k in centroids) {
       const c = centroids[k];
       let score = cosine(vec, c.vector);
+      // Geo boost: if species' habitat matches scan location, increase similarity
       if (geo && (geo.country || geo.region || geo.place)) {
         const hay = ((c.habitat || "") + " " + (c.name || "")).toLowerCase();
         const loc = (geo.country + " " + geo.region + " " + geo.place).toLowerCase();
@@ -232,7 +243,8 @@ const WildGuardAI = (function () {
     return 0;
   }
 
-  // Public API
+  // ---- Public API --------------------------------------------------------
+
   const api = {
     init(model) {
       tfModel = model || null;
@@ -257,3 +269,8 @@ const WildGuardAI = (function () {
   if (typeof window !== "undefined") window.WildGuardAI = api;
   return api;
 })();
+
+if (typeof module !== "undefined" && module.exports) module.exports = api;
+if (typeof window !== "undefined") window.WildGuardAI = api;
+return api;
+)();
