@@ -11,15 +11,15 @@
   --primary-bright:     #52b788;
 
   /* ── Colors: Accent (warm amber gold of the savannah dusk) ── */
-  --amber:              #F4A261;
-  --accent:             #F4A261;
-  --accent-hover:       #e08e4a;
-  --accent-soft:        rgba(244, 162, 97, 0.14);
+  --amber:              #E89E54;
+  --accent:             #E89E54;
+  --accent-hover:       #D58A45;
+  --accent-soft:        rgba(220, 114, 82, 0.15);
   --accent-glass:       rgba(244, 162, 97, 0.22);
 
   /* ── Colors: Signature palette (used for badges, tabs, focus) ── */
-  --terracotta:         #E07A5F;
-  --terracotta-soft:    rgba(224, 122, 95, 0.14);
+  --terracotta:         #D47252;
+  --terracotta-soft:    rgba(220, 114, 82, 0.15);
   --savannah-green:     #1E3A2B;
   --charcoal:           #121814;
   --flora-green:        #2D6A4F;
