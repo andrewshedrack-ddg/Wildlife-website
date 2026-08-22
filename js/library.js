@@ -1,8 +1,8 @@
-// library.js - real book covers with wildlife photography + filters + collapsible scans
+// library.js - real book covers with wildlife photography + filters + collapsible scans + research tools
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Book Content ---
-const books = [
+    const books = [
         {
             id: 1,
             title: "Kings of the Savannah",
@@ -312,4 +312,205 @@ const books = [
         });
     }
 
-    });
+    // --- Research Tools ---
+    // Initialize research module if on library page
+    if (document.getElementById('categoryGrid') || document.getElementById('booksGrid')) {
+        window.WildGuardResearch = {
+            // iNaturalist API - no key required for search
+            async searchSpecies(query) {
+                if (!query || query.length < 2) return null;
+                try {
+                    const url = "https://api.inaturalist.org/v1/taxa?q=" + encodeURIComponent(query) +
+                        "&per_page=5&visual_quality=true";
+                    const controller = new AbortController();
+                    const timer = setTimeout(() => controller.abort(), 8000);
+                    const resp = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timer);
+                    if (!resp.ok) return null;
+                    const data = await resp.json();
+                    if (!data || !data.results || !data.results.length) return null;
+                    
+                    // Find best match - prefer exact name match
+                    const qNorm = query.toLowerCase().trim();
+                    let best = null;
+                    for (const t of data.results) {
+                        if (!t || !t.name) continue;
+                        const name = t.name.toLowerCase();
+                        const common = (t.preferred_common_name || '').toLowerCase();
+                        
+                        // Exact name match preferred
+                        if (name === qNorm || common === qNorm) {
+                            best = t;
+                            break;
+                        }
+                        // Starts with query (whole word)
+                        const re = new RegExp("^(" + qNorm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ")\\b");
+                        if (re.test(name) || re.test(common)) {
+                            if (!best) best = t; // Take first good match
+                        }
+                    }
+                    return best || null;
+                } catch (e) {
+                    console.warn("iNaturalist search failed:", e);
+                    return null;
+                }
+            },
+
+            // GBIF API - species matching
+            async matchSpecies(query) {
+                if (!query || query.length < 2) return null;
+                try {
+                    const url = "https://api.gbif.org/v1/species/match?name=" + encodeURIComponent(query);
+                    const controller = new AbortController();
+                    const timer = setTimeout(() => controller.abort(), 8000);
+                    const resp = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timer);
+                    if (!resp.ok) return null;
+                    const data = await resp.json();
+                    if (!data || !data.speciesKey) return null;
+                    return {
+                        usageKey: data.speciesKey,
+                        scientificName: data.scientificName || query,
+                        matchType: data.matchType || "",
+                        confidence: data.confidence || 0,
+                        status: data.status || ""
+                    };
+                } catch (e) {
+                    console.warn("GBIF match failed:", e);
+                    return null;
+                }
+            },
+
+            // Wikipedia API - species summary
+            async getWikipediaSummary(query) {
+                if (!query) return null;
+                try {
+                    const candidates = [query, query.split(/\s+/)[0]];
+                    for (const c of candidates) {
+                        if (!c) continue;
+                        const url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(c);
+                        const controller = new AbortController();
+                        const timer = setTimeout(() => controller.abort(), 8000);
+                        const resp = await fetch(url, { signal: controller.signal });
+                        clearTimeout(timer);
+                        if (!resp.ok) continue;
+                        const j = await resp.json();
+                        if (j && j.extract && !j.type) {
+                            return {
+                                title: j.title || c,
+                                extract: j.extract ? j.extract.slice(0, 500) : "",
+                                thumbnail: j.thumbnail ? j.thumbnail.source : "",
+                                url: j.content_urls && j.content_urls.desktop && j.content_urls.desktop.page ? j.content_urls.desktop.page : ""
+                            };
+                        }
+                    }
+                    return null;
+                } catch (e) {
+                    console.warn("Wikipedia summary failed:", e);
+                    return null;
+                }
+            },
+
+            // Open-Meteo - geographic/weather context
+            async getGeographicContext(lat, lng) {
+                if (!lat || !lng) return null;
+                try {
+                    const url = "https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lng +
+                        "&current=temperature_2m,weather_code,wind_speed_10m,is_day&timezone=auto";
+                    const controller = new AbortController();
+                    const timer = setTimeout(() => controller.abort(), 8000);
+                    const resp = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timer);
+                    if (!resp.ok) return null;
+                    const j = await resp.json();
+                    const cur = j && j.current;
+                    if (!cur) return null;
+                    return {
+                        temperature: cur.temperature_2m,
+                        weather: this.weatherLabel(cur.weather_code),
+                        windKmh: cur.wind_speed_10m,
+                        isDay: cur.is_day === 1
+                    };
+                } catch (e) {
+                    console.warn("Geographic context failed:", e);
+                    return null;
+                }
+            },
+
+            weatherLabel(code) {
+                const map = {
+                    0: "Clear sky", 1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast",
+                    45: "Fog", 48: "Depositing rime fog",
+                    51: "Light drizzle", 53: "Drizzle", 55: "Dense drizzle",
+                    61: "Slight rain", 63: "Rain", 65: "Heavy rain",
+                    71: "Slight snow", 73: "Snow", 75: "Heavy snow",
+                    80: "Slight showers", 81: "Showers", 82: "Violent showers",
+                    95: "Thunderstorm", 96: "Thunderstorm with hail", 99: "Severe thunderstorm with hail"
+                };
+                return map[code] || "Variable conditions";
+            },
+
+            // Get conservation status from IUCN
+            async getConservationStatus(scientificName) {
+                if (!scientificName) return null;
+                try {
+                    // Use iNaturalist's conservation status
+                    const url = "https://api.inaturalist.org/v1/taxa?q=" + encodeURIComponent(scientificName) +
+                        "&per_page=1";
+                    const controller = new AbortController();
+                    const timer = setTimeout(() => controller.abort(), 8000);
+                    const resp = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timer);
+                    if (!resp.ok) return null;
+                    const data = await resp.json();
+                    if (!data || !data.results || !data.results.length) return null;
+                    const t = data.results[0];
+                    const cs = t.conservation_status;
+                    if (!cs) return null;
+                    const raw = (cs.status_name || cs.status || "").toString();
+                    const statusMap = {
+                        /critically/i: "Critically Endangered",
+                        /endangered|threatened/i: "Endangered",
+                        /vulnerable/i: "Vulnerable",
+                        /near threatened/i: "Near Threatened",
+                        /least/i: "Least Concern"
+                    };
+                    for (const [regex, label] of Object.entries(statusMap)) {
+                        if (regex.test(raw)) return {
+                            status: label,
+                            iucn: cs.status_name || cs.status || ""
+                        };
+                    }
+                    return { status: "Data Deficient", iucn: cs.status_name || cs.status || "" };
+                } catch (e) {
+                    console.warn("Conservation status failed:", e);
+                    return null;
+                }
+            },
+
+            // Open a new tab with research results
+            openResearchTab(speciesInfo) {
+                if (!speciesInfo) return;
+                const features = [
+                    'resizable',
+                    'scrollbars=yes',
+                    'width=900',
+                    'height=700'
+                ].join(',');
+                
+                let url = 'https://www.google.com/search?q=' + encodeURIComponent(speciesInfo.commonName || speciesInfo.scientificName || '');
+                
+                // Add more specific searches based on available data
+                if (speciesInfo.wikipedia_url) {
+                    url += '&site=wikipedia';
+                }
+                if (speciesInfo.inaturalistId) {
+                    url += '&species=' + speciesInfo.inaturalistId;
+                }
+                
+                window.open(url, '_blank', features);
+            }
+        };
+    }
+
+});

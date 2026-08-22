@@ -328,16 +328,18 @@
       </div>
     </section>
 
-    <!-- ══════════════ BOOKS & RESOURCES ══════════════ -->
-    <section class="lib-books" aria-labelledby="books-heading">
+    <!-- ══════════════ RESEARCH & DISCOVERY ══════════════ -->
+    <section class="content-overlay" id="researchSection">
       <div class="container">
-        <div class="lib-books-header">
-          <h2 id="books-heading" class="lib-section-title">Books & Resources</h2>
-          <p class="lib-section-desc">Download or read our collection of wildlife guides, conservation reports, and natural histories.</p>
+        <div class="section-header" id="researchHeading">
+          <h2><i class="fas fa-search"></i> Research & Discovery</h2>
+          <p>Connect with real-world wildlife data, conservation status, and global observations</p>
         </div>
-        <div class="lib-books-grid" id="booksGrid">
-          <!-- Populated by JS -->
+        <div class="research-search">
+          <input type="text" id="researchSearch" placeholder="Search a species, animal, or plant..." aria-label="Search for wildlife research">
+          <button class="btn btn--secondary" id="researchBtn" onclick="performResearch()" style="min-width:140px;">Research</button>
         </div>
+        <div id="researchResults" style="margin-top:2rem; display:none;"></div>
       </div>
     </section>
   </main>
