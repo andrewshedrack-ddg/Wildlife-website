@@ -77,21 +77,25 @@ img { max-width: 100%; height: auto; display: block; }
 html.nav-lock, html.nav-lock body { overflow: hidden; }
 html:has(#mobile-nav-toggle:checked),
 html:has(#mobile-nav-toggle:checked) body { overflow: hidden; }
-
-/* ============================================================ HEADER ============================================================ */
+/* ============================================================
+   HEADER ============================================================ */
 .site-header {
-  position: fixed; top: 1rem; left: 50%; transform: translateX(-50%);
-  width: calc(100% - 2rem); max-width: var(--max-width);
-  height: auto; min-height: 64px;
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
   background: rgba(18, 26, 19, 0.85);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(244, 162, 97, 0.18);
-  border-radius: 16px;
-  z-index: 1000; transition: var(--transition);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(244,162,97,0.1);
+  border-bottom: 1px solid rgba(244, 162, 97, 0.18);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  transition: var(--transition);
 }
 .site-header.scrolled { 
   box-shadow: 0 12px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(244,162,97,0.2); 
+}
+.site-header .header-container {
+  padding: 1rem 2rem;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 /* Ensure header children (dropdowns) form their own stacking context
    so they always render above hero typography and slideshow. */
@@ -100,12 +104,6 @@ html:has(#mobile-nav-toggle:checked) body { overflow: hidden; }
 .site-header .notification-bell-wrap,
 .header-actions .user-menu,
 .header-actions .language-selector { position: relative; z-index: 2000; }
-
-.header-container { 
-  max-width: var(--max-width); margin: 0 auto; padding: 0.75rem 1.5rem; 
-  display: flex; align-items: center; justify-content: center; gap: 1.5rem; 
-  flex-wrap: wrap;
-}
 
 /* Logo - centered */
 .logo { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
@@ -372,7 +370,7 @@ html:has(#mobile-nav-toggle:checked) body { overflow: hidden; }
 .page-slideshow::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.65) 100%); z-index: 1; }
 
 /* ============================================================ HERO ============================================================ */
-.hero { position: relative; min-height: calc(100vh - var(--header-height) - 1rem); display: flex; align-items: center; justify-content: center; text-align: center; color: var(--lighter); padding: 4rem 2rem; overflow: hidden; }
+.hero { position: relative; min-height: calc(100vh - var(--header-height)); display: flex; align-items: center; justify-content: center; text-align: center; color: var(--lighter); padding: 4rem 2rem 2rem; overflow: hidden; }
 .hero-content { position: relative; z-index: 2; max-width: 800px; animation: fadeInUp 1.2s ease-out; }
 .hero-content h1 { font-family: var(--font-heading); font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 700; color: var(--lighter); margin-bottom: 1.2rem; text-shadow: 0 2px 20px rgba(0,0,0,0.5); line-height: 1.15; }
 .hero-content p { font-size: 1.15rem; max-width: 560px; margin: 0 auto 2rem; opacity: 0.88; line-height: 1.75; font-weight: 300; }
@@ -392,7 +390,7 @@ section { padding: 5rem 0; position: relative; }
 .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); overflow: hidden; transition: var(--transition); backdrop-filter: blur(4px); }
 .card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: rgba(255,255,255,0.18); }
 .card-image { aspect-ratio: 16/9; overflow: hidden; background: rgba(255,255,255,0.04); }
-.card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.card-image img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform 0.5s ease; }
 .card:hover .card-image img { transform: scale(1.06); }
 .card-body { padding: 1.5rem; }
 .card-body h3 { color: var(--lighter); margin-bottom: 0.5rem; font-size: 1.15rem; }
