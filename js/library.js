@@ -316,6 +316,120 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize research module if on library page
     if (document.getElementById('categoryGrid') || document.getElementById('booksGrid')) {
         window.WildGuardResearch = {
+            // Perform research search and display results on page
+            performResearch() {
+                const query = document.getElementById('researchSearch')?.value.trim();
+                const resultsDiv = document.getElementById('researchResults');
+                if (!query || query.length < 2) {
+                    resultsDiv.innerHTML = '';
+                    resultsDiv.style.display = 'none';
+                    return;
+                }
+                
+                // Show loading state
+                resultsDiv.innerHTML = '<div class="research-result-card"><div class="spinner"></div></div>';
+                resultsDiv.style.display = 'block';
+                
+                // Search using multiple APIs
+                this.searchSpecies(query).then(speciesInfo => {
+                    if (speciesInfo) this.displayResults(resultsDiv, speciesInfo);
+                    else this.fallbackSearch(query, resultsDiv);
+                });
+            },
+
+            // Search using iNaturalist API
+            async searchSpecies(query) {
+                if (!query || query.length < 2) return null;
+                try {
+                    const url = "https://api.inaturalist.org/v1/taxa?q=" + encodeURIComponent(query) +
+                        "&per_page=5&visual_quality=true";
+                    const controller = new AbortController();
+                    const timer = setTimeout(() => controller.abort(), 8000);
+                    const resp = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timer);
+                    if (!resp.ok) return null;
+                    const data = await resp.json();
+                    if (!data || !data.results || !data.results.length) return null;
+                    
+                    // Find best match - prefer exact name match
+                    const qNorm = query.toLowerCase().trim();
+                    let best = null;
+                    for (const t of data.results) {
+                        if (!t || !t.name) continue;
+                        const name = t.name.toLowerCase();
+                        const common = (t.preferred_common_name || '').toLowerCase();
+                        
+                        // Exact name match preferred
+                        if (name === qNorm || common === qNorm) {
+                            best = t;
+                            break;
+                        }
+                        // Starts with query (whole word)
+                        const re = new RegExp("^(" + qNorm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ")\\b");
+                        if (re.test(name) || re.test(common)) {
+                            if (!best) best = t; // Take first good match
+                        }
+                    }
+                    return best || null;
+                } catch (e) {
+                    console.warn("iNaturalist search failed:", e);
+                    return null;
+                }
+            },
+
+            // Fallback: Wikipedia search
+            async fallbackSearch(query, resultsDiv) {
+                try {
+                    const url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(query);
+                    const controller = new AbortController();
+                    const timer = setTimeout(() => controller.abort(), 8000);
+                    const resp = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timer);
+                    if (!resp.ok) {
+                        resultsDiv.innerHTML = '<div class="research-result-card"><p style="color:var(--muted);">No results found. Try a different scientific or common name.</p></div>';
+                        return;
+                    }
+                    const j = await resp.json();
+                    if (j && j.extract) {
+                        this.displayResults(resultsDiv, {
+                            scientificName: query,
+                            commonName: j.title,
+                            extract: j.extract.slice(0, 300),
+                            thumbnail: j.thumbnail ? j.thumbnail.source : "",
+                            wikipedia_url: j.content_urls && j.content_urls.desktop && j.content_urls.desktop.page ? j.content_urls.desktop.page : ""
+                        });
+                    } else {
+                        resultsDiv.innerHTML = '<div class="research-result-card"><p style="color:var(--muted);">No Wikipedia article found.</p></div>';
+                    }
+                } catch (e) {
+                    console.warn("Wikipedia search failed:", e);
+                    resultsDiv.innerHTML = '<div class="research-result-card"><p style="color:var(--muted);">Search failed. Please try again.</p></div>';
+                }
+            },
+
+            // Display research results on page
+            displayResults(resultsDiv, speciesInfo) {
+                let url = 'https://www.google.com/search?q=' + encodeURIComponent(speciesInfo.commonName || speciesInfo.scientificName || '');
+                if (speciesInfo.wikipedia_url) url += '&site=wikipedia';
+                if (speciesInfo.inaturalistId) url += '&species=' + speciesInfo.inaturalistId;
+                
+                let html = `
+                    <div class="research-result-card">
+                        ${speciesInfo.thumbnail ? `<div class="research-thumbnail"><img src="${speciesInfo.thumbnail}" alt="${speciesInfo.commonName}" loading="lazy"></div>` : ''}
+                        <div class="research-info">
+                            <h3>${speciesInfo.commonName || speciesInfo.scientificName}</h3>
+                            <p>${speciesInfo.extract || ''}</p>
+                            <div class="research-tags">
+                                ${speciesInfo.conservationStatus ? `<span class="tag">${speciesInfo.conservationStatus}</span>` : ''}
+                            </div>
+                            <a href="${url}" target="_blank" class="btn btn--secondary btn--sm" style="margin-top:0.5rem;width:auto;padding:0.5rem 0.8rem;font-size:0.78rem;">View on Google →</a>
+                        </div>
+                    </div>`;
+                resultsDiv.innerHTML = html;
+                resultsDiv.style.display = 'block';
+            },
+
+            // ... rest of existing WildGuardResearch methods stay the same
             // iNaturalist API - no key required for search
             async searchSpecies(query) {
                 if (!query || query.length < 2) return null;
