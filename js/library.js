@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.WildGuardResearch = {
             // Perform research search and display results on page
             performResearch() {
-                const query = document.getElementById('researchSearch')?.value.trim();
+                const query = document.getElementById('researchSearch')?.value?.trim();
                 const resultsDiv = document.getElementById('researchResults');
                 if (!query || query.length < 2) {
                     resultsDiv.innerHTML = '';
@@ -330,10 +330,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 resultsDiv.innerHTML = '<div class="research-result-card"><div class="spinner"></div></div>';
                 resultsDiv.style.display = 'block';
                 
-                // Search using multiple APIs
+                // Search using multiple APIs with timeout
                 this.searchSpecies(query).then(speciesInfo => {
-                    if (speciesInfo) this.displayResults(resultsDiv, speciesInfo);
-                    else this.fallbackSearch(query, resultsDiv);
+                    if (speciesInfo) {
+                        console.log('Research found:', speciesInfo);
+                        this.displayResults(resultsDiv, speciesInfo);
+                    } else {
+                        console.log('No iNaturalist match, trying Wikipedia fallback');
+                        this.fallbackSearch(query, resultsDiv);
+                    }
+                }).catch(e => {
+                    console.warn('Research search error:', e);
+                    resultsDiv.innerHTML = '<div class="research-result-card"><p style="color:var(--muted);">Search error. Please try again.</p></div>';
                 });
             },
 
@@ -341,38 +349,67 @@ document.addEventListener('DOMContentLoaded', () => {
             async searchSpecies(query) {
                 if (!query || query.length < 2) return null;
                 try {
-                    const url = "https://api.inaturalist.org/v1/taxa?q=" + encodeURIComponent(query) +
+                    const encodedQuery = encodeURIComponent(query);
+                    const url = "https://api.inaturalist.org/v1/taxa?q=" + encodedQuery +
                         "&per_page=5&visual_quality=true";
                     const controller = new AbortController();
                     const timer = setTimeout(() => controller.abort(), 8000);
                     const resp = await fetch(url, { signal: controller.signal });
                     clearTimeout(timer);
-                    if (!resp.ok) return null;
+                    
+                    if (!resp.ok) {
+                        console.warn("iNaturalist API returned status:", resp.status);
+                        return null;
+                    }
+                    
                     const data = await resp.json();
-                    if (!data || !data.results || !data.results.length) return null;
+                    if (!data || !data.results || !data.results.length) {
+                        console.warn("iNaturalist: no results returned");
+                        return null;
+                    }
+                    
+                    console.log("iNaturalist results count:", data.results.length);
                     
                     // Find best match - prefer exact name match
                     const qNorm = query.toLowerCase().trim();
                     let best = null;
+                    
                     for (const t of data.results) {
                         if (!t || !t.name) continue;
-                        const name = t.name.toLowerCase();
-                        const common = (t.preferred_common_name || '').toLowerCase();
                         
-                        // Exact name match preferred
+                        const name = (t.name || '').toLowerCase();
+                        const common = ((t.preferred_common_name) || '').toLowerCase();
+                        const taxon_id = t.taxon_id;
+                        
+                        // 1. Exact name match (case-insensitive)
                         if (name === qNorm || common === qNorm) {
                             best = t;
+                            console.log("iNaturalist: exact match found:", t.name);
                             break;
                         }
-                        // Starts with query (whole word)
-                        const re = new RegExp("^(" + qNorm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ")\\b");
-                        if (re.test(name) || re.test(common)) {
+                        
+                        // 2. Query matches first word of name
+                        const firstWord = name.split(' ')[0];
+                        if (firstWord && firstWord.startsWith(qNorm)) {
+                            best = t;
+                            console.log("iNaturalist: first word match:", t.name);
+                            break;
+                        }
+                        
+                        // 3. Contains query anywhere in name
+                        if (name.includes(qNorm) || common.includes(qNorm)) {
                             if (!best) best = t; // Take first good match
+                            console.log("iNaturalist: contains match:", t.name);
                         }
                     }
+                    
+                    if (!best) {
+                        console.warn("iNaturalist: no good match found out of", data.results.length, "results");
+                    }
+                    
                     return best || null;
                 } catch (e) {
-                    console.warn("iNaturalist search failed:", e);
+                    console.error("iNaturalist search failed:", e);
                     return null;
                 }
             },
@@ -380,29 +417,45 @@ document.addEventListener('DOMContentLoaded', () => {
             // Fallback: Wikipedia search
             async fallbackSearch(query, resultsDiv) {
                 try {
-                    const url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(query);
+                    const encodedQuery = encodeURIComponent(query);
+                    const url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + encodedQuery;
                     const controller = new AbortController();
                     const timer = setTimeout(() => controller.abort(), 8000);
                     const resp = await fetch(url, { signal: controller.signal });
                     clearTimeout(timer);
+                    
                     if (!resp.ok) {
-                        resultsDiv.innerHTML = '<div class="research-result-card"><p style="color:var(--muted);">No results found. Try a different scientific or common name.</p></div>';
+                        // Try with just the first word
+                        const firstWord = query.split(' ')[0];
+                        if (firstWord && firstWord.length > 2) {
+                            console.log("Wikipedia direct failed, trying first word:", firstWord);
+                            return this.fallbackSearch(firstWord, resultsDiv);
+                        }
+                        resultsDiv.innerHTML = '<div class="research-result-card"><p style="color:var(--muted);">No results found. Try a scientific or common name.</p></div>';
                         return;
                     }
+                    
                     const j = await resp.json();
-                    if (j && j.extract) {
-                        this.displayResults(resultsDiv, {
-                            scientificName: query,
-                            commonName: j.title,
-                            extract: j.extract.slice(0, 300),
-                            thumbnail: j.thumbnail ? j.thumbnail.source : "",
-                            wikipedia_url: j.content_urls && j.content_urls.desktop && j.content_urls.desktop.page ? j.content_urls.desktop.page : ""
-                        });
-                    } else {
+                    if (!j || !j.extract) {
+                        // Try with first word if full query fails
+                        const firstWord = query.split(' ')[0];
+                        if (firstWord && firstWord.length > 2) {
+                            console.log("Wikipedia no extract, trying first word:", firstWord);
+                            return this.fallbackSearch(firstWord, resultsDiv);
+                        }
                         resultsDiv.innerHTML = '<div class="research-result-card"><p style="color:var(--muted);">No Wikipedia article found.</p></div>';
+                        return;
                     }
+                    
+                    this.displayResults(resultsDiv, {
+                        scientificName: query,
+                        commonName: j.title,
+                        extract: j.extract.slice(0, 400),
+                        thumbnail: j.thumbnail ? j.thumbnail.source : "",
+                        wikipedia_url: j.content_urls && j.content_urls.desktop && j.content_urls.desktop.page ? j.content_urls.desktop.page : ""
+                    });
                 } catch (e) {
-                    console.warn("Wikipedia search failed:", e);
+                    console.error("Wikipedia search failed:", e);
                     resultsDiv.innerHTML = '<div class="research-result-card"><p style="color:var(--muted);">Search failed. Please try again.</p></div>';
                 }
             },
