@@ -313,8 +313,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Research Tools ---
-    // Initialize research module if on library page
-    if (document.getElementById('categoryGrid') || document.getElementById('booksGrid')) {
+    // Initialize research module if on library page or category pages
+    if (document.getElementById('researchSearch') || document.getElementById('categoryGrid') || document.getElementById('booksGrid')) {
         window.WildGuardResearch = {
             // Perform research search and display results on page
             performResearch() {
