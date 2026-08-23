@@ -129,9 +129,11 @@ html:has(#mobile-nav-toggle:checked) body { overflow: hidden; }
 .desktop-nav a:hover i { transform: translateY(-1px); }
 
 /* Auth */
-.header-actions { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
-.btn-signin { display: flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; color: var(--lighter); font-size: 0.82rem; font-weight: 500; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; background: rgba(255,255,255,0.03); transition: var(--transition); }
+.header-actions { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+.header-actions .theme-toggle { width: 44px; height: 44px; }
+.btn-signin { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; color: var(--lighter); font-size: 0.82rem; font-weight: 500; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; background: rgba(255,255,255,0.03); transition: var(--transition); }
 .btn-signin:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.25); transform: translateY(-1px); }
+.btn-signin i { font-size: 1rem; }
 .btn-cta { display: flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.2rem; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%); color: var(--dark); font-size: 0.82rem; font-weight: 600; border-radius: 10px; transition: var(--transition); box-shadow: 0 2px 8px rgba(244, 162, 97,0.2); }
 .btn-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(224, 122, 97,0.3); }
 

@@ -469,11 +469,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!cs) return null;
                     const raw = (cs.status_name || cs.status || "").toString();
                     const statusMap = {
-                        /critically/i: "Critically Endangered",
-                        /endangered|threatened/i: "Endangered",
+                        /critically endangered/i: "Critically Endangered",
+                        /endangered/i: "Endangered",
                         /vulnerable/i: "Vulnerable",
                         /near threatened/i: "Near Threatened",
-                        /least/i: "Least Concern"
+                        /least concern/i: "Least Concern",
+                        /data deficient/i: "Data Deficient"
                     };
                     for (const [regex, label] of Object.entries(statusMap)) {
                         if (regex.test(raw)) return {
