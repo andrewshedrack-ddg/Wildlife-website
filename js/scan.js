@@ -287,11 +287,15 @@ const WildlifeScan = {
               this.updateModelStatus(pct);
             }).then(() => {
               if (WildGuardAI.isReady()) this.setModelStatus("model");
+              else this.setModelStatus("ready-minimal");
             });
           }
+        } else {
+          this.setModelStatus("model");
         }
       } catch (err) {
         console.warn("Model load failed:", err);
+        this.setModelStatus("unavailable");
       }
     }
   },
@@ -1628,21 +1632,125 @@ const WildlifeScan = {
     }
     let iNat = null;
 
-    // Enrich with real-world data from the free iNaturalist API when online.
-    // Prefer the scientific name (binomial) for precise iNaturalist matching.
-    this.els.loadingText.textContent = "Consulting global biodiversity database...";
-    const sciQuery = (species.scientificName && species.scientificName.split(" ").length >= 2)
-      ? species.scientificName
-      : (aiLabel || species.name || bestMatch);
-    iNat = await this.enrichWithINaturalist(sciQuery);
-    if (iNat) {
-      aiSource = "MobileNet + iNaturalist";
-      if (iNat.scientificName) {
+    // Enhanced browsing: when confidence is low, try multiple query variations
+    // and combine results from multiple sources for better identification.
+    const MIN_CONFIDENCE_FOR_ENHANCED_BROWSE = 60;
+    const needsEnhancedBrowse = confidence < MIN_CONFIDENCE_FOR_ENHANCED_BROWSE;
+    let browseQueries = [];
+
+    // Build query variations based on what we have
+    if (species.scientificName) {
+      browseQueries.push(species.scientificName);
+      const gen = species.scientificName.split(" ")[0];
+      if (gen) browseQueries.push(gen);
+    }
+    if (aiLabel) {
+      browseQueries.push(aiLabel);
+      const labelWords = aiLabel.toLowerCase().split(" ");
+      if (labelWords.length > 1) {
+        browseQueries.push(labelWords[0]); // genus/common name
+        browseQueries.push(labelWords.join("-"));
+      }
+    }
+    if (bestMatch && this.speciesDB[bestMatch]) {
+      const dbSpecies = this.speciesDB[bestMatch];
+      if (dbSpecies.name) browseQueries.push(dbSpecies.name);
+      if (dbSpecies.scientificName) browseQueries.push(dbSpecies.scientificName);
+      // Add family/order if available
+      if (dbSpecies.category) {
+        const catWords = dbSpecies.category.toLowerCase().split(" ");
+        if (catWords.length > 0) browseQueries.push(catWords[0]);
+      }
+    }
+
+    // Deduplicate queries, filter empty
+    browseQueries = [...new Set(browseQueries.filter(q => q && q.trim().length > 2))];
+
+    // Enhanced iNaturalist browsing with multiple queries
+    if (navigator.onLine && browseQueries.length > 0 && needsEnhancedBrowse) {
+      this.els.loadingText.textContent = "Low confidence — researching with global databases...";
+      // Try iNaturalist with first few queries
+      let iNatResult = null;
+      for (const query of browseQueries.slice(0, 3)) {
+        try {
+          const result = await this.enrichWithINaturalist(query);
+          if (result && result.scientificName) {
+            iNatResult = result;
+            break;
+          }
+        } catch (e) {}
+        // Brief pause between queries
+        await new Promise(r => setTimeout(r, 500));
+      }
+
+      if (iNatResult) {
+        aiSource = "MobileNet + iNaturalist enhanced browse";
+        // Prefer iNaturalist's scientific name when it looks real
         const cur = species.scientificName || "";
-        // Prefer iNaturalist's scientific name when it looks real (contains a space / genus epithet)
-        if (iNat.scientificName.split(" ").length >= 2 && cur.split(" ").length < 2) {
-          species.scientificName = iNat.scientificName;
+        if (iNatResult.scientificName.split(" ").length >= 2 && cur.split(" ").length < 2) {
+          species.scientificName = iNatResult.scientificName;
         }
+        // Update common name if available
+        if (iNatResult.commonName && !species.name.includes(iNatResult.commonName)) {
+          // Could update but keep original; just note it
+        }
+      }
+    }
+
+    // Enhanced Wikipedia browsing
+    let wikiResult = null;
+    if (needsEnhancedBrowse && browseQueries.length > 0) {
+      try {
+        // Try first 2 queries
+        for (const query of browseQueries.slice(0, 2)) {
+          try {
+            const result = await this.enrichWithWikipediaExtract(query);
+            if (result && result.extract) {
+              wikiResult = result;
+              break;
+            }
+          } catch (e) {}
+          await new Promise(r => setTimeout(r, 300));
+        }
+      } catch (e) {}
+    }
+
+    // Enhanced GBIF browsing
+    let gbifResult = null;
+    if (needsEnhancedBrowse && browseQueries.length > 0) {
+      try {
+        for (const query of browseQueries.slice(0, 2)) {
+          try {
+            const result = await this.enrichWithGBIF(query);
+            if (result && result.speciesKey) {
+              gbifResult = result;
+              break;
+            }
+          } catch (e) {}
+          await new Promise(r => setTimeout(r, 300));
+        }
+      } catch (e) {}
+    }
+
+    // Apply enhanced results
+    if (iNatResult) {
+      iNat = iNatResult;
+      if (iNat.commonName && !this.currentResult.iNat?.commonName) {
+        // Store iNaturalist common name for display
+      }
+    }
+
+    if (wikiResult) {
+      this.currentResult.history = wikiResult;
+      if (!aiSource.includes("Wikipedia") && aiSource !== "Local species database") {
+        aiSource += " + Wikipedia";
+      }
+    }
+
+    if (gbifResult) {
+      this.currentResult.gbif = gbifResult;
+      if (!aiSource.includes("GBIF") && aiSource !== "Local species database") {
+        aiSource += " + GBIF";
       }
     }
 
