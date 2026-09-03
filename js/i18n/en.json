@@ -1,0 +1,327 @@
+{
+  "header": {
+    "logo": "WildGuard Society",
+    "nav": {
+      "home": "Home",
+      "library": "Library",
+      "scan": "Scan",
+      "about": "About",
+      "contact": "Contact"
+    },
+    "auth": {
+      "signIn": "Sign In",
+      "userMenu": "User",
+      "profile": "Profile",
+      "history": "History",
+      "favorites": "Favorites",
+      "logout": "Logout"
+    }
+  },
+  "hero": {
+    "title": "We Are The Guardians of Nature",
+    "subtitle": "WildGuard Society brings together young people to understand environmental changes and take meaningful action for a healthier planet.",
+    "cta": "Discover Our Mission"
+  },
+  "sections": {
+    "whoWeAre": "Who We Are",
+    "magnificentWildlife": "Magnificent Wildlife",
+    "nationalParks": "National Parks",
+    "conservationEfforts": "Conservation Efforts",
+    "getInvolved": "Get Involved",
+    "howItWorks": "How It Works",
+    "howItWorksDesc": "Three steps to join the conservation movement",
+    "scan": "1. Scan",
+    "learn": "2. Learn",
+    "protect": "3. Protect",
+    "ourImpact": "Our Impact",
+    "scannedSpecies": "Scanned Species"
+  },
+  "features": {
+    "purpose": {
+      "title": "Our Purpose",
+      "desc": "As the world experiences increasing challenges such as pollution, habitat degradation, biodiversity loss, climate change, unsustainable resource use, and ecosystem disturbances, we bring young people together to understand these changes and take meaningful action."
+    },
+    "youth": {
+      "title": "Youth Collaboration",
+      "desc": "We empower individuals to become active guardians of nature and contributors to a healthier planet through conservation, environmental education, sustainability initiatives, and innovation."
+    },
+    "belief": {
+      "title": "Our Belief",
+      "desc": "Protecting nature requires more than awareness; it requires observation, adaptation, action, and collective effort. We transform passion into action for a sustainable future."
+    }
+  },
+  "conservation": {
+    "antiPoaching": {
+      "title": "Anti-Poaching",
+      "desc": "Advanced monitoring systems and real-time alerts help protect endangered species."
+    },
+    "community": {
+      "title": "Community",
+      "desc": "Local communities participate in conservation through education and sustainable practices."
+    },
+    "habitat": {
+      "title": "Habitat",
+      "desc": "Protecting and restoring natural habitats so wildlife have space and resources to thrive."
+    },
+    "education": {
+      "title": "Education",
+      "desc": "Scientific research and educational programs help us understand wildlife better."
+    }
+  },
+  "getInvolved": {
+    "donate": {
+      "title": "Donate",
+      "desc": "Fund critical conservation work, from anti-poaching patrols to habitat restoration."
+    },
+    "adopt": {
+      "title": "Adopt",
+      "desc": "Symbolically adopt a wildlife animal and receive updates on their well-being."
+    },
+    "programs": {
+      "title": "Programs",
+      "desc": "Participate in or sponsor educational initiatives about wildlife conservation."
+    },
+    "share": {
+      "title": "Share",
+      "desc": "Share information about wildlife and conservation with your network."
+    }
+  },
+  "scan": {
+    "header": "Scanner",
+    "title": "What did you find?",
+    "subtitle": "Capture an animal, plant, insect, or even a leaf. AI identifies it and reads the field guide aloud.",
+    "ready": "Ready when you are",
+    "actions": {
+      "camera": "Open camera",
+      "upload": "Upload photo",
+      "retake": "Scan another",
+      "readAloud": "Read field guide aloud",
+      "library": "Open species library"
+    },
+    "loading": "Analyzing image with neural network...",
+    "results": {
+      "category": "Category",
+      "scientificName": "Scientific Name",
+      "confidence": "Confidence",
+      "living": "LIVING ORGANISM",
+      "nonLiving": "Non-Living Object"
+    },
+    "voice": {
+      "title": "Voice Controls",
+      "hint": "Say: \"scan\", \"take photo\", \"upload image\", or \"clear\""
+    }
+  },
+  "library": {
+    "eyebrow": "Wildlife Library",
+    "title": "Explore Global Biodiversity",
+    "subtitle": "Discover mammals, birds, reptiles, amphibians, aquatic life, plants, fungi, bacteria, and viruses.",
+    "categories": "Categories",
+    "categoriesDesc": "Choose a category to explore species",
+    "scanned": "Scanned Species",
+    "scannedDesc": "Species identified by users through the AI scan feature",
+    "books": "Books & Resources",
+    "booksTitle": "Books & Resources",
+    "booksDesc": "Download or read our collection of wildlife guides, conservation reports, and natural histories.",
+    "howItWorks": "How It Works",
+    "howItWorksDesc": "Three simple steps to become a conservation guardian",
+    "categoriesList": {
+      "mammals": "Mammals",
+      "mammalsDesc": "Warm-blooded vertebrates from mighty elephants to tiny bats, inhabiting every continent.",
+      "birds": "Birds",
+      "birdsDesc": "Feathered vertebrates ranging from tiny sunbirds to majestic eagles across every habitat.",
+      "reptiles": "Reptiles",
+      "reptilesDesc": "Sun-loving lizards, secretive snakes and ancient crocodilians.",
+      "amphibians": "Amphibians",
+      "amphibiansDesc": "Frogs and toads adapted to varied habitats from rainforests to deserts.",
+      "aquatic": "Aquatic Life",
+      "aquaticDesc": "Fish and aquatic organisms inhabiting oceans, lakes, rivers, and wetlands worldwide.",
+      "plants": "Plants",
+      "plantsDesc": "From savanna grasses to tropical rainforest canopies.",
+      "fungi": "Fungi",
+      "fungiDesc": "Decomposers that play a vital role in nutrient cycling.",
+      "bacteria": "Bacteria",
+      "bacteriaDesc": "Microorganisms contributing to digestion, nitrogen fixation and more.",
+      "viruses": "Viruses",
+      "virusesDesc": "Microscopic infectious particles that replicate inside living cells of animals, plants, and bacteria."
+    },
+    "bookshelf": {
+      "read": "Read",
+      "download": "Download"
+    }
+  },
+  "about": {
+    "title": "Who We Are",
+    "subtitle": "A youth-led environmental conservation movement dedicated to responding to environmental changes that affect nature and the balance of ecosystems.",
+    "mission": {
+      "title": "Our Mission",
+      "desc": "To identify, understand, and respond to environmental changes affecting nature through conservation action, sustainability, innovation, education, and youth collaboration."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "desc": "To build a future where nature thrives despite environmental challenges, supported by a generation of informed, active, and innovative environmental leaders."
+    },
+    "motto": {
+      "title": "Our Motto",
+      "desc": "Protect Nature - Protect Life"
+    },
+    "purpose": "WildGuard Society is a youth-led environmental conservation movement dedicated to responding to environmental changes that affect nature and the balance of ecosystems. As the world experiences increasing challenges such as pollution, habitat degradation, biodiversity loss, climate change, unsustainable resource use, and ecosystem disturbances, WildGuard brings together young people to understand these changes and take meaningful action. Through conservation, environmental education, sustainability initiatives, innovation, and youth collaboration, we empower individuals to become active guardians of nature and contributors to a healthier planet. We believe that protecting nature requires more than awareness; it requires observation, adaptation, action, and collective effort.",
+    "focus": {
+      "title": "What We Do",
+      "subtitle": "Our core pillars of action",
+      "observation": {
+        "title": "Observation",
+        "desc": "We monitor and identify environmental changes affecting nature, using data-driven insights to understand ecosystem shifts and emerging threats."
+      },
+      "adaptation": {
+        "title": "Adaptation",
+        "desc": "We develop innovative, sustainable solutions to address environmental challenges, adapting our strategies to the evolving needs of nature."
+      },
+      "action": {
+        "title": "Action",
+        "desc": "We turn awareness into tangible conservation efforts, from tree planting and clean-ups to advocacy and community education."
+      },
+      "collaboration": {
+        "title": "Collaboration",
+        "desc": "We unite young people across communities, empowering them with knowledge, tools, and platforms to become active environmental leaders."
+      }
+    },
+    "youth": {
+      "title": "Why Youth?",
+      "desc": "The youth are not just the future; they are the present. We believe in the power of young people to drive change. By engaging youth in conservation, we build a generation that will carry the torch for environmental protection long into the future. Our programs are designed to be accessible, engaging, and impactful, ensuring that every young person has the opportunity to contribute to a healthier planet."
+    }
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "We would love to hear from you. Whether you have a question, want to collaborate, or just want to say hello.",
+    "email": "Email",
+    "phone": "Phone",
+    "location": "Location",
+    "form": {
+      "title": "Send a Message",
+      "subtitle": "Fill out the form below and we will get back to you shortly",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Send Message",
+      "success": "Message sent successfully! We'll get back to you soon."
+    }
+  },
+  "footer": {
+    "brand": "WildGuard Society",
+    "tagline": "A youth-led environmental conservation movement. Our motto: Protect Nature - Protect Life.",
+    "explore": "Explore",
+    "getInvolved": "Get Involved",
+    "donate": "Donate",
+    "adopt": "Adopt an Animal",
+    "volunteer": "Volunteer",
+    "partner": "Partner with Us",
+    "contact": "Contact",
+    "rights": "All rights reserved.",
+    "motto": "Protect Nature - Protect Life",
+    "nav": {
+      "home": "Home",
+      "library": "Library",
+      "scan": "Scan",
+      "about": "About",
+      "contact": "Contact"
+    }
+  },
+  "species": {
+    "status": {
+      "criticallyEndangered": "Critically Endangered",
+      "endangered": "Endangered",
+      "vulnerable": "Vulnerable",
+      "nearThreatened": "Near Threatened",
+      "leastConcern": "Least Concern",
+      "dataDeficient": "Data Deficient"
+    },
+    "details": {
+      "taxonomy": "Taxonomy",
+      "population": "Population",
+      "habitat": "Habitat",
+      "diet": "Diet",
+      "behavior": "Behavior",
+      "threats": "Threats",
+      "domain": "Domain",
+      "kingdom": "Kingdom",
+      "category": "Category"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "User Login",
+      "subtitle": "Sign in to access exclusive wildlife content",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "forgot": "Forgot password?",
+      "switch": "Don't have an account? Register",
+      "google": "Continue with Google"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Join WildGuard Society to access exclusive content",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Register",
+      "switch": "Already have an account? Sign In",
+      "google": "Continue with Google",
+      "success": "Registration successful! A verification email has been sent."
+    }
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "scans": "Scan Reviews",
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "users": "Users & Roles",
+    "admins": "Admins",
+    "logs": "Activity Log",
+    "settings": "Settings",
+    "compose": "Compose",
+    "emailCampaign": "Email Campaign",
+    "analytics": "Analytics",
+    "stats": {
+      "pending": "Pending Reviews",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "users": "Total Users",
+      "messages": "New Messages",
+      "scansToday": "Scans Today"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "search": "Search",
+    "filter": "Filter",
+    "status": "Status",
+    "date": "Date",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "actions": "Actions",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "page": "Page",
+    "of": "of",
+    "results": "results",
+    "noResults": "No results found",
+    "selectLanguage": "Select Language",
+    "read": "Read",
+    "download": "Download",
+    "global": "Moshi, Kilimanjaro, Tanzania"
+  }
+}

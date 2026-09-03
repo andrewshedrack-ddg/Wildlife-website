@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore mammals of East Africa - lions, elephants, leopards, rhinos, and more with conservation status and detailed facts.">
+  <meta name="author" content="WildGuard Society">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <title>Mammals | WildGuard Society Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/lively.css">
+  <link rel="stylesheet" href="../css/library.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <script defer src="../js/i18n.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/Background3.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
+  </div>
+
+  <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="library.html" class="active"><i class="fas fa-book"></i> Library</a>
+        <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
+        <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
+        <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a></nav>
+      <div class="header-actions">
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <div class="user-menu" id="user-menu" style="display:none;">
+            <button class="user-menu-toggle" id="user-menu-toggle">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-email">User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="../user/Profile.html"><i class="fas fa-user"></i> Profile</a>
+              <a href="../user/History.html"><i class="fas fa-history"></i> History</a>
+              <a href="../user/Inbox.html"><i class="fas fa-inbox"></i> Inbox</a>
+
+                                        <a href="../user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+
+  <main id="main-content" tabindex="-1">
+    <section class="page-banner">
+      <span class="eyebrow"><i class="fas fa-paw" style="margin-right:0.4rem;"></i>Wildlife Library</span>
+      <h1>Mammals</h1>
+      <p class="lede">Large predators, herbivores and more across national parks worldwide.</p>
+    </section>
+
+    <section class="content-overlay">
+      <div class="container">
+        <div class="section-header">
+          <h2>Mammals of the Savannah</h2>
+          <p>A collection of iconic African mammals presented with quick facts and conservation context.</p>
+        </div>
+        <div class="card-grid wildlife-grid">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/rhino.png" alt="Black Rhinoceros" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Black Rhinoceros</h3>
+              <p class="brief">Critically Endangered</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Diceros bicornis</p>
+                <p><strong>Weight Range:</strong> 1,800 - 3,100 lbs (800 - 1,400 kg)</p>
+                <p><strong>Key Detail:</strong> They have a hooked, prehensile upper lip used like a thumb to strip leaves and twigs from branches.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/elephant.jpg" alt="African Bush Elephant" loading="lazy" onerror="this.src='../assets/images/background.png'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>African Bush Elephant</h3>
+              <p class="brief">Endangered</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Loxodonta africana</p>
+                <p><strong>Weight Range:</strong> 4 - 7 tons (3,600 - 6,300 kg)</p>
+                <p><strong>Key Detail:</strong> Their massive ears act like built-in air conditioners. By flapping them, elephants can cool down the blood flowing through the large vessels in their ears.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/lion.jpg" alt="African Lion" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>African Lion</h3>
+              <p class="brief">Vulnerable</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Panthera leo</p>
+                <p><strong>Weight Range:</strong> 330 - 550 lbs (150 - 250 kg)</p>
+                <p><strong>Key Detail:</strong> A male's mane isn't just for show; a darker, thicker mane indicates top health and higher testosterone.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/leopard.png" alt="African Leopard" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>African Leopard</h3>
+              <p class="brief">Vulnerable</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Panthera pardus pardus</p>
+                <p><strong>Weight Range:</strong> 65 - 200 lbs (30 - 90 kg)</p>
+                <p><strong>Key Detail:</strong> To protect their food from scavengers, leopards can haul prey weighing as much as themselves up into tree branches.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Cheetah_%28Acinonyx_jubatus%29_female_2.jpg" alt="Cheetah" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Cheetah</h3>
+              <p class="brief">Vulnerable</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Acinonyx jubatus</p>
+                <p><strong>Weight Range:</strong> 46 - 158 lbs (21 - 72 kg)</p>
+                <p><strong>Key Detail:</strong> Built for speed and agility, cheetahs can accelerate from 0 to 60 mph in just 3 seconds.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/Giraffa_camelopardalis_in_Duisburg_Zoo_sticking_out_tongue.jpg" alt="Giraffe" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Giraffe</h3>
+              <p class="brief">Vulnerable</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Giraffa camelopardalis</p>
+                <p><strong>Weight Range:</strong> 1,750 - 2,800 lbs (794 - 1,270 kg)</p>
+                <p><strong>Key Detail:</strong> Kenya's tall icon, shaped for browsing treetops and spotting movement across open country.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/zebra.png" alt="Plains Zebra" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Plains Zebra</h3>
+              <p class="brief">Near Threatened</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Equus quagga</p>
+                <p><strong>Weight Range:</strong> 440 - 990 lbs (200 - 450 kg)</p>
+                <p><strong>Key Detail:</strong> Every zebra has a unique stripe pattern, much like human fingerprints.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/buffalo.png" alt="African Buffalo" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>African Buffalo</h3>
+              <p class="brief">Near Threatened</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Syncerus caffer</p>
+                <p><strong>Weight Range:</strong> 1,100 - 2,200 lbs (500 - 1,000 kg)</p>
+                <p><strong>Key Detail:</strong> An adult male's massive horns fuse to form a 'boss' that can even stop bullets.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/warthog.png" alt="Warthog" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Warthog</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Phacochoerus africanus</p>
+                <p><strong>Weight Range:</strong> 110 - 330 lbs (50 - 150 kg)</p>
+                <p><strong>Key Detail:</strong> Warthogs can run up to 30 mph (48 km/h) and often use abandoned aardvark burrows.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/Hippo.png" alt="Hippopotamus" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Hippopotamus</h3>
+              <p class="brief">Vulnerable</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Hippopotamus amphibius</p>
+                <p><strong>Weight Range:</strong> 2,900 - 4,000 lbs (1,300 - 1,800 kg)</p>
+                <p><strong>Key Detail:</strong> Despite their bulky appearance, hippos can run faster than humans and spend up to 16 hours a day submerged.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Chimpanzee_%28Pan_troglodytes%29.jpg" alt="Chimpanzee" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Chimpanzee</h3>
+              <p class="brief">Endangered</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Pan troglodytes</p>
+                <p><strong>Weight Range:</strong> 88 - 132 lbs (40 - 60 kg)</p>
+                <p><strong>Key Detail:</strong> Sharing ~98% of our DNA, chimpanzees are our closest living relatives with complex social behaviors and tool use.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Lycaon_pictus_%28Mabuya%2C_Tswalu%2C_South_Africa%29.jpg" alt="African Wild Dog" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>African Wild Dog</h3>
+              <p class="brief">Endangered</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Lycaon pictus</p>
+                <p><strong>Weight Range:</strong> 40 - 79 lbs (18 - 36 kg)</p>
+                <p><strong>Key Detail:</strong> Also known as painted wolves, they have an 80% hunting success rate - among Africa's most effective predators.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Aardvark_%28Orycteropus_after%29.jpg" alt="Aardvark" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Aardvark</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Orycteropus afer</p>
+                <p><strong>Weight Range:</strong> 110 - 180 lbs (50 - 82 kg)</p>
+                <p><strong>Key Detail:</strong> Perfectly adapted for nocturnal diet of ants and termites, lapping them up with its long, sticky tongue.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Serval_%28Leptailurus_serval%29.jpg" alt="Serval" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Serval</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Leptailurus serval</p>
+                <p><strong>Weight Range:</strong> 20 - 42 lbs (9 - 19 kg)</p>
+                <p><strong>Key Detail:</strong> Incredible leaping ability - can jump up to 10 feet in the air to catch birds.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/Temminck%27s_ground_pangolin_%28Smutsia_temminckii%29.jpg" alt="Pangolin" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Pangolin</h3>
+              <p class="brief">Vulnerable</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Smutsia temminckii</p>
+                <p><strong>Weight Range:</strong> 22 - 40 lbs (10 - 18 kg)</p>
+                <p><strong>Key Detail:</strong> World's only truly scaly mammals, unfortunately the most trafficked wild mammal on the planet.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <div class="footer-social">
+          <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" title="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/255700123456" target="_blank" rel="noopener" title="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" title="Join us on Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="library.html">Library</a></li>
+          <li><a href="../scan.html">Scan</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="../adopt.html">Donate</a></li>
+          <li><a href="../adopt.html">Adopt an Animal</a></li>
+          <li><a href="../adopt.html">Volunteer</a></li>
+          <li><a href="../contact.html">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> Global</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Protect Nature - Protect Life</p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script defer src="../js/connectivity.js"></script>
+
+<script defer src="../js/wg-dialog.js"></script>
+<script defer src="../js/main.js"></script>
+  <script defer src="../js/lively.js"></script>
+  <script defer src="../js/auth.js"></script>
+  <script defer src="../js/library.js"></script>
+  <script defer src="../js/icons.js"></script>
+<script defer src="../js/pwa.js"></script>
+</body>
+</html>

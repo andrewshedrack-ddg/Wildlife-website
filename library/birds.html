@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore birds of East Africa - eagles, flamingos, ostriches, and more with conservation status and detailed facts.">
+  <meta name="author" content="WildGuard Society">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <title>Birds | WildGuard Society Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/lively.css">
+  <link rel="stylesheet" href="../css/library.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <script defer src="../js/i18n.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/Background3.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
+  </div>
+
+  <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="library.html" class="active"><i class="fas fa-book"></i> Library</a>
+        <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
+        <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
+        <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a></nav>
+      <div class="header-actions">
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <div class="user-menu" id="user-menu" style="display:none;">
+            <button class="user-menu-toggle" id="user-menu-toggle">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-email">User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="../user/Profile.html"><i class="fas fa-user"></i> Profile</a>
+              <a href="../user/History.html"><i class="fas fa-history"></i> History</a>
+              <a href="../user/Inbox.html"><i class="fas fa-inbox"></i> Inbox</a>
+
+                                        <a href="../user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+
+  <main id="main-content" tabindex="-1">
+    <section class="page-banner">
+      <span class="eyebrow"><i class="fas fa-paw" style="margin-right:0.4rem;"></i>Wildlife Library</span>
+      <h1>Birds</h1>
+      <p class="lede">Over 1,100 bird species thrive in diverse ecosystems worldwide.</p>
+    </section>
+
+    <section class="content-overlay">
+      <div class="container">
+        <div class="section-header">
+          <h2>Birds of East Africa</h2>
+          <p>Diverse avian species from raptors to waterbirds across savannas, wetlands, and forests.</p>
+        </div>
+        <div class="card-grid wildlife-grid">
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/Eagle.png" alt="African Fish Eagle" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>African Fish Eagle</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Haliaeetus vocifer</p>
+                <p><strong>Weight Range:</strong> 4.4 - 7.7 lbs (2 - 3.5 kg)</p>
+                <p><strong>Key Detail:</strong> Known for its iconic call that echoes across African waterways, often called the 'voice of Africa'.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/White Head Eagle.png" alt="White-headed Vulture" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>White-headed Vulture</h3>
+              <p class="brief">Critically Endangered</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Trigonoceps occipitalis</p>
+                <p><strong>Weight Range:</strong> 8.8 - 15.4 lbs (4 - 7 kg)</p>
+                <p><strong>Key Detail:</strong> Distinctive white head and pink face; populations declining rapidly due to poisoning and habitat loss.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/flamingo.png" alt="Lesser Flamingo" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Lesser Flamingo</h3>
+              <p class="brief">Near Threatened</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Phoeniconaias minor</p>
+                <p><strong>Weight Range:</strong> 2.6 - 4.4 lbs (1.2 - 2 kg)</p>
+                <p><strong>Key Detail:</strong> Millions gather at East African soda lakes, creating one of nature's most spectacular pink horizons.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/peacock.png" alt="Peacock" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Peacock</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Pavo cristatus</p>
+                <p><strong>Weight Range:</strong> 8.8 - 13.2 lbs (4 - 6 kg)</p>
+                <p><strong>Key Detail:</strong> Male's iridescent tail feathers can span 5 feet, used in elaborate courtship displays.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/owl.png" alt="Verreaux's Eagle-owl" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Verreaux's Eagle-owl</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Ketupa lactea</p>
+                <p><strong>Weight Range:</strong> 3.5 - 6.6 lbs (1.6 - 3 kg)</p>
+                <p><strong>Key Detail:</strong> Africa's largest owl with distinctive pink eyelids and powerful talons capable of taking small antelopes.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="../assets/images/goose.png" alt="Egyptian Goose" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Egyptian Goose</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Alopochen aegyptiaca</p>
+                <p><strong>Weight Range:</strong> 2.2 - 6.6 lbs (1 - 3 kg)</p>
+                <p><strong>Key Detail:</strong> Ancient Egyptians considered them sacred; now common across sub-Saharan wetlands and grasslands.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Secretary_bird_%28Sagittarius_serpentarius%29.jpg" alt="Secretary Bird" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Secretary Bird</h3>
+              <p class="brief">Endangered</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Sagittarius serpentarius</p>
+                <p><strong>Weight Range:</strong> 5 - 9.5 lbs (2.3 - 4.3 kg)</p>
+                <p><strong>Key Detail:</strong> Hunts on foot, stomping snakes and rodents with powerful legs; named for quill-like head feathers resembling clerks.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Grey_crowned_crane_%28Balearica_regulorum%29.jpg" alt="Grey Crowned Crane" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Grey Crowned Crane</h3>
+              <p class="brief">Endangered</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Balearica regulorum</p>
+                <p><strong>Weight Range:</strong> 6.6 - 8.8 lbs (3 - 4 kg)</p>
+                <p><strong>Key Detail:</strong> Uganda's national bird with golden crown feathers; performs elaborate dancing displays during courtship.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Ostrich_%28Struthio_camelus%29.jpg" alt="Ostrich" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Ostrich</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Struthio camelus</p>
+                <p><strong>Weight Range:</strong> 139 - 320 lbs (63 - 145 kg)</p>
+                <p><strong>Key Detail:</strong> World's largest and fastest bird on land, reaching 43 mph (70 km/h); lays the largest eggs of any bird.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Kori_bustard_%28Ardeotis_kori%29_male.jpg" alt="Kori Bustard" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Kori Bustard</h3>
+              <p class="brief">Near Threatened</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Ardeotis kori</p>
+                <p><strong>Weight Range:</strong> 15 - 40 lbs (7 - 18 kg)</p>
+                <p><strong>Key Detail:</strong> Africa's heaviest flying bird; males perform spectacular balloon displays inflating their necks.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Marabou_stork_%28Leptoptilos_crumeniferus%29.jpg" alt="Marabou Stork" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Marabou Stork</h3>
+              <p class="brief">Least Concern</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Leptoptilos crumenifer</p>
+                <p><strong>Weight Range:</strong> 9 - 20 lbs (4 - 9 kg)</p>
+                <p><strong>Key Detail:</strong> Scavenger with massive bill and throat pouch; often seen near human settlements and carcasses.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card wildlife-card">
+            <div class="card-image wildlife-image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Hornbill_africain.jpg" alt="Southern Ground Hornbill" loading="lazy" onerror="this.src='../assets/images/elephant.jpg'">
+            </div>
+            <div class="card-body wildlife-info">
+              <h3>Southern Ground Hornbill</h3>
+              <p class="brief">Vulnerable</p>
+              <div class="full-details">
+                <p><strong>Scientific Name:</strong> Bucorvus leadbeateri</p>
+                <p><strong>Weight Range:</strong> 5 - 13.6 lbs (2.3 - 6.2 kg)</p>
+                <p><strong>Key Detail:</strong> Cooperative breeders living in family groups; deep booming calls can be heard 3 km away.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <div class="footer-social">
+          <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" title="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/255700123456" target="_blank" rel="noopener" title="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" title="Join us on Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="library.html">Library</a></li>
+          <li><a href="../scan.html">Scan</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="../adopt.html">Donate</a></li>
+          <li><a href="../adopt.html">Adopt an Animal</a></li>
+          <li><a href="../adopt.html">Volunteer</a></li>
+          <li><a href="../contact.html">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> Global</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Protect Nature - Protect Life</p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script defer src="../js/connectivity.js"></script>
+
+<script defer src="../js/wg-dialog.js"></script>
+<script defer src="../js/main.js"></script>
+  <script defer src="../js/lively.js"></script>
+  <script defer src="../js/auth.js"></script>
+  <script defer src="../js/library.js"></script>
+  <script defer src="../js/icons.js"></script>
+<script defer src="../js/pwa.js"></script>
+</body>
+</html>

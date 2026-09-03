@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in to WildGuard Society to access your account and exclusive wildlife content.">
+  <meta name="author" content="WildGuard Society">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>User Login | WildGuard Society</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/lively.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <style>
+    .login-page { display:flex; align-items:center; justify-content:center; min-height: calc(100vh - var(--header-height) - 1rem); padding:2rem; }
+    .login-container { position:relative; width:100%; max-width:420px; background:linear-gradient(160deg, rgba(27,94,64,0.16), rgba(10,21,16,0.92) 55%), rgba(255,255,255,0.05); border:1px solid rgba(244, 162, 97,0.25); border-radius:20px; padding:2.75rem 2.5rem; backdrop-filter:blur(12px); overflow:hidden; animation: loginFadeUp 0.55s ease both; box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(244, 162, 97,0.1); }
+    .login-container::before { content:''; position:absolute; top:-70px; right:-70px; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, rgba(244, 162, 97,0.25), transparent 70%); pointer-events:none; }
+    .login-container::after { content:''; position:absolute; bottom:-90px; left:-70px; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(45,138,94,0.3), transparent 70%); pointer-events:none; }
+    @keyframes loginFadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+    .login-header { position:relative; text-align:center; margin-bottom:2rem; }
+    .login-logo-icon { width:64px; height:64px; margin:0 auto 1rem; display:flex; align-items:center; justify-content:center; font-size:1.6rem; color:var(--accent); border-radius:18px; background:linear-gradient(135deg, rgba(244, 162, 97,0.2), rgba(27,94,64,0.2)); border:1px solid rgba(244, 162, 97,0.4); box-shadow: 0 8px 24px rgba(244, 162, 97,0.25); }
+    .login-header h1 { color:var(--lighter); margin-bottom:0.5rem; font-family:var(--font-heading); font-size:1.8rem; }
+    .login-header p { color:rgba(255,255,255,0.6); font-size:0.92rem; }
+    .login-form { position:relative; display:flex; flex-direction:column; gap:1.5rem; }
+    .error-message { background:#fee2e2; color:#991b1b; padding:0.75rem 1rem; border-radius:8px; border-left:4px solid #dc2626; display:none; }
+    .switch-link { position:relative; text-align:center; margin-top:1.5rem; font-size:0.9rem; color:rgba(255,255,255,0.6); }
+    .switch-link a { color:var(--accent); font-weight:600; }
+    .switch-link a:hover { text-decoration:underline; }
+    .password-field { position: relative; }
+    .password-field .form-input { padding-right: 3rem; }
+    .password-toggle { position: absolute; right: 0.6rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1rem; padding: 0.5rem; transition: var(--transition); z-index: 10; min-width: 40px; min-height: 40px; display: flex; align-items: center; justify-content: center; }
+    .password-toggle:hover { color: var(--accent); }
+    .password-toggle:focus { outline: none; color: var(--accent); }
+    .login-security { position:relative; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+    .login-security i { color: #22c55e; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/Background3.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
+  </div>
+
+  <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="library/library.html"><i class="fas fa-book"></i> Library</a>
+        <a href="scan.html"><i class="fas fa-barcode"></i> Scan</a>
+        <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></nav>
+      <div class="header-actions">
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark or light mode" title="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <div class="user-menu" id="user-menu" style="display:none;">
+            <button class="user-menu-toggle" id="user-menu-toggle">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-email">User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="user/Profile.html"><i class="fas fa-user"></i> Profile</a>
+              <a href="user/History.html"><i class="fas fa-history"></i> History</a>
+              <a href="user/Inbox.html"><i class="fas fa-inbox"></i> Inbox</a>
+
+                                        <a href="user/Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+
+  <main id="main-content" tabindex="-1">
+    <section class="content-overlay login-page">
+      <div class="login-container">
+        <div class="login-header">
+          <div class="login-logo-icon"><i class="fas fa-paw"></i></div>
+          <h1>User Login</h1>
+          <p>Sign in to access exclusive wildlife content</p>
+        </div>
+        <div id="error-message" class="error-message"></div>
+        <form id="login-form" class="login-form">
+          <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <div class="password-field">
+              <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required autocomplete="current-password">
+              <button type="button" class="password-toggle" id="password-toggle" aria-label="Show password">
+                <i class="fas fa-eye" id="password-toggle-icon"></i>
+              </button>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between; font-size:0.85rem; color:rgba(255,255,255,0.6);">
+            <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+              <input type="checkbox" id="remember-me" style="accent-color: var(--accent);" checked> Remember me
+            </label>
+            <a href="#" style="color:var(--accent); font-size:0.85rem; padding:0.5rem 0; min-height:44px; display:inline-flex; align-items:center;">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn-submit" id="signin-submit">Sign In</button>
+        </form>
+        <div class="switch-link">Don't have an account? <a href="register.html">Register here</a></div>
+        <div class="login-security">
+          <i class="fas fa-lock"></i> <span>Secure 256-bit SSL Encrypted Login</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+        <div class="footer-social">
+          <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" title="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/255700123456" target="_blank" rel="noopener" title="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" title="Join us on Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="library/library.html">Library</a></li>
+          <li><a href="scan.html">Scan</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li></ul>
+      </div>
+      <div class="footer-links">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="adopt.html">Donate</a></li>
+          <li><a href="adopt.html">Adopt an Animal</a></li>
+          <li><a href="adopt.html">Volunteer</a></li>
+          <li><a href="contact.html">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> Global</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
+    </div>
+  </footer>
+
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/connectivity.js"></script>
+
+<script defer src="js/wg-dialog.js"></script>
+<script defer src="js/main.js?v=2"></script>
+  <script defer src="js/lively.js"></script>
+  <script defer src="js/auth.js?v=2"></script>
+  <script defer src="js/system-monitor.js?v=2"></script>
+  <script>
+    // Password visibility toggle
+    (function() {
+      const toggleBtn = document.getElementById('password-toggle');
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.getElementById('password-toggle-icon');
+      if (toggleBtn && passwordInput) {
+        toggleBtn.addEventListener('click', function() {
+          const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+          passwordInput.setAttribute('type', type);
+          toggleIcon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+          this.setAttribute('aria-label', type === 'password' ? 'Show password' : 'Hide password');
+        });
+      }
+    })();
+  </script>
+  <script defer src="js/icons.js"></script>
+<script defer src="js/pwa.js"></script>
+</body>
+</html>

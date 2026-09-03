@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:image" content="assets/images/moments10.png">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>About | WildGuard Society</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/lively.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="page-slideshow" aria-hidden="true">
+    <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/Background3.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
+  </div>
+
+  <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+  <header class="site-header" id="site-header" role="banner">
+    <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
+      <a href="index.html" class="logo" aria-label="WildGuard Society Home">
+        <img src="assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav" role="navigation" aria-label="Main navigation">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="library/library.html"><i class="fas fa-book"></i> Library</a>
+        <a href="scan.html"><i class="fas fa-barcode"></i> Scan</a>
+        <a href="about.html" class="active" aria-current="page"><i class="fas fa-info-circle"></i> About</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <div class="user-menu" id="user-menu" style="display:none">
+            <button class="user-menu-toggle" id="user-menu-toggle" aria-expanded="false" aria-haspopup="true">
+              <i class="fas fa-user-circle"></i> <span id="user-email">User</span> <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown" role="menu">
+              <a href="user/Profile.html" role="menuitem"><i class="fas fa-user"></i> Profile</a>
+              <a href="user/History.html" role="menuitem"><i class="fas fa-history"></i> History</a>
+              <a href="user/Inbox.html" role="menuitem"><i class="fas fa-inbox"></i> Inbox</a>
+
+                                  <a href="user/Favourite.html" role="menuitem"><i class="fas fa-heart"></i> Favourites</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn" role="menuitem"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span> <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> English</button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> Français</button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> Kiswahili</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+
+  <main id="main-content">
+    <section class="page-banner">
+      <span class="eyebrow"><i class="fas fa-paw" style="margin-right:0.4rem;"></i>About Us</span>
+      <h1>Who We Are</h1>
+      <p class="lede">We're young people in northern Tanzania who care about the land, the wildlife, and the communities that depend on both. We watch, we learn, and we act.</p>
+    </section>
+
+    <!-- ══════════════ MISSION / VISION ══════════════ -->
+    <section class="content-overlay" aria-labelledby="mission-heading">
+      <div class="container">
+        <h2 id="mission-heading" class="sr-only">Our Mission, Vision, and Motto</h2>
+        <div class="grid-3 stagger">
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments10.png" alt="Conservation in action" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Our Mission</h3>
+              <p>To watch what's changing in the wild around us, understand why, and act before it's too late — through conservation, education, and working together.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments7.png" alt="Vision for nature" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Our Vision</h3>
+              <p>To see wildlife thrive and communities prosper together — where the next generation knows its own land and stands ready to protect it.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments9.png" alt="Conservation goals" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Our Motto</h3>
+              <p><strong>Protect Nature — Protect Life</strong></p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ OUR PURPOSE ══════════════ -->
+    <section class="content-overlay" aria-labelledby="purpose-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="purpose-heading">Our Purpose</h2>
+        </div>
+        <div class="card" style="max-width: 900px; margin: 0 auto;">
+          <div class="card-body">
+            <p style="font-size: var(--text-lg); line-height: 1.9;">
+              WildGuard Society started with a simple idea: the people who live closest to wildlife often know it best, yet their voice is the last one heard.
+            </p>
+            <p style="font-size: var(--text-base); line-height: 1.8; margin-top: 1rem; color: var(--text-dim);">
+              Rivers are drying up. Grasslands are shrinking. Animals that used to pass through our villages are disappearing. Instead of waiting for someone else to fix it, we bring young people together to understand what's changing, document it with our phones and cameras, and do something about it — through clean-ups, tree planting, education, and working side by side with farmers, herders, and village rangers.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ WHAT WE DO ══════════════ -->
+    <section class="content-overlay" aria-labelledby="what-we-do-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="what-we-do-heading">What We Do</h2>
+          <p>Our core pillars of action</p>
+        </div>
+        <div class="card-grid stagger">
+          <article class="card">
+            <div class="card-image"><img src="assets/images/Butterfly.png" alt="Environmental observation" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Observation</h3>
+              <p>We keep an eye on the bush around us — noting which species are showing up, which ones are vanishing, and what's changing in the land.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/chameleon.png" alt="Adaptation strategies" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Adaptation</h3>
+              <p>We adjust with the land — finding practical, nature-friendly ways to cope with drought, shrinking pasture, and other pressures on our communities.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/Hippo.png" alt="Conservation action" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Action</h3>
+              <p>We roll up our sleeves — tree planting, clean-ups, raising awareness, and standing up for the places and animals we care about.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/peacock.png" alt="Youth collaboration" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Collaboration</h3>
+              <p>We bring young people together and work hand in hand with farmers, herders, and village rangers — because the bush is home to all of us.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ WHY YOUTH ══════════════ -->
+    <section class="content-overlay" aria-labelledby="why-youth-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="why-youth-heading">Why Youth?</h2>
+        </div>
+        <div class="card" style="max-width: 900px; margin: 0 auto;">
+          <div class="card-body">
+            <p style="font-size: var(--text-lg); line-height: 1.8;">
+              Young people aren't just the future — we're living through these changes right now. Water that used to be close is now a long walk away. Grazing land is thinner. Wild animals are harder to see. When you grow up close to the land, you notice these things early, and you feel them deeply. That's why we act now, not later — and why we're building a generation that knows its own home well enough to protect it.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ TEAM / IMPACT STATS ══════════════ -->
+    <section class="content-overlay section section--sm" aria-labelledby="impact-stats-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="impact-stats-heading">Our Impact</h2>
+        </div>
+        <div class="card-grid card-grid--4">
+          <div class="stat-card">
+            <span class="stat-value" data-count="500">0</span>
+            <span class="stat-label">Species Documented</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value" data-count="1200">0</span>
+            <span class="stat-label">Youth Engaged</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value" data-count="4">0</span>
+            <span class="stat-label">Protected Parks</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value" data-count="24">0</span>
+            <span class="stat-label">Active Projects</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p>Young people in Tanzania protecting the wildlife and land we call home. <strong>Protect Nature — Protect Life</strong>.</p>
+        <div class="footer-social">
+          <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" aria-label="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/255700123456" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" aria-label="Join us on Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="library/library.html">Library</a></li>
+          <li><a href="scan.html">Scan</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="adopt.html">Donate</a></li>
+          <li><a href="adopt.html">Adopt an Animal</a></li>
+          <li><a href="adopt.html">Volunteer</a></li>
+          <li><a href="contact.html">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> Moshi, Kilimanjaro, Tanzania</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p><strong>Protect Nature — Protect Life</strong></p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/connectivity.js"></script>
+
+<script defer src="js/wg-dialog.js"></script>
+<script defer src="js/main.js"></script>
+  <script defer src="js/lively.js"></script>
+  <script defer src="js/auth.js"></script>
+  <script defer src="js/counter-animate.js"></script>
+  <script defer src="js/icons.js"></script>
+<script defer src="js/pwa.js"></script>
+</body>
+</html>

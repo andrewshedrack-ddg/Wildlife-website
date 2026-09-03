@@ -1,0 +1,281 @@
+{
+  "header": {
+    "logo": "WildGuard Society",
+    "nav": {
+      "home": "Nyumbani",
+      "library": "Maktaba",
+      "scan": "Skena",
+      "about": "Kuhusu",
+      "contact": "Mawasiliano"
+    },
+    "auth": {
+      "signIn": "Ingia",
+      "userMenu": "Mtumiwe",
+      "profile": "Wasifu",
+      "history": "Historia",
+      "favorites": "Vipendwa",
+      "logout": "Ondoka"
+    }
+  },
+  "hero": {
+    "title": "Sisi Ni Walinda Wa Asili",
+    "subtitle": "WildGuard Society inagawanya vijana kuelewa mabadiliko ya mazingira na kutchukua hatua za maana kwa ulimwengu uzuri zaidi.",
+    "cta": "Gundua Misuli Yetu"
+  },
+  "features": {
+    "purpose": {
+      "title": "Lengo Letu",
+      "desc": "Kama ulimwengu unavyokutana na changamoto zinazoongezeka kama uchafuzi, uharibifu wa mahali pa wanyama, upotevu wa bioanuwai, mabadiliko ya tabianchi, matumizi yasiyoendelevu ya rasilimali, na mgawanyiko wa mifumo ya ikolojia, tunagawanya vijana kuelewa mabadiliko haya na kufanya hatua za maana."
+    },
+    "youth": {
+      "title": "Ushirikiano wa Vijana",
+      "desc": "Tunawapa watu uwezo wa kuwa walinda wa asili na wachangiaji wa ulimwengu bora kupitia ulinzi, elimu ya mazingira, mikakati ya uendelevu, na ubunifu."
+    },
+    "belief": {
+      "title": "Imani Yetu",
+      "desc": "Kulinda asili hukushtakiwa tu kuwa na ujuzi; inahitaji uangalizi, uwezo wa kugeuka, vitendo, na juhudi ya pamoja. Tunabadilisha shauku kuwa vitendo kwa ajili ya mustakabali endelevu."
+    }
+  },
+  "conservation": {
+    "antiPoaching": {
+      "title": "Dhidi ya Uwindaji Haramu",
+      "desc": "Mifumo ya kifahari ya hali ya juu na arifa za wakati halisi husaidia kulinda spishi zinazohatarishiwa."
+    },
+    "community": {
+      "title": "Jumuiya",
+      "desc": "Jamii za eneo zinashiriki katika ulinzi kupitia elimu na desturi za uendelevu."
+    },
+    "habitat": {
+      "title": "Mahali Pa Wanyama",
+      "desc": "Kulinda na kurekebisha mahali pa asili kwa wanyama ili wapate nafasi na rasilimali kukua."
+    },
+    "education": {
+      "title": "Elimu",
+      "desc": "Utafiti wa kisayansi na programu za elimu zinatusaidia kuelewa zaidi wanyama porini."
+    }
+  },
+  "getInvolved": {
+    "donate": {
+      "title": "Changia",
+      "desc": "Fadhili kazi muhimu ya ulinzi, kutoka kwenye zuia za uwindaji haramu hadi ulekevu wa mazingira."
+    },
+    "adopt": {
+      "title": "Weka Dhamana",
+      "desc": "Weka dhamana kiwango cha kisimulizi cha mnyama porini na upate maelezo ya marekebisho ya hali yake."
+    },
+    "programs": {
+      "title": "Mipango",
+      "desc": "Jihusishe au changia mipango ya elimu kuhusu ulinzi wa wanyama porini."
+    },
+    "share": {
+      "title": "Shiriki",
+      "desc": "Shiriki taarifa kuhusu wanyama porini na ulinzi na mtandao wako."
+    }
+  },
+  "scan": {
+    "title": "Umegundua Nini?",
+    "subtitle": "Piga picha ya mnyama, mmea, mdudu, au hata jani. AI inaitambua na kusoma mwongozo wa uwanja kwa sauti.",
+    "actions": {
+      "camera": "Fungua Kamera",
+      "upload": "Pakia Picha",
+      "retake": "Skena Tena",
+      "readAloud": "Soma Mwongozo Kwa Sauti",
+      "library": "Fungua Maktaba wa Spishi"
+    },
+    "loading": "Kuchambua picha kwa mtandao wa neva...",
+    "results": {
+      "category": "Kategoria",
+      "scientificName": "Jina La Kisayansi",
+      "confidence": "Uhakika",
+      "living": "ORGANISMU HAI",
+      "nonLiving": "Kitu Kisicho Hai"
+    },
+    "voice": {
+      "title": "Makali ya Sauti",
+      "hint": "Sema: \"skena\", \"chukua picha\", \"pakia picha\", au \"futa\""
+    }
+  },
+  "library": {
+    "title": "Maktaba ya Wanyama Porini",
+    "subtitle": "Gundua mamalia, ndege, reptaibia, amphibia, maisha ya maji, mimea, ufumbwe na bakteria.",
+    "categories": "Kategorii",
+    "scanned": "Spishi Zilizoskena",
+    "books": "Vitabu na Rasilimali",
+    "categoriesList": {
+      "mammals": "Mamalia",
+      "birds": "Ndege",
+      "reptiles": "Reptaibia",
+      "amphibians": "Amphibia",
+      "aquatic": "Maisha ya Maji",
+      "plants": "Mimea",
+      "fungi": "Ufumbwe",
+      "bacteria": "Bakteria",
+      "viruses": "Virusi"
+    }
+  },
+  "about": {
+    "title": "Tunaye",
+    "subtitle": "Harakati ya ulinzi wa mazingira iliyongozwa na vijana inayojitolea kujibu mabadiliko ya mazingira yanayochangia asili na uzazi wa mifumo ya ikolojia.",
+    "mission": {
+      "title": "Dhamira Yetu",
+      "desc": "Kutambua, kuelewa, na kujibu mabadiliko ya mazingira yanayochangia asili kupitia vitendo vya ulinzi, uendelevu, ubunifu, elimu, na ushirikiano wa vijana."
+    },
+    "vision": {
+      "title": "Ono Yetu",
+      "desc": "Kujenga mustakabali ambapo asili inafanikiwa kwa kuzingatia changamoto za mazingira, inayowezeshwa na kizazi cha viongozi wa mazingira wenye ujuzi, wachangamfu, na wabunifu."
+    },
+    "motto": {
+      "title": "Kisia Yetu",
+      "desc": "Linda Asili - Linda Uhai"
+    },
+    "purpose": "WildGuard Society ni harakati ya ulinzi wa mazingira iliyongozwa na vijana inayojitolea kujibu mabadiliko ya mazingira yanayochangia asili na uzazi wa mifumo ya ikolojia. Kama ulimwengu unavyokutana na changamoto zinazoongezeka kama vile uchafuzi, uharibifu wa mahali pa wanyama, upotevu wa bioanuwai, mabadiliko ya tabianchi, matumizi yasiyoendelevu ya rasilimali, na mgawanyiko wa mifumo ya ikolojia, WildGuard inagawanya vijana kuelewa mabadiliko haya na kufanya hatua za maana. Kupitia ulinzi, elimu ya mazingira, mikakati ya uendelevu, ubunifu, na ushirikiano wa vijana, tunawapa watu uwezo wa kuwa walinda wa asili na wachangiaji wa ulimwengu uzuri zaidi. Tunamini kuwa kulinda asili hukushtakiwa tu kuwa na ujuzi; kinahitaji uangalizi, uwezo wa kugeuka, vitendo, na juhudi za pamoja.",
+    "focus": {
+      "title": "Tunachofanya",
+      "subtitle": "Nguzo zetu msingi za vitendo",
+      "observation": {
+        "title": "Uangalizi",
+        "desc": "Tunafuatilia na kutambua mabadiliko ya mazingira yanayochangia asili, tukitumia data kuelewa mabadiliko ya mifumo ya ikolojia na hatari zinazotokea."
+      },
+      "adaptation": {
+        "title": "Uwezo Wa Kugeuka",
+        "desc": "Tunaundea suluhisho vinabunifu na vinavyoendelea kwa ajili ya kukabili changamoto za mazingira, tukigeuza mikakati yetu kwa mahitaji yanayobadilika ya asili."
+      },
+      "action": {
+        "title": "Vitendo",
+        "desc": "Tunabadilisha ujuzi kuwa juhudi za ulinzi halisi, kutoka kupanda miti na usafi hadi uwanja wa kisiasa na elimu ya jamii."
+      },
+      "collaboration": {
+        "title": "Ushirikiano",
+        "desc": "Tunagawanya vijana kwenye jamii tofauti, tunawapa ujuzi, zana, na vipengele vya kuwa viongozi wachangamfu wa mazingira."
+      }
+    },
+    "youth": {
+      "title": "Kwa Nini Vijana?",
+      "desc": "Vijana si tu mustakabali; wao ni sasa. Tunamini nguvu ya vijana kusukuma mabadiliko. Kwa kujihusisha na vijana katika ulinzi, tunajenga kizazi ambacho kitachukua mwiko wa ulinzi wa mazingira milele. Mipango yetu imejengwa kuwa yapatikana, zinavutia, na na athari, ikidhibiti kuwa kila mwanafunzi ana fursa ya kuchangia ulimwengu bora zaidi."
+    }
+  },
+  "contact": {
+    "title": "Wasiliana Nasi",
+    "subtitle": "Tungependa kusikia kutoka kwako. Iwe una swali, unataka kushirikiana, au unataka tu kusema hujambo.",
+    "email": "Barua Pepe",
+    "phone": "Simu",
+    "location": "Mahali",
+    "form": {
+      "title": "Tuma Ujumbe",
+      "subtitle": "Jaza fomu hapa chini na tutajibu haraka",
+      "name": "Jina",
+      "email": "Barua Pepe",
+      "message": "Ujumbe",
+      "submit": "Tuma Ujumbe",
+      "success": "Ujumbe umetumwa kwa mafanikio! Tutajibu haraka."
+    }
+  },
+  "footer": {
+    "brand": "WildGuard Society",
+    "tagline": "Harakati ya ulinzi wa mazingira iliyongozwa na vijana. Kisia yetu: Linda Asili - Linda Uhai.",
+    "explore": "Chunguza",
+    "getInvolved": "Jihusishe",
+    "donate": "Changia",
+    "adopt": "Weka Dhamana Mnyama",
+    "volunteer": "Kuwa Mhulimu",
+    "partner": "Kuwa Mshirika",
+    "contact": "Mawasiliano",
+    "rights": "Haki zote zimehifadhiwa.",
+    "motto": "Linda Asili - Linda Uhai"
+  },
+  "species": {
+    "status": {
+      "criticallyEndangered": "Hatari Kali",
+      "endangered": "Hatari",
+      "vulnerable": "Haiwezekani",
+      "nearThreatened": "Karibu Hatari",
+      "leastConcern": "Waswasasi Mdogo",
+      "dataDeficient": "Data Haifai"
+    },
+    "details": {
+      "taxonomy": "Taksonomia",
+      "population": "Idadi ya Watu",
+      "habitat": "Mahali Pa Kaa",
+      "diet": "Lishe",
+      "behavior": "Tabia",
+      "threats": "Hatari",
+      "domain": "Kiwango",
+      "kingdom": "Ufalme",
+      "category": "Kategoria"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Ingia",
+      "subtitle": "Ingia kupata maudhui ya pekee ya wanyama porini",
+      "email": "Barua Pepe",
+      "password": "Nywila",
+      "submit": "Ingia",
+      "forgot": "Umepata nywila?",
+      "switch": "Huna akaunti? Jisajili",
+      "google": "Endelea na Google"
+    },
+    "register": {
+      "title": "Fungua Akaunti",
+      "subtitle": "Jiunge na WildGuard Society kupata maudhui ya pekee",
+      "email": "Barua Pepe",
+      "password": "Nywila",
+      "confirmPassword": "Thibitisha Nywila",
+      "submit": "Jisajili",
+      "switch": "Una akaunti tayari? Ingia",
+      "google": "Endelea na Google",
+      "success": "Usajili umefanikiwa! Barua pepe ya uthibitisho umetumwa."
+    }
+  },
+  "admin": {
+    "dashboard": "Dashibodi",
+    "scans": "Ukaguzi wa Skena",
+    "messages": "Ujumbe",
+    "notifications": "Arifa",
+    "users": "Watumiaji na Majukumu",
+    "admins": "Wakurugenzi",
+    "logs": "Rekodi ya Shughuli",
+    "settings": "Mipangilio",
+    "compose": "Andika",
+    "emailCampaign": "Kampeni ya Barua Pepe",
+    "analytics": "Utambulisho",
+    "stats": {
+      "pending": "Ukaguzi Kwa Subira",
+      "approved": "Kubalikiwa",
+      "rejected": "Kukatawa",
+      "users": "Jumla ya Watumiaji",
+      "messages": "Meseji Mpya",
+      "scansToday": "Skena Leo"
+    }
+  },
+  "common": {
+    "loading": "Inapakia...",
+    "error": "Hitilafu imetokea",
+    "retry": "Jaribu Tena",
+    "cancel": "Ghairi",
+    "save": "Hifadhi",
+    "delete": "Futa",
+    "edit": "Hariri",
+    "view": "Tazama",
+    "search": "Tafuta",
+    "filter": "Chuja",
+    "status": "Hali",
+    "date": "Tarehe",
+    "name": "Jina",
+    "email": "Barua Pepe",
+    "role": "Jukumu",
+    "actions": "Vitendo",
+    "yes": "Ndiyo",
+    "no": "Hapana",
+    "confirm": "Thibitisha",
+    "close": "Funga",
+    "back": "Rudi",
+    "next": "Ilijayo",
+    "previous": "Iliyopita",
+    "page": "Ukurasa",
+    "of": "kati ya",
+    "results": "matokeo",
+    "noResults": "Hakuna matokeo yaliyopatikana",
+    "selectLanguage": "Chagua Lugha"
+  }
+}

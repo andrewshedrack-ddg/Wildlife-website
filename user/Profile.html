@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your WildGuard Society profile and account settings.">
+    <meta name="author" content="WildGuard Society">
+    <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+    <title>Your Profile | WildGuard Society</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/lively.css">
+    <style>
+        .profile-header { text-align: center; margin: 1.5rem 0 2.5rem; }
+        .profile-header .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(244, 162, 97,0.25), rgba(45,138,94,0.25)); border-color: rgba(244, 162, 97,0.4); }
+        .profile-header .page-title { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 0.5rem; }
+        .profile-layout { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; align-items: start; }
+        @media (max-width: 768px) { .profile-layout { grid-template-columns: 1fr; } }
+        .profile-card { padding: 2rem; text-align: center; transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease; animation: fadeInUp 0.6s ease both; }
+        .profile-card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px rgba(0,0,0,0.45), 0 0 0 1px rgba(244, 162, 97,0.3); border-color: rgba(244, 162, 97,0.35); }
+        .settings-card { padding: 2rem; transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease; animation: fadeInUp 0.6s ease 0.1s both; }
+        .settings-card:hover { box-shadow: 0 20px 48px rgba(0,0,0,0.4); border-color: rgba(244, 162, 97,0.25); }
+        .profile-avatar-wrap { position: relative; width: 130px; height: 130px; margin: 0 auto 1.5rem; }
+        .profile-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 8px 24px rgba(244, 162, 97,0.35); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .profile-avatar-wrap::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--primary-light)); opacity: 0.35; filter: blur(14px); z-index: -1; transition: opacity 0.3s ease; }
+        .profile-avatar-wrap:hover::after { opacity: 0.6; }
+        .profile-avatar:hover { transform: scale(1.05); box-shadow: 0 12px 32px rgba(244, 162, 97,0.55); }
+        .avatar-edit-btn { position: absolute; bottom: 0; right: 0; width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-hover)); border: 2px solid rgba(255,255,255,0.2); color: var(--dark); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+        .avatar-edit-btn:hover { transform: scale(1.12) rotate(8deg); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        .profile-name { color: var(--lighter); font-size: 1.5rem; margin-bottom: 0.25rem; }
+        .profile-email { color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .profile-role { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--accent); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.75rem; padding: 0.3rem 0.8rem; background: rgba(244, 162, 97,0.12); border: 1px solid rgba(244, 162, 97,0.3); border-radius: 50px; }
+        .profile-bio { color: rgba(255,255,255,0.65); font-size: 0.9rem; line-height: 1.6; }
+        .profile-stats { display: flex; justify-content: center; gap: 1.5rem; padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 1.5rem; }
+        .stat-item { text-align: center; }
+        .stat-value { display: block; color: var(--lighter); font-size: 1.5rem; font-weight: 700; font-family: var(--font-heading); }
+        .stat-value i { color: var(--accent); font-size: 1.1rem; }
+        .stat-label { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+        .profile-actions { display: flex; flex-direction: column; gap: 0.75rem; }
+        .profile-actions .btn { width: 100%; justify-content: center; }
+        .settings-card .card-header { margin-bottom: 1.5rem; }
+        .settings-card .card-title { color: var(--lighter); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
+        .settings-card .card-title i { color: var(--accent); }
+        .settings-card .card-subtitle { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+        .settings-form { display: flex; flex-direction: column; gap: 1.5rem; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
+        .form-actions { display: flex; justify-content: flex-end; gap: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); }
+        .toggle-row { padding: 1rem; background: rgba(255,255,255,0.03); border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); }
+        .toggle-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .toggle-hint { font-size: 0.8rem; color: rgba(255,255,255,0.45); }
+        .toggle-switch { position: relative; display: inline-block; width: 48px; height: 26px; flex-shrink: 0; }
+        .toggle-switch input { display: none; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.2); border-radius: 26px; transition: var(--transition); }
+        .toggle-slider::before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background: var(--lighter); border-radius: 50%; transition: var(--transition); }
+        .toggle-switch input:checked + .toggle-slider { background: var(--accent); box-shadow: 0 0 12px rgba(244, 162, 97,0.4); }
+        .toggle-switch input:checked + .toggle-slider::before { transform: translateX(22px); }
+        .form-group.toggle-group { flex-direction: row !important; align-items: center; justify-content: space-between; }
+        .form-group.toggle-group .form-label { margin-bottom: 0; font-size: 0.9rem; }
+        .form-message { padding: 0.75rem 1rem; border-radius: var(--radius); font-size: 0.9rem; }
+        .form-message--success { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.4); color: #4ade80; }
+        .form-message--error { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.4); color: #f87171; }
+    </style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="page-slideshow">
+        <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background2.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/Background3.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background4.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background5.png')"></div>
+    </div>
+
+    <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+  <header class="site-header" id="site-header">
+        <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+                <span class="logo-text">WildGuard Society</span>
+            </a>
+            <nav class="desktop-nav" id="desktop-nav">
+                <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="../library/library.html"><i class="fas fa-book"></i> Library</a>
+                <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
+                <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
+                <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a></nav>
+            <div class="header-actions">
+                <div class="auth-buttons" id="auth-buttons">
+                    <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+                    <div class="user-menu" id="user-menu" style="display:none;">
+                        <button class="user-menu-toggle" id="user-menu-toggle">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="user-email">User</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="user-dropdown" id="user-dropdown">
+                            <a href="Profile.html"><i class="fas fa-user"></i> Profile</a>
+                            <a href="History.html"><i class="fas fa-history"></i> History</a>
+                            <a href="Inbox.html"><i class="fas fa-inbox"></i> Inbox</a>
+
+                                        <a href="Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="language-selector" data-language-selector>
+                    <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+                        <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" role="menu" hidden>
+                        <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+                        <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+                        <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+
+    <main id="main-content" tabindex="-1">
+        <section class="content-overlay">
+            <div class="container" style="padding-bottom: 3rem;">
+                <!-- Page Banner -->
+                <div class="profile-header">
+                    <span class="page-eyebrow"><i class="fas fa-paw"></i> Your Hub</span>
+                    <h1 class="page-title">Your Profile</h1>
+                    <p style="color:rgba(255,255,255,0.6); max-width:520px; margin:0 auto;">Your conservation identity — manage details, preferences and security.</p>
+                </div>
+
+                <!-- Profile Content -->
+                <div class="profile-layout">
+                    <!-- Profile Card -->
+                    <div class="card profile-card">
+                        <div class="profile-avatar-wrap">
+                            <img src="../assets/images/logo.png" alt="Profile Avatar" class="profile-avatar" id="profile-avatar-img" onerror="this.src='../assets/images/logo.png'">
+                            <button class="avatar-edit-btn" title="Change avatar" aria-label="Change avatar"><i class="fas fa-camera"></i></button>
+                        </div>
+                        <div class="profile-info">
+                            <h2 class="profile-name" id="profile-display-name">Loading...</h2>
+                            <p class="profile-email" id="profile-display-email">...</p>
+                            <p class="profile-role" id="profile-role-display"><i class="fas fa-shield-alt"></i> Conservationist</p>
+                            <p class="profile-bio" id="profile-bio-display">Wildlife enthusiast documenting species and supporting conservation efforts around the globe.</p>
+                        </div>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <span class="stat-value"><i class="fas fa-barcode"></i> <span id="stat-scans">0</span></span>
+                                <span class="stat-label">Scans</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value"><i class="fas fa-heart"></i> <span id="stat-favourites">0</span></span>
+                                <span class="stat-label">Favourites</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value"><i class="fas fa-tree"></i> <span id="stat-parks">0</span></span>
+                                <span class="stat-label">Parks</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value"><i class="fas fa-coins"></i> <span id="stat-tokens">0</span></span>
+                                <span class="stat-label">Tokens</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value"><i class="fas fa-award"></i> <span id="stat-certs">0</span></span>
+                                <span class="stat-label">Certificates</span>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <a href="History.html" class="btn btn-secondary"><i class="fas fa-history"></i> View History</a>
+                            <a href="Favourite.html" class="btn btn-primary"><i class="fas fa-heart"></i> Favourites</a>
+                        </div>
+                    </div>
+
+                    <!-- Account Settings -->
+                    <div class="card settings-card" id="settings">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-cog"></i> Account Settings</h3>
+                            <p class="card-subtitle">Update your personal details and preferences</p>
+                        </div>
+                        <form id="profileForm" class="settings-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" id="firstName" name="firstName" class="form-input" placeholder="Your first name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" id="lastName" name="lastName" class="form-input" placeholder="Your last name">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com"
+                                    required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" id="username" name="username" class="form-input" placeholder="Choose a username" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="bio" class="form-label">Bio</label>
+                                    <textarea id="bio" name="bio" class="form-input form-textarea" rows="3" placeholder="Tell us about yourself..."></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone" class="form-label">Phone</label>
+                                    <input type="tel" id="phone" name="phone" class="form-input" placeholder="+1 (555) 000-0000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="country" class="form-label">Country</label>
+                                    <select id="country" name="country" class="form-input form-select">
+                                        <option value="">Select Country</option>
+                                        <option value="kenya">Kenya</option>
+                                        <option value="uganda">Uganda</option>
+                                        <option value="tanzania">Tanzania</option>
+                                        <option value="rwanda">Rwanda</option>
+                                        <option value="south-africa">South Africa</option>
+                                        <option value="ethiopia">Ethiopia</option>
+                                        <option value="nigeria">Nigeria</option>
+                                        <option value="ghana">Ghana</option>
+                                        <option value="egypt">Egypt</option>
+                                        <option value="morocco">Morocco</option>
+                                        <option value="botswana">Botswana</option>
+                                        <option value="namibia">Namibia</option>
+                                        <option value="zimbabwe">Zimbabwe</option>
+                                        <option value="zambia">Zambia</option>
+                                        <option value="mozambique">Mozambique</option>
+                                        <option value="madagascar">Madagascar</option>
+                                        <option value="united-states">United States</option>
+                                        <option value="united-kingdom">United Kingdom</option>
+                                        <option value="germany">Germany</option>
+                                        <option value="france">France</option>
+                                        <option value="india">India</option>
+                                        <option value="china">China</option>
+                                        <option value="australia">Australia</option>
+                                        <option value="canada">Canada</option>
+                                        <option value="brazil">Brazil</option>
+                                        <option value="japan">Japan</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row toggle-row">
+                                <div class="form-group toggle-group">
+                                    <label class="form-label">Email Notifications</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked aria-label="Email notifications">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="toggle-hint">Receive updates about conservation news</span>
+                                </div>
+                                <div class="form-group toggle-group">
+                                    <label class="form-label">Privacy: Public Profile</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked aria-label="Public profile">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="toggle-hint">Allow others to see your public profile</span>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="reset" class="btn btn-ghost">Reset Changes</button>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+
+                        <div class="card-header" style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);">
+                            <h3 class="card-title"><i class="fas fa-key"></i> Change Password</h3>
+                            <p class="card-subtitle">Keep your account secure with a strong password</p>
+                        </div>
+                        <form id="password-form" class="settings-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="current-password" class="form-label">Current Password</label>
+                                    <input type="password" id="current-password" name="current-password" class="form-input" placeholder="Enter current password" autocomplete="current-password">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="new-password" class="form-label">New Password</label>
+                                    <input type="password" id="new-password" name="new-password" class="form-input" placeholder="At least 8 characters" autocomplete="new-password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm-password" class="form-label">Confirm New Password</label>
+                                    <input type="password" id="confirm-password" name="confirm-password" class="form-input" placeholder="Repeat new password" autocomplete="new-password">
+                                </div>
+                            </div>
+                            <div id="password-message" class="form-message" style="display:none;"></div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-key"></i> Update Password</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Rewards & Certificates -->
+                    <div class="card settings-card" id="rewards" style="margin-top:2rem;">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-award"></i> Rewards & Certificates</h3>
+                            <p class="card-subtitle">Achievements earned through your conservation contributions</p>
+                        </div>
+                        <div class="profile-stats" id="reward-summary" style="margin-bottom:1.5rem;">
+                            <div class="stat-item">
+                                <span class="stat-value"><i class="fas fa-coins"></i> <span id="rw-tokens">0</span></span>
+                                <span class="stat-label">Token Balance</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value"><i class="fas fa-award"></i> <span id="rw-certs">0</span></span>
+                                <span class="stat-label">Certificates</span>
+                            </div>
+                        </div>
+                        <div id="certificates-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;"></div>
+                        <div id="certificates-empty" style="text-align:center;padding:2rem;opacity:0.5;display:none;">
+                            <i class="fas fa-medal" style="font-size:2.5rem;color:var(--accent);margin-bottom:0.75rem;display:block;"></i>
+                            No certificates yet — scan wildlife and contribute to earn recognition.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>WildGuard Society</h3>
+                <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+                <div class="footer-social">
+                    <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" title="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/255700123456" target="_blank" rel="noopener" title="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" title="Join us on Telegram"><i class="fab fa-telegram"></i></a>
+                    <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../library/library.html">Library</a></li>
+                    <li><a href="../scan.html">Scan</a></li>
+                    <li><a href="../about.html">About</a></li>
+                    <li><a href="../contact.html">Contact</a></li></ul>
+            </div>
+            <div class="footer-links">
+                <h4>Account</h4>
+                <ul>
+                    <li><a href="Profile.html">Profile</a></li>
+                    <li><a href="History.html">History</a></li>
+                    <li><a href="Favourite.html">Favourites</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+                <p><i class="fas fa-map-marker-alt"></i> Global</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
+        </div>
+    </footer>
+
+    <script defer src="../js/connectivity.js"></script>
+
+<script defer src="../js/wg-dialog.js"></script>
+<script defer src="../js/main.js"></script>
+    <script defer src="../js/lively.js"></script>
+    <script defer src="../js/i18n.js"></script>
+    <script defer src="../js/user-api.js"></script>
+    <script defer src="../js/auth.js"></script>
+    <script>
+        // Auth guard - redirect to login if not authenticated
+        (function() {
+            const user = localStorage.getItem('wildguard_user') || sessionStorage.getItem('wildguard_user');
+            if (!user || user === 'null') {
+                window.location.replace('../login.html');
+            }
+        })();
+
+        function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            let user = window.getCurrentUser ? window.getCurrentUser() : (function(){ try { return JSON.parse(localStorage.getItem('wildguard_user')); } catch(e) { return null; } })();
+            if (!user || !user.email) return;
+
+            // Load full profile from the backend when available and merge it
+            // into the session so the UI shows live server data.
+            const backendProfile = await (window.UserAPI && window.UserAPI.getProfile ? window.UserAPI.getProfile() : null);
+            if (backendProfile && backendProfile.email) {
+                user = Object.assign({}, user, backendProfile);
+            }
+            const profileFields = user.profile || user;
+            const getF = function(k) { return user[k] !== undefined ? user[k] : (profileFields[k] !== undefined ? profileFields[k] : ''); };
+
+            // ---- Header card ----
+            const displayNameEl = document.getElementById('profile-display-name');
+            const displayEmailEl = document.getElementById('profile-display-email');
+            const displayRoleEl = document.getElementById('profile-role-display');
+            const displayBioEl = document.getElementById('profile-bio-display');
+            const avatarImg = document.getElementById('profile-avatar-img');
+
+            function refreshHeader() {
+                const u = window.getCurrentUser ? window.getCurrentUser() : user;
+                if (!u) return;
+                const name = u.name || [u.firstName, u.lastName].filter(Boolean).join(' ') || (u.email ? u.email.split('@')[0] : 'User');
+                if (displayNameEl) displayNameEl.textContent = name;
+                if (displayEmailEl) displayEmailEl.textContent = u.email;
+                if (displayRoleEl) {
+                    const roleText = u.role === 'admin' ? 'Administrator' : 'Conservationist';
+                    displayRoleEl.innerHTML = '<i class="fas fa-shield-alt"></i> ' + roleText;
+                }
+                if (displayBioEl) displayBioEl.textContent = u.bio || 'Wildlife enthusiast documenting species and supporting conservation efforts around the globe.';
+                if (avatarImg && u.avatar) { avatarImg.src = u.avatar; }
+            }
+            refreshHeader();
+
+            // ---- Avatar upload ----
+            const avatarBtn = document.querySelector('.avatar-edit-btn');
+            const avatarInput = document.createElement('input');
+            avatarInput.type = 'file';
+            avatarInput.accept = 'image/*';
+            avatarInput.style.display = 'none';
+            document.body.appendChild(avatarInput);
+            if (avatarBtn) {
+                avatarBtn.addEventListener('click', function() { avatarInput.click(); });
+            }
+            avatarInput.addEventListener('change', function() {
+                const file = avatarInput.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = async function() {
+                    const result = await (window.UserAPI && window.UserAPI.updateProfile ? window.UserAPI.updateProfile({ avatar: reader.result }) : { success: false });
+                    if (result.success && avatarImg) { avatarImg.src = reader.result; }
+                    if (typeof window.showToast === 'function') window.showToast('Avatar updated successfully!', 'success');
+                    showSaveMsg('avatar-saved', 'Avatar updated successfully!');
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // ---- Bind form fields from session ----
+            const firstNameInput = document.getElementById('firstName');
+            const lastNameInput = document.getElementById('lastName');
+            const emailInput = document.getElementById('email');
+            const usernameInput = document.getElementById('username');
+            const bioInput = document.getElementById('bio');
+            const phoneInput = document.getElementById('phone');
+            const countryInput = document.getElementById('country');
+
+            if (firstNameInput) firstNameInput.value = getF('firstName') || '';
+            if (lastNameInput) lastNameInput.value = getF('lastName') || '';
+            if (emailInput) { emailInput.value = user.email; emailInput.disabled = true; }
+            if (usernameInput) usernameInput.value = getF('username') || (user.email ? user.email.split('@')[0] : 'user');
+            if (bioInput) bioInput.value = getF('bio') || '';
+            if (phoneInput) phoneInput.value = getF('phone') || '';
+            if (countryInput) countryInput.value = getF('country') || '';
+
+            const notifToggle = document.querySelector('.toggle-group input[type="checkbox"]');
+            const publicToggle = document.querySelectorAll('.toggle-group input[type="checkbox"]')[1];
+            const prefs = user.prefs || profileFields.prefs || { emailNotifications: true, publicProfile: true };
+            if (notifToggle) notifToggle.checked = prefs.emailNotifications !== false;
+            if (publicToggle) publicToggle.checked = prefs.publicProfile !== false;
+
+            // ---- Save profile ----
+            const form = document.getElementById('profileForm');
+            function showSaveMsg(id, text) {
+                let el = document.getElementById(id);
+                if (!el) {
+                    el = document.createElement('div');
+                    el.id = id;
+                    el.style.cssText = 'margin-top:1rem;padding:0.75rem 1rem;border-radius:8px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.4);color:#4ade80;font-size:0.9rem;';
+                    form.appendChild(el);
+                }
+                el.textContent = text;
+                el.style.display = 'block';
+                setTimeout(function() { el.style.display = 'none'; }, 4000);
+            }
+
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const updated = {
+                        firstName: firstNameInput.value.trim(),
+                        lastName: lastNameInput.value.trim(),
+                        username: usernameInput.value.trim(),
+                        bio: bioInput.value.trim(),
+                        phone: phoneInput.value.trim(),
+                        country: countryInput.value,
+                        prefs: {
+                            emailNotifications: notifToggle ? notifToggle.checked : true,
+                            publicProfile: publicToggle ? publicToggle.checked : true
+                        }
+                    };
+                    updated.name = [updated.firstName, updated.lastName].filter(Boolean).join(' ') || updated.username || user.email.split('@')[0];
+                    const result = await (window.UserAPI && window.UserAPI.updateProfile ? window.UserAPI.updateProfile(updated) : { success: false });
+                    if (result.success) {
+                        refreshHeader();
+                        if (typeof window.showToast === 'function') window.showToast('Profile updated successfully!', 'success');
+                        showSaveMsg('profile-saved', 'Profile updated successfully!');
+                    } else {
+                        if (typeof window.showToast === 'function') window.showToast(result.message || 'Could not save profile.', 'error');
+                        showSaveMsg('profile-saved', result.message || 'Could not save profile.');
+                    }
+                });
+            }
+
+            // ---- Change password ----
+            const passForm = document.getElementById('password-form');
+            if (passForm) {
+                passForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const cur = document.getElementById('current-password').value;
+                    const npw = document.getElementById('new-password').value;
+                    const cnf = document.getElementById('confirm-password').value;
+                    const msgEl = document.getElementById('password-message');
+                    if (!cur || !npw || !cnf) { msgEl.textContent = 'Please fill in all password fields.'; msgEl.className = 'form-message form-message--error'; msgEl.style.display = 'block'; return; }
+                    if (npw !== cnf) { msgEl.textContent = 'New passwords do not match.'; msgEl.className = 'form-message form-message--error'; msgEl.style.display = 'block'; return; }
+                    if (npw.length < 8) { msgEl.textContent = 'New password must be at least 8 characters.'; msgEl.className = 'form-message form-message--error'; msgEl.style.display = 'block'; return; }
+                    const res = await (window.UserAPI && window.UserAPI.changePassword ? window.UserAPI.changePassword(cur, npw) : { success: false, message: 'Password changes require the backend.' });
+                    msgEl.textContent = res.message;
+                    msgEl.className = 'form-message ' + (res.success ? 'form-message--success' : 'form-message--error');
+                    msgEl.style.display = 'block';
+                    if (typeof window.showToast === 'function') window.showToast(res.message, res.success ? 'success' : 'error');
+                    if (res.success) { passForm.reset(); }
+                });
+            }
+
+            // ---- Stats ----
+            (async function loadStats() {
+                const scansEl = document.getElementById('stat-scans');
+                const favsEl = document.getElementById('stat-favourites');
+                const parksEl = document.getElementById('stat-parks');
+                const tokensEl = document.getElementById('stat-tokens');
+                const certsEl = document.getElementById('stat-certs');
+                const scans = (window.UserAPI ? await window.UserAPI.getScans() : (window.getUserScans ? window.getUserScans() : [])) || [];
+                const favs = (window.UserAPI ? await window.UserAPI.getFavourites() : (window.getUserFavourites ? window.getUserFavourites() : [])) || [];
+                const email = user ? user.email : '';
+
+                // Tokens: sum of ledger entries for this user
+                let tokens = 0;
+                try {
+                    const ledger = JSON.parse(localStorage.getItem('wildguard_token_ledger') || '[]');
+                    ledger.forEach(t => { if (t.user === email) tokens += (t.amount || 0); });
+                } catch (e) {}
+
+                // Certificates for this user
+                let certs = 0;
+                try {
+                    const all = JSON.parse(localStorage.getItem('wildguard_certificates') || '[]');
+                    certs = all.filter(c => c.user === email).length;
+                } catch (e) {}
+
+                if (scansEl) scansEl.textContent = scans.length;
+                if (favsEl) favsEl.textContent = favs.length;
+                if (parksEl) parksEl.textContent = new Set(scans.map(s => s.species && s.species.habitat).filter(Boolean)).size || '0';
+                if (tokensEl) tokensEl.textContent = tokens;
+                if (certsEl) certsEl.textContent = certs;
+
+                // ---- Rewards & Certificates ----
+                const rwTokensEl = document.getElementById('rw-tokens');
+                const rwCertsEl = document.getElementById('rw-certs');
+                const certList = document.getElementById('certificates-list');
+                const certEmpty = document.getElementById('certificates-empty');
+                let myCerts = [];
+                try {
+                    const all = JSON.parse(localStorage.getItem('wildguard_certificates') || '[]');
+                    myCerts = all.filter(c => c.user === email);
+                } catch (e) {}
+
+                if (rwTokensEl) rwTokensEl.textContent = tokens;
+                if (rwCertsEl) rwCertsEl.textContent = myCerts.length;
+
+                if (myCerts.length) {
+                    if (certEmpty) certEmpty.style.display = 'none';
+                    if (certList) {
+                        certList.innerHTML = myCerts.map(function (c) {
+                            return '<div style="background:linear-gradient(145deg,rgba(244, 162, 97,0.08),rgba(45, 106, 79,0.08));border:1px solid rgba(244, 162, 97,0.3);border-radius:16px;padding:1.5rem;text-align:center;position:relative;">' +
+                                '<div style="font-size:2.2rem;color:var(--accent);margin-bottom:0.5rem;"><i class="fas fa-medal"></i></div>' +
+                                '<div style="font-family:var(--font-heading);font-size:1.05rem;font-weight:700;margin-bottom:0.35rem;">' + esc(c.title) + '</div>' +
+                                (c.message ? '<div style="font-size:0.85rem;opacity:0.8;line-height:1.5;margin-bottom:0.75rem;">' + esc(c.message) + '</div>' : '') +
+                                '<div style="font-size:0.7rem;opacity:0.5;letter-spacing:1px;text-transform:uppercase;">Issued ' + esc(new Date(c.issuedAt).toLocaleDateString()) + '</div>' +
+                                '<div style="margin-top:0.75rem;font-family:monospace;font-size:0.72rem;color:var(--accent);border-top:1px dashed rgba(244, 162, 97,0.3);padding-top:0.6rem;">' + esc(c.code || '') + '</div>' +
+                                '</div>';
+                        }).join('');
+                    }
+                } else {
+                    if (certEmpty) certEmpty.style.display = 'block';
+                    if (certList) certList.innerHTML = '';
+                }
+            })();
+        });
+    </script>
+  <script defer src="../js/icons.js"></script>
+<script defer src="../js/pwa.js"></script>
+</body>
+</html>

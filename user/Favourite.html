@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+    <title>Favourites | WildGuard Society</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/lively.css">
+    <style>
+        /* ---------- Favourites page: wildlife vibe ---------- */
+        .fav-header { text-align: center; margin: 1.5rem 0 2.5rem; }
+        .fav-header .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(244, 162, 97,0.25), rgba(45,138,94,0.25)); border-color: rgba(244, 162, 97,0.4); }
+        .fav-header .page-title { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 0.5rem; }
+
+        /* Stats strip */
+        .fav-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; max-width: 720px; margin: 0 auto 2.5rem; }
+        .fav-stat { position: relative; text-align: center; padding: 1.1rem 1rem; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(6px); overflow: hidden; transition: var(--transition); }
+        .fav-stat::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(45, 106, 79,0.25), rgba(244, 162, 97,0.18)); opacity: 0; transition: opacity 0.3s ease; }
+        .fav-stat:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
+        .fav-stat:hover::before { opacity: 1; }
+        .fav-stat-value { position: relative; display: block; font-family: var(--font-heading); font-size: 2rem; font-weight: 700; color: var(--lighter); line-height: 1.1; }
+        .fav-stat-value i { color: var(--accent); font-size: 1.2rem; margin-right: 0.25rem; }
+        .fav-stat-label { position: relative; display: block; margin-top: 0.3rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.55); }
+
+        /* Favourite cards */
+        .fav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.75rem; }
+        .favourite-card { position: relative; border-radius: var(--radius-lg); overflow: hidden; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease; animation: favFadeUp 0.55s ease both; }
+        .favourite-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.45), 0 0 0 1px rgba(244, 162, 97,0.3); border-color: rgba(244, 162, 97,0.35); }
+
+        .fav-media { position: relative; aspect-ratio: 16/10; overflow: hidden; background: linear-gradient(135deg, var(--primary-dark), var(--dark)); }
+        .fav-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .favourite-card:hover .fav-media img { transform: scale(1.08); }
+        .fav-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,21,16,0.85) 0%, rgba(10,21,16,0.15) 55%, rgba(10,21,16,0.1) 100%); }
+
+        .fav-status-pill { position: absolute; top: 0.9rem; left: 0.9rem; z-index: 2; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.8rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; backdrop-filter: blur(6px); }
+        .fav-status-pill i { font-size: 0.65rem; }
+        .status-critical { background: rgba(239,68,68,0.9); color: #fff; box-shadow: 0 4px 14px rgba(239,68,68,0.4); }
+        .status-endangered { background: rgba(249,115,22,0.9); color: #fff; box-shadow: 0 4px 14px rgba(249,115,22,0.4); }
+        .status-vulnerable { background: rgba(234,179,8,0.92); color: #1c1917; box-shadow: 0 4px 14px rgba(234,179,8,0.4); }
+        .status-near-threatened { background: rgba(163,230,53,0.92); color: #1c1917; box-shadow: 0 4px 14px rgba(163,230,53,0.35); }
+        .status-least-concern { background: rgba(34,197,94,0.92); color: #052e16; box-shadow: 0 4px 14px rgba(34,197,94,0.35); }
+        .status-default { background: rgba(244, 162, 97,0.9); color: #1c1917; box-shadow: 0 4px 14px rgba(244, 162, 97,0.4); }
+
+        .fav-heart-pin { position: absolute; top: 0.9rem; right: 0.9rem; z-index: 2; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(10,21,16,0.45); border: 1px solid rgba(255,255,255,0.18); color: #ef4444; font-size: 1rem; backdrop-filter: blur(6px); }
+
+        .fav-info { position: relative; z-index: 2; margin-top: -2.2rem; padding: 0 1.5rem 1.5rem; }
+        .fav-info h3 { color: var(--lighter); font-size: 1.35rem; margin-bottom: 0.15rem; text-shadow: 0 2px 12px rgba(0,0,0,0.6); }
+        .fav-sci { font-style: italic; color: rgba(255,255,255,0.6); font-size: 0.88rem; margin-bottom: 0.9rem; }
+
+        .fav-meta { display: flex; align-items: center; gap: 0.5rem; padding-top: 0.9rem; border-top: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); font-size: 0.78rem; }
+        .fav-meta i { color: var(--accent); }
+        .remove-fav { margin-left: auto; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0.9rem; background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #f87171; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
+        .remove-fav:hover { background: rgba(239,68,68,0.22); border-color: rgba(239,68,68,0.5); transform: translateY(-1px); }
+
+        /* Empty state */
+        .fav-empty { grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; border-radius: var(--radius-lg); background: linear-gradient(160deg, rgba(45, 106, 79,0.15), rgba(244, 162, 97,0.08)); border: 1px dashed rgba(244, 162, 97,0.35); animation: favFadeUp 0.6s ease both; }
+        .fav-empty-icon { width: 90px; height: 90px; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; border-radius: 50%; background: linear-gradient(135deg, rgba(244, 162, 97,0.25), rgba(45, 106, 79,0.25)); border: 1px solid rgba(244, 162, 97,0.4); color: var(--accent); animation: favPulse 2.2s ease-in-out infinite; }
+        .fav-empty h3 { color: var(--lighter); font-size: 1.6rem; margin-bottom: 0.6rem; }
+        .fav-empty p { color: rgba(255,255,255,0.6); max-width: 440px; margin: 0 auto 1.75rem; }
+        .fav-empty .btn { margin: 0 0.35rem; }
+
+        @keyframes favFadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes favPulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 162, 97,0.35); } 50% { transform: scale(1.05); box-shadow: 0 0 0 14px rgba(244, 162, 97,0); } }
+
+        @media (max-width: 768px) {
+            .fav-grid { grid-template-columns: 1fr; }
+            .fav-empty .btn { margin: 0.35rem 0; }
+        }
+    </style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="page-slideshow">
+        <div class="page-slide active" style="background-image: url('../assets/images/background.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background2.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/Background3.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background4.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background5.png')"></div>
+    </div>
+    <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+  <header class="site-header" id="site-header">
+        <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+                <span class="logo-text">WildGuard Society</span>
+            </a>
+            <nav class="desktop-nav" id="desktop-nav">
+                <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="../library/library.html"><i class="fas fa-book"></i> Library</a>
+                <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
+                <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
+                <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a></nav>
+            <div class="header-actions">
+                <div class="auth-buttons" id="auth-buttons">
+                    <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+                    <div class="user-menu" id="user-menu" style="display:none;">
+                        <button class="user-menu-toggle" id="user-menu-toggle">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="user-email">User</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="user-dropdown" id="user-dropdown">
+                            <a href="Profile.html"><i class="fas fa-user"></i> Profile</a>
+                            <a href="History.html"><i class="fas fa-history"></i> History</a>
+                            <a href="Inbox.html"><i class="fas fa-inbox"></i> Inbox</a>
+
+                                        <a href="Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="language-selector" data-language-selector>
+                    <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+                        <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" role="menu" hidden>
+                        <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+                        <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+                        <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+    <main id="main-content" tabindex="-1">
+        <section class="content-overlay">
+            <div class="container" style="padding-bottom: 3rem;">
+                <div class="fav-header">
+                    <span class="page-eyebrow"><i class="fas fa-paw"></i> Your Collection</span>
+                    <h1 class="page-title">Favourite Wildlife</h1>
+                    <p style="color:rgba(255,255,255,0.6); max-width:520px; margin:0 auto;">Species you've saved. Keep them close, learn their stories, and help them thrive.</p>
+                </div>
+                <div class="fav-stats" id="fav-stats"></div>
+                <div class="fav-grid" id="favourites-grid">
+                    <!-- Favourites loaded dynamically -->
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>WildGuard Society</h3>
+                <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+                <div class="footer-social">
+                    <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" title="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/255700123456" target="_blank" rel="noopener" title="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" title="Join us on Telegram"><i class="fab fa-telegram"></i></a>
+                    <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../library/library.html">Library</a></li>
+                    <li><a href="../scan.html">Scan</a></li>
+                    <li><a href="../about.html">About</a></li>
+                    <li><a href="../contact.html">Contact</a></li></ul>
+            </div>
+            <div class="footer-links">
+                <h4>Account</h4>
+                <ul>
+                    <li><a href="Profile.html">Profile</a></li>
+                    <li><a href="History.html">History</a></li>
+                    <li><a href="Favourite.html">Favourites</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+                <p><i class="fas fa-map-marker-alt"></i> Global</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
+        </div>
+    </footer>
+    <script defer src="../js/connectivity.js"></script>
+
+<script defer src="../js/wg-dialog.js"></script>
+<script defer src="../js/main.js"></script>
+    <script defer src="../js/lively.js"></script>
+    <script defer src="../js/i18n.js"></script>
+    <script defer src="../js/user-api.js"></script>
+    <script defer src="../js/auth.js"></script>
+    <script>
+        (function() {
+            const user = localStorage.getItem('wildguard_user') || sessionStorage.getItem('wildguard_user');
+            if (!user || user === 'null') {
+                window.location.replace('../login.html');
+            }
+        })();
+
+        function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+        function safeImg(src){return /^data:image\/(png|jpe?g|gif|webp);base64,/i.test(src)||/^https:\/\//i.test(src)?src:'';}
+
+        function statusPillClass(status) {
+            const s = (status || '').toLowerCase();
+            if (s.indexOf('critically') !== -1) return 'status-critical';
+            if (s.indexOf('endangered') !== -1) return 'status-endangered';
+            if (s.indexOf('vulnerable') !== -1) return 'status-vulnerable';
+            if (s.indexOf('near') !== -1) return 'status-near-threatened';
+            if (s.indexOf('least') !== -1) return 'status-least-concern';
+            return 'status-default';
+        }
+
+        function formatAddedDate(iso) {
+            if (!iso) return '';
+            try {
+                const d = new Date(iso);
+                return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+            } catch (e) { return ''; }
+        }
+
+        function renderStats(favs) {
+            const el = document.getElementById('fav-stats');
+            if (!el) return;
+            const atRisk = favs.filter(f => {
+                const s = (f.status || '').toLowerCase();
+                return s.indexOf('endangered') !== -1 || s.indexOf('vulnerable') !== -1 || s.indexOf('critical') !== -1 || s.indexOf('near') !== -1;
+            }).length;
+            const parks = new Set(favs.map(f => (f.habitat || '').trim()).filter(Boolean)).size;
+            el.innerHTML =
+                '<div class="fav-stat"><span class="fav-stat-value"><i class="fas fa-heart"></i>' + favs.length + '</span><span class="fav-stat-label">Saved Species</span></div>' +
+                '<div class="fav-stat"><span class="fav-stat-value"><i class="fas fa-shield-halved"></i>' + atRisk + '</span><span class="fav-stat-label">Need Protection</span></div>' +
+                '<div class="fav-stat"><span class="fav-stat-value"><i class="fas fa-tree"></i>' + parks + '</span><span class="fav-stat-label">Habitats</span></div>';
+        }
+
+        async function renderFavourites() {
+            const grid = document.getElementById('favourites-grid');
+            if (!grid) return;
+            const favs = (window.UserAPI ? await window.UserAPI.getFavourites() : (window.getUserFavourites ? window.getUserFavourites() : [])) || [];
+            renderStats(favs);
+
+            if (favs.length === 0) {
+                grid.innerHTML = '<div class="fav-empty">' +
+                    '<div class="fav-empty-icon"><i class="fas fa-heart"></i></div>' +
+                    '<h3>No favourites yet</h3>' +
+                    '<p>Scan wildlife in the field or browse the library, then save the species that inspire you most.</p>' +
+                    '<a href="../scan.html" class="btn btn-primary"><i class="fas fa-barcode"></i> Start Scanning</a>' +
+                    '<a href="../library/library.html" class="btn btn-secondary"><i class="fas fa-book-open"></i> Browse Library</a>' +
+                    '</div>';
+                return;
+            }
+
+            grid.innerHTML = '';
+            favs.forEach(function(fav, index) {
+                const card = document.createElement('div');
+                card.className = 'card favourite-card';
+                card.style.animationDelay = (index * 0.06) + 's';
+                const imgSrc = fav.image && safeImg(fav.image) ? fav.image : ('../assets/images/' + esc(fav.speciesKey || '') + '.jpg');
+                const statusText = fav.status || 'Status Unknown';
+                const pill = '<span class="fav-status-pill ' + statusPillClass(statusText) + '"><i class="fas fa-circle"></i>' + esc(statusText) + '</span>';
+                const added = fav.addedAt ? '<div class="fav-meta"><i class="fas fa-calendar-check"></i> Added ' + esc(formatAddedDate(fav.addedAt)) + '</div>' : '';
+                card.innerHTML = '<div class="fav-media">' +
+                    '<img src="' + imgSrc + '" alt="' + esc(fav.name) + '" loading="lazy" onerror="this.src=\'../assets/images/background.png\'">' +
+                    pill +
+                    '<span class="fav-heart-pin"><i class="fas fa-heart"></i></span>' +
+                    '</div>' +
+                    '<div class="fav-info">' +
+                    '<h3>' + esc(fav.name) + '</h3>' +
+                    (fav.scientificName ? '<p class="fav-sci">' + esc(fav.scientificName) + '</p>' : '') +
+                    '<div class="fav-meta">' +
+                    '<i class="fas fa-leaf"></i><span>' + esc(statusText) + '</span>' +
+                    '<button class="remove-fav" data-id="' + (fav.id || '') + '" data-key="' + esc(fav.speciesKey) + '" aria-label="Remove ' + esc(fav.name) + ' from favourites"><i class="fas fa-heart-broken"></i> Remove</button>' +
+                    '</div>' +
+                    added +
+                    '</div>';
+                grid.appendChild(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderFavourites();
+            document.getElementById('favourites-grid').addEventListener('click', async function(e) {
+                const btn = e.target.closest('.remove-fav');
+                if (!btn) return;
+                const key = btn.getAttribute('data-key');
+                const id = btn.getAttribute('data-id');
+                const session = (window.getCurrentUser ? window.getCurrentUser() : null) || {};
+                let removed = false;
+                // Backend-backed favourites are removed by id.
+                if (id && window.UserAPI) {
+                    const res = await window.UserAPI.removeFavourite(id);
+                    removed = res && res.success;
+                } else {
+                    // localStorage favourites keyed by speciesKey.
+                    const all = JSON.parse(localStorage.getItem('wildguard_favourites') || '[]');
+                    const fav = all.find(f => (f.user || '').toLowerCase() === (session.email || '').toLowerCase() && f.speciesKey === key);
+                    localStorage.setItem('wildguard_favourites', JSON.stringify(all.filter(f => !(f.user === (session.email || '').toLowerCase() && f.speciesKey === key))));
+                    removed = true;
+                    if (typeof window.showToast === 'function') window.showToast((fav ? fav.name : 'Species') + ' removed from favourites', 'info');
+                }
+                renderFavourites();
+            });
+        });
+    </script>
+  <script defer src="../js/icons.js"></script>
+<script defer src="../js/pwa.js"></script>
+</body>
+</html>

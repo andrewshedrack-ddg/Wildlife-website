@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | WildGuard Society</title>
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <script defer src="../js/i18n.js"></script>
+  <style>
+    .admin-topbar-right { display: flex; align-items: center; gap: 1rem; }
+    .admin-notif-btn { position: relative; background: none; border: none; color: rgba(255,255,255,0.7); font-size: 1.1rem; cursor: pointer; padding: 0.5rem; transition: all 0.3s ease; }
+    .admin-notif-btn:hover { color: var(--accent); }
+    .admin-notif-badge { position: absolute; top: 2px; right: 2px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .admin-content { padding: 2rem; max-width: 1100px; }
+    .mobile-toggle-sidebar { display: none; background: none; border: none; color: var(--lighter); font-size: 1.4rem; cursor: pointer; padding: 0.5rem; }
+    @media (max-width: 768px) { .mobile-toggle-sidebar { display: block; } }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.25rem; text-align: center; transition: all 0.3s ease; }
+    .stat-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.15); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+    .stat-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .stat-card h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.2rem; color: var(--accent); }
+    .stat-card p { color: rgba(255,255,255,0.55); font-size: 0.82rem; margin: 0; }
+
+    /* Section Styling */
+    .admin-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+    .admin-section-header h2 { font-family: var(--font-heading); font-size: 1.3rem; margin: 0; }
+ calibre .empty-state { text-align: center; padding: 3rem 2rem; color: rgba(255,255,255,0.4); }
+    .empty-state i { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+    .empty-state h3 { color: rgba(255,255,255,0.7); font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .empty-state p { font-size: 0.9rem; }
+
+    /* Tables */
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th { text-align: left; padding: 0.9rem 1rem; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .data-table td { padding: 0.9rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.9rem; }
+    .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .data-table img { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; }
+
+    /* Status Badges */
+    .badge { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.78rem; font-weight: 600; }
+    .badge-pending { background: rgba(245,158,11,0.12); color: #f59e0b; border: 1px solid rgba(245,158,11,0.25); }
+    .badge-approved { background: rgba(34,197,94,0.12); color: #22c55e; border: 1px solid rgba(34,197,94,0.25); }
+    .badge-new { background: rgba(59,130,246,0.12); color: #3b82f6; border: 1px solid rgba(59,130,246,0.25); }
+
+    /* Action Buttons */
+    .btn-sm { padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.3s ease; }
+    .btn-approve { background: linear-gradient(135deg, #2d6a4f, #1e3a2b); color: #fff; }
+    .btn-approve:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(27,94,64,0.3); }
+    .btn-reject { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.25); }
+    .btn-reject:hover { background: rgba(239,68,68,0.2); }
+    .btn-view { background: rgba(244,162,97,0.1); color: var(--accent); border: 1px solid rgba(244,162,97,0.25); }
+    .btn-view:hover { background: rgba(244,162,97,0.2); }
+    .btn-mark-read { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.12); }
+    .btn-mark-read:hover { background: rgba(255,255,255,0.1); color: var(--lighter); }
+
+    /* Message Cards */
+    .message-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.25rem; margin-bottom: 0.75rem; transition: all 0.3s ease; }
+    .message-card:hover { border-color: rgba(255,255,255,0.12); }
+    .message-card.unread { border-left: 3px solid var(--accent); background: rgba(244,162,97,0.04); }
+    .message-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem; }
+    .message-header strong { color: var(--lighter); font-size: 0.95rem; }
+    .message-header span { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+    .message-body { color: rgba(255,255,255,0.7); font-size: 0.88rem; line-height: 1.5; margin-bottom: 0.75rem; }
+    .message-actions { display: flex; gap: 0.5rem; }
+
+    /* Scan Card */
+    .scan-card { display: flex; gap: 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem; margin-bottom: 0.75rem; }
+    .scan-card:hover { border-color: rgba(255,255,255,0.12); }
+    .scan-img { width: 80px; height: 80px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: rgba(0,0,0,0.3); }
+    .scan-info { flex: 1; min-width: 0; }
+    .scan-info h4 { margin: 0 0 0.3rem; color: var(--lighter); font-size: 1rem; }
+    .scan-info p { margin: 0 0 0.3rem; color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+    .scan-meta { display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap; }
+
+    /* Home Tab - Action Grid */
+    .action-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+    .action-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.5rem; text-align: center; transition: all 0.3s ease; }
+    .action-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+    .action-card i { font-size: 1.8rem; color: var(--accent); margin-bottom: 0.75rem; display: block; }
+    .action-card h4 { color: var(--lighter); margin:  0 0 0.4rem; font-size: 1rem; }
+    .action-card p { color: rgba(255,255,255,0.55); font-size: 0.85rem; margin: 0 0 1rem; }
+    .action-card a { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.2rem; background: rgba(244,162,97,0.12); border: 1px solid rgba(244,162,97,0.25); border-radius: 8px; color: var(--accent); font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: all 0.3s ease; }
+    .action-card a:hover { background: rgba(244,162,97,0.2); border-color: rgba(244,162,97,0.4); }
+
+    /* Sidebar Logout */
+    .admin-logout { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
+    .admin-logout a { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; color: rgba(239,68,68,0.9); font-size: 0.92rem; text-decoration: none; border-radius: 10px; transition: all 0.3s ease; }
+    .admin-logout a:hover { background: rgba(239,68,68,0.1); }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+  <div class="admin-app">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-brand">
+        <img src="../assets/images/logo.png" alt="WildGuard">
+        <span>Admin Portal</span>
+      </div>
+      <nav class="admin-nav">
+        <button class="admin-nav-item active" data-tab="dashboard" onclick="switchTab(this, 'dashboard')">
+          <i class="fas fa-chart-pie"></i> Dashboard
+        </button>
+        <button class="admin-nav-item" data-tab="scans" onclick="switchTab(this, 'scans')">
+          <i class="fas fa-camera"></i> Pending Scans <span class="admin-nav-badge" id="navBadgeScans" style="display:none;"></span>
+        </button>
+        <button class="admin-nav-item" data-tab="messages" onclick="switchTab(this, 'messages')">
+          <i class="fas fa-envelope"></i> Messages <span class="admin-nav-badge" id="navBadgeMessages" style="display:none;"></span>
+        </button>
+        <button class="admin-nav-item" data-tab="notifications" onclick="switchTab(this, 'notifications')">
+          <i class="fas fa-bell"></i> Notifications <span class="admin-nav-badge" id="navBadgeNotifs" style="display:none;"></span>
+        </button>
+        <button class="admin-nav-item" data-tab="users" onclick="switchTab(this, 'users')">
+          <i class="fas fa-users"></i> Users
+        </button>
+        <button class="admin-nav-item" data-tab="traffic" onclick="switchTab(this, 'traffic')">
+          <i class="fas fa-network-wired"></i> Traffic
+        </button>
+        <button class="admin-nav-item" data-tab="emails" onclick="switchTab(this, 'emails')">
+          <i class="fas fa-paper-plane"></i> Email Campaign
+        </button>
+        <button class="admin-nav-item" data-tab="settings" onclick="switchTab(this, 'settings')">
+          <i class="fas fa-gear"></i> Settings
+        </button>
+        <div class="admin-nav-divider"></div>
+        <a class="admin-nav-item" href="manage-animals.html"><i class="fas fa-paw"></i> Manage Animals</a>
+        <a class="admin-nav-item" href="upload.html"><i class="fas fa-cloud-upload-alt"></i> Upload Species</a>
+      </nav>
+      <div class="admin-logout">
+        <a href="#" id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="admin-main" id="main-content" tabindex="-1">
+      <div class="admin-topbar">
+        <div style="display:flex; align-items:center; gap:1rem;">
+          <button class="mobile-toggle-sidebar" id="mobileToggleSidebar" aria-label="Toggle sidebar" aria-expanded="false" aria-controls="adminSidebar"><i class="fas fa-bars"></i></button>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
+        <div class="admin-topbar-right">
+          <div class="language-selector" data-language-selector>
+            <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+              <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="lang-dropdown" role="menu" hidden>
+              <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+              <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+              <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+            </div>
+          </div>
+          <button class="admin-notif-btn" id="headerNotifBtn" title="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="admin-notif-badge" id="headerNotifBadge" style="display:none;"></span>
+          </button>
+          <span id="adminEmail" style="font-size:0.85rem; color:rgba(255,255,255,0.6);">Admin</span>
+        </div>
+      </div>
+
+      <div class="admin-content">
+
+        <!-- Dashboard (Home) Tab -->
+        <div id="tab-dashboard" class="tab-content active">
+          <!-- Stats -->
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon"><i class="fas fa-clock" style="color:#f59e0b;"></i></div><h3 id="statPending">0</h3><p>Pending Scans</p></div>
+            <div class="stat-card"><div class="stat-icon"><i class="fas fa-database" style="color:#3b82f6;"></i></div><h3 id="statTotal">0</h3><p>Total Catalog</p></div>
+            <div class="stat-card"><div class="stat-icon"><i class="fas fa-camera" style="color:#a855f7;"></i></div><h3 id="statToday">0</h3><p>Scans Today</p></div>
+            <div class="stat-card"><div class="stat-icon"><i class="fas fa-users" style="color:#22c55e;"></i></div><h3 id="statUsers">0</h3><p>Active Users</p></div>
+            <div class="stat-card"><div class="stat-icon"><i class="fas fa-envelope" style="color:#ef4444;"></i></div><h3 id="statMessages">0</h3><p>New Messages</p></div>
+            <div class="stat-card"><div class="stat-icon"><i class="fas fa-paper-plane" style="color:#0ea5e9;"></i></div><h3 id="statEmails">0</h3><p>Emails Sent</p></div>
+            <div class="stat-card"><div class="stat-icon"><i class="fas fa-network-wired" style="color:#74e600;"></i></div><h3 id="statActivity">0</h3><p>Activity Events</p></div>
+          </div>
+
+          <!-- Quick Access -->
+          <div class="admin-section-header"><h2><i class="fas fa-bolt" style="color:var(--accent);"></i> Quick Access</h2></div>
+          <div class="action-grid">
+            <div class="action-card">
+              <i class="fas fa-paw"></i>
+              <h4>Manage Animals</h4>
+              <p>Edit species entries, add organisms.</p>
+              <a href="manage-animals.html"><i class="fas fa-arrow-right"></i> Open</a>
+            </div>
+            <div class="action-card">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <h4>Upload Species</h4>
+              <p>Add new wildlife data with images.</p>
+              <a href="upload.html"><i class="fas fa-arrow-right"></i> Upload</a>
+            </div>
+            <div class="action-card">
+              <i class="fas fa-chart-bar"></i>
+              <h4>Analytics</h4>
+              <p>View scans, trends, users.</p>
+              <a href="#" onclick="WGAlert({ title: 'Coming Soon', message: 'Analytics dashboards are being prepared for you.', icon: 'fa-chart-line' }); return false;"><i class="fas fa-arrow-right"></i> View</a>
+            </div>
+            <div class="action-card">
+              <i class="fas fa-gear"></i>
+              <h4>Settings</h4>
+              <p>Configure parameters.</p>
+              <a href="#" onclick="WGAlert({ title: 'Coming Soon', message: 'Settings controls are being prepared for you.', icon: 'fa-gear' }); return false;"><i class="fas fa-arrow-right"></i> Manage</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pending Scans Tab -->
+        <div id="tab-scans" class="tab-content">
+          <div class="admin-section-header"><h2><i class="fas fa-camera" style="color:var(--accent);"></i> Pending Scan Approvals</h2></div>
+          <div id="pendingScansList"></div>
+        </div>
+
+        <!-- Messages Tab -->
+        <div id="tab-messages" class="tab-content">
+          <div class="admin-section-header"><h2><i class="fas fa-envelope" style="color:var(--accent);"></i> Contact Messages</h2></div>
+          <div id="messagesList"></div>
+        </div>
+
+        <!-- Notifications Tab -->
+        <div id="tab-notifications" class="tab-content">
+          <div class="admin-section-header"><h2><i class="fas fa-bell" style="color:var(--accent);"></i> System Notifications</h2></div>
+          <div id="notificationsList"></div>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="tab-users" class="tab-content">
+          <div class="admin-section-header"><h2><i class="fas fa-users" style="color:var(--accent);"></i> Registered Users</h2></div>
+          <div id="usersList"></div>
+        </div>
+
+        <!-- Traffic / Activity Log Tab -->
+        <div id="tab-traffic" class="tab-content">
+          <div class="admin-section-header"><h2><i class="fas fa-network-wired" style="color:var(--accent);"></i> Activity Log</h2></div>
+          <div id="activityLogList"></div>
+        </div>
+
+        <!-- Email Campaign Tab -->
+        <div id="tab-emails" class="tab-content">
+          <div class="admin-section-header"><h2><i class="fas fa-paper-plane" style="color:var(--accent);"></i> Email Campaign</h2></div>
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.5rem;margin-bottom:2rem;">
+            <div style="margin-bottom:1rem;">
+              <label for="emailSubject" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Subject</label>
+              <input id="emailSubject" type="text" placeholder="Enter email subject..." style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom:1rem;">
+              <label for="emailType" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Email Type</label>
+              <select id="emailType" style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;">
+                <option value="update">Feature Update</option>
+                <option value="newsletter">Newsletter</option>
+                <option value="alert">Alert</option>
+                <option value="promotion">Promotion</option>
+              </select>
+            </div>
+            <div style="margin-bottom:1rem;">
+              <label for="emailBody" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Body</label>
+              <textarea id="emailBody" rows="6" placeholder="Write your message here..." style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;resize:vertical;"></textarea>
+            </div>
+            <button onclick="sendAdminEmailCampaign()" class="btn-sm btn-approve" style="padding:0.65rem 1.5rem;font-size:0.9rem;"><i class="fas fa-paper-plane" style="margin-right:0.4rem;"></i> Send to All Users</button>
+          </div>
+          <div class="admin-section-header"><h2>Sent Emails</h2></div>
+          <div id="sentEmailsList"></div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="tab-settings" class="tab-content">
+          <div class="admin-section-header"><h2><i class="fas fa-gear" style="color:var(--accent);"></i> Site Settings</h2></div>
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.5rem;">
+            <div style="margin-bottom:1rem;">
+              <label for="settingSiteName" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Site Name</label>
+              <input id="settingSiteName" type="text" placeholder="WildGuard Society" style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom:1rem;">
+              <label for="settingAnnouncement" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Announcement Banner</label>
+              <textarea id="settingAnnouncement" rows="2" placeholder="Shown to all users on the homepage (leave blank to hide)" style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;resize:vertical;"></textarea>
+            </div>
+            <div style="margin-bottom:1rem;">
+              <label for="settingContactEmail" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Public Contact Email</label>
+              <input id="settingContactEmail" type="email" placeholder="info@wildguard.org" style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
+              <div>
+                <label for="settingMaxScan" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Max Scan Size (MB)</label>
+                <input id="settingMaxScan" type="number" min="1" max="50" value="5" style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;">
+              </div>
+              <div>
+                <label for="settingScansPerDay" style="display:block;font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Scans per Day Limit</label>
+                <input id="settingScansPerDay" type="number" min="1" max="1000" value="50" style="width:100%;padding:0.65rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;box-sizing:border-box;">
+              </div>
+            </div>
+            <button onclick="saveAdminSettings()" class="btn-sm btn-approve" style="padding:0.65rem 1.5rem;font-size:0.9rem;"><i class="fas fa-save" style="margin-right:0.4rem;"></i> Save Settings</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script defer src="../js/connectivity.js"></script>
+
+<script defer src="../js/wg-dialog.js"></script>
+<script defer src="../js/main.js"></script>
+  <script defer src="../js/auth.js"></script>
+  <script defer src="../js/admin-api.js"></script>
+  <script defer src="../js/admin-auth-guard.js"></script>
+  <script defer src="../js/admin.js"></script>
+  <script>
+    // Admin Tab Switching
+    window.switchTab = function(el, tabName) {
+      document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('tab-' + tabName).classList.add('active');
+      document.getElementById('pageTitle').textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+      // Refresh tab-specific data
+      if (tabName === 'traffic' && typeof window.renderActivityLog === 'function') window.renderActivityLog();
+      if (tabName === 'emails' && typeof window.renderSentEmails === 'function') window.renderSentEmails();
+      if (tabName === 'settings' && typeof window.renderSettings === 'function') window.renderSettings();
+      if (tabName === 'users' && typeof window.renderUsers === 'function') window.renderUsers();
+    };
+
+    // Mobile sidebar toggle
+    document.getElementById('mobileToggleSidebar')?.addEventListener('click', () => {
+      const sidebar = document.getElementById('adminSidebar');
+      const btn = document.getElementById('mobileToggleSidebar');
+      const nav = sidebar.querySelector('.admin-nav');
+      const open = !sidebar.classList.contains('open');
+      sidebar.classList.toggle('open');
+      if (open) nav.style.display = 'flex';
+      else nav.style.display = 'none';
+      btn.setAttribute('aria-expanded', open);
+      if (open) nav.querySelector('.admin-nav-item')?.focus();
+    });
+
+    // Admin logout
+    document.getElementById('adminLogoutBtn')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('wildguard_user');
+      window.location.href = '../admin-login.html';
+    });
+  </script>
+  <script defer src="../js/icons.js"></script>
+<script defer src="../js/pwa.js"></script>
+</body>
+</html>
