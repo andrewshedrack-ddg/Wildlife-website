@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WildGuard Society — young people in northern Tanzania protecting wildlife and the land we call home.">
+  <meta name="keywords" content="wildlife conservation, WildGuard Society, Tanzania, nature, endangered species, youth">
+  <meta name="author" content="WildGuard Society">
+  <meta property="og:title" content="WildGuard Society — Protecting Wildlife in Northern Tanzania">
+  <meta property="og:description" content="Young Tanzanians documenting wildlife, tracking threats, and protecting home.">
+  <meta property="og:image" content="assets/images/serengeti.jpg">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>WildGuard Society | Youth-Led Conservation in Tanzania</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/lively.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="page-slideshow" aria-hidden="true">
+    <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/Background3.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
+  </div>
+
+  <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+  <header class="site-header" id="site-header" role="banner">
+    <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
+      <a href="index.html" class="logo" aria-label="WildGuard Society Home">
+        <img src="assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav" role="navigation" aria-label="Main navigation">
+        <a href="index.html" class="active" aria-current="page"><i class="fas fa-home"></i> Home</a>
+        <a href="library/library.html"><i class="fas fa-book"></i> Library</a>
+        <a href="scan.html"><i class="fas fa-barcode"></i> Scan</a>
+        <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <div class="user-menu" id="user-menu" style="display:none">
+            <button class="user-menu-toggle" id="user-menu-toggle" aria-expanded="false" aria-haspopup="true">
+              <i class="fas fa-user-circle"></i> <span id="user-email">User</span> <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown" role="menu">
+              <a href="user/Profile.html" role="menuitem"><i class="fas fa-user"></i> Profile</a>
+              <a href="user/History.html" role="menuitem"><i class="fas fa-history"></i> History</a>
+              <a href="user/Inbox.html" role="menuitem"><i class="fas fa-inbox"></i> Inbox</a>
+
+                                  <a href="user/Favourite.html" role="menuitem"><i class="fas fa-heart"></i> Favourites</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn" role="menuitem"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span> <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> English</button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> Français</button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> Kiswahili</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+
+  <main id="main-content">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content animate-fade-in">
+        <span class="eyebrow">We Are WildGuard Society</span>
+        <h1>Protecting the Wildlife Heritage and  The Beauty Of The Nature</h1>
+        <p>We Are The WildGuard Guardians working alongside, Parks, Reserves, farmers, herders, and village rangers. We scan wildlife, track threats, and look after the land our families have lived on for generations.</p>
+        <div class="hero-actions">
+          <a href="about.html" class="cta-button">Our Story <i class="fas fa-arrow-right"></i></a>
+          <a href="scan.html" class="cta-button cta-outline">Scan Wildlife <i class="fas fa-camera"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- WILDLIFE -->
+    <section class="content-overlay">
+      <div class="container">
+        <div class="section-header">
+          <h2>Magnificent Wildlife</h2>
+          <p>World's most iconic species in their natural habitats</p>
+        </div>
+        <div class="card-grid">
+          <article class="card">
+            <div class="card-image"><img src="assets/images/lion.jpg" alt="Lion" loading="lazy"></div>
+            <div class="card-body">
+              <span class="badge badge--vulnerable">Vulnerable</span>
+              <h3>Lion</h3>
+              <p>King of the savanna, apex predators shaping entire ecosystems across East Africa.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/elephant.jpg" alt="Elephant" loading="lazy"></div>
+            <div class="card-body">
+              <span class="badge badge--endangered">Endangered</span>
+              <h3>Elephant</h3>
+              <p>Largest land animal — a keystone species that shapes landscapes and fosters biodiversity.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/leopard.png" alt="Leopard" loading="lazy"></div>
+            <div class="card-body">
+              <span class="badge badge--vulnerable">Vulnerable</span>
+              <h3>Leopard</h3>
+              <p>Solitary spotted cat with extraordinary climbing ability and stealth in savanna and forest.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/rhino.png" alt="Rhinoceros" loading="lazy"></div>
+            <div class="card-body">
+              <span class="badge badge--critically-endangered">Critically Endangered</span>
+              <h3>Rhinoceros</h3>
+              <p>Ancient giants protected by round-the-clock anti-poaching patrols across Tanzania.</p>
+            </div>
+          </article>
+        </div>
+        <div class="text-center mt-2">
+          <a href="library/library.html" class="btn btn--secondary btn--lg">Explore Full Library <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- IMPACT -->
+    <section class="content-overlay section section--sm">
+      <div class="container">
+        <h2 class="text-center" style="color:var(--lighter);margin-bottom:2rem;">Our Impact in Numbers</h2>
+        <div class="card-grid card-grid--4">
+          <div class="stat-card"><span class="stat-value" data-count="438" data-start="361">361</span><span class="stat-label">Species Documented</span></div>
+          <div class="stat-card"><span class="stat-value" data-count="1274" data-start="985">705</span><span class="stat-label">Youth Engaged</span></div>
+          <div class="stat-card"><span class="stat-value" data-count="320" data-start="264">176</span><span class="stat-label">Field Volunteers</span></div>
+          <div class="stat-card"><span class="stat-value" data-count="27" data-start="19">5</span><span class="stat-label">Active Projects</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARKS -->
+    <section class="content-overlay">
+      <div class="container">
+        <div class="section-header">
+          <h2>Our Protected Parks</h2>
+          <p>Nature's most iconic reserves and biodiversity hotspots</p>
+        </div>
+        <div class="card-grid">
+          <article class="card">
+            <div class="card-image"><img src="assets/images/background.png" alt="Serengeti" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Serengeti National Park</h3>
+              <p>Home to the Great Migration — 1.5 million wildebeest cross endless plains each year seeking fresh grazing.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/background2.png" alt="Ngorongoro" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Ngorongoro Crater</h3>
+              <p>World's largest intact volcanic caldera — a natural sanctuary for over 25,000 large mammals.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/Background3.png" alt="Tarangire" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Tarangire National Park</h3>
+              <p>Iconic elephant herds and ancient baobab trees. A birdwatcher's paradise with 550+ species.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/background4.png" alt="Selous" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Selous Game Reserve</h3>
+              <p>Africa's largest wilderness — 50,000 km² of untouched rivers, woodlands, and savannas.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONSERVATION -->
+    <section class="content-overlay">
+      <div class="container">
+        <div class="section-header">
+          <h2>Conservation in Action</h2>
+          <p>Real initiatives protecting wildlife and habitats across Tanzania</p>
+        </div>
+        <div class="card-grid">
+          <article class="card">
+            <div class="card-image"><img src="assets/images/buffalo.png" alt="Anti-poaching" loading="lazy"></div>
+            <div class="card-body">
+              <span class="badge badge--success">Active Program</span>
+              <h3>Anti-Poaching Patrols</h3>
+              <p>Ranger teams protect endangered species 24/7 with advanced monitoring, GPS tracking, and rapid response.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/flamingo.png" alt="Habitat restoration" loading="lazy"></div>
+            <div class="card-body">
+              <span class="badge badge--success">50,000+ Trees</span>
+              <h3>Habitat Restoration</h3>
+              <p>Reforesting wildlife corridors to reconnect fragmented habitats and boost biodiversity across landscapes.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/Hippo.png" alt="Community" loading="lazy"></div>
+            <div class="card-body">
+              <span class="badge badge--info">Growing Network</span>
+              <h3>Community Engagement</h3>
+              <p>Local communities trained as stewards with skills for sustainable wildlife management and ecotourism.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments5.png" alt="AI monitoring" loading="lazy"></div>
+            <div class="card-body">
+              <span class="badge badge--accent">Live System</span>
+              <h3>AI-Powered Monitoring</h3>
+              <p>Camera networks detect species and poaching threats in real-time across thousands of square kilometres.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="content-overlay">
+      <div class="container">
+        <div class="section-header">
+          <h2>How It Works</h2>
+          <p>Three steps to join the conservation movement</p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments6.png" alt="Scan" loading="lazy"></div>
+            <div class="card-body">
+              <h3>1. Scan</h3>
+              <p>Use your camera or upload a photo. Our AI instantly identifies the species and retrieves field guide data.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments11.png" alt="Learn" loading="lazy"></div>
+            <div class="card-body">
+              <h3>2. Learn</h3>
+              <p>Get habitat details, conservation status, population trends, and voice narration that reads the guide aloud.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/moments1.png" alt="Protect" loading="lazy"></div>
+            <div class="card-body">
+              <h3>3. Protect</h3>
+              <p>Your observations help track populations, detect threats, and guide conservation across Tanzania and beyond.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIELD NOTES -->
+    <section class="content-overlay">
+      <div class="container">
+        <div class="section-header">
+          <h2>Recent Field Notes</h2>
+          <p>Live dispatches from rangers, volunteers, and community scouts on patrol</p>
+        </div>
+        <div class="field-notes" role="marquee" aria-label="Recent field notes from the field">
+          <div class="field-notes-track">
+            <span class="field-note"><i class="fas fa-paw"></i> Fresh lion spoor logged near Ngorongoro gate <span class="note-loc">· Karatu</span> <span class="note-time">2h ago</span></span>
+            <span class="field-note"><i class="fas fa-tree"></i> 214 seedlings planted along the Ruvu corridor <span class="note-loc">· Arusha</span> <span class="note-time">5h ago</span></span>
+            <span class="field-note"><i class="fas fa-route"></i> Elephant herd of 23 sighted crossing to water <span class="note-loc">· Tarangire</span> <span class="note-time">8h ago</span></span>
+            <span class="field-note"><i class="fas fa-bird"></i> 60+ bee-eater nests counted, encouraging season <span class="note-loc">· Ruvu River</span> <span class="note-time">1d ago</span></span>
+            <span class="field-note"><i class="fas fa-shield-halved"></i> Village scouts complete night patrol, all clear <span class="note-loc">· Kongwa</span> <span class="note-time">1d ago</span></span>
+            <span class="field-note"><i class="fas fa-paw"></i> Fresh lion spoor logged near Ngorongoro gate <span class="note-loc">· Karatu</span> <span class="note-time">2h ago</span></span>
+            <span class="field-note"><i class="fas fa-tree"></i> 214 seedlings planted along the Ruvu corridor <span class="note-loc">· Arusha</span> <span class="note-time">5h ago</span></span>
+            <span class="field-note"><i class="fas fa-route"></i> Elephant herd of 23 sighted crossing to water <span class="note-loc">· Tarangire</span> <span class="note-time">8h ago</span></span>
+            <span class="field-note"><i class="fas fa-bird"></i> 60+ bee-eater nests counted, encouraging season <span class="note-loc">· Ruvu River</span> <span class="note-time">1d ago</span></span>
+            <span class="field-note"><i class="fas fa-shield-halved"></i> Village scouts complete night patrol, all clear <span class="note-loc">· Kongwa</span> <span class="note-time">1d ago</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GET INVOLVED -->
+    <section class="content-overlay">
+      <div class="container">
+        <div class="section-header">
+          <h2>Get Involved</h2>
+          <p>Join us in protecting wildlife for future generations</p>
+        </div>
+        <div class="text-center" style="max-width:600px;margin:0 auto;">
+          <p style="color:var(--text-dim);margin-bottom:2rem;font-size:var(--text-lg);">
+            Every action counts — scan a species, volunteer, donate, or spread our message.
+          </p>
+          <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+            <a href="contact.html" class="cta-button">Get Involved <i class="fas fa-hand-holding-heart"></i></a>
+            <a href="library/library.html" class="cta-button cta-outline">Explore Library <i class="fas fa-book"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p>Using AI-powered monitoring to protect wildlife and ecosystems through technology, education, and community action.</p>
+        <div class="footer-social">
+          <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" aria-label="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/255700123456" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" aria-label="Join us on Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="library/library.html">Library</a></li>
+          <li><a href="scan.html">Scan</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="adopt.html">Donate</a></li>
+          <li><a href="adopt.html">Adopt an Animal</a></li>
+          <li><a href="adopt.html">Volunteer</a></li>
+          <li><a href="contact.html">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> Moshi, Kilimanjaro, Tanzania</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p><strong>Protect Nature — Protect Life</strong></p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/connectivity.js"></script>
+
+<script defer src="js/wg-dialog.js"></script>
+<script defer src="js/main.js"></script>
+  <script defer src="js/lively.js"></script>
+  <script defer src="js/auth.js"></script>
+  <script defer src="js/counter-animate.js"></script>
+  <script defer src="js/icons.js"></script>
+<script defer src="js/pwa.js"></script>
+</body>
+</html>

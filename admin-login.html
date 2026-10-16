@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Administrator login for WildGuard Society management dashboard.">
+  <meta name="author" content="WildGuard Society">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>Admin Login | WildGuard Society</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/lively.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <style>
+    .login-security { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+    .login-security i { color: #22c55e; font-size: 0.85rem; }
+    .error-message { background:#fee2e2; color:#991b1b; padding:0.75rem 1rem; border-radius:8px; border-left:4px solid #dc2626; margin-bottom: 1rem; display:none; }
+    .admin-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.75rem; background: rgba(244, 162, 97,0.1); border: 1px solid rgba(244, 162, 97,0.2); border-radius: 100px; color: var(--accent); font-size: 0.78rem; font-weight: 500; margin-bottom: 1rem; }
+    .admin-badge i { font-size: 0.75rem; }
+    .attempts-warning { color: #f59e0b; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
+    .admin-login-wrap { position:relative; width:100%; max-width:460px; margin:0 auto; background:linear-gradient(160deg, rgba(27,94,64,0.16), rgba(10,21,16,0.92) 55%), rgba(255,255,255,0.05); border:1px solid rgba(244, 162, 97,0.25); border-radius:20px; padding:2.75rem 2.5rem; backdrop-filter:blur(12px); overflow:hidden; animation: adminLoginFadeUp 0.55s ease both; box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(244, 162, 97,0.1); }
+    .admin-login-wrap::before { content:''; position:absolute; top:-70px; right:-70px; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, rgba(244, 162, 97,0.25), transparent 70%); pointer-events:none; }
+    .admin-login-wrap::after { content:''; position:absolute; bottom:-90px; left:-70px; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(45,138,94,0.3), transparent 70%); pointer-events:none; }
+    @keyframes adminLoginFadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+    .admin-login-wrap .login-form { position:relative; }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+  <div class="page-slideshow">
+    <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/Background3.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
+  </div>
+
+  <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="library/library.html"><i class="fas fa-book"></i> Library</a>
+        <a href="scan.html"><i class="fas fa-barcode"></i> Scan</a>
+        <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+      </nav>
+      <div class="header-actions">
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <div class="user-menu" id="user-menu" style="display:none;"></div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+
+  <main id="main-content" tabindex="-1">
+    <section class="page-banner">
+      <span class="eyebrow">Administration</span>
+      <h1>Admin Login</h1>
+      <p class="lede">Authorized access only. Sign in to manage WildGuard Society.</p>
+    </section>
+
+    <section class="content-overlay">
+      <div class="admin-login-wrap">
+        <div id="error-message" class="error-message"></div>
+        <div style="text-align:center;padding:1.5rem 0 1rem;">
+          <i class="fas fa-shield-halved" style="font-size:3rem;color:var(--accent);opacity:0.9;margin-bottom:1rem;display:block;"></i>
+          <h2 style="font-family:var(--font-heading);margin:0 0 0.5rem;">Admin Portal</h2>
+          <p style="opacity:0.6;font-size:0.9rem;margin:0 0 1.5rem;">Sign in to manage users, scans, and the species database.</p>
+          <form id="admin-login-form" style="text-align:left;">
+            <label for="admin-email" style="display:block;font-size:0.8rem;opacity:0.7;margin:0.75rem 0 0.3rem;">Admin email</label>
+            <input type="email" id="admin-email" autocomplete="username" required
+                   placeholder="admin@wildguardsociety.org"
+                   style="width:100%;padding:0.7rem 0.85rem;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-size:0.95rem;" />
+            <label for="admin-password" style="display:block;font-size:0.8rem;opacity:0.7;margin:0.75rem 0 0.3rem;">Password</label>
+            <input type="password" id="admin-password" autocomplete="current-password" required
+                   placeholder="••••••••••••"
+                   style="width:100%;padding:0.7rem 0.85rem;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-size:0.95rem;" />
+            <button type="submit" id="enter-portal-btn" class="btn-submit" style="width:100%;font-size:1rem;padding:0.85rem 1rem;margin-top:1rem;"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+          </form>
+        </div>
+        <div style="margin-top:1rem;text-align:center;font-size:0.78rem;color:rgba(255,255,255,0.4);">
+          <a href="?reset=1" style="color:rgba(255,255,255,0.45);text-decoration:underline;cursor:pointer;"><i class="fas fa-broom"></i> Start fresh — clear all local data</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p>Young people in Tanzania protecting the wildlife and land we call home. Our motto: <strong>Protect Nature - Protect Life</strong>.</p>
+        <div class="footer-social">
+          <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" title="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/255700123456" target="_blank" rel="noopener" title="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" title="Join us on Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="library/library.html">Library</a></li>
+          <li><a href="scan.html">Scan</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="adopt.html">Donate</a></li>
+          <li><a href="adopt.html">Adopt an Animal</a></li>
+          <li><a href="adopt.html">Volunteer</a></li>
+          <li><a href="contact.html">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> Global</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Protect Nature - Protect Life</p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/connectivity.js"></script>
+
+<script defer src="js/wg-dialog.js"></script>
+<script defer src="js/main.js?v=2"></script>
+  <script defer src="js/lively.js"></script>
+  <script defer src="js/auth.js?v=2"></script>
+  <script defer src="js/system-monitor.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Fresh-start reset: ?reset=1 wipes ALL site local data (users, emails, sessions, scans)
+      if (window.location && window.location.search && new URLSearchParams(window.location.search).get('reset') === '1') {
+        Object.keys(localStorage)
+          .filter((k) => k.indexOf('wildguard_') === 0 || k.indexOf('wildlife_') === 0)
+          .forEach((k) => localStorage.removeItem(k));
+        console.log('Fresh start: all WildGuard local data cleared.');
+        if (window.history && history.replaceState) history.replaceState({}, '', window.location.pathname);
+      }
+
+      const ADMIN_EMAIL = 'admin@wildguardsociety.org';
+      const ADMIN_NAME = 'WildGuard Administrator';
+
+      function showError(msg) {
+        const el = document.getElementById('error-message');
+        if (el) el.textContent = msg;
+      }
+
+      async function enterPortal(email, password) {
+        // 1) Prefer the real Flask backend when reachable.
+        const apiBase = (window.location.protocol === 'https:' || window.location.protocol === 'http:') &&
+                        window.location.hostname !== '127.0.0.1' && window.location.hostname !== 'localhost'
+                        ? '' : 'http://localhost:5000';
+        try {
+          const resp = await fetch(apiBase + '/api/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ email: email, password: password })
+          });
+          const body = await resp.json().catch(() => ({}));
+          if (resp.ok && body.authenticated) {
+            const session = {
+              email: body.email || email,
+              name: ADMIN_NAME,
+              role: 'super_admin',
+              firstName: 'WildGuard',
+              lastName: 'Administrator',
+              username: 'wildguard_admin',
+              verified: true,
+              server: true
+            };
+            localStorage.setItem('wildguard_user', JSON.stringify(session));
+            if (window.securityMonitor) { try { window.securityMonitor('admin_login_success', { email }); } catch (err) {} }
+            if (window.logActivity) { try { window.logActivity('admin_login', email, 'Admin signed in via backend'); } catch (err) {} }
+            window.location.href = 'admin/Dashboard.html';
+            return;
+          }
+          showError(body.message || 'Backend login failed');
+        } catch (err) {
+          // 2) Backend unreachable (static hosting / demo). Fall back to the
+          //    locally-configured admin account. No anonymous access.
+        }
+
+        try {
+          const users = JSON.parse(localStorage.getItem('wildguard_demo_users') || '{}');
+          const account = users[email];
+          // No hardcoded credentials: the static/demo fallback only accepts a
+          // password that an administrator has explicitly configured (for
+          // example, from a bootstrap/onboarding page). If it is not set, admin
+          // access requires the real Flask backend instead.
+          const configuredPassword = localStorage.getItem('wildguard_admin_password');
+          if (!configuredPassword) {
+            showError('Admin access requires the backend or a locally configured password.');
+            return;
+          }
+          const localValid = account && account.role === 'super_admin' && password === configuredPassword;
+          const isLocalAdmin = email === ADMIN_EMAIL && password === configuredPassword;
+          if (!localValid && !isLocalAdmin) {
+            showError('Invalid admin credentials.');
+            return;
+          }
+          const session = {
+            email: email,
+            name: ADMIN_NAME,
+            role: 'super_admin',
+            firstName: 'WildGuard',
+            lastName: 'Administrator',
+            username: 'wildguard_admin',
+            verified: true
+          };
+          localStorage.setItem('wildguard_user', JSON.stringify(session));
+          if (!account) {
+            const all = JSON.parse(localStorage.getItem('wildguard_demo_users') || '{}');
+            all[email] = { role: 'super_admin', name: ADMIN_NAME, firstName: 'WildGuard', lastName: 'Administrator', username: 'wildguard_admin', registeredAt: new Date().toISOString(), verified: true };
+            localStorage.setItem('wildguard_demo_users', JSON.stringify(all));
+          }
+          if (window.securityMonitor) { try { window.securityMonitor('admin_login_success', { email }); } catch (err) {} }
+          if (window.logActivity) { try { window.logActivity('admin_login', email, 'Admin signed in'); } catch (err) {} }
+          window.location.href = 'admin/Dashboard.html';
+        } catch (err) {
+          showError('Login failed. Please try again.');
+        }
+      }
+
+      const form = document.getElementById('admin-login-form');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const email = document.getElementById('admin-email').value.trim();
+          const password = document.getElementById('admin-password').value;
+          if (!email || !password) { showError('Email and password are required.'); return; }
+          enterPortal(email, password);
+        });
+      } else {
+        const btn = document.getElementById('enter-portal-btn');
+        if (btn) btn.addEventListener('click', enterPortal);
+      }
+    });
+  </script>
+  <script defer src="js/icons.js"></script>
+<script defer src="js/pwa.js"></script>
+</body>
+</html>

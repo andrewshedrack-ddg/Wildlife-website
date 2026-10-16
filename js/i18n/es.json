@@ -1,0 +1,288 @@
+{
+  "header": {
+    "logo": "WildGuard Society",
+    "nav": {
+      "home": "Inicio",
+      "library": "Biblioteca",
+      "scan": "Escanear",
+      "about": "Nosotros",
+      "contact": "Contacto"
+    },
+    "auth": {
+      "signIn": "Iniciar sesión",
+      "userMenu": "Usuario",
+      "profile": "Perfil",
+      "history": "Historial",
+      "favorites": "Favoritos",
+      "logout": "Cerrar sesión"
+    }
+  },
+  "hero": {
+    "title": "Somos Los Guardianes de la Naturaleza",
+    "subtitle": "WildGuard Society reúne a jóvenes para comprender los cambios ambientales y tomar medidas significativas para un planeta más saludable.",
+    "cta": "Descubre Nuestra Misión"
+  },
+  "sections": {
+    "whoWeAre": "Quiénes Somos",
+    "magnificentWildlife": "Fauna Magnífica",
+    "nationalParks": "Parques Nacionales",
+    "conservationEfforts": "Esfuerzos de Conservación",
+    "getInvolved": "Participa"
+  },
+  "features": {
+    "purpose": {
+      "title": "Nuestro Propósito",
+      "desc": "A medida que el mundo experimenta desafíos crecientes como la contaminación, la degradación del hábitat, la pérdida de biodiversidad, el cambio climático, el uso insostenible de recursos y las perturbaciones del ecosistema, reunimos a jóvenes para comprender estos cambios y tomar medidas significativas."
+    },
+    "youth": {
+      "title": "Colaboración Juvenil",
+      "desc": "Empoderamos a las personas para que se conviertan en guardianes activos de la naturaleza y contribuyan a un planeta más saludable a través de la conservación, la educación ambiental, iniciativas de sostenibilidad e innovación."
+    },
+    "belief": {
+      "title": "Nuestra Creencia",
+      "desc": "Proteger la naturaleza requiere más que conciencia; requiere observación, adaptación, acción y esfuerzo colectivo. Transformamos la pasión en acción para un futuro sostenible."
+    }
+  },
+  "conservation": {
+    "antiPoaching": {
+      "title": "Antipiratería",
+      "desc": "Sistemas avanzados de monitoreo y alertas en tiempo real ayudan a proteger especies en peligro."
+    },
+    "community": {
+      "title": "Comunidad",
+      "desc": "Las comunidades locales participan en la conservación a través de la educación y prácticas sostenibles."
+    },
+    "habitat": {
+      "title": "Hábitat",
+      "desc": "Protegiendo y restaurando hábitats naturales para que la vida silvestre tenga espacio y recursos para prosperar."
+    },
+    "education": {
+      "title": "Educación",
+      "desc": "La investigación científica y los programas educativos nos ayudan a entender mejor la vida silvestre."
+    }
+  },
+  "getInvolved": {
+    "donate": {
+      "title": "Donar",
+      "desc": "Financia trabajos críticos de conservación, desde patrullas antipiratería hasta restauración de hábitats."
+    },
+    "adopt": {
+      "title": "Adoptar",
+      "desc": "Adopta simbólicamente un animal silvestre y recibe actualizaciones sobre su bienestar."
+    },
+    "programs": {
+      "title": "Programas",
+      "desc": "Participa o patrocina iniciativas educativas sobre conservación de vida silvestre."
+    },
+    "share": {
+      "title": "Compartir",
+      "desc": "Comparte información sobre vida silvestre y conservación con tu red."
+    }
+  },
+  "scan": {
+    "title": "¿Qué encontraste?",
+    "subtitle": "Captura un animal, planta, insecto o incluso una hoja. La IA lo identifica y lee la guía de campo en voz alta.",
+    "actions": {
+      "camera": "Abrir cámara",
+      "upload": "Subir foto",
+      "retake": "Escanear otro",
+      "readAloud": "Leer guía en voz alta",
+      "library": "Abrir biblioteca de especies"
+    },
+    "loading": "Analizando imagen con red neuronal...",
+    "results": {
+      "category": "Categoría",
+      "scientificName": "Nombre Científico",
+      "confidence": "Confianza",
+      "living": "ORGANISMO VIVO",
+      "nonLiving": "Objeto No Vivo"
+    },
+    "voice": {
+      "title": "Controles de Voz",
+      "hint": "Di: \"escanear\", \"tomar foto\", \"subir imagen\", o \"limpiar\""
+    }
+  },
+  "library": {
+    "title": "Biblioteca de Vida Silvestre",
+    "subtitle": "Descubre mamíferos, aves, reptiles, anfibios, vida acuática, plantas, hongos y bacterias.",
+    "categories": "Categorías",
+    "scanned": "Especies Escaneadas",
+    "books": "Libros y Recursos",
+    "categoriesList": {
+      "mammals": "Mamíferos",
+      "birds": "Aves",
+      "reptiles": "Reptiles",
+      "amphibians": "Anfibios",
+      "aquatic": "Vida Acuática",
+      "plants": "Plantas",
+      "fungi": "Hongos",
+      "bacteria": "Bacterias",
+      "viruses": "Virus"
+    }
+  },
+  "about": {
+    "title": "Quiénes Somos",
+    "subtitle": "Un movimiento de conservación ambiental liderado por jóvenes dedicado a responder a los cambios ambientales que afectan la naturaleza y el equilibrio de los ecosistemas.",
+    "mission": {
+      "title": "Nuestra Misión",
+      "desc": "Identificar, comprender y responder a los cambios ambientales que afectan a la naturaleza a través de acción de conservación, sostenibilidad, innovación, educación y colaboración juvenil."
+    },
+    "vision": {
+      "title": "Nuestra Visión",
+      "desc": "Construir un futuro donde la naturaleza prospere a pesar de los desafíos ambientales, apoyada por una generación de líderes ambientales informados, activos e innovadores."
+    },
+    "motto": {
+      "title": "Nuestro Lema",
+      "desc": "Proteger la Naturaleza - Proteger la Vida"
+    },
+    "purpose": "WildGuard Society es un movimiento de conservación ambiental liderado por jóvenes dedicado a responder a los cambios ambientales que afectan la naturaleza y el equilibrio de los ecosistemas. A medida que el mundo experimenta desafíos crecientes como la contaminación, la degradación del hábitat, la pérdida de biodiversidad, el cambio climático, el uso insostenible de recursos y las perturbaciones del ecosistema, WildGuard reúne a jóvenes para comprender estos cambios y tomar medidas significativas. A través de la conservación, la educación ambiental, iniciativas de sostenibilidad, innovación y colaboración juvenil, empoderamos a las personas para que se conviertan en guardianes activos de la naturaleza y contribuyan a un planeta más saludable. Creemos que proteger la naturaleza requiere más que conciencia; requiere observación, adaptación, acción y esfuerzo colectivo.",
+    "focus": {
+      "title": "Qué Hacemos",
+      "subtitle": "Nuestros pilares fundamentales de acción",
+      "observation": {
+        "title": "Observación",
+        "desc": "Monitoreamos e identificamos cambios ambientales que afectan la naturaleza, usando datos para entender cambios en ecosistemas y amenazas emergentes."
+      },
+      "adaptation": {
+        "title": "Adaptación",
+        "desc": "Desarrollamos soluciones innovadoras y sostenibles para abordar desafíos ambientales, adaptando nuestras estrategias a las necesidades evolutivas de la naturaleza."
+      },
+      "action": {
+        "title": "Acción",
+        "desc": "Convertimos la conciencia en esfuerzos tangibles de conservación, desde plantación de árboles y limpiezas hasta incidencia y educación comunitaria."
+      },
+      "collaboration": {
+        "title": "Colaboración",
+        "desc": "Unimos a jóvenes de diferentes comunidades, empoderándolos con conocimiento, herramientas y plataformas para convertirse en líderes ambientales activos."
+      }
+    },
+    "youth": {
+      "title": "¿Por Qué Jóvenes?",
+      "desc": "Los jóvenes no son solo el futuro; son el presente. Creemos en el poder de los jóvenes para impulsar el cambio. Al involucrar a la juventud en la conservación, construimos una generación que llevará la antorcha de la protección ambiental mucho en el futuro. Nuestros programas están diseñados para ser accesibles, atractivos e impactantes, asegurando que cada joven tenga la oportunidad de contribuir a un planeta más saludable."
+    }
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "subtitle": "Nos encantaría saber de ti. Ya sea que tengas una pregunta, quieras colaborar, o solo quieras saludar.",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "location": "Ubicación",
+    "form": {
+      "title": "Enviar un Mensaje",
+      "subtitle": "Completa el formulario a continuación y te responderemos pronto",
+      "name": "Nombre",
+      "email": "Correo",
+      "message": "Mensaje",
+      "submit": "Enviar Mensaje",
+      "success": "¡Mensaje enviado con éxito! Te responderemos pronto."
+    }
+  },
+  "footer": {
+    "brand": "WildGuard Society",
+    "tagline": "Un movimiento de conservación ambiental liderado por jóvenes. Nuestro lema: Proteger la Naturaleza - Proteger la Vida.",
+    "explore": "Explorar",
+    "getInvolved": "Participa",
+    "donate": "Donar",
+    "adopt": "Adoptar un Animal",
+    "volunteer": "Voluntariado",
+    "partner": "Asóciese con Nosotros",
+    "contact": "Contacto",
+    "rights": "Todos los derechos reservados.",
+    "motto": "Proteger la Naturaleza - Proteger la Vida"
+  },
+  "species": {
+    "status": {
+      "criticallyEndangered": "En Peligro Crítico",
+      "endangered": "En Peligro",
+      "vulnerable": "Vulnerable",
+      "nearThreatened": "Casi Amenazado",
+      "leastConcern": "Preocupación Menor",
+      "dataDeficient": "Datos Insuficientes"
+    },
+    "details": {
+      "taxonomy": "Taxonomía",
+      "population": "Población",
+      "habitat": "Hábitat",
+      "diet": "Dieta",
+      "behavior": "Comportamiento",
+      "threats": "Amenazas",
+      "domain": "Dominio",
+      "kingdom": "Reino",
+      "category": "Categoría"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "subtitle": "Inicia sesión para acceder a contenido exclusivo de vida silvestre",
+      "email": "Correo",
+      "password": "Contraseña",
+      "submit": "Iniciar Sesión",
+      "forgot": "¿Olvidaste la contraseña?",
+      "switch": "¿No tienes cuenta? Regístrate",
+      "google": "Continuar con Google"
+    },
+    "register": {
+      "title": "Crear Cuenta",
+      "subtitle": "Únete a WildGuard Society para acceder a contenido exclusivo",
+      "email": "Correo",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar Contraseña",
+      "submit": "Registrarse",
+      "switch": "¿Ya tienes cuenta? Iniciar Sesión",
+      "google": "Continuar con Google",
+      "success": "¡Registro exitoso! Se ha enviado un correo de verificación."
+    }
+  },
+  "admin": {
+    "dashboard": "Panel",
+    "scans": "Revisiones de Escaneos",
+    "messages": "Mensajes",
+    "notifications": "Notificaciones",
+    "users": "Usuarios y Roles",
+    "admins": "Administradores",
+    "logs": "Registro de Actividad",
+    "settings": "Configuración",
+    "compose": "Redactar",
+    "emailCampaign": "Campaña de Email",
+    "analytics": "Analíticas",
+    "stats": {
+      "pending": "Revisiones Pendientes",
+      "approved": "Aprobados",
+      "rejected": "Rechazados",
+      "users": "Total Usuarios",
+      "messages": "Nuevos Mensajes",
+      "scansToday": "Escaneos Hoy"
+    }
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "retry": "Reintentar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "view": "Ver",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "status": "Estado",
+    "date": "Fecha",
+    "name": "Nombre",
+    "email": "Correo",
+    "role": "Rol",
+    "actions": "Acciones",
+    "yes": "Sí",
+    "no": "No",
+    "confirm": "Confirmar",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "page": "Página",
+    "of": "de",
+    "results": "resultados",
+    "noResults": "No se encontraron resultados",
+    "selectLanguage": "Seleccionar Idioma"
+  }
+}

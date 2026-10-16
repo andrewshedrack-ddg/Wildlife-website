@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View your WildGuard Society activity history and timeline.">
+    <meta name="author" content="WildGuard Society">
+    <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+    <title>History | WildGuard Society</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/lively.css">
+    <style>
+        .hist-header { text-align: center; margin: 1.5rem 0 2.5rem; }
+        .hist-header .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(244, 162, 97,0.25), rgba(45,138,94,0.25)); border-color: rgba(244, 162, 97,0.4); }
+        .hist-header .page-title { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 0.5rem; }
+
+        .history-layout { display: grid; grid-template-columns: 1fr 350px; gap: 2rem; align-items: start; }
+        @media (max-width: 768px) { .history-layout { grid-template-columns: 1fr; } }
+
+        .timeline-card, .summary-card, .quick-links-card { animation: histFadeUp 0.55s ease both; }
+        .summary-card { animation-delay: 0.1s; }
+        .quick-links-card { animation-delay: 0.18s; }
+        .timeline-card:hover, .summary-card:hover, .quick-links-card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px rgba(0,0,0,0.4); }
+
+        .timeline { position: relative; padding-left: 1.75rem; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 3px; background: linear-gradient(to bottom, var(--accent), var(--primary-light), rgba(244, 162, 97,0.1)); box-shadow: 0 0 12px rgba(244, 162, 97,0.25); }
+        .timeline-item { position: relative; padding-bottom: 2rem; padding-left: 1.75rem; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-icon { position: absolute; left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-light), var(--primary-dark)); border: 2px solid rgba(244, 162, 97,0.55); display: flex; align-items: center; justify-content: center; color: var(--lighter); font-size: 0.85rem; transform: translateX(-50%); box-shadow: 0 4px 14px rgba(45, 106, 79,0.45); }
+        .timeline-date { display: block; color: var(--accent); font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .timeline-title { color: var(--lighter); font-size: 1rem; margin-bottom: 0.25rem; }
+        .cat-badge { display: inline-block; margin-left: 0.4rem; padding: 0.12rem 0.55rem 0.1rem 0.65rem; border-left: 3px solid var(--accent); border-radius: 2px; background: linear-gradient(180deg, #fbf4e4 0%, #ecdfc3 100%); color: #33291c; font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; vertical-align: middle; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .timeline-desc { color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.5; }
+        .timeline-content { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 0.9rem 1.1rem; transition: var(--transition); }
+        .timeline-item:hover .timeline-content { background: rgba(255,255,255,0.05); border-color: rgba(244, 162, 97,0.25); }
+
+        .summary-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .summary-item { text-align: center; padding: 1.1rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); transition: var(--transition); }
+        .summary-item:hover { transform: translateY(-2px); border-color: rgba(244, 162, 97,0.3); background: linear-gradient(160deg, rgba(45, 106, 79,0.18), rgba(244, 162, 97,0.1)); }
+        .summary-value { display: block; color: var(--lighter); font-size: 1.5rem; font-weight: 700; font-family: var(--font-heading); }
+        .summary-value i { color: var(--accent); font-size: 1.1rem; }
+        .summary-label { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+
+        .quick-links { display: flex; flex-direction: column; gap: 0.75rem; }
+        .quick-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.8rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); color: rgba(255,255,255,0.75); font-size: 0.9rem; transition: var(--transition); }
+        .quick-link:hover { background: linear-gradient(135deg, rgba(45, 106, 79,0.25), rgba(244, 162, 97,0.12)); border-color: rgba(244, 162, 97,0.35); color: var(--lighter); transform: translateX(4px); }
+        .quick-link i { color: var(--accent); }
+
+        @keyframes histFadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="page-slideshow">
+        <div class="page-slide active" style="background-image: url('../assets/images/background.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background2.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/Background3.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background4.png')"></div>
+        <div class="page-slide" style="background-image: url('../assets/images/background5.png')"></div>
+    </div>
+
+    <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+  <header class="site-header" id="site-header">
+        <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+                <span class="logo-text">WildGuard Society</span>
+            </a>
+            <nav class="desktop-nav" id="desktop-nav">
+                <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="../library/library.html"><i class="fas fa-book"></i> Library</a>
+                <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
+                <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
+                <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a></nav>
+            <div class="header-actions">
+                <div class="auth-buttons" id="auth-buttons">
+                    <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+                    <div class="user-menu" id="user-menu" style="display:none;">
+                        <button class="user-menu-toggle" id="user-menu-toggle">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="user-email">User</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="user-dropdown" id="user-dropdown">
+                            <a href="Profile.html"><i class="fas fa-user"></i> Profile</a>
+                            <a href="History.html"><i class="fas fa-history"></i> History</a>
+                            <a href="Inbox.html"><i class="fas fa-inbox"></i> Inbox</a>
+
+                                        <a href="Favourite.html"><i class="fas fa-heart"></i> Favourites</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="language-selector" data-language-selector>
+                    <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+                        <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" role="menu" hidden>
+                        <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-native">English</span></button>
+                        <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> <span class="lang-native">Français</span></button>
+                        <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> <span class="lang-native">Kiswahili</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+
+    <main id="main-content" tabindex="-1">
+        <section class="content-overlay">
+            <div class="container" style="padding-bottom: 3rem;">
+                <div class="hist-header">
+                    <span class="page-eyebrow"><i class="fas fa-paw"></i> Your Journey</span>
+                    <h1 class="page-title">Activity History</h1>
+                    <p style="color:rgba(255,255,255,0.6); max-width:520px; margin:0 auto;">Every scan and discovery on your path to protecting wildlife.</p>
+                </div>
+                <div class="history-layout">
+                    <div class="card timeline-card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-clock-rotate-left"></i> Activity Timeline</h3>
+                            <p class="card-subtitle">A record of your recent interactions and discoveries</p>
+                        </div>
+                        <div class="timeline" id="history-timeline">
+                            <!-- Timeline items loaded dynamically -->
+                            <div class="timeline-item">
+                                <div class="timeline-icon"><i class="fas fa-spinner fa-spin"></i></div>
+                                <div class="timeline-content">
+                                    <h4 class="timeline-title">Loading your scan history...</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="history-sidebar">
+                        <div class="card summary-card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-chart-pie"></i> Summary</h3>
+                            </div>
+                            <div class="summary-stats">
+                                <div class="summary-item">
+                                    <span class="summary-value" id="stat-scans">0</span>
+                                    <span class="summary-label">Total Scans</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-value" id="stat-favourites">0</span>
+                                    <span class="summary-label">Favourites</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-value" id="stat-views">0</span>
+                                    <span class="summary-label">Library Views</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-value" id="stat-parks">0</span>
+                                    <span class="summary-label">Parks Visited</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card quick-links-card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-link"></i> Quick Links</h3>
+                            </div>
+                            <div class="quick-links">
+                                <a href="../scan.html" class="quick-link"><i class="fas fa-camera"></i> New Scan</a>
+                                <a href="../library/library.html" class="quick-link"><i class="fas fa-book-open"></i> Browse Library</a>
+                                <a href="Favourite.html" class="quick-link"><i class="fas fa-heart"></i> View Favourites</a>
+                                <a href="Profile.html" class="quick-link"><i class="fas fa-user"></i> Edit Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>WildGuard Society</h3>
+                <p>Using AI-powered monitoring to protect iconic wildlife and ecosystems through technology, education, and community action.</p>
+                <div class="footer-social">
+                    <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" title="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/255700123456" target="_blank" rel="noopener" title="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" title="Join us on Telegram"><i class="fab fa-telegram"></i></a>
+                    <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../library/library.html">Library</a></li>
+                    <li><a href="../scan.html">Scan</a></li>
+                    <li><a href="../about.html">About</a></li>
+                    <li><a href="../contact.html">Contact</a></li></ul>
+            </div>
+            <div class="footer-links">
+                <h4>Account</h4>
+                <ul>
+                    <li><a href="Profile.html">Profile</a></li>
+                    <li><a href="History.html">History</a></li>
+                    <li><a href="Favourite.html">Favourites</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+                <p><i class="fas fa-map-marker-alt"></i> Global</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span data-current-year></span> WildGuard Society. Protecting Nature for Future Generations.</p>
+        </div>
+    </footer>
+
+    <script defer src="../js/connectivity.js"></script>
+
+<script defer src="../js/wg-dialog.js"></script>
+<script defer src="../js/main.js"></script>
+    <script defer src="../js/lively.js"></script>
+    <script defer src="../js/i18n.js"></script>
+    <script defer src="../js/user-api.js"></script>
+    <script defer src="../js/auth.js"></script>
+    <script>
+        (function() {
+            const user = localStorage.getItem('wildguard_user') || sessionStorage.getItem('wildguard_user');
+            if (!user || user === 'null') {
+                window.location.replace('../login.html');
+            }
+        })();
+
+        function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+        function safeImg(src){return /^data:image\/(png|jpe?g|gif|webp);base64,/i.test(src)||/^https:\/\//i.test(src)?src:'';}
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            const timeline = document.getElementById('history-timeline');
+            const scans = (window.UserAPI ? await window.UserAPI.getScans() : (window.getUserScans ? window.getUserScans() : [])) || [];
+
+            function fmt(iso) {
+                try { return new Date(iso).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) + ' at ' + new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); } catch(e) { return iso || ''; }
+            }
+
+            if (timeline) {
+                if (scans.length === 0) {
+                    timeline.innerHTML = '<div class="timeline-item"><div class="timeline-icon"><i class="fas fa-camera"></i></div>' +
+                        '<div class="timeline-content"><h4 class="timeline-title">No scans yet</h4>' +
+                        '<p class="timeline-desc">Start scanning wildlife to build your history!</p></div></div>';
+                } else {
+                    timeline.innerHTML = '';
+                    scans.slice(0, 30).forEach(function(scan) {
+                        const s = scan.species || {};
+                        const item = document.createElement('div');
+                        item.className = 'timeline-item';
+                        const name = s.name || (scan.label ? scan.label : 'Unknown species');
+                        const conf = scan.confidence || '—';
+                        const cat = scan.category || (s.category ? s.category.toLowerCase() : '') || 'other';
+                        const catLabel = (scan.scanType === 'nature-scene' ? 'Nature Scene' : (s.category || cat));
+                        const catBadge = '<span class="cat-badge">' + esc(cat) + '</span>';
+                        const safeSrc = safeImg(scan.imageData);
+                        const img = safeSrc ? '<img src="' + safeSrc + '" alt="' + esc(name) + '" style="width:64px;height:48px;object-fit:cover;border-radius:6px;margin-top:0.5rem;display:block;">' : '';
+                        item.innerHTML = '<div class="timeline-icon"><i class="fas fa-camera"></i></div>' +
+                            '<div class="timeline-content">' +
+                            '<span class="timeline-date">' + esc(fmt(scan.timestamp)) + '</span>' +
+                            '<h4 class="timeline-title">' + (scan.scanType === 'nature-scene' ? 'Scene Record: ' : 'Wildlife Scan: ') + esc(name) + ' ' + catBadge + '</h4>' +
+                            '<p class="timeline-desc">' + esc(catLabel) + ' &middot; Confidence: ' + esc(conf) + '% match' + (s.status ? ' &middot; ' + esc(s.status) : '') + '.</p>' +
+                            img +
+                            '</div>';
+                        timeline.appendChild(item);
+                    });
+                }
+            }
+
+            // Summary stats
+            const favs = (window.UserAPI ? await window.UserAPI.getFavourites() : (window.getUserFavourites ? window.getUserFavourites() : [])) || [];
+            const setStat = function(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; };
+            setStat('stat-scans', scans.length);
+            setStat('stat-favourites', favs.length);
+            const views = (function() { try { return JSON.parse(localStorage.getItem('wildguard_activity_log') || '[]').filter(a => a.event === 'page_view').length; } catch(e) { return 0; } })();
+            setStat('stat-views', views);
+            const parks = new Set(scans.map(s => s.species && s.species.habitat).filter(Boolean)).size;
+            setStat('stat-parks', parks);
+        });
+    </script>
+  <script defer src="../js/icons.js"></script>
+<script defer src="../js/pwa.js"></script>
+</body>
+</html>

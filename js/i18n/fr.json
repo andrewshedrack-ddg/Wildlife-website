@@ -1,0 +1,281 @@
+{
+  "header": {
+    "logo": "WildGuard Society",
+    "nav": {
+      "home": "Accueil",
+      "library": "Bibliothèque",
+      "scan": "Scanner",
+      "about": "À Propos",
+      "contact": "Contact"
+    },
+    "auth": {
+      "signIn": "Se Connecter",
+      "userMenu": "Utilisateur",
+      "profile": "Profil",
+      "history": "Historique",
+      "favorites": "Favoris",
+      "logout": "Déconnexion"
+    }
+  },
+  "hero": {
+    "title": "Nous Sommes Les Gardiens de la Nature",
+    "subtitle": "Un mouvement de conservation environnemental mené par des jeunes dédié à répondre aux changements environnementaux qui affectent la nature et l'équilibre des écosystèmes.",
+    "cta": "Découvrir Notre Mission"
+  },
+  "features": {
+    "purpose": {
+      "title": "Notre Objectif",
+      "desc": "Alors que le monde connaît des défis croissants tels que la pollution, la dégradation des habitats, la perte de biodiversité, le changement climatique, l'utilisation non durable des ressources et les perturbations des écosystèmes, nous réunissons les jeunes pour comprendre ces changements et agir de manière significative."
+    },
+    "youth": {
+      "title": "Collaboration Jeunesse",
+      "desc": "Nous donnons aux individus les moyens de devenir des gardiens actifs de la nature et des contributeurs à une planète plus saine grâce à la conservation, l'éducation environnementale, les initiatives de durabilité et l'innovation."
+    },
+    "belief": {
+      "title": "Notre Croyance",
+      "desc": "Protéger la nature demande plus que de la sensibilisation ; cela demande observation, adaptation, action et effort collectif. Nous transformons la passion en action pour un avenir durable."
+    }
+  },
+  "conservation": {
+    "antiPoaching": {
+      "title": "Anti-Braconnage",
+      "desc": "Des systèmes de surveillance avancés et des alertes en temps réel aident à protéger les espèces menacées."
+    },
+    "community": {
+      "title": "Communauté",
+      "desc": "Les communautés locales participent à la conservation par l'éducation et des pratiques durables."
+    },
+    "habitat": {
+      "title": "Habitat",
+      "desc": "Protéger et restaurer les habitats naturels pour que la faune ait l'espace et les ressources pour prospérer."
+    },
+    "education": {
+      "title": "Éducation",
+      "desc": "La recherche scientifique et les programmes éducatifs nous aident à mieux comprendre la faune."
+    }
+  },
+  "getInvolved": {
+    "donate": {
+      "title": "Faire un Don",
+      "desc": "Financez le travail de conservation critique, des patrouilles anti-braconnage à la restauration des habitats."
+    },
+    "adopt": {
+      "title": "Adopter",
+      "desc": "Adoptez symboliquement un animal sauvage et recevez des mises à jour sur son bien-être."
+    },
+    "programs": {
+      "title": "Programmes",
+      "desc": "Participez ou parrainez des initiatives éducatives sur la conservation de la faune."
+    },
+    "share": {
+      "title": "Partager",
+      "desc": "Partagez des informations sur la faune et la conservation avec votre réseau."
+    }
+  },
+  "scan": {
+    "title": "Qu'avez-vous trouvé ?",
+    "subtitle": "Capturez un animal, une plante, un insecte ou même une feuille. L'IA l'identifie et lit la fiche de terrain à voix haute.",
+    "actions": {
+      "camera": "Ouvrir la caméra",
+      "upload": "Télécharger une photo",
+      "retake": "Scanner un autre",
+      "readAloud": "Lire la fiche à voix haute",
+      "library": "Ouvrir la bibliothèque d'espèces"
+    },
+    "loading": "Analyse de l'image avec le réseau neuronal...",
+    "results": {
+      "category": "Catégorie",
+      "scientificName": "Nom Scientifique",
+      "confidence": "Confiance",
+      "living": "ORGANISME VIVANT",
+      "nonLiving": "Objet Non Vivant"
+    },
+    "voice": {
+      "title": "Commandes Vocales",
+      "hint": "Dites : \"scanner\", \"prendre photo\", \"télécharger image\", ou \"effacer\""
+    }
+  },
+  "library": {
+    "title": "Bibliothèque de la Faune",
+    "subtitle": "Découvrez les mammifères, oiseaux, reptiles, amphibiens, vie aquatique, plantes, champignons et bactéries.",
+    "categories": "Catégories",
+    "scanned": "Espèces Scannées",
+    "books": "Livres et Ressources",
+    "categoriesList": {
+      "mammals": "Mammifères",
+      "birds": "Oiseaux",
+      "reptiles": "Reptiles",
+      "amphibians": "Amphibiens",
+      "aquatic": "Vie Aquatique",
+      "plants": "Plantes",
+      "fungi": "Champignons",
+      "bacteria": "Bactéries",
+      "viruses": "Virus"
+    }
+  },
+  "about": {
+    "title": "Qui Nous Sommes",
+    "subtitle": "Un mouvement de conservation environnementale mené par des jeunes dédié à répondre aux changements environnementaux qui affectent la nature et l'équilibre des écosystèmes.",
+    "mission": {
+      "title": "Notre Mission",
+      "desc": "Identifier, comprendre et répondre aux changements environnementaux affectant la nature par l'action de conservation, la durabilité, l'innovation, l'éducation et la collaboration des jeunes."
+    },
+    "vision": {
+      "title": "Notre Vision",
+      "desc": "Construire un avenir où la nature prospère malgré les défis environnementaux, soutenue par une génération de leaders environnementaux informés, actifs et innovants."
+    },
+    "motto": {
+      "title": "Notre Devise",
+      "desc": "Protéger la Nature - Protéger la Vie"
+    },
+    "purpose": "WildGuard Society est un mouvement de conservation environnementale mené par des jeunes dédié à répondre aux changements environnementaux qui affectent la nature et l'équilibre des écosystèmes. Alors que le monde connaît des défis croissants tels que la pollution, la dégradation des habitats, la perte de biodiversité, le changement climatique, l'utilisation non durable des ressources et les perturbations des écosystèmes, WildGuard rassemble les jeunes pour comprendre ces changements et agir de manière significative. Par la conservation, l'éducation environnementale, les initiatives de durabilité, l'innovation et la collaboration des jeunes, nous donnons aux individus les moyens de devenir des gardiens actifs de la nature et des contributeurs à une planète plus saine. Nous croyons que protéger la nature exige plus que de la sensibilisation ; cela nécessite observation, adaptation, action et effort collectif.",
+    "focus": {
+      "title": "Ce Que Nous Faisons",
+      "subtitle": "Nos piliers d'action fondamentaux",
+      "observation": {
+        "title": "Observation",
+        "desc": "Nous surveillons et identifions les changements environnementaux affectant la nature, en utilisant des données pour comprendre les changements d'écosystèmes et les menaces émergentes."
+      },
+      "adaptation": {
+        "title": "Adaptation",
+        "desc": "Nous développons des solutions innovantes et durables pour répondre aux défis environnementaux, adaptant nos stratégies aux besoins évolutifs de la nature."
+      },
+      "action": {
+        "title": "Action",
+        "desc": "Nous transformons la sensibilisation en efforts de conservation tangibles, de la plantation d'arbres et des nettoyages à la plaidoirie et l'éducation communautaire."
+      },
+      "collaboration": {
+        "title": "Collaboration",
+        "desc": "Nous unissons les jeunes à travers les communautés, les dotant de connaissances, d'outils et de plateformes pour devenir des leaders environnementaux actifs."
+      }
+    },
+    "youth": {
+      "title": "Pourquoi les Jeunes ?",
+      "desc": "Les jeunes ne sont pas seulement l'avenir ; ils sont le présent. Nous croyons au pouvoir des jeunes pour impulser le changement. En engageant la jeunesse dans la conservation, nous construisons une génération qui portera le flambeau de la protection environnementale bien dans l'avenir. Nos programmes sont conçus pour être accessibles, engageants et impactants, assurant que chaque jeune a l'opportunité de contribuer à une planète plus saine."
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Nous serions ravis de vous entendre. Que vous ayez une question, vouliez collaborer, ou simplement dire bonjour.",
+    "email": "Email",
+    "phone": "Téléphone",
+    "location": "Localisation",
+    "form": {
+      "title": "Envoyer un Message",
+      "subtitle": "Remplissez le formulaire ci-dessous et nous vous répondrons sous peu",
+      "name": "Nom",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Envoyer le Message",
+      "success": "Message envoyé avec succès ! Nous vous répondrons bientôt."
+    }
+  },
+  "footer": {
+    "brand": "WildGuard Society",
+    "tagline": "Un mouvement de conservation environnementale mené par des jeunes. Notre devise : Protéger la Nature - Protéger la Vie.",
+    "explore": "Explorer",
+    "getInvolved": "Participer",
+    "donate": "Faire un Don",
+    "adopt": "Adopter un Animal",
+    "volunteer": "Bénévolat",
+    "partner": "Devenir Partenaire",
+    "contact": "Contact",
+    "rights": "Tous droits réservés.",
+    "motto": "Protéger la Nature - Protéger la Vie"
+  },
+  "species": {
+    "status": {
+      "criticallyEndangered": "En Danger Critique",
+      "endangered": "En Danger",
+      "vulnerable": "Vulnérable",
+      "nearThreatened": "Quasi Menacé",
+      "leastConcern": "Préoccupation Mineure",
+      "dataDeficient": "Données Insuffisantes"
+    },
+    "details": {
+      "taxonomy": "Taxonomie",
+      "population": "Population",
+      "habitat": "Habitat",
+      "diet": "Régime",
+      "behavior": "Comportement",
+      "threats": "Menaces",
+      "domain": "Domaine",
+      "kingdom": "Règne",
+      "category": "Catégorie"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Connexion",
+      "subtitle": "Connectez-vous pour accéder au contenu exclusif sur la faune",
+      "email": "Email",
+      "password": "Mot de Passe",
+      "submit": "Se Connecter",
+      "forgot": "Mot de passe oublié ?",
+      "switch": "Pas de compte ? S'inscrire",
+      "google": "Continuer avec Google"
+    },
+    "register": {
+      "title": "Créer un Compte",
+      "subtitle": "Rejoignez WildGuard Society pour accéder au contenu exclusif",
+      "email": "Email",
+      "password": "Mot de Passe",
+      "confirmPassword": "Confirmer le Mot de Passe",
+      "submit": "S'inscrire",
+      "switch": "Déjà un compte ? Se Connecter",
+      "google": "Continuer avec Google",
+      "success": "Inscription réussie ! Un email de vérification a été envoyé."
+    }
+  },
+  "admin": {
+    "dashboard": "Tableau de Bord",
+    "scans": "Révision des Scans",
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "users": "Utilisateurs et Rôles",
+    "admins": "Administrateurs",
+    "logs": "Journal d'Activité",
+    "settings": "Paramètres",
+    "compose": "Rédiger",
+    "emailCampaign": "Campagne Email",
+    "analytics": "Analytiques",
+    "stats": {
+      "pending": "Revisions en Attente",
+      "approved": "Approuvés",
+      "rejected": "Rejetés",
+      "users": "Total Utilisateurs",
+      "messages": "Nouveaux Messages",
+      "scansToday": "Scans Aujourd'hui"
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "retry": "Réessayer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "view": "Voir",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "status": "Statut",
+    "date": "Date",
+    "name": "Nom",
+    "email": "Email",
+    "role": "Rôle",
+    "actions": "Actions",
+    "yes": "Oui",
+    "no": "Non",
+    "confirm": "Confirmer",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "page": "Page",
+    "of": "sur",
+    "results": "résultats",
+    "noResults": "Aucun résultat trouvé",
+    "selectLanguage": "Sélectionner la Langue"
+  }
+}

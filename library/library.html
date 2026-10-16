@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore the wildlife library of WildGuard Society. Mammals, birds, reptiles, amphibians, aquatic life, plants, fungi, bacteria, and viruses.">
+  <meta name="keywords" content="wildlife library, species database, mammals, birds, reptiles, amphibians, fungi, bacteria, viruses">
+  <meta name="author" content="WildGuard Society">
+  <meta property="og:title" content="Library | WildGuard Society">
+  <meta property="og:description" content="Explore global biodiversity. Discover mammals, birds, reptiles, amphibians, and more.">
+  <meta property="og:image" content="../assets/images/lion.jpg">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <title>Library | WildGuard Society</title>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/lively.css">
+  <link rel="stylesheet" href="../css/library.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="page-slideshow" aria-hidden="true">
+    <div class="page-slide active" style="background-image: url('../assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/Background3.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('../assets/images/background5.png');"></div>
+  </div>
+
+  <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+  <header class="site-header" id="site-header" role="banner">
+    <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
+      <a href="../index.html" class="logo" aria-label="WildGuard Society Home">
+        <img src="../assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav" role="navigation" aria-label="Main navigation">
+        <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="library.html" class="active" aria-current="page"><i class="fas fa-book"></i> Library</a>
+        <a href="../scan.html"><i class="fas fa-barcode"></i> Scan</a>
+        <a href="../about.html"><i class="fas fa-info-circle"></i> About</a>
+        <a href="../contact.html"><i class="fas fa-envelope"></i> Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="../login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <div class="user-menu" id="user-menu" style="display:none">
+            <button class="user-menu-toggle" id="user-menu-toggle" aria-expanded="false" aria-haspopup="true">
+              <i class="fas fa-user-circle"></i> <span id="user-email">User</span> <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown" role="menu">
+              <a href="../user/Profile.html" role="menuitem"><i class="fas fa-user"></i> Profile</a>
+              <a href="../user/History.html" role="menuitem"><i class="fas fa-history"></i> History</a>
+              <a href="../user/Inbox.html" role="menuitem"><i class="fas fa-inbox"></i> Inbox</a>
+
+                                  <a href="../user/Favourite.html" role="menuitem"><i class="fas fa-heart"></i> Favourites</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn" role="menuitem"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span> <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="../assets/images/flags/us.svg" alt="" class="flag-icon"></span> English</button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="../assets/images/flags/fr.svg" alt="" class="flag-icon"></span> Français</button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="../assets/images/flags/tz.svg" alt="" class="flag-icon"></span> Kiswahili</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+
+  <main id="main-content">
+    <!-- ══════════════ WILDLIFE SHOWREEL (top hero) ══════════════ -->
+    <section class="content-overlay showreel-hero" aria-labelledby="showreel-heading">
+      <div class="container">
+        <div class="showreel-wrap">
+          <div id="wildguard-showreel" class="showreel" role="region" aria-label="Wildlife video showreel"
+               data-clips='[{"src":"../assets/videos/video1.mp4","title":"On Patrol"},{"src":"../assets/videos/Video2.mp4","title":"Life in the Wild"},{"src":"../assets/videos/Video3.mp4","title":"Corridor Crossing"},{"src":"../assets/videos/Video4.mp4","title":"Field Research"},{"src":"../assets/videos/Video5.mp4","title":"The Guardians"}]'>
+            <video playsinline preload="metadata" aria-label="Wildlife field footage"></video>
+            <span class="showreel-live" id="showreel-live"><i class="fas fa-circle" style="font-size:0.5rem;"></i> Live</span>
+            <button type="button" id="showreel-mute" class="showreel-mute" aria-label="Toggle sound">
+              <i class="fas fa-volume-up sg-mute-off"></i>
+              <i class="fas fa-volume-mute sg-mute-on"></i>
+            </button>
+            <div class="showreel-caption">
+              <span class="showreel-counter" id="showreel-counter">1 / 5</span>
+              <h3 id="showreel-title">On Patrol</h3>
+            </div>
+          </div>
+        </div>
+        <div class="section-header showreel-heading">
+          <h2 id="showreel-heading">In the Field</h2>
+          <p>Real footage from our rangers and scouts — tap to hear the sounds of the wild</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ PAGE BANNER ══════════════ -->
+    <section class="page-banner">
+      <span class="eyebrow"><i class="fas fa-paw" style="margin-right:0.4rem;"></i>Wildlife Library</span>
+      <h1>Explore Global Biodiversity</h1>
+      <p class="lede">Discover mammals, birds, reptiles, amphibians, aquatic life, plants, fungi, bacteria, and viruses.</p>
+    </section>
+
+    <!-- ══════════════ CATEGORIES ══════════════ -->
+    <section class="content-overlay" aria-labelledby="categories-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="categories-heading">Categories</h2>
+          <p>Choose a category to explore species</p>
+        </div>
+
+        <!-- Filter / Search Bar -->
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="categorySearch" placeholder="Search categories..." aria-label="Search species">
+          </div>
+          <div class="filter-select">
+            <label for="statusFilter">Status:</label>
+            <select id="statusFilter">
+              <option value="">All Statuses</option>
+              <option value="Critically Endangered">Critically Endangered</option>
+              <option value="Endangered">Endangered</option>
+              <option value="Vulnerable">Vulnerable</option>
+              <option value="Near Threatened">Near Threatened</option>
+              <option value="Least Concern">Least Concern</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ CATEGORY GRID ══════════════ -->
+    <section class="content-overlay" aria-labelledby="category-grid-heading">
+      <div class="container">
+        <h2 id="category-grid-heading" class="sr-only">Wildlife Categories</h2>
+        <div class="card-grid" id="categoryGrid">
+          <!-- Mammals -->
+          <article class="card" data-category="mammals" data-name="Mammals">
+            <a href="mammals.html">
+              <div class="card-image">
+                <img src="../assets/images/lion.jpg" alt="Lion" loading="lazy">
+              </div>
+              <div class="card-body">
+                <h3>Mammals</h3>
+                <p>Warm-blooded vertebrates from mighty elephants to tiny bats, inhabiting every continent.</p>
+              </div>
+            </a>
+          </article>
+          <!-- Birds -->
+          <article class="card" data-category="birds" data-name="Birds">
+            <a href="birds.html">
+              <div class="card-image">
+                <img src="../assets/images/Eagle.png" alt="Eagle" loading="lazy">
+              </div>
+              <div class="card-body">
+                <h3>Birds</h3>
+                <p>Feathered vertebrates ranging from tiny sunbirds to majestic eagles across every habitat.</p>
+              </div>
+            </a>
+          </article>
+          <!-- Reptiles -->
+          <article class="card" data-category="reptiles" data-name="Reptiles">
+            <a href="reptile.html">
+              <div class="card-image">
+                <img src="../assets/images/chameleon.png" alt="Chameleon" loading="lazy">
+              </div>
+              <div class="card-body">
+                <h3>Reptiles</h3>
+                <p>Sun-loving lizards, secretive snakes and ancient crocodilians.</p>
+              </div>
+            </a>
+          </article>
+          <!-- Amphibians -->
+          <article class="card" data-category="amphibians" data-name="Amphibians">
+            <a href="amphibian.html">
+              <div class="card-image">
+                <img src="../assets/images/Tortoise.png" alt="Amphibian" loading="lazy">
+              </div>
+              <div class="card-body">
+                <h3>Amphibians</h3>
+                <p>Frogs and toads adapted to varied habitats from rainforests to deserts.</p>
+              </div>
+            </a>
+          </article>
+          <!-- Aquatic Life -->
+          <article class="card" data-category="aquatic" data-name="Aquatic Life">
+            <a href="aquatic.html">
+              <div class="card-image">
+                <img src="../assets/images/shark.png" alt="Shark" loading="lazy">
+              </div>
+              <div class="card-body">
+                <h3>Aquatic Life</h3>
+                <p>Fish and aquatic organisms inhabiting oceans, lakes, rivers, and wetlands worldwide.</p>
+              </div>
+            </a>
+          </article>
+          <!-- Plants -->
+          <article class="card" data-category="plants" data-name="Plants">
+            <a href="plants.html">
+              <div class="card-image">
+                <img src="../assets/images/moments10.png" alt="Tropical vegetation" loading="lazy">
+              </div>
+              <div class="card-body">
+                <h3>Plants</h3>
+                <p>From savanna grasses to tropical rainforest canopies.</p>
+              </div>
+            </a>
+          </article>
+          <!-- Fungi -->
+          <article class="card" data-category="fungi" data-name="Fungi">
+            <a href="fungi.html">
+              <div class="card-image">
+                <img src="../assets/images/Butterfly.png" alt="Fungi in nature" loading="lazy">
+              </div>
+              <div class="card-body">
+                <h3>Fungi</h3>
+                <p>Decomposers that play a vital role in nutrient cycling.</p>
+              </div>
+            </a>
+          </article>
+          <!-- Bacteria -->
+          <article class="card" data-category="bacteria" data-name="Bacteria">
+            <a href="bacteria.html">
+              <div class="card-image">
+                <img src="../assets/images/moments2.png" alt="Bacteria under microscope" loading="lazy">
+              </div>
+              <div class="card-body">
+                <h3>Bacteria</h3>
+                <p>Microorganisms contributing to digestion, nitrogen fixation and more.</p>
+              </div>
+            </a>
+          </article>
+          <!-- Viruses -->
+          <article class="card" data-category="viruses" data-name="Viruses">
+            <a href="viruses.html">
+              <div class="card-image">
+                <img src="../assets/images/moments3.png" alt="Virus illustration" loading="lazy">
+              </div>
+              <div class="card-body">
+                <h3>Viruses</h3>
+                <p>Microscopic infectious particles that replicate inside living cells of animals, plants, and bacteria.</p>
+              </div>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ HOW IT WORKS ══════════════ -->
+    <section class="content-overlay" aria-labelledby="how-it-works-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="how-it-works-heading">How It Works</h2>
+          <p>Three simple steps to become a conservation guardian</p>
+        </div>
+        <div class="grid-3 stagger">
+          <article class="card">
+            <div class="card-image"><img src="../assets/images/moments6.png" alt="Scan wildlife" loading="lazy"></div>
+            <div class="card-body">
+              <h3>1. Scan</h3>
+              <p>Capture any animal, plant, or ecosystem indicator using your camera or an uploaded photo. Our AI recognizes and identifies it.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="../assets/images/moments11.png" alt="Learn from data" loading="lazy"></div>
+            <div class="card-body">
+              <h3>2. Learn</h3>
+              <p>Get instant field guide data: species details, conservation status, habitat, habits, and audible read-aloud narration.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="../assets/images/moments1.png" alt="Protect wildlife" loading="lazy"></div>
+            <div class="card-body">
+              <h3>3. Protect</h3>
+              <p>Your observations help us track species sightings, detect threats, and focus conservation efforts where they're needed most.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ SCANNED SPECIES ══════════════ -->
+    <section class="content-overlay" id="scannedSection">
+      <div class="container">
+        <div class="section-header" id="scannedSectionHeader">
+          <div style="flex:1;">
+            <h2><i class="fas fa-camera"></i> Scanned Species</h2>
+            <p>Species identified by users through the AI scan feature</p>
+          </div>
+          <button type="button" id="toggleScanned" aria-expanded="false" aria-controls="scannedSection" style="background:none;border:1px solid rgba(244,162,97,0.3);color:var(--accent);border-radius:8px;padding:0.75rem 1.25rem;cursor:pointer;font-size:0.9rem;white-space:nowrap;min-height:44px;min-width:44px;">
+            <span class="chevron"><i class="fas fa-chevron-down"></i></span> Show
+          </button>
+        </div>
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="scanSearch" placeholder="Search scanned species..." aria-label="Search scanned species">
+          </div>
+          <div class="filter-select">
+            <label for="scanStatusFilter">Status:</label>
+            <select id="scanStatusFilter">
+              <option value="">All Statuses</option>
+              <option value="pending">Pending Review</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+        <div class="lib-scans">
+          <div id="scannedLibraryContainer"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ RESEARCH & DISCOVERY ══════════════ -->
+    <section class="content-overlay" id="researchSection">
+      <div class="container">
+        <div class="section-header" id="researchHeading">
+          <h2><i class="fas fa-search"></i> Research & Discovery</h2>
+          <p>Connect with real-world wildlife data, conservation status, and global observations</p>
+        </div>
+        <div class="research-search">
+          <input type="text" id="researchSearch" placeholder="Search a species, animal, or plant..." aria-label="Search for wildlife research">
+          <button class="btn btn--secondary" id="researchBtn" onclick="window.WildGuardResearch.performResearch()" style="min-width:140px;">Research</button>
+        </div>
+        <div id="researchResults" style="margin-top:2rem; display:none;"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ══════════════ FOOTER ══════════════ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p>A youth-led environmental conservation movement. <strong>Protect Nature — Protect Life</strong>.</p>
+        <div class="footer-social">
+          <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" aria-label="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/255700123456" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" aria-label="Join us on Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="library.html">Library</a></li>
+          <li><a href="../scan.html">Scan</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="../adopt.html">Donate</a></li>
+          <li><a href="../adopt.html">Adopt an Animal</a></li>
+          <li><a href="../adopt.html">Volunteer</a></li>
+          <li><a href="../contact.html">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> Moshi, Kilimanjaro, Tanzania</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p><strong>Protect Nature — Protect Life</strong></p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Book Reader Modal -->
+  <div id="bookModal" class="book-modal" role="dialog" aria-modal="true" aria-labelledby="bookModalTitle" hidden>
+    <div class="book-modal-backdrop" data-modal-close></div>
+    <div class="book-modal-inner">
+      <button class="book-modal-close" data-modal-close aria-label="Close book reader"><i class="fas fa-times"></i></button>
+      <div class="book-modal-content" id="bookModalContent"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/connectivity.js"></script>
+
+<script defer src="../js/wg-dialog.js"></script>
+<script defer src="../js/main.js"></script>
+  <script defer src="../js/lively.js"></script>
+  <script defer src="../js/auth.js"></script>
+  <script defer src="../js/library.js"></script>
+  <script defer src="../js/scan-integration.js"></script>
+  <script defer src="../js/showreel.js"></script>
+  <script defer src="../js/icons.js"></script>
+</body>
+</html>

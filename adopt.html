@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:image" content="assets/images/moments10.png">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>Adopt an Animal | WildGuard Society</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/lively.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="page-slideshow" aria-hidden="true">
+    <div class="page-slide active" style="background-image: url('assets/images/background.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background2.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/Background3.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background4.png');"></div>
+    <div class="page-slide" style="background-image: url('assets/images/background5.png');"></div>
+  </div>
+
+  <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+  <header class="site-header" id="site-header" role="banner">
+    <div class="header-container">
+    <label for="mobile-nav-toggle" class="mobile-nav-toggle-btn" aria-label="Open or close menu"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
+      <a href="index.html" class="logo" aria-label="WildGuard Society Home">
+        <img src="assets/images/logo.png" alt="WildGuard Society" class="logo-img">
+        <span class="logo-text">WildGuard Society</span>
+      </a>
+      <nav class="desktop-nav" id="desktop-nav" role="navigation" aria-label="Main navigation">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="library/library.html"><i class="fas fa-book"></i> Library</a>
+        <a href="scan.html"><i class="fas fa-barcode"></i> Scan</a>
+        <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+        <div class="auth-buttons" id="auth-buttons">
+          <a href="login.html" class="btn-signin" id="signin-btn"><i class="fas fa-user-circle"></i> Sign In</a>
+          <div class="user-menu" id="user-menu" style="display:none">
+            <button class="user-menu-toggle" id="user-menu-toggle" aria-expanded="false" aria-haspopup="true">
+              <i class="fas fa-user-circle"></i> <span id="user-email">User</span> <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="user-dropdown" role="menu">
+              <a href="user/Profile.html" role="menuitem"><i class="fas fa-user"></i> Profile</a>
+              <a href="user/History.html" role="menuitem"><i class="fas fa-history"></i> History</a>
+              <a href="user/Inbox.html" role="menuitem"><i class="fas fa-inbox"></i> Inbox</a>
+
+                                  <a href="user/Favourite.html" role="menuitem"><i class="fas fa-heart"></i> Favourites</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" id="logout-btn" role="menuitem"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+        <div class="language-selector" data-language-selector>
+          <button class="lang-toggle" data-lang="en" aria-label="English" aria-expanded="false" aria-haspopup="true">
+            <span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> <span class="lang-name">English</span> <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="lang-dropdown" role="menu" hidden>
+            <button class="lang-option" data-lang="en" role="menuitem"><span class="flag"><img src="assets/images/flags/us.svg" alt="" class="flag-icon"></span> English</button>
+            <button class="lang-option" data-lang="fr" role="menuitem"><span class="flag"><img src="assets/images/flags/fr.svg" alt="" class="flag-icon"></span> Français</button>
+            <button class="lang-option" data-lang="sw" role="menuitem"><span class="flag"><img src="assets/images/flags/tz.svg" alt="" class="flag-icon"></span> Kiswahili</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <label for="mobile-nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+
+  <main id="main-content">
+    <section class="page-banner">
+      <span class="eyebrow"><i class="fas fa-paw" style="margin-right:0.4rem;"></i>Get Involved</span>
+      <h1>Adopt an Animal</h1>
+      <p class="lede">Symbolically adopt a wildlife ambassador and fund its protection, habitat, and care — every adoption powers real conservation on the ground.</p>
+    </section>
+
+    <!-- ══════════════ HOW IT WORKS ══════════════ -->
+    <section class="content-overlay" aria-labelledby="adopt-steps-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="adopt-steps-heading">How Adoption Works</h2>
+          <p>Three simple steps between you and a wild friend</p>
+        </div>
+        <div class="card-grid stagger">
+          <article class="card">
+            <div class="card-body" style="text-align:center">
+              <i class="fas fa-paw" style="font-size:2.2rem;color:var(--accent)"></i>
+              <h3>1. Choose a Species</h3>
+              <p>Pick a wildlife ambassador from our protected parks and learn how it is monitored and cared for by our field teams.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-body" style="text-align:center">
+              <i class="fas fa-hand-holding-heart" style="font-size:2.2rem;color:var(--accent)"></i>
+              <h3>2. Make Your Gift</h3>
+              <p>Your symbolic adoption funds anti-poaching patrols, habitat restoration, veterinary care, and community conservation programs.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-body" style="text-align:center">
+              <i class="fas fa-file-certificate" style="font-size:2.2rem;color:var(--accent)"></i>
+              <h3>3. Receive Updates</h3>
+              <p>Get a personalised adoption certificate plus field updates and stories about your adopted animal throughout the year.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ ADOPTION PACKAGES ══════════════ -->
+    <section class="content-overlay section section--sm" aria-labelledby="adopt-packages-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="adopt-packages-heading">Wildlife Ambassadors</h2>
+          <p>Symbolic adoption from $25 a year per species</p>
+        </div>
+        <div class="card-grid stagger">
+          <article class="card">
+            <div class="card-image"><img src="assets/images/lion.jpg" alt="African lion" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Lion</h3>
+              <p>Support the guardians of the savannah. Your adoption funds lion monitoring and anti-poaching patrols across our protected ranges.</p>
+              <div class="lib-book-actions" style="margin-top:1rem">
+                <a href="contact.html" class="btn btn-primary"><i class="fas fa-paw"></i> Adopt a Lion</a>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/elephant.jpg" alt="African elephant" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Elephant</h3>
+              <p>Help secure vital corridors for Africa's gentle giants and support anti-poaching units that protect them from ivory traffickers.</p>
+              <div class="lib-book-actions" style="margin-top:1rem">
+                <a href="contact.html" class="btn btn-primary"><i class="fas fa-paw"></i> Adopt an Elephant</a>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/leopard.png" alt="African leopard" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Leopard</h3>
+              <p>Guard the elusive spirits of the wild by funding camera-trap monitoring and the habitat corridors that keep leopards moving safely.</p>
+              <div class="lib-book-actions" style="margin-top:1rem">
+                <a href="contact.html" class="btn btn-primary"><i class="fas fa-paw"></i> Adopt a Leopard</a>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-image"><img src="assets/images/rhino.png" alt="Black rhinoceros" loading="lazy"></div>
+            <div class="card-body">
+              <h3>Rhino</h3>
+              <p>Stand with one of the most endangered species on Earth. Adoption supports intensive protection and de-horning for our rhino sanctuaries.</p>
+              <div class="lib-book-actions" style="margin-top:1rem">
+                <a href="contact.html" class="btn btn-primary"><i class="fas fa-paw"></i> Adopt a Rhino</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ DONATE CTA ══════════════ -->
+    <section class="content-overlay section section--sm" aria-labelledby="donate-heading">
+      <div class="container">
+        <div class="card" style="max-width: 900px; margin: 0 auto; text-align: center;">
+          <div class="card-body">
+            <i class="fas fa-heart" style="font-size:2.2rem;color:var(--accent)"></i>
+            <h2 id="donate-heading" style="margin-top:0.75rem">Prefer to Donate Directly?</h2>
+            <p style="color: var(--text-dim); max-width: 640px; margin: 0.75rem auto 0;">
+              Every contribution — large or small — goes straight to conservation action. Donations fund anti-poaching patrols, tree planting, wildlife corridors, and youth education programs across our partner parks.
+            </p>
+            <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem">
+              <a href="contact.html" class="btn btn-primary"><i class="fas fa-heart"></i> Make a Donation</a>
+              <a href="library/library.html" class="btn btn-secondary"><i class="fas fa-book"></i> Explore the Library</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ VOLUNTEER / PARTNER ══════════════ -->
+    <section class="content-overlay section section--sm" aria-labelledby="volunteer-heading">
+      <div class="container">
+        <div class="card-grid stagger">
+          <article class="card">
+            <div class="card-body" style="text-align:center">
+              <i class="fas fa-hands-helping" style="font-size:2.2rem;color:var(--accent)"></i>
+              <h3>Volunteer With Us</h3>
+              <p>Join our youth-led field teams for clean-ups, tree planting, and community outreach. No experience needed — just passion for nature.</p>
+              <div style="margin-top:1rem">
+                <a href="contact.html" class="btn btn-secondary"><i class="fas fa-envelope"></i> Volunteer</a>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-body" style="text-align:center">
+              <i class="fas fa-handshake" style="font-size:2.2rem;color:var(--accent)"></i>
+              <h3>Partner With Us</h3>
+              <p>Schools, parks, and businesses can partner with WildGuard to scale conservation, sponsor species, and empower young leaders.</p>
+              <div style="margin-top:1rem">
+                <a href="contact.html" class="btn btn-secondary"><i class="fas fa-handshake"></i> Become a Partner</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>WildGuard Society</h3>
+        <p>Young people in Tanzania protecting the wildlife and land we call home. <strong>Protect Nature — Protect Life</strong>.</p>
+        <div class="footer-social">
+          <a href="https://x.com/wildguard_society" target="_blank" rel="noopener" aria-label="Follow us on X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/wildguard_society/" target="_blank" rel="noopener" aria-label="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/255700123456" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://t.me/wildguard_society" target="_blank" rel="noopener" aria-label="Join us on Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.tiktok.com/@wildguard.society" target="_blank" rel="noopener" aria-label="Follow us on TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="library/library.html">Library</a></li>
+          <li><a href="scan.html">Scan</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="adopt.html">Donate</a></li>
+          <li><a href="adopt.html" class="active" aria-current="page">Adopt an Animal</a></li>
+          <li><a href="adopt.html">Volunteer</a></li>
+          <li><a href="contact.html">Partner with Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> wildguardsociety@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +255 700 123 456</p>
+        <p><i class="fas fa-map-marker-alt"></i> Moshi, Kilimanjaro, Tanzania</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p><strong>Protect Nature — Protect Life</strong></p>
+      <p>&copy; <span data-current-year></span> WildGuard Society. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/connectivity.js"></script>
+
+<script defer src="js/wg-dialog.js"></script>
+<script defer src="js/main.js"></script>
+  <script defer src="js/lively.js"></script>
+  <script defer src="js/auth.js"></script>
+  <script defer src="js/icons.js"></script>
+<script defer src="js/pwa.js"></script>
+</body>
+</html>
