@@ -1,6 +1,6 @@
 // Service Worker for WildGuard Society - Offline support
 // Served under /Wildlife-website/ project path on GitHub Pages.
-const CACHE_NAME = 'wildguard-v2';
+const CACHE_NAME = 'wildguard-v3';
 const URLS_TO_CACHE = [
   '/Wildlife-website/',
   '/Wildlife-website/index.html',
